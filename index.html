@@ -30,30 +30,6 @@
 
         body.is-loading { overflow: hidden; height: 100vh; }
 
-        /* ЗАСТАВКА: Pepe падает, деньги разлетаются; размыт только фон */
-        
-        
-
-        .bill-1 { left: 2%; top: 28%; animation-name: billFly1; animation-delay: .65s; }
-        .bill-2 { right: 0; top: 32%; animation-name: billFly2; animation-delay: .76s; }
-        .bill-3 { left: 4%; top: 58%; animation-name: billFly3; animation-delay: .84s; }
-        .bill-4 { right: 3%; top: 59%; animation-name: billFly4; animation-delay: .92s; }
-        .bill-5 { left: 43%; top: 4%; animation-name: billFly5; animation-delay: .72s; }
-        @keyframes pepeFall {
-            0% { opacity: 0; transform: translateY(-115vh) rotate(-9deg) scale(.86); }
-            68% { opacity: 1; transform: translateY(18px) rotate(2deg) scale(1.02); }
-            84% { transform: translateY(-7px) rotate(-1deg) scale(.995); }
-            100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
-        }
-        @keyframes billFly1 { 0% { opacity:0; transform:translate(0,0) rotate(0) scale(.5); } 18% {opacity:1;} 100% {opacity:0; transform:translate(-100px,-85px) rotate(-125deg) scale(1);} }
-        @keyframes billFly2 { 0% { opacity:0; transform:translate(0,0) rotate(0) scale(.5); } 18% {opacity:1;} 100% {opacity:0; transform:translate(100px,-90px) rotate(145deg) scale(1);} }
-        @keyframes billFly3 { 0% { opacity:0; transform:translate(0,0) rotate(0) scale(.5); } 18% {opacity:1;} 100% {opacity:0; transform:translate(-110px,55px) rotate(120deg) scale(1);} }
-        @keyframes billFly4 { 0% { opacity:0; transform:translate(0,0) rotate(0) scale(.5); } 18% {opacity:1;} 100% {opacity:0; transform:translate(105px,60px) rotate(-120deg) scale(1);} }
-        @keyframes billFly5 { 0% { opacity:0; transform:translate(0,0) rotate(0) scale(.5); } 18% {opacity:1;} 100% {opacity:0; transform:translate(15px,-125px) rotate(90deg) scale(1);} }
-        @media (prefers-reduced-motion: reduce) {
-            .pepe-character, .flying-bill { animation-duration: .01ms !important; }
-        }
-
 
         /* ФОН */
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
