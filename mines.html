@@ -27,38 +27,64 @@
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
-        .coin-icon { width: 18px; height: 18px; }
+        .coin-icon { width: 18px; height: 18px; flex-shrink: 0; }
 
         /* Игровое поле 5x5 */
-        .grid-wrapper { display: flex; justify-content: center; margin-bottom: 30px; }
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; max-width: 350px; aspect-ratio: 1; }
-        .cell { background: var(--cell-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.05); }
+        .grid-wrapper { display: flex; justify-content: center; margin-bottom: auto; }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; max-width: 350px; aspect-ratio: 1; }
         
-        .cell.safe { background: var(--cell-safe); border: 1px solid var(--blue-main); box-shadow: inset 0 0 15px rgba(0,136,255,0.2); transform: scale(0.95); }
-        .cell.mine { background: var(--cell-mine); border: 1px solid #ff3366; box-shadow: inset 0 0 15px rgba(255,51,102,0.2); transform: scale(0.95); }
-        .cell.dimmed { opacity: 0.5; } /* Для несыгранных мин после конца */
+        .cell { 
+            background: var(--cell-bg); 
+            border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 28px; cursor: pointer; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+        }
+        
+        /* Поле неактивно до старта */
+        .grid.disabled .cell { opacity: 0.7; pointer-events: none; }
+
+        /* Анимации ячеек */
+        .cell.safe { background: var(--cell-safe); border: 1px solid var(--blue-main); box-shadow: inset 0 0 15px rgba(0,136,255,0.2); transform: scale(0.95); animation: pop 0.3s; }
+        .cell.mine { background: var(--cell-mine); border: 1px solid #ff3366; box-shadow: inset 0 0 15px rgba(255,51,102,0.4); transform: scale(0.95); animation: shake 0.4s; }
+        .cell.dimmed { opacity: 0.4; } /* Показываем где были мины после игры */
+
+        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(0.95); opacity: 1; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0) scale(0.95); } 25% { transform: translateX(-4px) scale(0.95); } 75% { transform: translateX(4px) scale(0.95); } }
 
         /* Управление ставкой */
-        .controls { background: rgba(20, 22, 28, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; }
+        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: 20px; backdrop-filter: blur(10px); }
         
         .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .label { font-size: 14px; color: var(--secondary); font-weight: 600; }
         
         /* Кнопки суммы */
         .bet-options { display: flex; gap: 8px; }
-        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .bet-btn.active { background: var(--blue-main); border-color: var(--blue-main); }
+        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .bet-btn.active { background: rgba(0, 136, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
+        .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
 
         /* Выбор мин */
-        .mines-selector { display: flex; align-items: center; gap: 15px; background: #1a1d24; border-radius: 10px; padding: 5px; }
+        .mines-selector { display: flex; align-items: center; gap: 15px; background: #1a1d24; border-radius: 10px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.1); }
         .m-btn { background: transparent; border: none; color: #fff; font-size: 20px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .m-val { font-weight: bold; font-size: 16px; width: 25px; text-align: center; }
+        .m-btn:disabled { opacity: 0.3; pointer-events: none; }
+        .m-val { font-weight: bold; font-size: 16px; width: 25px; text-align: center; color: var(--blue-main); }
 
         /* Главная кнопка */
-        .action-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; color: #fff; background: var(--blue-main); cursor: pointer; box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .action-btn { 
+            width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; 
+            color: #fff; background: var(--blue-main); cursor: pointer; 
+            box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; 
+            display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;
+        }
         .action-btn:active { transform: scale(0.97); }
+        
+        /* Состояния кнопки */
         .action-btn.cashout { background: #00cc66; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
-        .action-btn:disabled { background: #333; color: #777; box-shadow: none; pointer-events: none; }
+        .action-btn.bust { background: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); }
+        .action-btn:disabled { background: #2a2d35; color: #555; box-shadow: none; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -78,8 +104,8 @@
 
         <!-- Сетка мин -->
         <div class="grid-wrapper">
-            <div class="grid" id="grid">
-                <!-- Ячейки генерируются в JS -->
+            <div class="grid disabled" id="grid">
+                <!-- Ячейки -->
             </div>
         </div>
 
@@ -87,25 +113,26 @@
         <div class="controls">
             
             <div class="row">
-                <div class="label">Сумма ставки</div>
+                <div class="label">Ставка</div>
                 <div class="bet-options">
-                    <button class="bet-btn active" onclick="setBet(20)">20</button>
-                    <button class="bet-btn" onclick="setBet(50)">50</button>
-                    <button class="bet-btn" onclick="setBet(100)">100</button>
-                    <button class="bet-btn" onclick="setBet(200)">200</button>
+                    <button class="bet-btn active" onclick="setBet(20, this)">20</button>
+                    <button class="bet-btn" onclick="setBet(50, this)">50</button>
+                    <button class="bet-btn" onclick="setBet(100, this)">100</button>
+                    <button class="bet-btn" onclick="setBet(200, this)">200</button>
                 </div>
             </div>
 
             <div class="row">
-                <div class="label">Количество мин</div>
+                <div class="label">Кол-во мин (2-20)</div>
                 <div class="mines-selector">
-                    <button class="m-btn" onclick="changeMines(-1)">-</button>
+                    <button class="m-btn" id="minMinus" onclick="changeMines(-1)">-</button>
                     <div class="m-val" id="minesCount">3</div>
-                    <button class="m-btn" onclick="changeMines(1)">+</button>
+                    <button class="m-btn" id="minPlus" onclick="changeMines(1)">+</button>
                 </div>
             </div>
 
-            <button class="action-btn" id="actionBtn" onclick="handleAction()">ИГРАТЬ</button>
+            <!-- Кнопка действия -->
+            <button class="action-btn" id="actionBtn" onclick="handleAction()">НАЧАТЬ ИГРУ</button>
 
         </div>
     </div>
@@ -114,22 +141,28 @@
         const tg = window.Telegram.WebApp;
         tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
-        // Глобальные переменные
+        // Глобальные переменные игры
         let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
         let bet = 20;
         let mines = 3;
-        let state = 'idle'; // idle, playing
+        
+        // Статусы: 'idle' (ждем старта), 'playing' (играем), 'finished' (забрал/проиграл)
+        let state = 'idle'; 
+        
         let gridData = [];
         let clicks = 0;
-        let currentMult = 1.0;
+        let currentWin = 0;
 
         const gridEl = document.getElementById('grid');
         const actionBtn = document.getElementById('actionBtn');
         const balanceDisplay = document.getElementById('balanceDisplay');
+        const betBtns = document.querySelectorAll('.bet-btn');
+        const mineMinus = document.getElementById('minMinus');
+        const minePlus = document.getElementById('minPlus');
 
-        // Инициализация
+        // Инициализация при заходе
         updateBalanceUI();
-        createGrid();
+        drawEmptyGrid();
 
         function goBack() {
             window.location.href = 'index.html';
@@ -140,13 +173,15 @@
             localStorage.setItem('vetruch_balance', balance);
         }
 
-        function setBet(amount) {
+        // Выбор ставки
+        function setBet(amount, btn) {
             if(state === 'playing') return;
             bet = amount;
-            document.querySelectorAll('.bet-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            betBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
 
+        // Выбор мин
         function changeMines(delta) {
             if(state === 'playing') return;
             mines += delta;
@@ -155,123 +190,179 @@
             document.getElementById('minesCount').textContent = mines;
         }
 
-        function createGrid() {
+        // Рисуем пустую сетку
+        function drawEmptyGrid() {
             gridEl.innerHTML = '';
-            gridData = [];
             for(let i=0; i<25; i++) {
                 let cell = document.createElement('div');
                 cell.className = 'cell';
-                cell.onclick = () => clickCell(i);
                 gridEl.appendChild(cell);
-                gridData.push({ isMine: false, revealed: false, el: cell });
             }
         }
 
+        // Расчет иксов (множителя) на основе теории вероятности
+        function getMultiplier(minesCount, clicksCount) {
+            let prob = 1.0;
+            let safeCells = 25 - minesCount;
+            for(let i=0; i<clicksCount; i++) {
+                prob *= (safeCells - i) / (25 - i);
+            }
+            // 5% маржа казино, чтобы множитель был чуть меньше идеального
+            return (0.95 / prob); 
+        }
+
+        // Главная кнопка
         function handleAction() {
-            if(state === 'idle') {
+            if (state === 'idle' || state === 'finished') {
                 startGame();
-            } else if (state === 'playing') {
+            } else if (state === 'playing' && clicks > 0) {
                 cashout();
             }
         }
 
+        // Начало игры
         function startGame() {
             if (balance < bet) {
                 tg.showAlert("Недостаточно монет!");
                 return;
             }
 
+            // Списываем баланс
             balance -= bet;
             updateBalanceUI();
             
+            // Настраиваем состояния
             state = 'playing';
             clicks = 0;
-            currentMult = 1.0;
-            actionBtn.textContent = 'ИГРАТЬ';
-            actionBtn.disabled = true; // Блокируем кнопку, пока не нажмет 1 раз
+            currentWin = 0;
 
-            createGrid();
+            // Блокируем кнопки ставок
+            betBtns.forEach(b => b.disabled = true);
+            mineMinus.disabled = true;
+            minePlus.disabled = true;
 
-            // Расставляем мины рандомно
-            let minesPlaced = 0;
-            while(minesPlaced < mines) {
-                let r = Math.floor(Math.random() * 25);
-                if(!gridData[r].isMine) {
-                    gridData[r].isMine = true;
-                    minesPlaced++;
-                }
+            // Кнопка ждет первого клика
+            actionBtn.classList.remove('cashout', 'bust');
+            actionBtn.textContent = 'ОТКРОЙТЕ ЯЧЕЙКУ';
+            actionBtn.disabled = true;
+
+            // Активируем поле и генерируем мины
+            gridEl.classList.remove('disabled');
+            generateGrid();
+        }
+
+        // Генерация поля
+        function generateGrid() {
+            gridEl.innerHTML = '';
+            gridData = [];
+            
+            // Создаем массив: M мин (true), остальное безопасно (false)
+            let rawMines = Array(25).fill(false);
+            for(let i=0; i<mines; i++) rawMines[i] = true;
+
+            // Алгоритм Фишера-Йетса для идеального рандома
+            for (let i = rawMines.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [rawMines[i], rawMines[j]] = [rawMines[j], rawMines[i]];
+            }
+
+            // Рендерим в HTML
+            for(let i=0; i<25; i++) {
+                let cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.onclick = () => clickCell(i);
+                gridEl.appendChild(cell);
+                
+                gridData.push({ 
+                    isMine: rawMines[i], 
+                    revealed: false, 
+                    el: cell 
+                });
             }
         }
 
+        // Клик по ячейке
         function clickCell(index) {
             if(state !== 'playing' || gridData[index].revealed) return;
 
-            gridData[index].revealed = true;
-            let cell = gridData[index].el;
+            let cellData = gridData[index];
+            cellData.revealed = true;
 
-            if (gridData[index].isMine) {
-                // ПРОИГРЫШ
-                cell.classList.add('mine');
-                cell.textContent = '💣';
-                endGame(false);
+            if (cellData.isMine) {
+                // ПОПАЛ НА МИНУ
+                cellData.el.classList.add('mine');
+                cellData.el.innerHTML = '💣';
+                loseGame();
             } else {
-                // УСПЕХ
-                cell.classList.add('safe');
-                cell.innerHTML = '💎'; // Кристалл
+                // ОТКРЫЛ КРИСТАЛЛ
+                cellData.el.classList.add('safe');
+                cellData.el.innerHTML = '💎';
                 clicks++;
                 
-                // Считаем коэффициент
-                calcMultiplier();
-                
+                // Считаем новый выигрыш
+                let mult = getMultiplier(mines, clicks);
+                currentWin = Math.floor(bet * mult);
+
+                // Активируем кнопку вывода
                 actionBtn.disabled = false;
                 actionBtn.classList.add('cashout');
-                
-                let winAmount = Math.floor(bet * currentMult);
-                actionBtn.innerHTML = `ЗАБРАТЬ ${winAmount} <img src="coins.png" class="coin-icon">`;
+                actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
 
-                // Если открыл все безопасные (авто-победа)
-                if (clicks === 25 - mines) {
+                // Если открыты все возможные сейвы - авто-победа
+                if (clicks === (25 - mines)) {
                     cashout();
                 }
             }
         }
 
-        function calcMultiplier() {
-            let safeCells = 25 - mines;
-            let prob = 1.0;
-            for(let i=0; i<clicks; i++) {
-                prob *= (safeCells - i) / (25 - i);
-            }
-            // 5% маржа казино
-            currentMult = (1.0 / prob) * 0.95; 
-        }
-
+        // Забрать деньги
         function cashout() {
-            if(clicks === 0) return;
-            let winAmount = Math.floor(bet * currentMult);
-            balance += winAmount;
+            if(clicks === 0 || state !== 'playing') return;
+            
+            // Начисляем баланс
+            balance += currentWin;
             updateBalanceUI();
-            endGame(true);
+            
+            // Визуал
+            actionBtn.classList.remove('cashout');
+            actionBtn.classList.add('cashout'); // оставляем зеленым
+            actionBtn.innerHTML = `ВЫИГРЫШ ${currentWin}! ИГРАТЬ СНОВА`;
+            
+            endGame();
         }
 
-        function endGame(won) {
-            state = 'idle';
+        // Проигрыш
+        function loseGame() {
             actionBtn.classList.remove('cashout');
+            actionBtn.classList.add('bust');
+            actionBtn.textContent = 'ПРОИГРЫШ! ИГРАТЬ СНОВА';
             actionBtn.disabled = false;
-            actionBtn.textContent = 'ИГРАТЬ СНОВА';
+            
+            endGame();
+        }
 
-            // Показываем все остальные мины
+        // Конец игры (показываем где были мины)
+        function endGame() {
+            state = 'finished';
+            gridEl.classList.add('disabled');
+            
+            // Разблокируем ставки
+            betBtns.forEach(b => b.disabled = false);
+            mineMinus.disabled = false;
+            minePlus.disabled = false;
+
+            // Показываем неоткрытые ячейки
             for(let i=0; i<25; i++) {
                 if(!gridData[i].revealed) {
                     gridData[i].el.classList.add('dimmed');
                     if(gridData[i].isMine) {
-                        gridData[i].el.textContent = '💣';
+                        gridData[i].el.innerHTML = '💣';
                     }
                 }
             }
         }
 
-        // Анимация звезд на фоне
+        // ================= Анимация звезд на фоне =================
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let w = 0; let h = 0;
