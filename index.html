@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Vetruch GiftBot</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -13,86 +14,84 @@
         }
 
         :root {
-            --background: #151a22;
-            --panel: #202b38;
-            --button: #2d8cff;
             --text: #ffffff;
-            --secondary: #9ca8b8;
-            --active: #55b9ff;
+            --secondary: #9aa8b8;
+            --nav-bg: #172936;
+            --nav-border: #304655;
+            --active: #ffe600;
         }
 
-       body {
-    margin: 0;
-    min-height: 100vh;
-    background: var(--background);
-    color: var(--text);
-    font-family: Arial, sans-serif;
-    padding-bottom: 105px;
-}
+        html,
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000000;
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
 
+        body {
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 105px;
+        }
+
+        /* Фон со звёздами */
+        #stars {
+            position: fixed;
+            z-index: 0;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Затемнение поверх звёзд */
+        .dark-overlay {
+            position: fixed;
+            z-index: 1;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.18);
+            pointer-events: none;
+        }
 
         .page {
+            position: relative;
+            z-index: 2;
             display: none;
-            padding: 22px 20px 20px;
-            animation: fadeIn 0.2s ease;
+            min-height: calc(100vh - 105px);
+            padding: 28px 20px 20px;
         }
 
         .page.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(5px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         h1 {
-            margin: 8px 0 8px;
+            margin: 0 0 8px;
             text-align: center;
             font-size: 30px;
         }
 
         h2 {
-            margin: 8px 0 22px;
+            margin: 10px 0 24px;
             text-align: center;
-            font-size: 25px;
+            font-size: 26px;
         }
 
         .subtitle {
-            margin: 0 0 26px;
-            color: var(--secondary);
+            margin: 0;
+            color: #aab8c8;
             text-align: center;
             font-size: 17px;
-        }
-
-        .menu {
-            display: grid;
-            gap: 12px;
-        }
-
-        .main-button {
-            width: 100%;
-            padding: 17px;
-            border: 0;
-            border-radius: 15px;
-            background: var(--button);
-            color: white;
-            font-size: 17px;
-            font-weight: bold;
         }
 
         .card {
             margin-bottom: 12px;
-            padding: 18px;
-            border-radius: 16px;
-            background: var(--panel);
+            padding: 20px;
+            border: 1px solid rgba(100, 150, 180, 0.22);
+            border-radius: 17px;
+            background: rgba(23, 41, 54, 0.82);
             text-align: center;
         }
 
@@ -104,143 +103,113 @@
 
         .card-text {
             color: var(--secondary);
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
-        /* Нижняя панель */
         /* Плавающая нижняя панель */
-.bottom-nav {
-    position: fixed;
-    z-index: 10;
-    right: 4px;
-    bottom: 10px;
-    left: 4px;
+        .bottom-nav {
+            position: fixed;
+            z-index: 10;
+            right: 4px;
+            bottom: 10px;
+            left: 4px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
 
-    height: 64px;
-    padding: 0 4px;
+            height: 64px;
+            padding: 0 4px;
 
-    border: 1px solid #314454;
-    border-radius: 25px;
+            border: 1px solid var(--nav-border);
+            border-radius: 25px;
+            background: rgba(23, 41, 54, 0.96);
 
-    background: #172936;
-    box-shadow:
-        0 5px 18px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
-    overflow: visible;
-}
+            overflow: visible;
+        }
 
-/* Отдельная вкладка */
-.nav-button {
-    position: relative;
+        .nav-button {
+            position: relative;
 
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
 
-    height: 62px;
-    padding: 4px 2px;
+            height: 62px;
+            padding: 4px 2px;
 
-    border: 0;
-    border-radius: 22px;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: #758592;
 
-    background: transparent;
-    color: #71808d;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
 
-    font-size: 11px;
-    font-weight: normal;
+        .nav-button .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+            width: 25px;
+            height: 25px;
 
-/* Иконки */
-.nav-button .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            color: #758592;
+            font-size: 21px;
+            line-height: 1;
+        }
 
-    width: 25px;
-    height: 25px;
+        /* Активная вкладка поднимается вверх */
+        .nav-button.active {
+            z-index: 2;
+            height: 62px;
+            margin-top: -21px;
 
-    color: #71808d;
-    font-size: 21px;
-    line-height: 1;
-}
+            background: var(--active);
+            color: #111820;
+            font-weight: bold;
 
-/* Активная вкладка */
-.nav-button.active {
-    z-index: 2;
+            box-shadow:
+                0 0 0 5px #172936,
+                0 4px 12px rgba(0, 0, 0, 0.45);
+        }
 
-    height: 62px;
-    margin-top: -21px;
+        .nav-button.active .icon {
+            color: #111820;
+            font-size: 22px;
+        }
 
-    border-radius: 50%;
+        .nav-button.active span:last-child {
+            position: absolute;
+            top: 67px;
 
-    background: #ffe600;
-    color: #14202a;
-
-    font-weight: bold;
-
-    box-shadow:
-        0 0 0 5px #172936,
-        0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-/* Жёлтый текст активной вкладки */
-.nav-button.active .icon {
-    color: #14202a;
-}
-
-.nav-button.active span:last-child {
-    position: absolute;
-    top: 67px;
-
-    color: #ffe600;
-    font-size: 11px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-/* Немного увеличиваем иконку активной вкладки */
-.nav-button.active .icon {
-    font-size: 22px;
-}
-
+            color: var(--active);
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Главная -->
+    <!-- Холст для падающих звёзд -->
+    <canvas id="stars"></canvas>
+    <div class="dark-overlay"></div>
+
+    <!-- Главная страница без больших кнопок -->
     <main id="home" class="page active">
         <h1>Vetruch GiftBot</h1>
         <p class="subtitle">Главное меню</p>
-
-        <div class="menu">
-            <button class="main-button" onclick="openPage('profile')">
-                👤 Профиль
-            </button>
-
-            <button class="main-button" onclick="openPage('tasks')">
-                📋 Задания
-            </button>
-
-            <button class="main-button" onclick="openPage('shop')">
-                🛒 Магазин
-            </button>
-
-            <button class="main-button" onclick="openPage('games')">
-                🎮 Игры
-            </button>
-        </div>
     </main>
 
     <!-- Игры -->
@@ -285,6 +254,7 @@
 
         <div class="card">
             <div class="card-title" id="userName">Пользователь</div>
+
             <div class="card-text">
                 ⭐ Баланс: 0<br>
                 🏆 Уровень: 1
@@ -292,7 +262,7 @@
         </div>
     </main>
 
-    <!-- Нижняя панель вкладок -->
+    <!-- Нижняя панель -->
     <nav class="bottom-nav">
         <button class="nav-button active" data-page="home" onclick="openPage('home')">
             <span class="icon">⌂</span>
@@ -326,23 +296,21 @@
         tg.ready();
         tg.expand();
 
-        // Получаем имя пользователя Telegram
+        // Показываем имя пользователя Telegram в профиле
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const user = tg.initDataUnsafe.user;
-            const name = user.first_name || "Пользователь";
-
-            document.getElementById("userName").textContent = name;
+            document.getElementById("userName").textContent =
+                user.first_name || "Пользователь";
         }
 
+        // Переключение вкладок
         function openPage(pageId) {
-            // Показываем выбранную страницу
             document.querySelectorAll(".page").forEach(function(page) {
                 page.classList.remove("active");
             });
 
             document.getElementById(pageId).classList.add("active");
 
-            // Подсвечиваем выбранную вкладку
             document.querySelectorAll(".nav-button").forEach(function(button) {
                 button.classList.remove("active");
             });
@@ -355,9 +323,76 @@
                 activeButton.classList.add("active");
             }
 
-            // Прокручиваем страницу наверх
             window.scrollTo(0, 0);
         }
+
+        // Медленно падающие звёзды
+        const canvas = document.getElementById("stars");
+        const ctx = canvas.getContext("2d");
+
+        let stars = [];
+        let width = 0;
+        let height = 0;
+
+        function resizeCanvas() {
+            const pixelRatio = window.devicePixelRatio || 1;
+
+            width = window.innerWidth;
+            height = window.innerHeight;
+
+            canvas.width = width * pixelRatio;
+            canvas.height = height * pixelRatio;
+            canvas.style.width = width + "px";
+            canvas.style.height = height + "px";
+
+            ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+            createStars();
+        }
+
+        function createStars() {
+            stars = [];
+
+            // Количество точек зависит от размера экрана
+            const amount = Math.min(130, Math.max(65, Math.floor(width / 3)));
+
+            for (let i = 0; i < amount; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 1.2 + 0.25,
+                    speed: Math.random() * 0.10 + 0.025,
+                    opacity: Math.random() * 0.65 + 0.25
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (const star of stars) {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(255, 255, 255, " + star.opacity + ")";
+                ctx.fill();
+
+                // Очень медленное движение вниз
+                star.y += star.speed;
+
+                // Когда звезда ушла вниз, возвращаем её наверх
+                if (star.y > height + 3) {
+                    star.y = -3;
+                    star.x = Math.random() * width;
+                }
+            }
+
+            requestAnimationFrame(drawStars);
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+
+        resizeCanvas();
+        drawStars();
     </script>
 
 </body>
