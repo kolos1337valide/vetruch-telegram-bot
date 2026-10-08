@@ -47,43 +47,6 @@
     transform: scale(1.12);
 }
 
-        .loader-container {
-            position: relative;
-            z-index: 1;
-            width: min(88vw, 430px);
-            aspect-ratio: 1;
-        }
-        .pepe-character {
-            position: absolute;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
-            inset: 0;
-            object-fit: contain;
-            /* Само изображение не размываем */
-            filter: drop-shadow(0 12px 22px rgba(0,0,0,.55));
-            animation: pepeFall 1.05s cubic-bezier(.18,.82,.25,1) both;
-        }
-        .flying-bill {
-            position: absolute;
-            z-index: 3;
-            width: 54px;
-            height: 30px;
-            display: grid;
-            place-items: center;
-            border: 2px solid #43834c;
-            border-radius: 5px;
-            background: linear-gradient(135deg, #d8f4a8, #8ccf75);
-            color: #327544;
-            font-size: 19px;
-            line-height: 1;
-            font-weight: 900;
-            box-shadow: inset 0 0 0 2px rgba(255,255,255,.26), 0 3px 9px rgba(0,0,0,.35);
-            opacity: 0;
-            animation-duration: 1.1s;
-            animation-timing-function: ease-out;
-            animation-fill-mode: both;
-        }
         .bill-1 { left: 2%; top: 28%; animation-name: billFly1; animation-delay: .65s; }
         .bill-2 { right: 0; top: 32%; animation-name: billFly2; animation-delay: .76s; }
         .bill-3 { left: 4%; top: 58%; animation-name: billFly3; animation-delay: .84s; }
