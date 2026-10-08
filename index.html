@@ -50,13 +50,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
         }
 
         .loader-container {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 190px;
+            height: 190px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -64,37 +64,93 @@
 
         .loader-svg {
             position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotate(-90deg);
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
         }
 
-        .loader-track {
+        .logo-circle,
+        .logo-v {
             fill: none;
-            stroke: rgba(255, 255, 255, 0.05);
-            stroke-width: 4;
-        }
-
-        .loader-progress {
-            fill: none;
-            stroke: var(--blue-main);
-            stroke-width: 4;
+            stroke: #eaf8ff;
+            stroke-width: 3.5;
             stroke-linecap: round;
-            stroke-dasharray: 402;
-            stroke-dashoffset: 402; 
-            filter: drop-shadow(0 0 10px var(--blue-glow));
-            transition: stroke-dashoffset 0.1s linear;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 8px rgba(91, 198, 255, 0.8));
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
         }
 
-        .loader-text {
-            color: #fff;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 1.5px;
-            z-index: 2;
-            text-shadow: 0 0 12px rgba(0, 136, 255, 0.6);
-            margin-top: 2px;
+        .logo-circle {
+            stroke-dasharray: 453;
+            stroke-dashoffset: 453;
+            animation: drawLogo 1.55s cubic-bezier(0.55, 0, 0.25, 1) 0.4s forwards;
         }
+
+        .logo-v {
+            stroke: #ffffff;
+            stroke-width: 8;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: drawLogo 1.1s cubic-bezier(0.55, 0, 0.25, 1) 1.25s forwards;
+        }
+
+        @keyframes drawLogo {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .loader-wordmark {
+            position: absolute;
+            color: #f4fbff;
+            font-size: 31px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 1;
+            white-space: nowrap;
+            text-shadow: 0 0 18px rgba(91, 198, 255, 0.55);
+        }
+
+        .loader-wordmark span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        .loader-wordmark.show span {
+            animation: letterReveal 0.45s ease forwards;
+        }
+
+        .loader-wordmark.show span:nth-child(1) { animation-delay: 0s; }
+        .loader-wordmark.show span:nth-child(2) { animation-delay: 0.3s; }
+        .loader-wordmark.show span:nth-child(3) { animation-delay: 0.6s; }
+        .loader-wordmark.show span:nth-child(4) { animation-delay: 0.9s; }
+        .loader-wordmark.show span:nth-child(5) { animation-delay: 1.2s; }
+        .loader-wordmark.show span:nth-child(6) { animation-delay: 1.5s; }
+        .loader-wordmark.show span:nth-child(7) { animation-delay: 1.8s; }
+
+        @keyframes letterReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loader-logo.hide .logo-circle {
+            animation: eraseCircle 0.9s ease-in forwards;
+        }
+
+        .loader-logo.hide .logo-v {
+            animation: eraseV 0.9s ease-in forwards;
+        }
+
+        @keyframes eraseCircle {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 453; }
+        }
+
+        @keyframes eraseV {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 200; }
+        }
+
 
         /* ================= ФОН ================= */
         #stars {
@@ -321,11 +377,14 @@
     <!-- ================= ЭКРАН ЗАГРУЗКИ ================= -->
     <div id="loading-screen">
         <div class="loader-container">
-            <svg class="loader-svg" width="140" height="140" viewBox="0 0 140 140">
-                <circle class="loader-track" cx="70" cy="70" r="64"></circle>
-                <circle class="loader-progress" cx="70" cy="70" r="64"></circle>
+            <svg class="loader-svg loader-logo" viewBox="0 0 190 190" aria-hidden="true">
+                <circle class="logo-circle" cx="95" cy="95" r="72"></circle>
+                <!-- Концы V касаются внутреннего края круга -->
+                <path class="logo-v" d="M47.5 53 L95 133 L142.5 53"></path>
             </svg>
-            <div class="loader-text">vetruch</div>
+            <div class="loader-wordmark" id="loader-wordmark" aria-label="Vetruch">
+                <span>V</span><span>e</span><span>t</span><span>r</span><span>u</span><span>c</span><span>h</span>
+            </div>
         </div>
     </div>
 
@@ -495,33 +554,30 @@
             window.scrollTo(0, 0);
         }
 
-        const loaderProgress = document.querySelector('.loader-progress');
         const loadingScreen = document.getElementById('loading-screen');
-        const circumference = 402; 
-        let progress = 0;
-        
-        const loadingInterval = setInterval(() => {
-            progress += Math.random() * 3 + 1; 
-            
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(loadingInterval);
-                
+        const loaderLogo = document.querySelector('.loader-logo');
+        const loaderWordmark = document.getElementById('loader-wordmark');
+
+        // Даём логотипу прорисоваться, затем стираем линии в обратном направлении.
+        setTimeout(() => {
+            loaderLogo.classList.add('hide');
+
                 setTimeout(() => {
-                    loadingScreen.style.opacity = '0';
-                    loadingScreen.style.visibility = 'hidden';
-                    
-                    document.body.classList.remove('is-loading');
-                    document.body.classList.add('is-ready');
-                    
-                    openPage('home');
-                }, 200);
-            }
-            
-            const offset = circumference - (progress / 100) * circumference;
-            loaderProgress.style.strokeDashoffset = offset;
-            
-        }, 30);
+                    loaderLogo.style.visibility = 'hidden';
+                    loaderWordmark.classList.add('show');
+                }, 1050);
+        }, 3100);
+
+        // Меню появляется после завершения логотипа и проявления всех букв.
+        setTimeout(() => {
+            loadingScreen.style.opacity = '0';
+            loadingScreen.style.visibility = 'hidden';
+            document.body.classList.remove('is-loading');
+            document.body.classList.add('is-ready');
+            openPage('home');
+        }, 6900);
+
+
 
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
