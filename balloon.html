@@ -16,7 +16,6 @@
             --red-main: #ff3366; --red-glow: rgba(255, 51, 102, 0.6);
         }
         body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto; 
-               /* Блокируем выделение текста и менюшки при долгом нажатии */
                user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 
         /* Фон */
@@ -50,20 +49,21 @@
         .balloon-container {
             position: relative;
             display: flex; justify-content: center; align-items: center;
-            width: 120px; height: 120px;
+            width: 140px; height: 140px; /* Базовый размер контейнера */
         }
 
         .balloon {
+            position: absolute;
             width: 100%; height: 100%;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #45caff, var(--blue-main));
             box-shadow: 0 0 30px var(--blue-glow), inset -10px -10px 20px rgba(0,0,0,0.3);
             display: flex; align-items: center; justify-content: center;
             transition: background 0.2s, box-shadow 0.2s;
-            will-change: transform; /* Для плавности */
+            will-change: transform; 
+            z-index: 1;
         }
 
-        /* Состояние взрыва */
         .balloon.popped {
             background: radial-gradient(circle at 30% 30%, #ff6b6b, var(--red-main));
             box-shadow: 0 0 40px var(--red-glow), inset -10px -10px 20px rgba(0,0,0,0.3);
@@ -83,25 +83,29 @@
             transform: scale(0);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
+            z-index: 2;
         }
-        .balloon.popped + .explosion-emoji {
+        .balloon.popped ~ .explosion-emoji {
             opacity: 1;
             transform: scale(1);
         }
 
+        /* ТЕКСТ ИКСА ВНУТРИ ШАРИКА */
         .multiplier-text {
             position: absolute;
-            top: -50px;
-            font-size: 42px;
+            z-index: 10;
+            font-size: 26px; /* Уменьшили, чтобы идеально влезало в шарик */
             font-weight: 800;
-            color: #fff;
-            text-shadow: 0 0 15px var(--blue-glow);
-            font-variant-numeric: tabular-nums; /* Цифры не дергаются по ширине */
+            color: #ffffff;
+            /* Тень, чтобы белые цифры не сливались с фоном шарика */
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px var(--blue-glow); 
+            font-variant-numeric: tabular-nums; 
+            pointer-events: none;
         }
 
         .multiplier-text.red {
             color: #ff3366;
-            text-shadow: 0 0 15px rgba(255, 51, 102, 0.8);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 51, 102, 0.8);
         }
 
         /* УПРАВЛЕНИЕ */
@@ -125,9 +129,7 @@
             color: #fff; background: var(--blue-main); cursor: pointer; 
             box-shadow: 0 0 20px var(--blue-glow); transition: 0.1s; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            /* Важно для мобилок: */
-            touch-action: manipulation;
-            -webkit-user-select: none;
+            touch-action: manipulation; -webkit-user-select: none;
         }
         
         .hold-btn:active, .hold-btn.pressing { 
@@ -171,11 +173,11 @@
 
         <!-- Игровое поле: Шарик -->
         <div class="balloon-stage">
-            <div class="multiplier-text" id="multDisplay">1.00x</div>
-            
             <div class="balloon-container">
                 <div class="balloon" id="balloon"></div>
                 <div class="explosion-emoji">💥</div>
+                <!-- Текст теперь центрирован внутри контейнера (над шариком) -->
+                <div class="multiplier-text" id="multDisplay">1.00x</div>
             </div>
         </div>
 
@@ -213,6 +215,7 @@
         let crashPoint = 0;
         let currentMult = 1.00;
         let animFrame;
+        let lastTime = 0;
         
         const balanceDisplay = document.getElementById('balanceDisplay');
         const infoBalance = document.getElementById('infoBalance');
@@ -246,29 +249,32 @@
             btn.classList.add('active');
         }
 
-        // ================= МАТЕМАТИКА КРАША =================
-        // Генерируем точку взрыва до начала раунда.
-        // Шансы:
-        // 5% - краш на 1.00 - 1.20 (Очень редко лопается сразу)
-        // 55% - краш на 1.20 - 2.50 (Частые средние значения)
-        // 30% - краш на 2.50 - 8.00 (Хорошие иксы)
-        // 10% - краш на 8.00 - 50.00+ (Джекпоты)
+        // ================= МАТЕМАТИКА КРАША (ИСПРАВЛЕНО) =================
         function generateCrashPoint() {
             let r = Math.random();
+            // Всего 5% шанс лопнуть сразу (1.00 - 1.15)
             if (r < 0.05) {
-                return 1.00 + Math.random() * 0.20; // 1.00 - 1.20
-            } else if (r < 0.60) {
-                return 1.20 + Math.random() * 1.30; // 1.20 - 2.50
-            } else if (r < 0.90) {
-                return 2.50 + Math.random() * 5.50; // 2.50 - 8.00
-            } else {
-                return 8.00 + Math.random() * 42.00; // 8.00 - 50.00
+                return 1.00 + Math.random() * 0.15; 
+            } 
+            // 15% шанс лопнуть до 1.50
+            else if (r < 0.20) {
+                return 1.15 + Math.random() * 0.35; 
+            } 
+            // 50% шанс (самая частая зона) дойти от 1.50 до 3.50
+            else if (r < 0.70) {
+                return 1.50 + Math.random() * 2.00; 
+            } 
+            // 20% шанс от 3.50 до 10.00
+            else if (r < 0.90) {
+                return 3.50 + Math.random() * 6.50; 
+            } 
+            // 10% джекпоты (улетает за 10.00x)
+            else {
+                return 10.00 + Math.random() * 40.00; 
             }
         }
 
         // ================= УПРАВЛЕНИЕ КНОПКОЙ =================
-        
-        // Предотвращаем контекстное меню мобилок при долгом нажатии
         holdBtn.addEventListener('contextmenu', e => e.preventDefault());
 
         holdBtn.addEventListener('mousedown', startInflate);
@@ -289,7 +295,6 @@
 
             if (balance < bet) { tg.showAlert("Недостаточно монет!"); return; }
 
-            // Списываем ставку
             balance -= bet;
             updateBalanceUI();
 
@@ -297,7 +302,6 @@
             currentMult = 1.00;
             crashPoint = generateCrashPoint();
             
-            // UI
             betBtns.forEach(b => b.disabled = true);
             balloon.classList.remove('popped');
             multDisplay.classList.remove('red');
@@ -314,17 +318,16 @@
             animFrame = requestAnimationFrame(animateBalloon);
         }
 
-        let lastTime = 0;
-
         function animateBalloon(time) {
             if (state !== 'inflating') return;
 
             let deltaTime = time - lastTime;
             lastTime = time;
 
-            // Скорость роста икса. Чем выше икс, тем быстрее он растет (экспонента)
-            // Прибавляем в зависимости от прошедшего времени для плавности на любых экранах
-            currentMult += (0.0005 * currentMult) * deltaTime;
+            // ИСПРАВЛЕННАЯ СКОРОСТЬ РОСТА:
+            // Базовая скорость очень медленная. Но чем больше currentMult, тем сильнее ускорение.
+            let growthRate = 0.00015 + 0.0002 * Math.pow(Math.max(0, currentMult - 1), 1.3);
+            currentMult += growthRate * deltaTime;
 
             if (currentMult >= crashPoint) {
                 currentMult = crashPoint;
@@ -332,11 +335,10 @@
                 return;
             }
 
-            // Обновляем текст
             multDisplay.textContent = currentMult.toFixed(2) + 'x';
             
-            // Увеличиваем шарик. Функция логарифма, чтобы шарик не вылез за экран на x50
-            let scaleAmount = 1 + Math.log10(currentMult) * 1.5; 
+            // Плавное визуальное увеличение шарика
+            let scaleAmount = 1 + Math.log10(currentMult) * 1.2; 
             balloon.style.transform = `scale(${scaleAmount})`;
 
             animFrame = requestAnimationFrame(animateBalloon);
@@ -345,7 +347,6 @@
         function stopInflate() {
             if (state !== 'inflating') return;
             
-            // Если игрок отпустил ДО взрыва - он выиграл!
             cancelAnimationFrame(animFrame);
             state = 'finished';
             holdBtn.classList.remove('pressing');
@@ -354,7 +355,6 @@
             balance += winAmount;
             updateBalanceUI();
 
-            // Визуал успеха
             holdBtn.className = 'hold-btn cashout';
             btnMainText.innerHTML = `ВЫ ЗАБРАЛИ ${winAmount} <img src="coins.png" class="coin-icon">`;
             btnSubText.textContent = 'НАЖМИТЕ ЧТОБЫ ИГРАТЬ СНОВА';
@@ -370,7 +370,6 @@
             state = 'finished';
             holdBtn.classList.remove('pressing');
 
-            // Визуал взрыва
             balloon.classList.add('popped');
             multDisplay.classList.add('red');
             multDisplay.textContent = currentMult.toFixed(2) + 'x';
@@ -383,7 +382,6 @@
             promptStep.style.color = '#ff3366';
             promptText.innerHTML = `Шарик лопнул на <b>${currentMult.toFixed(2)}x</b>`;
 
-            // Через 1.5 секунды разрешаем нажать снова
             setTimeout(() => {
                 holdBtn.className = 'hold-btn';
                 btnMainText.textContent = 'СЫГРАТЬ СНОВА';
