@@ -16,7 +16,6 @@
             --cell-bg: #1a1d24; --cell-safe: rgba(0, 136, 255, 0.2); --cell-mine: rgba(255, 51, 102, 0.2);
         }
         
-        /* ИСПРАВЛЕНИЕ: Разрешили скролл по вертикали, чтобы кнопка всегда была доступна */
         body { 
             margin: 0; background: var(--bg); color: var(--text); 
             min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
@@ -39,28 +38,53 @@
 
         /* Игровое поле 5x5 */
         .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 25px; flex: 1; }
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; max-width: 350px; aspect-ratio: 1; margin: 0 auto; }
         
+        /* СТРОГИЕ ПРАВИЛА СЕТКИ: фиксируем столбцы и строки */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            grid-template-rows: repeat(5, 1fr); /* Жестко 5 строк одинакового размера */
+            gap: 8px; 
+            width: 100%; 
+            max-width: 350px; 
+            aspect-ratio: 1; 
+            margin: 0 auto; 
+        }
+        
+        /* СТРОГИЕ ПРАВИЛА ЯЧЕЙКИ: запрещаем ей менять размер */
         .cell { 
             background: var(--cell-bg); 
             border-radius: 10px; 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 28px; cursor: pointer; 
+            font-size: clamp(24px, 7vw, 32px); /* Эмодзи подстраивается под экран, но не рвет ячейку */
+            cursor: pointer; 
             border: 1px solid rgba(255,255,255,0.05); 
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             transition: all 0.2s ease;
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            overflow: hidden; /* Обрезает все, что пытается вылезти */
+            line-height: 1;
         }
         
-        /* Поле неактивно до старта */
         .grid.disabled .cell { opacity: 0.7; pointer-events: none; }
 
-        /* Анимации ячеек */
-        .cell.safe { background: var(--cell-safe); border: 1px solid var(--blue-main); box-shadow: inset 0 0 15px rgba(0,136,255,0.2); transform: scale(0.95); animation: pop 0.3s; }
-        .cell.mine { background: var(--cell-mine); border: 1px solid #ff3366; box-shadow: inset 0 0 15px rgba(255,51,102,0.4); transform: scale(0.95); animation: shake 0.4s; }
-        .cell.dimmed { opacity: 0.4; } /* Показываем где были мины после игры */
+        /* ИСПРАВЛЕННАЯ АНИМАЦИЯ: возвращаем масштаб к scale(1) */
+        .cell.safe { background: var(--cell-safe); border: 1px solid var(--blue-main); box-shadow: inset 0 0 15px rgba(0,136,255,0.2); animation: pop 0.4s ease forwards; }
+        .cell.mine { background: var(--cell-mine); border: 1px solid #ff3366; box-shadow: inset 0 0 15px rgba(255,51,102,0.4); animation: shake 0.4s ease forwards; }
+        .cell.dimmed { opacity: 0.4; }
 
-        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(0.95); opacity: 1; } }
-        @keyframes shake { 0%, 100% { transform: translateX(0) scale(0.95); } 25% { transform: translateX(-4px) scale(0.95); } 75% { transform: translateX(4px) scale(0.95); } }
+        @keyframes pop { 
+            0% { transform: scale(0.7); opacity: 0; } 
+            50% { transform: scale(1.05); } 
+            100% { transform: scale(1); opacity: 1; } 
+        }
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); } 
+            25% { transform: translateX(-4px); } 
+            75% { transform: translateX(4px); } 
+        }
 
         /* Управление ставкой */
         .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
@@ -68,19 +92,16 @@
         .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .label { font-size: 14px; color: var(--secondary); font-weight: 600; }
         
-        /* Кнопки суммы */
         .bet-options { display: flex; gap: 8px; }
         .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .bet-btn.active { background: rgba(0, 136, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
         .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
 
-        /* Выбор мин */
         .mines-selector { display: flex; align-items: center; gap: 15px; background: #1a1d24; border-radius: 10px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.1); }
         .m-btn { background: transparent; border: none; color: #fff; font-size: 20px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .m-btn:disabled { opacity: 0.3; pointer-events: none; }
         .m-val { font-weight: bold; font-size: 16px; width: 25px; text-align: center; color: var(--blue-main); }
 
-        /* Главная кнопка */
         .action-btn { 
             width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; 
             color: #fff; background: var(--blue-main); cursor: pointer; 
@@ -89,7 +110,6 @@
         }
         .action-btn:active { transform: scale(0.97); }
         
-        /* Состояния кнопки */
         .action-btn.cashout { background: #00cc66; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
         .action-btn.bust { background: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); }
         .action-btn:disabled { background: #2a2d35; color: #555; box-shadow: none; pointer-events: none; }
@@ -154,8 +174,7 @@
         let bet = 20;
         let mines = 3;
         
-        // Статусы: 'idle' (ждем старта), 'playing' (играем), 'finished' (забрал/проиграл)
-        let state = 'idle'; 
+        let state = 'idle'; // 'idle', 'playing', 'finished'
         
         let gridData = [];
         let clicks = 0;
@@ -168,7 +187,6 @@
         const mineMinus = document.getElementById('minMinus');
         const minePlus = document.getElementById('minPlus');
 
-        // Инициализация при заходе
         updateBalanceUI();
         drawEmptyGrid();
 
@@ -181,7 +199,6 @@
             localStorage.setItem('vetruch_balance', balance);
         }
 
-        // Выбор ставки
         function setBet(amount, btn) {
             if(state === 'playing') return;
             bet = amount;
@@ -189,7 +206,6 @@
             btn.classList.add('active');
         }
 
-        // Выбор мин
         function changeMines(delta) {
             if(state === 'playing') return;
             mines += delta;
@@ -198,7 +214,6 @@
             document.getElementById('minesCount').textContent = mines;
         }
 
-        // Рисуем пустую сетку
         function drawEmptyGrid() {
             gridEl.innerHTML = '';
             for(let i=0; i<25; i++) {
@@ -208,18 +223,15 @@
             }
         }
 
-        // Расчет иксов (множителя) на основе теории вероятности
         function getMultiplier(minesCount, clicksCount) {
             let prob = 1.0;
             let safeCells = 25 - minesCount;
             for(let i=0; i<clicksCount; i++) {
                 prob *= (safeCells - i) / (25 - i);
             }
-            // 5% маржа казино
             return (0.95 / prob); 
         }
 
-        // Главная кнопка
         function handleAction() {
             if (state === 'idle' || state === 'finished') {
                 startGame();
@@ -228,38 +240,31 @@
             }
         }
 
-        // Начало игры
         function startGame() {
             if (balance < bet) {
                 tg.showAlert("Недостаточно монет!");
                 return;
             }
 
-            // Списываем баланс
             balance -= bet;
             updateBalanceUI();
             
-            // Настраиваем состояния
             state = 'playing';
             clicks = 0;
             currentWin = 0;
 
-            // Блокируем кнопки ставок
             betBtns.forEach(b => b.disabled = true);
             mineMinus.disabled = true;
             minePlus.disabled = true;
 
-            // Кнопка ждет первого клика
             actionBtn.classList.remove('cashout', 'bust');
             actionBtn.innerHTML = 'ОТКРОЙТЕ ЯЧЕЙКУ';
             actionBtn.disabled = true;
 
-            // Снимаем класс disabled с сетки, чтобы можно было кликать!
             gridEl.classList.remove('disabled');
             generateGrid();
         }
 
-        // Генерация поля (идеальный рандом Фишера-Йетса)
         function generateGrid() {
             gridEl.innerHTML = '';
             gridData = [];
@@ -286,7 +291,6 @@
             }
         }
 
-        // Клик по ячейке
         function clickCell(index) {
             if(state !== 'playing' || gridData[index].revealed) return;
 
@@ -294,41 +298,33 @@
             cellData.revealed = true;
 
             if (cellData.isMine) {
-                // ПОПАЛ НА МИНУ
                 cellData.el.classList.add('mine');
                 cellData.el.innerHTML = '💣';
                 loseGame();
             } else {
-                // ОТКРЫЛ КРИСТАЛЛ
                 cellData.el.classList.add('safe');
                 cellData.el.innerHTML = '💎';
                 clicks++;
                 
-                // Считаем новый выигрыш и иксы
                 let mult = getMultiplier(mines, clicks);
                 currentWin = Math.floor(bet * mult);
 
-                // Активируем кнопку вывода, показываем сумму и множитель
                 actionBtn.disabled = false;
                 actionBtn.classList.add('cashout');
                 actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon"> (x${mult.toFixed(2)})`;
 
-                // Если открыты все возможные сейвы - авто-победа
                 if (clicks === (25 - mines)) {
                     cashout();
                 }
             }
         }
 
-        // Забрать деньги
         function cashout() {
             if(clicks === 0 || state !== 'playing') return;
             
-            // Начисляем баланс
             balance += currentWin;
             updateBalanceUI();
             
-            // Визуал
             actionBtn.classList.remove('cashout');
             actionBtn.classList.add('cashout');
             actionBtn.innerHTML = `ВЫИГРЫШ ${currentWin}! ИГРАТЬ СНОВА`;
@@ -336,7 +332,6 @@
             endGame();
         }
 
-        // Проигрыш
         function loseGame() {
             actionBtn.classList.remove('cashout');
             actionBtn.classList.add('bust');
@@ -346,19 +341,14 @@
             endGame();
         }
 
-        // Конец игры (показываем где были мины)
         function endGame() {
             state = 'finished';
-            
-            // Снова блокируем поле до нажатия кнопки "Играть снова"
             gridEl.classList.add('disabled');
             
-            // Разблокируем ставки
             betBtns.forEach(b => b.disabled = false);
             mineMinus.disabled = false;
             minePlus.disabled = false;
 
-            // Показываем неоткрытые ячейки
             for(let i=0; i<25; i++) {
                 if(!gridData[i].revealed) {
                     gridData[i].el.classList.add('dimmed');
