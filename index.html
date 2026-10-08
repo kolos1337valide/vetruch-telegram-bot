@@ -12,24 +12,63 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --background: #151a22;
+            --panel: #202b38;
+            --button: #2d8cff;
+            --text: #ffffff;
+            --secondary: #9ca8b8;
+            --active: #55b9ff;
+        }
+
         body {
             margin: 0;
-            padding: 20px;
             min-height: 100vh;
-            background: #171b22;
-            color: white;
+            background: var(--background);
+            color: var(--text);
             font-family: Arial, sans-serif;
+            padding-bottom: 92px;
+        }
+
+        .page {
+            display: none;
+            padding: 22px 20px 20px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
-            margin-top: 10px;
+            margin: 8px 0 8px;
             text-align: center;
+            font-size: 30px;
+        }
+
+        h2 {
+            margin: 8px 0 22px;
+            text-align: center;
+            font-size: 25px;
         }
 
         .subtitle {
-            color: #aeb5c1;
+            margin: 0 0 26px;
+            color: var(--secondary);
             text-align: center;
-            margin-bottom: 25px;
+            font-size: 17px;
         }
 
         .menu {
@@ -37,34 +76,183 @@
             gap: 12px;
         }
 
-        button {
+        .main-button {
             width: 100%;
-            padding: 18px;
+            padding: 17px;
             border: 0;
-            border-radius: 14px;
-            background: #2d8cff;
+            border-radius: 15px;
+            background: var(--button);
             color: white;
             font-size: 17px;
             font-weight: bold;
+        }
+
+        .card {
+            margin-bottom: 12px;
+            padding: 18px;
+            border-radius: 16px;
+            background: var(--panel);
+            text-align: center;
+        }
+
+        .card-title {
+            margin-bottom: 8px;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .card-text {
+            color: var(--secondary);
+            line-height: 1.4;
+        }
+
+        /* Нижняя панель */
+        .bottom-nav {
+            position: fixed;
+            z-index: 10;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+            border-top: 1px solid #354657;
+            background: #202b38;
+            box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        .nav-button {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            border: 0;
+            background: transparent;
+            color: #8491a0;
+            font-size: 11px;
             cursor: pointer;
         }
 
-        button:active {
-            transform: scale(0.98);
+        .nav-button .icon {
+            font-size: 22px;
+            line-height: 24px;
+            filter: grayscale(1);
+        }
+
+        .nav-button.active {
+            color: var(--active);
+            font-weight: bold;
+        }
+
+        .nav-button.active .icon {
+            filter: grayscale(0);
         }
     </style>
 </head>
+
 <body>
 
-    <h1>Vetruch GiftBot</h1>
-    <p class="subtitle">Главное меню</p>
+    <!-- Главная -->
+    <main id="home" class="page active">
+        <h1>Vetruch GiftBot</h1>
+        <p class="subtitle">Главное меню</p>
 
-    <div class="menu">
-        <button onclick="showMessage('👤 Профиль')">👤 Профиль</button>
-        <button onclick="showMessage('📋 Задания')">📋 Задания</button>
-        <button onclick="showMessage('🛒 Магазин')">🛒 Магазин</button>
-        <button onclick="showMessage('🎮 Игры')">🎮 Игры</button>
-    </div>
+        <div class="menu">
+            <button class="main-button" onclick="openPage('profile')">
+                👤 Профиль
+            </button>
+
+            <button class="main-button" onclick="openPage('tasks')">
+                📋 Задания
+            </button>
+
+            <button class="main-button" onclick="openPage('shop')">
+                🛒 Магазин
+            </button>
+
+            <button class="main-button" onclick="openPage('games')">
+                🎮 Игры
+            </button>
+        </div>
+    </main>
+
+    <!-- Игры -->
+    <main id="games" class="page">
+        <h2>🎮 Игры</h2>
+
+        <div class="card">
+            <div class="card-title">Игры скоро появятся</div>
+            <div class="card-text">
+                Здесь будут мини-игры и соревнования.
+            </div>
+        </div>
+    </main>
+
+    <!-- Задания -->
+    <main id="tasks" class="page">
+        <h2>📋 Задания</h2>
+
+        <div class="card">
+            <div class="card-title">Заданий пока нет</div>
+            <div class="card-text">
+                Новые задания появятся совсем скоро.
+            </div>
+        </div>
+    </main>
+
+    <!-- Магазин -->
+    <main id="shop" class="page">
+        <h2>🛒 Магазин</h2>
+
+        <div class="card">
+            <div class="card-title">Магазин пуст</div>
+            <div class="card-text">
+                Скоро здесь можно будет обменивать награды.
+            </div>
+        </div>
+    </main>
+
+    <!-- Профиль -->
+    <main id="profile" class="page">
+        <h2>👤 Профиль</h2>
+
+        <div class="card">
+            <div class="card-title" id="userName">Пользователь</div>
+            <div class="card-text">
+                ⭐ Баланс: 0<br>
+                🏆 Уровень: 1
+            </div>
+        </div>
+    </main>
+
+    <!-- Нижняя панель вкладок -->
+    <nav class="bottom-nav">
+        <button class="nav-button active" data-page="home" onclick="openPage('home')">
+            <span class="icon">⌂</span>
+            <span>Главная</span>
+        </button>
+
+        <button class="nav-button" data-page="games" onclick="openPage('games')">
+            <span class="icon">🎮</span>
+            <span>Игры</span>
+        </button>
+
+        <button class="nav-button" data-page="tasks" onclick="openPage('tasks')">
+            <span class="icon">☷</span>
+            <span>Задания</span>
+        </button>
+
+        <button class="nav-button" data-page="shop" onclick="openPage('shop')">
+            <span class="icon">🛍</span>
+            <span>Магазин</span>
+        </button>
+
+        <button class="nav-button" data-page="profile" onclick="openPage('profile')">
+            <span class="icon">♙</span>
+            <span>Профиль</span>
+        </button>
+    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -72,8 +260,37 @@
         tg.ready();
         tg.expand();
 
-        function showMessage(text) {
-            tg.showAlert(text + '\n\nЭтот раздел пока в разработке.');
+        // Получаем имя пользователя Telegram
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            const name = user.first_name || "Пользователь";
+
+            document.getElementById("userName").textContent = name;
+        }
+
+        function openPage(pageId) {
+            // Показываем выбранную страницу
+            document.querySelectorAll(".page").forEach(function(page) {
+                page.classList.remove("active");
+            });
+
+            document.getElementById(pageId).classList.add("active");
+
+            // Подсвечиваем выбранную вкладку
+            document.querySelectorAll(".nav-button").forEach(function(button) {
+                button.classList.remove("active");
+            });
+
+            const activeButton = document.querySelector(
+                '.nav-button[data-page="' + pageId + '"]'
+            );
+
+            if (activeButton) {
+                activeButton.classList.add("active");
+            }
+
+            // Прокручиваем страницу наверх
+            window.scrollTo(0, 0);
         }
     </script>
 
