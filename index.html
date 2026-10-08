@@ -189,7 +189,34 @@
 }
 
         .stats-title { font-size: 12px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
-        .stats-main-sum { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 15px; }
+        .stats-main-sum {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 15px;
+
+    color: #ffffff;
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #a9eaff 35%,
+        #45caff 55%,
+        #ffffff 75%,
+        #a9eaff 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: numberShimmer 4s linear infinite;
+}
+
+@keyframes numberShimmer {
+    to {
+        background-position: 200% center;
+    }
+}
+
         .stats-row { display: flex; justify-content: center; gap: 20px; border-top: 1px solid var(--card-border); padding-top: 15px; }
         .stat-item { display: flex; flex-direction: column; gap: 4px; }
         .stat-val { font-weight: 700; font-size: 16px; color: var(--blue-main); }
