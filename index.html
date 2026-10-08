@@ -39,7 +39,7 @@
         #loading-screen {
             position: fixed; inset: 0; background: #000000; z-index: 9999;
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.3s ease, visibility 0.3s ease; /* Было 0.7s */
+            transition: opacity 0.3s ease, visibility 0.3s ease; 
         }
         .loader-container { position: relative; width: 190px; height: 190px; display: flex; align-items: center; justify-content: center; }
         .loader-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -48,7 +48,6 @@
             filter: drop-shadow(0 0 8px rgba(91, 198, 255, 0.8));
             stroke-dasharray: 600; stroke-dashoffset: 600;
         }
-        /* Ускорил отрисовку линий */
         .logo-circle { stroke-dasharray: 453; stroke-dashoffset: 453; animation: drawLogo 0.4s cubic-bezier(0.55, 0, 0.25, 1) 0.1s forwards; }
         .logo-v { stroke: #ffffff; stroke-width: 8; stroke-dasharray: 200; stroke-dashoffset: 200; animation: drawLogo 0.3s cubic-bezier(0.55, 0, 0.25, 1) 0.3s forwards; }
         @keyframes drawLogo { to { stroke-dashoffset: 0; } }
@@ -57,7 +56,6 @@
         .loader-wordmark span { display: inline-block; opacity: 0; transform: translateY(8px); }
         .loader-wordmark.show span { animation: letterReveal 0.15s ease forwards; }
         
-        /* Ускорил появление букв */
         .loader-wordmark.show span:nth-child(1) { animation-delay: 0s; }
         .loader-wordmark.show span:nth-child(2) { animation-delay: 0.08s; }
         .loader-wordmark.show span:nth-child(3) { animation-delay: 0.16s; }
@@ -67,7 +65,6 @@
         .loader-wordmark.show span:nth-child(7) { animation-delay: 0.48s; }
         @keyframes letterReveal { to { opacity: 1; transform: translateY(0); } }
         
-        /* Ускорил затирание логотипа */
         .loader-logo.hide .logo-circle { animation: eraseCircle 0.25s ease-in forwards; }
         .loader-logo.hide .logo-v { animation: eraseV 0.25s ease-in forwards; }
         @keyframes eraseCircle { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 453; } }
@@ -76,7 +73,7 @@
         /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
         @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(100px); } 100% { opacity: 1; transform: translateY(0); } }
         .page { position: relative; z-index: 2; display: none; min-height: calc(100vh - 105px); padding: 20px 16px; }
-        .page.active { display: block; animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; } /* Сделал выезд меню тоже чуть бодрее */
+        .page.active { display: block; animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; } 
         h1, h2 { margin: 0 0 15px; text-align: center; font-weight: 700; }
         .card { margin-bottom: 15px; padding: 20px; border: 1px solid var(--card-border); border-radius: 16px; background: var(--card-bg); backdrop-filter: blur(8px); text-align: center; }
 
@@ -132,7 +129,7 @@
         .bottom-nav {
             position: fixed; z-index: 10; right: 12px; bottom: 15px; left: 12px; display: flex; align-items: center; justify-content: space-around;
             height: 65px; padding: 0 5px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; background: rgba(15, 18, 22, 0.95);
-            backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); opacity: 0; visibility: hidden; transition: opacity 0.8s ease; 
+            backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); opacity: 0; visibility: hidden; transition: opacity 0.5s ease; 
         }
         body.is-ready .bottom-nav { opacity: 1; visibility: visible; }
         .nav-button { position: relative; display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 55px; border: 0; border-radius: 16px; background: transparent; color: #626a7d; font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s ease; }
@@ -220,12 +217,21 @@
             <button class="play-btn">Играть</button>
         </div>
 
-        <!-- НОВАЯ ИГРА КАРТЫ -->
         <div class="game-card" onclick="window.location.href='cards.html'">
             <div class="game-icon" style="color: #ff3366;">🃏</div>
             <div class="game-info-block">
                 <h3>Карты</h3>
                 <p>Угадай скрытую карту в три шага</p>
+            </div>
+            <button class="play-btn">Играть</button>
+        </div>
+
+        <!-- НОВАЯ ИГРА: ШАРИК -->
+        <div class="game-card" onclick="window.location.href='balloon.html'">
+            <div class="game-icon" style="color: #00d4ff;">🎈</div>
+            <div class="game-info-block">
+                <h3>Шарик</h3>
+                <p>Надувай и забирай иксы до взрыва!</p>
             </div>
             <button class="play-btn">Играть</button>
         </div>
@@ -320,12 +326,10 @@
             initBalance();
         }
 
-        // ================= УСКОРЕННЫЕ ТАЙМЕРЫ ДЛЯ СКРИПТОВ =================
         const loadingScreen = document.getElementById('loading-screen');
         const loaderLogo = document.querySelector('.loader-logo');
         const loaderWordmark = document.getElementById('loader-wordmark');
 
-        // Ждем 0.75 сек перед началом затирания лого
         setTimeout(() => {
             loaderLogo.classList.add('hide');
             setTimeout(() => { 
@@ -334,7 +338,6 @@
             }, 250); 
         }, 750);
 
-        // Ждем 1.7 сек суммарно, чтобы запустить приложение
         setTimeout(() => {
             loadingScreen.style.opacity = '0';
             loadingScreen.style.visibility = 'hidden';
@@ -343,7 +346,6 @@
             openPage('home');
         }, 1700);
 
-        // Звезды
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let width = 0; let height = 0;
