@@ -15,23 +15,31 @@
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
             --cell-bg: #1a1d24; --cell-safe: rgba(0, 136, 255, 0.2); --cell-mine: rgba(255, 51, 102, 0.2);
         }
-        body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* ИСПРАВЛЕНИЕ: Разрешили скролл по вертикали, чтобы кнопка всегда была доступна */
+        body { 
+            margin: 0; background: var(--bg); color: var(--text); 
+            min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
+        }
 
         /* Фон */
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
 
-        .game-container { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100vh; padding: 20px 16px; }
+        .game-container { 
+            position: relative; z-index: 2; display: flex; flex-direction: column; 
+            min-height: 100vh; padding: 20px 16px 40px 16px; 
+        }
 
         /* Верхняя панель */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
-        .coin-icon { width: 18px; height: 18px; flex-shrink: 0; }
+        .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
 
         /* Игровое поле 5x5 */
-        .grid-wrapper { display: flex; justify-content: center; margin-bottom: auto; }
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; max-width: 350px; aspect-ratio: 1; }
+        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 25px; flex: 1; }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; max-width: 350px; aspect-ratio: 1; margin: 0 auto; }
         
         .cell { 
             background: var(--cell-bg); 
@@ -55,7 +63,7 @@
         @keyframes shake { 0%, 100% { transform: translateX(0) scale(0.95); } 25% { transform: translateX(-4px) scale(0.95); } 75% { transform: translateX(4px) scale(0.95); } }
 
         /* Управление ставкой */
-        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: 20px; backdrop-filter: blur(10px); }
+        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
         
         .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .label { font-size: 14px; color: var(--secondary); font-weight: 600; }
@@ -102,10 +110,10 @@
             </div>
         </div>
 
-        <!-- Сетка мин -->
+        <!-- Сетка мин (изначально заблокирована классом disabled) -->
         <div class="grid-wrapper">
             <div class="grid disabled" id="grid">
-                <!-- Ячейки -->
+                <!-- Ячейки сгенерируются в JS -->
             </div>
         </div>
 
@@ -207,7 +215,7 @@
             for(let i=0; i<clicksCount; i++) {
                 prob *= (safeCells - i) / (25 - i);
             }
-            // 5% маржа казино, чтобы множитель был чуть меньше идеального
+            // 5% маржа казино
             return (0.95 / prob); 
         }
 
@@ -243,30 +251,27 @@
 
             // Кнопка ждет первого клика
             actionBtn.classList.remove('cashout', 'bust');
-            actionBtn.textContent = 'ОТКРОЙТЕ ЯЧЕЙКУ';
+            actionBtn.innerHTML = 'ОТКРОЙТЕ ЯЧЕЙКУ';
             actionBtn.disabled = true;
 
-            // Активируем поле и генерируем мины
+            // Снимаем класс disabled с сетки, чтобы можно было кликать!
             gridEl.classList.remove('disabled');
             generateGrid();
         }
 
-        // Генерация поля
+        // Генерация поля (идеальный рандом Фишера-Йетса)
         function generateGrid() {
             gridEl.innerHTML = '';
             gridData = [];
             
-            // Создаем массив: M мин (true), остальное безопасно (false)
             let rawMines = Array(25).fill(false);
             for(let i=0; i<mines; i++) rawMines[i] = true;
 
-            // Алгоритм Фишера-Йетса для идеального рандома
             for (let i = rawMines.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [rawMines[i], rawMines[j]] = [rawMines[j], rawMines[i]];
             }
 
-            // Рендерим в HTML
             for(let i=0; i<25; i++) {
                 let cell = document.createElement('div');
                 cell.className = 'cell';
@@ -299,14 +304,14 @@
                 cellData.el.innerHTML = '💎';
                 clicks++;
                 
-                // Считаем новый выигрыш
+                // Считаем новый выигрыш и иксы
                 let mult = getMultiplier(mines, clicks);
                 currentWin = Math.floor(bet * mult);
 
-                // Активируем кнопку вывода
+                // Активируем кнопку вывода, показываем сумму и множитель
                 actionBtn.disabled = false;
                 actionBtn.classList.add('cashout');
-                actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
+                actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon"> (x${mult.toFixed(2)})`;
 
                 // Если открыты все возможные сейвы - авто-победа
                 if (clicks === (25 - mines)) {
@@ -325,7 +330,7 @@
             
             // Визуал
             actionBtn.classList.remove('cashout');
-            actionBtn.classList.add('cashout'); // оставляем зеленым
+            actionBtn.classList.add('cashout');
             actionBtn.innerHTML = `ВЫИГРЫШ ${currentWin}! ИГРАТЬ СНОВА`;
             
             endGame();
@@ -335,7 +340,7 @@
         function loseGame() {
             actionBtn.classList.remove('cashout');
             actionBtn.classList.add('bust');
-            actionBtn.textContent = 'ПРОИГРЫШ! ИГРАТЬ СНОВА';
+            actionBtn.innerHTML = 'ПРОИГРЫШ! ИГРАТЬ СНОВА';
             actionBtn.disabled = false;
             
             endGame();
@@ -344,6 +349,8 @@
         // Конец игры (показываем где были мины)
         function endGame() {
             state = 'finished';
+            
+            // Снова блокируем поле до нажатия кнопки "Играть снова"
             gridEl.classList.add('disabled');
             
             // Разблокируем ставки
