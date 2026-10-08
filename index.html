@@ -120,7 +120,7 @@
         .podium-score .coin-icon { width: 14px; height: 14px; }
 
         /* КАРТОЧКА ИГРЫ */
-        .game-card { display: flex; align-items: center; text-align: left; padding: 16px; gap: 15px; background: linear-gradient(135deg, rgba(0, 136, 255, 0.15) 0%, rgba(20, 22, 28, 0.9) 100%); border: 1px solid var(--blue-main); border-radius: 16px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 0 15px rgba(0, 136, 255, 0.1); }
+        .game-card { display: flex; align-items: center; text-align: left; padding: 16px; gap: 15px; background: linear-gradient(135deg, rgba(0, 136, 255, 0.15) 0%, rgba(20, 22, 28, 0.9) 100%); border: 1px solid var(--blue-main); border-radius: 16px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 0 15px rgba(0, 136, 255, 0.1); margin-bottom: 15px; }
         .game-card:active { transform: scale(0.96); }
         .game-icon { width: 60px; height: 60px; background: rgba(0,0,0,0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; border: 1px solid rgba(255,255,255,0.05); }
         .game-info-block { flex: 1; }
@@ -132,7 +132,7 @@
         .bottom-nav {
             position: fixed; z-index: 10; right: 12px; bottom: 15px; left: 12px; display: flex; align-items: center; justify-content: space-around;
             height: 65px; padding: 0 5px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; background: rgba(15, 18, 22, 0.95);
-            backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); opacity: 0; visibility: hidden; transition: opacity 0.5s ease; 
+            backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); opacity: 0; visibility: hidden; transition: opacity 0.8s ease; 
         }
         body.is-ready .bottom-nav { opacity: 1; visibility: visible; }
         .nav-button { position: relative; display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 55px; border: 0; border-radius: 16px; background: transparent; color: #626a7d; font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s ease; }
@@ -219,6 +219,17 @@
             </div>
             <button class="play-btn">Играть</button>
         </div>
+
+        <!-- НОВАЯ ИГРА КАРТЫ -->
+        <div class="game-card" onclick="window.location.href='cards.html'">
+            <div class="game-icon" style="color: #ff3366;">🃏</div>
+            <div class="game-info-block">
+                <h3>Карты</h3>
+                <p>Угадай скрытую карту в три шага</p>
+            </div>
+            <button class="play-btn">Играть</button>
+        </div>
+
     </main>
 
     <!-- 3. ЗАДАНИЯ -->
@@ -314,17 +325,16 @@
         const loaderLogo = document.querySelector('.loader-logo');
         const loaderWordmark = document.getElementById('loader-wordmark');
 
-        // Ждем 0.75 сек (вместо 3.1с) перед началом затирания лого
+        // Ждем 0.75 сек перед началом затирания лого
         setTimeout(() => {
             loaderLogo.classList.add('hide');
-            // Ждем 0.25 сек (вместо 1.05с) пока затрется лого, потом пишем слово
             setTimeout(() => { 
                 loaderLogo.style.visibility = 'hidden'; 
                 loaderWordmark.classList.add('show'); 
             }, 250); 
         }, 750);
 
-        // Ждем 1.7 сек суммарно (вместо 6.9с), чтобы запустить приложение
+        // Ждем 1.7 сек суммарно, чтобы запустить приложение
         setTimeout(() => {
             loadingScreen.style.opacity = '0';
             loadingScreen.style.visibility = 'hidden';
