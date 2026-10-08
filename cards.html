@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Карты - Vetruch</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg: #000000; --text: #ffffff;
+            --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
+        }
+        body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto; }
+
+        /* Фон */
+        #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
+
+        .game-container { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 100vh; padding: 20px 16px 40px 16px; }
+
+        /* Шапка */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
+        .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
+
+        /* Игровое поле: 3D-карта */
+        .card-stage { display: flex; justify-content: center; align-items: center; flex: 1; padding: 20px 0; perspective: 1000px; }
+        
+        .playing-card { width: 160px; height: 230px; position: relative; }
+        .card-inner { width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; position: relative; }
+        
+        /* Класс для переворота карты */
+        .playing-card.flipped .card-inner { transform: rotateY(180deg); }
+
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid var(--card-border); }
+        
+        /* Рубашка карты (Смотрит на нас изначально) */
+        .card-front { background: linear-gradient(135deg, #0a1118, #142b43); border-color: var(--blue-main); box-shadow: 0 0 20px rgba(0, 136, 255, 0.3); }
+        .card-logo { font-size: 60px; font-weight: 800; color: rgba(255,255,255,0.1); text-shadow: 0 0 20px var(--blue-glow); }
+
+        /* Лицевая сторона карты */
+        .card-back { background: #fff; transform: rotateY(180deg); flex-direction: column; padding: 15px; position: relative; }
+        .card-val-top { position: absolute; top: 10px; left: 15px; font-size: 24px; font-weight: 800; line-height: 1; }
+        .card-suit-top { position: absolute; top: 34px; left: 15px; font-size: 20px; }
+        .card-suit-center { font-size: 70px; }
+        .card-val-bottom { position: absolute; bottom: 10px; right: 15px; font-size: 24px; font-weight: 800; transform: rotate(180deg); line-height: 1; }
+        .card-suit-bottom { position: absolute; bottom: 34px; right: 15px; font-size: 20px; transform: rotate(180deg); }
+
+        .card-red { color: #ff3366; }
+        .card-black { color: #1a1d24; }
+
+        /* Панель управления шагами */
+        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
+        .step-container { display: none; }
+        .step-container.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Стили кнопок ставок */
+        .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .label { font-size: 14px; color: var(--secondary); font-weight: 600; text-align: center; margin-bottom: 15px; }
+        .bet-options { display: flex; gap: 8px; justify-content: center; }
+        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; }
+        .bet-btn.active { background: rgba(0, 136, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
+
+        /* Игровые кнопки (Цвет, Масть) */
+        .guess-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .guess-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 15px; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; transition: transform 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .guess-btn:active { transform: scale(0.95); }
+        .btn-red { border-color: rgba(255, 51, 102, 0.4); }
+        .btn-black { border-color: rgba(255, 255, 255, 0.2); }
+
+        /* Игровые кнопки (Карты) */
+        .guess-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .val-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 18px; cursor: pointer; }
+        .val-btn:active { transform: scale(0.95); }
+
+        /* Главная кнопка действия */
+        .action-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; color: #fff; background: var(--blue-main); cursor: pointer; box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .action-btn:active { transform: scale(0.97); }
+        
+        /* Состояния кнопки */
+        .action-btn.cashout { background: #00cc66; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
+        .action-btn.bust { background: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); }
+        .action-btn:disabled { opacity: 0.8; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+    <canvas id="stars"></canvas>
+    <div class="dark-overlay"></div>
+
+    <div class="game-container">
+        
+        <!-- Шапка -->
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">❮</button>
+            <div class="balance-pill">
+                <span id="balanceDisplay">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+            </div>
+        </div>
+
+        <!-- 3D Карта -->
+        <div class="card-stage">
+            <div class="playing-card" id="playingCard">
+                <div class="card-inner">
+                    <!-- Рубашка -->
+                    <div class="card-front">
+                        <div class="card-logo">V</div>
+                    </div>
+                    <!-- Лицо -->
+                    <div class="card-back" id="cardBackFace">
+                        <div class="card-val-top" id="c-val-top">A</div>
+                        <div class="card-suit-top" id="c-suit-top">♠</div>
+                        <div class="card-suit-center" id="c-suit-center">♠</div>
+                        <div class="card-val-bottom" id="c-val-bottom">A</div>
+                        <div class="card-suit-bottom" id="c-suit-bottom">♠</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель управления -->
+        <div class="controls">
+            
+            <!-- Шаг 0: Ставка -->
+            <div class="step-container active" id="step-bet">
+                <div class="label">Выберите ставку</div>
+                <div class="bet-options" style="margin-bottom: 20px;">
+                    <button class="bet-btn active" onclick="setBet(20, this)">20</button>
+                    <button class="bet-btn" onclick="setBet(50, this)">50</button>
+                    <button class="bet-btn" onclick="setBet(100, this)">100</button>
+                    <button class="bet-btn" onclick="setBet(200, this)">200</button>
+                </div>
+                <button class="action-btn" onclick="startGame()">НАЧАТЬ ИГРУ</button>
+            </div>
+
+            <!-- Шаг 1: Угадай цвет -->
+            <div class="step-container" id="step-color">
+                <div class="label">Шаг 1: Угадай цвет (x1.74)</div>
+                <div class="guess-grid-2">
+                    <button class="guess-btn btn-red" onclick="guessColor('red')">🟥 Красный</button>
+                    <button class="guess-btn btn-black" onclick="guessColor('black')">⬛ Чёрный</button>
+                </div>
+            </div>
+
+            <!-- Шаг 2: Угадай масть -->
+            <div class="step-container" id="step-suit">
+                <div class="label">Шаг 2: Угадай масть (x3.48)</div>
+                <div class="guess-grid-2" id="suit-buttons">
+                    <!-- Кнопки мастей подставятся через JS -->
+                </div>
+                <button class="action-btn cashout" id="cashoutBtn1" onclick="cashout()">ЗАБРАТЬ</button>
+            </div>
+
+            <!-- Шаг 3: Угадай карту -->
+            <div class="step-container" id="step-value">
+                <div class="label">Шаг 3: Угадай карту (x10.00)</div>
+                <div class="guess-grid-3">
+                    <button class="val-btn" onclick="guessValue('6')">6</button>
+                    <button class="val-btn" onclick="guessValue('7')">7</button>
+                    <button class="val-btn" onclick="guessValue('8')">8</button>
+                    <button class="val-btn" onclick="guessValue('9')">9</button>
+                    <button class="val-btn" onclick="guessValue('10')">10</button>
+                    <button class="val-btn" onclick="guessValue('J')">J</button>
+                    <button class="val-btn" onclick="guessValue('Q')">Q</button>
+                    <button class="val-btn" onclick="guessValue('K')">K</button>
+                    <button class="val-btn" onclick="guessValue('A')">A</button>
+                </div>
+                <button class="action-btn cashout" id="cashoutBtn2" onclick="cashout()">ЗАБРАТЬ</button>
+            </div>
+
+            <!-- Шаг 4: Результат (Только одна кнопка, которая меняет цвет) -->
+            <div class="step-container" id="step-result">
+                <button class="action-btn" id="resultActionBtn"></button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+
+        let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
+        let bet = 20;
+        let currentWin = 0;
+        
+        // Массивы для генерации 36 карт
+        const suits = [
+            { id: 'hearts', symbol: '♥', color: 'red' },
+            { id: 'diamonds', symbol: '♦', color: 'red' },
+            { id: 'clubs', symbol: '♣', color: 'black' },
+            { id: 'spades', symbol: '♠', color: 'black' }
+        ];
+        const values = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        
+        let targetCard = null; // Карта, которую мы сгенерируем
+
+        // Элементы
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const betBtns = document.querySelectorAll('.bet-btn');
+        const playingCard = document.getElementById('playingCard');
+        const cardBackFace = document.getElementById('cardBackFace');
+        
+        const resultActionBtn = document.getElementById('resultActionBtn');
+        const suitButtonsDiv = document.getElementById('suit-buttons');
+
+        updateBalanceUI();
+
+        function goBack() { window.location.href = 'index.html'; }
+
+        function updateBalanceUI() {
+            balanceDisplay.textContent = balance;
+            localStorage.setItem('vetruch_balance', balance);
+        }
+
+        function setBet(amount, btn) {
+            bet = amount;
+            betBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function showStep(stepId) {
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        // ================= ЛОГИКА ИГРЫ =================
+
+        function startGame() {
+            if (balance < bet) { tg.showAlert("Недостаточно монет!"); return; }
+
+            balance -= bet;
+            updateBalanceUI();
+
+            // 1. Выбираем рандомную карту ДО начала игры
+            const randomSuit = suits[Math.floor(Math.random() * suits.length)];
+            const randomValue = values[Math.floor(Math.random() * values.length)];
+            targetCard = { suit: randomSuit, value: randomValue };
+
+            // 2. Отрисовываем карту на изнанке (но не переворачиваем)
+            document.getElementById('c-val-top').textContent = targetCard.value;
+            document.getElementById('c-val-bottom').textContent = targetCard.value;
+            document.getElementById('c-suit-top').textContent = targetCard.suit.symbol;
+            document.getElementById('c-suit-bottom').textContent = targetCard.suit.symbol;
+            document.getElementById('c-suit-center').textContent = targetCard.suit.symbol;
+
+            if (targetCard.suit.color === 'red') {
+                cardBackFace.className = 'card-back card-red';
+            } else {
+                cardBackFace.className = 'card-back card-black';
+            }
+
+            // Переходим к шагу угадывания цвета
+            showStep('step-color');
+        }
+
+        // ШАГ 1: ЦВЕТ (РТП 87% = x1.74)
+        function guessColor(color) {
+            if (targetCard.suit.color === color) {
+                // Правильно! Множитель x1.74
+                currentWin = Math.floor(bet * 1.74);
+                
+                // Генерируем кнопки для мастей исходя из цвета
+                if (color === 'red') {
+                    suitButtonsDiv.innerHTML = `
+                        <button class="guess-btn btn-red" onclick="guessSuit('hearts')"><span style="color:#ff3366; font-size:22px;">♥</span> Черви</button>
+                        <button class="guess-btn btn-red" onclick="guessSuit('diamonds')"><span style="color:#ff3366; font-size:22px;">♦</span> Бубны</button>
+                    `;
+                } else {
+                    suitButtonsDiv.innerHTML = `
+                        <button class="guess-btn btn-black" onclick="guessSuit('clubs')"><span style="font-size:22px;">♣</span> Трефы</button>
+                        <button class="guess-btn btn-black" onclick="guessSuit('spades')"><span style="font-size:22px;">♠</span> Пики</button>
+                    `;
+                }
+                
+                document.getElementById('cashoutBtn1').innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
+                showStep('step-suit');
+            } else {
+                endGame(false);
+            }
+        }
+
+        // ШАГ 2: МАСТЬ (РТП 87% = x3.48)
+        function guessSuit(suitId) {
+            if (targetCard.suit.id === suitId) {
+                // Правильно! Множитель x3.48
+                currentWin = Math.floor(bet * 3.48);
+                document.getElementById('cashoutBtn2').innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
+                showStep('step-value');
+            } else {
+                endGame(false);
+            }
+        }
+
+        // ШАГ 3: ТОЧНАЯ КАРТА (Множитель жестко х10)
+        function guessValue(val) {
+            if (targetCard.value === val) {
+                currentWin = Math.floor(bet * 10);
+                cashout(); // Автоматически забираем
+            } else {
+                endGame(false);
+            }
+        }
+
+        // ЗАБРАТЬ ВЫИГРЫШ ДОСРОЧНО
+        function cashout() {
+            balance += currentWin;
+            updateBalanceUI();
+            endGame(true);
+        }
+
+        // КОНЕЦ ИГРЫ: ОШИБКА ИЛИ ВЫИГРЫШ (ИСПРАВЛЕННАЯ ЛОГИКА)
+        function endGame(isWin) {
+            showStep('step-result');
+            
+            // Кнопка блокируется, чтобы нельзя было нажать во время анимаций
+            resultActionBtn.disabled = true;
+            
+            // 1. Показываем результат (Выигрыш или Неудача)
+            if (isWin) {
+                resultActionBtn.className = 'action-btn cashout'; // Зеленая
+                resultActionBtn.innerHTML = `ВЫИГРЫШ ${currentWin} <img src="coins.png" class="coin-icon">`;
+            } else {
+                resultActionBtn.className = 'action-btn bust'; // Красная
+                resultActionBtn.innerHTML = 'НЕУДАЧА 💥';
+            }
+
+            // 2. ПЕРЕВОРАЧИВАЕМ КАРТУ ЛИЦОМ К ИГРОКУ
+            playingCard.classList.add('flipped');
+
+            // 3. Ждем 1.5 секунды, чтобы игрок разглядел масть и карту
+            setTimeout(() => {
+                
+                // 4. ПЕРЕВОРАЧИВАЕМ КАРТУ ОБРАТНО РУБАШКОЙ ВВЕРХ
+                playingCard.classList.remove('flipped');
+                
+                // 5. Ждем 1 секунду (пока CSS анимация переворота не завершится полностью)
+                setTimeout(() => {
+                    // И ТОЛЬКО ТЕПЕРЬ делаем кнопку зеленой и разрешаем начать заново
+                    resultActionBtn.className = 'action-btn cashout'; 
+                    resultActionBtn.innerHTML = 'НАЧАТЬ СНОВА 🔄';
+                    resultActionBtn.disabled = false; 
+                    resultActionBtn.onclick = resetGame; 
+                }, 1000); // Время анимации переворота
+                
+            }, 1800); // Время, которое карта висит "лицом"
+        }
+
+        // ПЕРЕЗАПУСК (Возврат к ставкам)
+        function resetGame() {
+            // Карта уже закрыта, просто меняем экран на выбор ставки
+            showStep('step-bet'); 
+        }
+
+        // ================= Анимация звезд на фоне =================
+        const canvas = document.getElementById("stars");
+        const ctx = canvas.getContext("2d");
+        let stars = []; let w = 0; let h = 0;
+
+        function resizeCanvas() {
+            w = window.innerWidth; h = window.innerHeight;
+            canvas.width = w; canvas.height = h;
+            createStars();
+        }
+        function createStars() {
+            stars = [];
+            for (let i = 0; i < 70; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, s: Math.random() * 0.1 + 0.02, o: Math.random() * 0.5 + 0.2 });
+        }
+        function drawStars() {
+            ctx.clearRect(0, 0, w, h);
+            for (const star of stars) {
+                ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 180, 255, ${star.o})`; ctx.fill();
+                star.y += star.s;
+                if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
+            }
+            requestAnimationFrame(drawStars);
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas(); drawStars();
+    </script>
+</body>
+</html>
