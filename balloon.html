@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Шарик - Vetruch</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg: #000000; --text: #ffffff;
+            --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.6);
+            --red-main: #ff3366; --red-glow: rgba(255, 51, 102, 0.6);
+        }
+        body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto; 
+               /* Блокируем выделение текста и менюшки при долгом нажатии */
+               user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+
+        /* Фон */
+        #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
+
+        .game-container { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 100vh; padding: 20px 16px 40px 16px; }
+
+        /* Шапка */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; height: 40px; padding: 0 14px; border-radius: 12px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
+        .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
+
+        /* Строка баланса и ставки */
+        .game-info-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 16px; border-radius: 14px; margin-bottom: 15px;
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
+        .info-val { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
+
+        /* ИГРОВОЕ ПОЛЕ - ШАРИК */
+        .balloon-stage { 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            flex: 1; padding: 40px 0; position: relative; 
+        }
+        
+        .balloon-container {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            width: 120px; height: 120px;
+        }
+
+        .balloon {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #45caff, var(--blue-main));
+            box-shadow: 0 0 30px var(--blue-glow), inset -10px -10px 20px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s, box-shadow 0.2s;
+            will-change: transform; /* Для плавности */
+        }
+
+        /* Состояние взрыва */
+        .balloon.popped {
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, var(--red-main));
+            box-shadow: 0 0 40px var(--red-glow), inset -10px -10px 20px rgba(0,0,0,0.3);
+            animation: popVibrate 0.3s ease-out forwards;
+        }
+
+        @keyframes popVibrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .explosion-emoji {
+            position: absolute;
+            font-size: 80px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .balloon.popped + .explosion-emoji {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .multiplier-text {
+            position: absolute;
+            top: -50px;
+            font-size: 42px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 15px var(--blue-glow);
+            font-variant-numeric: tabular-nums; /* Цифры не дергаются по ширине */
+        }
+
+        .multiplier-text.red {
+            color: #ff3366;
+            text-shadow: 0 0 15px rgba(255, 51, 102, 0.8);
+        }
+
+        /* УПРАВЛЕНИЕ */
+        .controls { 
+            background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); 
+        }
+
+        .game-prompt { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .prompt-step { font-size: 12px; color: var(--blue-main); font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+        .prompt-text { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4; }
+
+        .bet-options { display: flex; gap: 8px; margin-bottom: 20px; }
+        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 14px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; font-size: 15px; }
+        .bet-btn.active { background: rgba(0, 136, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
+        .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+        /* Кнопка HOLD */
+        .hold-btn { 
+            width: 100%; padding: 20px; border-radius: 16px; border: none; font-size: 18px; font-weight: 800; 
+            color: #fff; background: var(--blue-main); cursor: pointer; 
+            box-shadow: 0 0 20px var(--blue-glow); transition: 0.1s; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+            /* Важно для мобилок: */
+            touch-action: manipulation;
+            -webkit-user-select: none;
+        }
+        
+        .hold-btn:active, .hold-btn.pressing { 
+            transform: scale(0.95); 
+            box-shadow: 0 0 30px var(--blue-glow);
+            background: #0099ff;
+        }
+
+        .hold-btn.cashout { background: #00cc66; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
+        .hold-btn.bust { background: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); pointer-events: none; }
+        .hold-btn:disabled { opacity: 0.8; cursor: not-allowed; }
+        
+        .hold-subtext { font-size: 11px; font-weight: 600; opacity: 0.8; text-transform: uppercase; }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="stars"></canvas>
+    <div class="dark-overlay"></div>
+
+    <div class="game-container">
+        
+        <!-- Шапка -->
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">❮ Назад</button>
+            <div class="balance-pill">
+                <span id="balanceDisplay">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+            </div>
+        </div>
+
+        <!-- Строка со ставкой и балансом -->
+        <div class="game-info-bar">
+            <div class="info-item">Ставка: 
+                <span class="info-val"><span id="infoBet">20</span> <img src="coins.png" class="coin-icon"></span>
+            </div>
+            <div class="info-item">Остаток: 
+                <span class="info-val"><span id="infoBalance">500</span> <img src="coins.png" class="coin-icon"></span>
+            </div>
+        </div>
+
+        <!-- Игровое поле: Шарик -->
+        <div class="balloon-stage">
+            <div class="multiplier-text" id="multDisplay">1.00x</div>
+            
+            <div class="balloon-container">
+                <div class="balloon" id="balloon"></div>
+                <div class="explosion-emoji">💥</div>
+            </div>
+        </div>
+
+        <!-- Панель управления -->
+        <div class="controls">
+            
+            <div class="game-prompt">
+                <div class="prompt-step" id="promptStep">СИСТЕМА КРАШ</div>
+                <div class="prompt-text" id="promptText">Зажмите кнопку, чтобы надувать шарик</div>
+            </div>
+
+            <div class="bet-options">
+                <button class="bet-btn active" onclick="setBet(20, this)">20</button>
+                <button class="bet-btn" onclick="setBet(50, this)">50</button>
+                <button class="bet-btn" onclick="setBet(100, this)">100</button>
+                <button class="bet-btn" onclick="setBet(200, this)">200</button>
+            </div>
+
+            <button class="hold-btn" id="holdBtn">
+                <span id="btnMainText">ЗАЖАТЬ И НАДУВАТЬ</span>
+                <span class="hold-subtext" id="btnSubText">Отпустите, чтобы забрать</span>
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+
+        let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
+        let bet = 20;
+        
+        let state = 'idle'; // idle, inflating, finished
+        let crashPoint = 0;
+        let currentMult = 1.00;
+        let animFrame;
+        
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const infoBalance = document.getElementById('infoBalance');
+        const infoBet = document.getElementById('infoBet');
+        
+        const balloon = document.getElementById('balloon');
+        const multDisplay = document.getElementById('multDisplay');
+        const holdBtn = document.getElementById('holdBtn');
+        const btnMainText = document.getElementById('btnMainText');
+        const btnSubText = document.getElementById('btnSubText');
+        const betBtns = document.querySelectorAll('.bet-btn');
+
+        const promptStep = document.getElementById('promptStep');
+        const promptText = document.getElementById('promptText');
+
+        updateBalanceUI();
+
+        function goBack() { window.location.href = 'index.html'; }
+
+        function updateBalanceUI() {
+            balanceDisplay.textContent = balance;
+            infoBalance.textContent = balance;
+            localStorage.setItem('vetruch_balance', balance);
+        }
+
+        function setBet(amount, btn) {
+            if(state !== 'idle') return;
+            bet = amount;
+            infoBet.textContent = bet;
+            betBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // ================= МАТЕМАТИКА КРАША =================
+        // Генерируем точку взрыва до начала раунда.
+        // Шансы:
+        // 5% - краш на 1.00 - 1.20 (Очень редко лопается сразу)
+        // 55% - краш на 1.20 - 2.50 (Частые средние значения)
+        // 30% - краш на 2.50 - 8.00 (Хорошие иксы)
+        // 10% - краш на 8.00 - 50.00+ (Джекпоты)
+        function generateCrashPoint() {
+            let r = Math.random();
+            if (r < 0.05) {
+                return 1.00 + Math.random() * 0.20; // 1.00 - 1.20
+            } else if (r < 0.60) {
+                return 1.20 + Math.random() * 1.30; // 1.20 - 2.50
+            } else if (r < 0.90) {
+                return 2.50 + Math.random() * 5.50; // 2.50 - 8.00
+            } else {
+                return 8.00 + Math.random() * 42.00; // 8.00 - 50.00
+            }
+        }
+
+        // ================= УПРАВЛЕНИЕ КНОПКОЙ =================
+        
+        // Предотвращаем контекстное меню мобилок при долгом нажатии
+        holdBtn.addEventListener('contextmenu', e => e.preventDefault());
+
+        holdBtn.addEventListener('mousedown', startInflate);
+        holdBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startInflate(); });
+
+        holdBtn.addEventListener('mouseup', stopInflate);
+        holdBtn.addEventListener('mouseleave', stopInflate);
+        holdBtn.addEventListener('touchend', (e) => { e.preventDefault(); stopInflate(); });
+        holdBtn.addEventListener('touchcancel', stopInflate);
+
+
+        function startInflate() {
+            if (state === 'finished') {
+                resetGame();
+                return;
+            }
+            if (state !== 'idle') return;
+
+            if (balance < bet) { tg.showAlert("Недостаточно монет!"); return; }
+
+            // Списываем ставку
+            balance -= bet;
+            updateBalanceUI();
+
+            state = 'inflating';
+            currentMult = 1.00;
+            crashPoint = generateCrashPoint();
+            
+            // UI
+            betBtns.forEach(b => b.disabled = true);
+            balloon.classList.remove('popped');
+            multDisplay.classList.remove('red');
+            holdBtn.classList.add('pressing');
+            
+            promptStep.textContent = 'НАДУВАЕМ...';
+            promptStep.style.color = 'var(--blue-main)';
+            promptText.innerHTML = 'Отпустите кнопку, чтобы забрать деньги';
+            
+            btnMainText.textContent = 'НАДУВАЕМ...';
+            btnSubText.textContent = 'ОТПУСТИ ЧТОБЫ ЗАБРАТЬ';
+
+            lastTime = performance.now();
+            animFrame = requestAnimationFrame(animateBalloon);
+        }
+
+        let lastTime = 0;
+
+        function animateBalloon(time) {
+            if (state !== 'inflating') return;
+
+            let deltaTime = time - lastTime;
+            lastTime = time;
+
+            // Скорость роста икса. Чем выше икс, тем быстрее он растет (экспонента)
+            // Прибавляем в зависимости от прошедшего времени для плавности на любых экранах
+            currentMult += (0.0005 * currentMult) * deltaTime;
+
+            if (currentMult >= crashPoint) {
+                currentMult = crashPoint;
+                explode();
+                return;
+            }
+
+            // Обновляем текст
+            multDisplay.textContent = currentMult.toFixed(2) + 'x';
+            
+            // Увеличиваем шарик. Функция логарифма, чтобы шарик не вылез за экран на x50
+            let scaleAmount = 1 + Math.log10(currentMult) * 1.5; 
+            balloon.style.transform = `scale(${scaleAmount})`;
+
+            animFrame = requestAnimationFrame(animateBalloon);
+        }
+
+        function stopInflate() {
+            if (state !== 'inflating') return;
+            
+            // Если игрок отпустил ДО взрыва - он выиграл!
+            cancelAnimationFrame(animFrame);
+            state = 'finished';
+            holdBtn.classList.remove('pressing');
+
+            let winAmount = Math.floor(bet * currentMult);
+            balance += winAmount;
+            updateBalanceUI();
+
+            // Визуал успеха
+            holdBtn.className = 'hold-btn cashout';
+            btnMainText.innerHTML = `ВЫ ЗАБРАЛИ ${winAmount} <img src="coins.png" class="coin-icon">`;
+            btnSubText.textContent = 'НАЖМИТЕ ЧТОБЫ ИГРАТЬ СНОВА';
+
+            promptStep.textContent = 'УСПЕХ!';
+            promptStep.style.color = '#00cc66';
+            promptText.innerHTML = `Вы забрали деньги на <b>${currentMult.toFixed(2)}x</b> 💰`;
+
+            betBtns.forEach(b => b.disabled = false);
+        }
+
+        function explode() {
+            state = 'finished';
+            holdBtn.classList.remove('pressing');
+
+            // Визуал взрыва
+            balloon.classList.add('popped');
+            multDisplay.classList.add('red');
+            multDisplay.textContent = currentMult.toFixed(2) + 'x';
+
+            holdBtn.className = 'hold-btn bust';
+            btnMainText.textContent = 'ШАРИК ЛОПНУЛ 💥';
+            btnSubText.textContent = 'Попробуйте еще раз';
+
+            promptStep.textContent = 'ПРОИГРЫШ';
+            promptStep.style.color = '#ff3366';
+            promptText.innerHTML = `Шарик лопнул на <b>${currentMult.toFixed(2)}x</b>`;
+
+            // Через 1.5 секунды разрешаем нажать снова
+            setTimeout(() => {
+                holdBtn.className = 'hold-btn';
+                btnMainText.textContent = 'СЫГРАТЬ СНОВА';
+                btnSubText.textContent = 'Нажмите для старта';
+                holdBtn.disabled = false;
+                betBtns.forEach(b => b.disabled = false);
+            }, 1500);
+        }
+
+        function resetGame() {
+            state = 'idle';
+            currentMult = 1.00;
+            balloon.style.transform = 'scale(1)';
+            balloon.classList.remove('popped');
+            multDisplay.classList.remove('red');
+            multDisplay.textContent = '1.00x';
+
+            holdBtn.className = 'hold-btn';
+            btnMainText.textContent = 'ЗАЖАТЬ И НАДУВАТЬ';
+            btnSubText.textContent = 'Отпустите, чтобы забрать';
+
+            promptStep.textContent = 'СИСТЕМА КРАШ';
+            promptStep.style.color = 'var(--blue-main)';
+            promptText.innerHTML = 'Зажмите кнопку, чтобы надувать шарик';
+        }
+
+
+        // ================= Анимация звезд =================
+        const canvas = document.getElementById("stars");
+        const ctx = canvas.getContext("2d");
+        let stars = []; let w = 0; let h = 0;
+
+        function resizeCanvas() {
+            w = window.innerWidth; h = window.innerHeight;
+            canvas.width = w; canvas.height = h;
+            createStars();
+        }
+        function createStars() {
+            stars = [];
+            for (let i = 0; i < 70; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, s: Math.random() * 0.1 + 0.02, o: Math.random() * 0.5 + 0.2 });
+        }
+        function drawStars() {
+            ctx.clearRect(0, 0, w, h);
+            for (const star of stars) {
+                ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 180, 255, ${star.o})`; ctx.fill();
+                star.y += star.s;
+                if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
+            }
+            requestAnimationFrame(drawStars);
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas(); drawStars();
+    </script>
+</body>
+</html>
