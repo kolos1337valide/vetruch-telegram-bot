@@ -22,37 +22,39 @@
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
 
-        .game-container { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 100vh; padding: 20px 16px 40px 16px; }
+        /* Главный контейнер (расширили padding-bottom) */
+        .game-container { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 100vh; padding: 20px 16px 20px 16px; }
 
-        /* ================= UI ПАНЕЛИ (С ВЫСОКИМ Z-INDEX, ЧТОБЫ ШАРИК ИХ НЕ ПЕРЕКРЫЛ) ================= */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative; z-index: 10; }
+        /* Шапка */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; position: relative; z-index: 10; }
         .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; height: 40px; padding: 0 14px; border-radius: 12px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
         .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
 
+        /* Строка баланса и ставки */
         .game-info-bar {
             display: flex; justify-content: space-between; align-items: center;
             background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 16px; border-radius: 14px; margin-bottom: 10px;
+            padding: 12px 16px; border-radius: 14px; margin-bottom: 0; /* Убрал отступ, его создаст сцена с шариком */
             backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             position: relative; z-index: 10;
         }
         .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
         .info-val { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
 
-        /* ИГРОВОЕ ПОЛЕ - ШАРИК */
+        /* ИГРОВОЕ ПОЛЕ - ШАРИК (Жестко расталкивает менюшки) */
         .balloon-stage { 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            flex: 1; padding: 10px 0; position: relative; z-index: 5;
+            flex: 1; margin: 30px 0; position: relative; z-index: 5;
         }
         
         .balloon-container {
             position: relative;
             display: flex; justify-content: center; align-items: center;
-            width: 140px; height: 140px; /* Базовый размер */
+            width: 110px; height: 110px; /* Сделал шарик изначально чуть меньше */
         }
 
-        /* Трясучка, когда шарик достиг максимального размера */
+        /* Трясучка на пределе */
         @keyframes tensionShake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             25% { transform: translate(-1px, -1px) rotate(-1deg); }
@@ -106,12 +108,13 @@
         .multiplier-text {
             position: absolute;
             z-index: 10;
-            font-size: 26px;
+            font-size: 22px; /* Изначально текст меньше, чтобы влезать в шарик 110px */
             font-weight: 800;
             color: #ffffff;
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px var(--blue-glow); 
             font-variant-numeric: tabular-nums; 
             pointer-events: none;
+            transition: font-size 0.1s;
         }
 
         .multiplier-text.red {
@@ -119,7 +122,7 @@
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 51, 102, 0.8);
         }
 
-        /* УПРАВЛЕНИЕ (ЗАЩИЩЕНО ВЫСОКИМ Z-INDEX) */
+        /* УПРАВЛЕНИЕ */
         .controls { 
             background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); 
             border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); 
@@ -243,9 +246,9 @@
         const promptStep = document.getElementById('promptStep');
         const promptText = document.getElementById('promptText');
 
-        // Максимальный размер шарика (в разах от изначального)
-        // 1.85 — это безопасный размер, он не перекроет верх и низ.
-        const MAX_BALLOON_SCALE = 1.85;
+        // Максимальный размер шарика (В РАЗАХ от базовых 110px)
+        // 2.2 * 110px = 242px. Это идеально влезет между менюшками и не коснется их!
+        const MAX_BALLOON_SCALE = 2.2;
 
         updateBalanceUI();
 
@@ -268,22 +271,11 @@
         // ================= МАТЕМАТИКА КРАША =================
         function generateCrashPoint() {
             let r = Math.random();
-            // Безопасная зона. Всего 5% лопается на 1.00 - 1.15
-            if (r < 0.05) {
-                return 1.00 + Math.random() * 0.15; 
-            } 
-            else if (r < 0.20) {
-                return 1.15 + Math.random() * 0.35; 
-            } 
-            else if (r < 0.70) {
-                return 1.50 + Math.random() * 2.00; 
-            } 
-            else if (r < 0.90) {
-                return 3.50 + Math.random() * 6.50; 
-            } 
-            else {
-                return 10.00 + Math.random() * 40.00; 
-            }
+            if (r < 0.05) return 1.00 + Math.random() * 0.15; 
+            else if (r < 0.20) return 1.15 + Math.random() * 0.35; 
+            else if (r < 0.70) return 1.50 + Math.random() * 2.00; 
+            else if (r < 0.90) return 3.50 + Math.random() * 6.50; 
+            else return 10.00 + Math.random() * 40.00; 
         }
 
         // ================= УПРАВЛЕНИЕ КНОПКОЙ =================
@@ -337,7 +329,7 @@
             let deltaTime = time - lastTime;
             lastTime = time;
 
-            // Экспоненциальный рост. В начале ползет медленно, потом всё быстрее.
+            // Экспоненциальный рост
             let growthRate = 0.00015 + 0.0002 * Math.pow(Math.max(0, currentMult - 1), 1.3);
             currentMult += growthRate * deltaTime;
 
@@ -349,16 +341,20 @@
 
             multDisplay.textContent = currentMult.toFixed(2) + 'x';
             
-            // Физический размер шарика
-            let rawScaleAmount = 1 + Math.log10(currentMult) * 1.2; 
+            // Физический размер шарика (логарифмическая функция роста)
+            let rawScaleAmount = 1 + Math.log10(currentMult) * 1.3; 
             
             // ОГРАНИЧЕНИЕ МАКСИМАЛЬНОГО РАЗМЕРА
             if (rawScaleAmount >= MAX_BALLOON_SCALE) {
                 balloon.style.transform = `scale(${MAX_BALLOON_SCALE})`;
-                // Добавляем эффект "давления", если уперлись в лимит
+                // Увеличиваем размер шрифта внутри, раз сам шарик больше не растет
+                multDisplay.style.fontSize = '34px';
+                // Трясучка от напряжения
                 balloonContainer.classList.add('max-tension');
             } else {
                 balloon.style.transform = `scale(${rawScaleAmount})`;
+                // Пропорциональный рост шрифта
+                multDisplay.style.fontSize = `${22 + (rawScaleAmount - 1) * 10}px`;
                 balloonContainer.classList.remove('max-tension');
             }
 
@@ -391,7 +387,7 @@
         function explode() {
             state = 'finished';
             holdBtn.classList.remove('pressing');
-            balloonContainer.classList.remove('max-tension'); // Убираем тряску при взрыве
+            balloonContainer.classList.remove('max-tension');
 
             balloon.classList.add('popped');
             multDisplay.classList.add('red');
@@ -418,6 +414,7 @@
             state = 'idle';
             currentMult = 1.00;
             balloon.style.transform = 'scale(1)';
+            multDisplay.style.fontSize = '22px'; // Сброс размера шрифта
             balloon.classList.remove('popped');
             balloonContainer.classList.remove('max-tension');
             multDisplay.classList.remove('red');
