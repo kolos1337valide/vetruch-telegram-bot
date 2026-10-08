@@ -6,7 +6,6 @@
 
     <title>Vetruch GiftBot</title>
 
-    <!-- Шрифт Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,12 +21,10 @@
         :root {
             --text: #ffffff;
             --secondary: #8c97a7;
-            
             --card-bg: rgba(20, 22, 28, 0.65);
             --card-border: rgba(255, 255, 255, 0.08);
-            
             --blue-main: #0088ff;
-            --blue-glow: rgba(0, 136, 255, 0.4);
+            --blue-glow: rgba(0, 136, 255, 0.5);
         }
 
         html, body {
@@ -36,15 +33,72 @@
             background: #000000;
             color: var(--text);
             font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Блокируем скролл во время загрузки */
         }
 
-        body {
-            position: relative;
-            overflow-x: hidden;
+        body.loaded {
+            overflow-y: auto; /* Возвращаем скролл после загрузки */
             padding-bottom: 90px;
         }
 
-        /* ХОЛСТ СО ЗВЁЗДАМИ */
+        /* ================= ЭКРАН ЗАГРУЗКИ ================= */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg); /* Чтобы кольцо заполнялось сверху */
+        }
+
+        .loader-track {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 4;
+        }
+
+        .loader-progress {
+            fill: none;
+            stroke: var(--blue-main);
+            stroke-width: 4;
+            stroke-linecap: round;
+            /* Длина окружности (2 * pi * r), радиус = 64 -> 2 * 3.14 * 64 = 402 */
+            stroke-dasharray: 402;
+            stroke-dashoffset: 402; 
+            filter: drop-shadow(0 0 10px var(--blue-glow));
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .loader-text {
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1.5px;
+            z-index: 2;
+            text-shadow: 0 0 12px rgba(0, 136, 255, 0.6);
+            margin-top: 2px; /* Чуть центруем визуально */
+        }
+
+
+        /* ================= ФОН ================= */
         #stars {
             position: fixed;
             z-index: 0;
@@ -62,37 +116,26 @@
             pointer-events: none;
         }
 
-        /* ================= НОВАЯ ПЛАВНАЯ АНИМАЦИЯ ================= */
+        /* ================= АНИМАЦИЯ ПОЯВЛЕНИЯ МЕНЮ ================= */
         @keyframes fadeSlideUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(40px); /* Начинаем ниже */
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
+            0% { opacity: 0; transform: translateY(80px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .page {
             position: relative;
             z-index: 2;
-            display: none;
+            display: none; 
             min-height: calc(100vh - 105px);
             padding: 20px 16px;
         }
 
         .page.active {
             display: block;
-            /* Увеличил время до 0.6с и добавил красивую кривую замедления cubic-bezier */
-            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        h1, h2 {
-            margin: 0 0 15px;
-            text-align: center;
-            font-weight: 700;
-        }
+        h1, h2 { margin: 0 0 15px; text-align: center; font-weight: 700; }
 
         .card {
             margin-bottom: 15px;
@@ -104,61 +147,15 @@
             text-align: center;
         }
 
-        /* ВЕРХНЯЯ ТАБЛИЧКА (ПРОЗРАЧНАЯ) */
-        .top-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding: 5px 10px;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-        }
+        .top-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 5px 10px; background: transparent; border: none; }
+        .avatar-container { width: 44px; height: 44px; flex-shrink: 0; }
+        .avatar-img, .avatar-fallback { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; }
+        .avatar-fallback { background: linear-gradient(135deg, #0088ff, #00d4ff); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: #fff; }
+        .user-info { display: flex; flex-direction: column; justify-content: center; text-align: left; }
+        .greeting-text { font-size: 12px; color: var(--secondary); font-weight: 500; margin-bottom: 2px; }
+        .user-name { font-size: 16px; font-weight: 700; }
 
-        .avatar-container {
-            width: 44px;
-            height: 44px;
-            flex-shrink: 0;
-        }
-
-        .avatar-img, .avatar-fallback {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-
-        .avatar-fallback {
-            background: linear-gradient(135deg, #0088ff, #00d4ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            color: #fff;
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: left;
-        }
-
-        .greeting-text {
-            font-size: 12px;
-            color: var(--secondary);
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .user-name {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        /* Баннер розыгрыша (Подстроен под пропорции твоей GIF 16:9) */
+        /* Баннер розыгрыша */
         .promo-banner {
             width: 100%;
             border-radius: 12px;
@@ -166,17 +163,11 @@
             margin-bottom: 20px;
             aspect-ratio: 16 / 9; 
             border: 1px solid var(--card-border);
-            background: transparent;
         }
 
-        .promo-banner img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-        }
+        .promo-banner img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
-        /* Глобальная статистика */
+        /* Статистика и рейтинг */
         .global-stats { margin-bottom: 20px; }
         .stats-title { font-size: 12px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
         .stats-main-sum { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 15px; }
@@ -184,8 +175,6 @@
         .stat-item { display: flex; flex-direction: column; gap: 4px; }
         .stat-val { font-weight: 700; font-size: 16px; color: var(--blue-main); }
         .stat-label { font-size: 11px; color: var(--secondary); font-weight: 500; }
-
-        /* Рейтинг */
         .leaderboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .leaderboard-title { font-size: 16px; font-weight: 700; }
         .leaderboard-link { font-size: 12px; color: var(--blue-main); text-decoration: none; font-weight: 600; }
@@ -217,6 +206,16 @@
             background: rgba(15, 18, 22, 0.95);
             backdrop-filter: blur(15px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            
+            /* Скрываем панель на время загрузочного экрана */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        body.loaded .bottom-nav {
+            opacity: 1;
+            visibility: visible;
         }
 
         .nav-button {
@@ -248,12 +247,23 @@
 
 <body>
 
+    <!-- ================= ЭКРАН ЗАГРУЗКИ ================= -->
+    <div id="loading-screen">
+        <div class="loader-container">
+            <svg class="loader-svg" width="140" height="140" viewBox="0 0 140 140">
+                <circle class="loader-track" cx="70" cy="70" r="64"></circle>
+                <circle class="loader-progress" cx="70" cy="70" r="64"></circle>
+            </svg>
+            <div class="loader-text">wetruche</div>
+        </div>
+    </div>
+
+    <!-- Фон -->
     <canvas id="stars"></canvas>
     <div class="dark-overlay"></div>
 
-    <!-- ================= ГЛАВНАЯ СТРАНИЦА ================= -->
-    <main id="home" class="page active">
-        
+    <!-- Главная -->
+    <main id="home" class="page">
         <div class="top-header">
             <div class="avatar-container">
                 <img id="homeAvatarImg" class="avatar-img" src="" alt="Avatar" style="display: none;">
@@ -265,12 +275,8 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             БАННЕР РОЗЫГРЫША 
-             Тут я прописал файл banner.gif
-        =========================================== -->
         <div class="promo-banner">
-            <img src="banner.gif" alt="Розыгрыш" onerror="this.src='https://via.placeholder.com/800x450/1c1e23/0088ff?text=Загрузи+banner.gif+на+GitHub'">
+            <img src="banner.gif" alt="Розыгрыш">
         </div>
 
         <div class="card global-stats">
@@ -287,7 +293,6 @@
                 <div class="leaderboard-title">Рейтинг</div>
                 <a href="#" class="leaderboard-link" onclick="openPage('profile')">Лидерборд ></a>
             </div>
-            
             <div class="podium">
                 <div class="podium-item second"><div class="podium-avatar">?</div><div class="podium-name">#2</div><div class="podium-score">0 🪙</div></div>
                 <div class="podium-item first"><div class="podium-avatar">?</div><div class="podium-name">#1</div><div class="podium-score" style="color: gold;">0 🪙</div></div>
@@ -323,18 +328,16 @@
         </div>
     </main>
 
-    <!-- Нижнее меню с SVG иконками -->
+    <!-- Нижнее меню -->
     <nav class="bottom-nav">
         <button class="nav-button active" data-page="home" onclick="openPage('home')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg><span>Главная</span>
         </button>
         <button class="nav-button" data-page="tasks" onclick="openPage('tasks')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
             </svg><span>Задания</span>
         </button>
         <button class="nav-button" data-page="shop" onclick="openPage('shop')">
@@ -380,13 +383,57 @@
 
         function openPage(pageId) {
             document.querySelectorAll(".page").forEach(function(page) { page.classList.remove("active"); });
-            document.getElementById(pageId).classList.add("active");
+            
+            // Чтобы анимация работала четко после загрузки
+            setTimeout(() => {
+                document.getElementById(pageId).classList.add("active");
+            }, 10);
+
             document.querySelectorAll(".nav-button").forEach(function(button) { button.classList.remove("active"); });
             const activeButton = document.querySelector('.nav-button[data-page="' + pageId + '"]');
             if (activeButton) activeButton.classList.add("active");
             window.scrollTo(0, 0);
         }
 
+        // =====================================
+        // ЛОГИКА ЗАГРУЗОЧНОГО ЭКРАНА
+        // =====================================
+        const loaderProgress = document.querySelector('.loader-progress');
+        const loadingScreen = document.getElementById('loading-screen');
+        const circumference = 402; // Длина окружности (из CSS)
+        
+        let progress = 0;
+        
+        // Интервал заполнения кольца (каждые 30 мс прибавляем чуть-чуть процентов)
+        const loadingInterval = setInterval(() => {
+            progress += Math.random() * 3 + 1; // Случайный шаг от 1 до 4 для реалистичности
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadingInterval);
+                
+                // Как только дошло до 100%, ждем 200мс для красоты и скрываем экран
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    loadingScreen.style.visibility = 'hidden';
+                    
+                    // Разрешаем скролл и показываем нижнее меню
+                    document.body.classList.add('loaded');
+                    
+                    // СРАЗУ запускаем анимацию выезда главного меню
+                    openPage('home');
+                    
+                }, 200);
+            }
+            
+            // Вычисляем, насколько кольцо должно быть заполнено
+            const offset = circumference - (progress / 100) * circumference;
+            loaderProgress.style.strokeDashoffset = offset;
+            
+        }, 30);
+
+
+        // Звёзды
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = [];
