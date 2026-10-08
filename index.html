@@ -23,7 +23,6 @@
             --text: #ffffff;
             --secondary: #8c97a7;
             
-            /* Полупрозрачные карточки, чтобы было видно звёзды */
             --card-bg: rgba(20, 22, 28, 0.65);
             --card-border: rgba(255, 255, 255, 0.08);
             
@@ -34,7 +33,7 @@
         html, body {
             margin: 0;
             min-height: 100vh;
-            background: #000000; /* Полностью черный фон */
+            background: #000000;
             color: var(--text);
             font-family: 'Inter', sans-serif;
         }
@@ -55,7 +54,6 @@
             pointer-events: none;
         }
 
-        /* Легкое затемнение, чтобы текст читался лучше поверх звёзд */
         .dark-overlay {
             position: fixed;
             z-index: 1;
@@ -64,10 +62,16 @@
             pointer-events: none;
         }
 
-        /* АНИМАЦИИ ПЕРЕХОДА */
+        /* ================= НОВАЯ ПЛАВНАЯ АНИМАЦИЯ ================= */
         @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(40px); /* Начинаем ниже */
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         .page {
@@ -80,7 +84,8 @@
 
         .page.active {
             display: block;
-            animation: fadeSlideUp 0.35s ease-out forwards;
+            /* Увеличил время до 0.6с и добавил красивую кривую замедления cubic-bezier */
+            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         h1, h2 {
@@ -89,28 +94,23 @@
             font-weight: 700;
         }
 
-        /* Универсальные карточки */
         .card {
             margin-bottom: 15px;
             padding: 20px;
             border: 1px solid var(--card-border);
             border-radius: 16px;
             background: var(--card-bg);
-            backdrop-filter: blur(8px); /* Легкое размытие звёзд под карточкой */
+            backdrop-filter: blur(8px);
             text-align: center;
         }
 
-        /* ================= ДИЗАЙН ГЛАВНОЙ СТРАНИЦЫ ================= */
-        
-        /* ВЕРХНЯЯ ТАБЛИЧКА (ПОЛНОСТЬЮ ПРОЗРАЧНАЯ) */
+        /* ВЕРХНЯЯ ТАБЛИЧКА (ПРОЗРАЧНАЯ) */
         .top-header {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 20px;
             padding: 5px 10px;
-            
-            /* Убрали фон, рамки и тени */
             background: transparent;
             border: none;
             box-shadow: none;
@@ -158,13 +158,13 @@
             font-weight: 700;
         }
 
-        /* Баннер розыгрыша */
+        /* Баннер розыгрыша (Подстроен под пропорции твоей GIF 16:9) */
         .promo-banner {
             width: 100%;
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 20px;
-            aspect-ratio: 21 / 9; 
+            aspect-ratio: 16 / 9; 
             border: 1px solid var(--card-border);
             background: transparent;
         }
@@ -176,122 +176,31 @@
             object-fit: cover;
         }
 
-        /* Карточка глобальной статистики */
-        .global-stats {
-            margin-bottom: 20px;
-        }
-        
-        .stats-title {
-            font-size: 12px;
-            color: var(--secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .stats-main-sum {
-            font-size: 28px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 15px;
-        }
-
-        .stats-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            border-top: 1px solid var(--card-border);
-            padding-top: 15px;
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .stat-val {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--blue-main);
-        }
-        .stat-label {
-            font-size: 11px;
-            color: var(--secondary);
-            font-weight: 500;
-        }
+        /* Глобальная статистика */
+        .global-stats { margin-bottom: 20px; }
+        .stats-title { font-size: 12px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
+        .stats-main-sum { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 15px; }
+        .stats-row { display: flex; justify-content: center; gap: 20px; border-top: 1px solid var(--card-border); padding-top: 15px; }
+        .stat-item { display: flex; flex-direction: column; gap: 4px; }
+        .stat-val { font-weight: 700; font-size: 16px; color: var(--blue-main); }
+        .stat-label { font-size: 11px; color: var(--secondary); font-weight: 500; }
 
         /* Рейтинг */
-        .leaderboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .leaderboard-title {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .leaderboard-link {
-            font-size: 12px;
-            color: var(--blue-main);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .podium {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 10px;
-            height: 140px;
-            margin-top: 20px;
-        }
-
-        .podium-item {
-            flex: 1;
-            background: linear-gradient(180deg, rgba(0, 136, 255, 0.1) 0%, rgba(20, 22, 28, 0.8) 100%);
-            border: 1px solid var(--card-border);
-            border-radius: 12px 12px 6px 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 5px;
-            position: relative;
-        }
-
-        .podium-item.first {
-            height: 100%;
-            background: linear-gradient(180deg, rgba(255, 215, 0, 0.12) 0%, rgba(20, 22, 28, 0.8) 100%);
-            border-color: rgba(255, 215, 0, 0.2);
-        }
+        .leaderboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .leaderboard-title { font-size: 16px; font-weight: 700; }
+        .leaderboard-link { font-size: 12px; color: var(--blue-main); text-decoration: none; font-weight: 600; }
+        .podium { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; height: 140px; margin-top: 20px; }
+        .podium-item { flex: 1; background: linear-gradient(180deg, rgba(0, 136, 255, 0.1) 0%, rgba(20, 22, 28, 0.8) 100%); border: 1px solid var(--card-border); border-radius: 12px 12px 6px 6px; display: flex; flex-direction: column; align-items: center; padding: 10px 5px; position: relative; }
+        .podium-item.first { height: 100%; background: linear-gradient(180deg, rgba(255, 215, 0, 0.12) 0%, rgba(20, 22, 28, 0.8) 100%); border-color: rgba(255, 215, 0, 0.2); }
         .podium-item.second { height: 85%; }
         .podium-item.third { height: 75%; }
-
-        .podium-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: #2a2d35;
-            position: absolute;
-            top: -20px;
-            border: 2px solid #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: var(--secondary);
-        }
+        .podium-avatar { width: 40px; height: 40px; border-radius: 10px; background: #2a2d35; position: absolute; top: -20px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--secondary); }
         .podium-item.first .podium-avatar { border-color: rgba(255, 215, 0, 0.5); width: 48px; height: 48px; top: -24px;}
-
         .podium-name { margin-top: 25px; font-size: 13px; font-weight: 700; color: #fff;}
         .podium-item.first .podium-name { margin-top: 30px; }
         .podium-score { font-size: 11px; color: var(--secondary); margin-top: 5px; font-weight: 500;}
 
-        /* ================= НИЖНЕЕ МЕНЮ ================= */
+        /* НИЖНЕЕ МЕНЮ */
         .bottom-nav {
             position: fixed;
             z-index: 10;
@@ -330,35 +239,21 @@
             transition: all 0.2s ease;
         }
 
-        .nav-button svg {
-            width: 24px;
-            height: 24px;
-            stroke: #626a7d;
-            transition: all 0.2s ease;
-        }
-
+        .nav-button svg { width: 24px; height: 24px; stroke: #626a7d; transition: all 0.2s ease; }
         .nav-button:active { transform: scale(0.92); }
-
         .nav-button.active { color: var(--blue-main); }
-        .nav-button.active svg {
-            stroke: var(--blue-main);
-            filter: drop-shadow(0 0 6px var(--blue-glow));
-            transform: translateY(-2px);
-        }
-
+        .nav-button.active svg { stroke: var(--blue-main); filter: drop-shadow(0 0 6px var(--blue-glow)); transform: translateY(-2px); }
     </style>
 </head>
 
 <body>
 
-    <!-- ХОЛСТ ДЛЯ ЗВЁЗД И ЗАТЕМНЕНИЕ -->
     <canvas id="stars"></canvas>
     <div class="dark-overlay"></div>
 
     <!-- ================= ГЛАВНАЯ СТРАНИЦА ================= -->
     <main id="home" class="page active">
         
-        <!-- Верхняя табличка (фон прозрачный) -->
         <div class="top-header">
             <div class="avatar-container">
                 <img id="homeAvatarImg" class="avatar-img" src="" alt="Avatar" style="display: none;">
@@ -370,28 +265,23 @@
             </div>
         </div>
 
-        <!-- Баннер розыгрыша (GIF) -->
+        <!-- ==========================================
+             БАННЕР РОЗЫГРЫША 
+             Тут я прописал файл banner.gif
+        =========================================== -->
         <div class="promo-banner">
-            <img src="https://i.ibb.co/6P04gJ6/banner-placeholder.jpg" alt="Розыгрыш" onerror="this.src='https://via.placeholder.com/800x350/1c1e23/0088ff?text=МЕСТО+ДЛЯ+GIF'">
+            <img src="banner.gif" alt="Розыгрыш" onerror="this.src='https://via.placeholder.com/800x450/1c1e23/0088ff?text=Загрузи+banner.gif+на+GitHub'">
         </div>
 
-        <!-- Глобальная статистика (ОБНУЛЕНА) -->
         <div class="card global-stats">
             <div class="stats-title">💵 Всего выплачено зрителям</div>
             <div class="stats-main-sum">0 ₽</div>
             <div class="stats-row">
-                <div class="stat-item">
-                    <span class="stat-val">👥 0</span>
-                    <span class="stat-label">пользователей</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-val">🪙 0</span>
-                    <span class="stat-label">монет заработано</span>
-                </div>
+                <div class="stat-item"><span class="stat-val">👥 0</span><span class="stat-label">пользователей</span></div>
+                <div class="stat-item"><span class="stat-val">🪙 0</span><span class="stat-label">монет заработано</span></div>
             </div>
         </div>
 
-        <!-- Рейтинг (ОБНУЛЕН) -->
         <div class="card">
             <div class="leaderboard-header">
                 <div class="leaderboard-title">Рейтинг</div>
@@ -399,53 +289,29 @@
             </div>
             
             <div class="podium">
-                <div class="podium-item second">
-                    <div class="podium-avatar">?</div>
-                    <div class="podium-name">#2</div>
-                    <div class="podium-score">0 🪙</div>
-                </div>
-                
-                <div class="podium-item first">
-                    <div class="podium-avatar">?</div>
-                    <div class="podium-name">#1</div>
-                    <div class="podium-score" style="color: gold;">0 🪙</div>
-                </div>
-                
-                <div class="podium-item third">
-                    <div class="podium-avatar">?</div>
-                    <div class="podium-name">#3</div>
-                    <div class="podium-score">0 🪙</div>
-                </div>
+                <div class="podium-item second"><div class="podium-avatar">?</div><div class="podium-name">#2</div><div class="podium-score">0 🪙</div></div>
+                <div class="podium-item first"><div class="podium-avatar">?</div><div class="podium-name">#1</div><div class="podium-score" style="color: gold;">0 🪙</div></div>
+                <div class="podium-item third"><div class="podium-avatar">?</div><div class="podium-name">#3</div><div class="podium-score">0 🪙</div></div>
             </div>
         </div>
     </main>
 
-
     <!-- Задания -->
     <main id="tasks" class="page">
         <h2>📋 Задания</h2>
-        <div class="card">
-            <h3 style="margin-top: 0;">Заданий пока нет</h3>
-            <p style="color: var(--secondary); font-size: 14px;">Новые задания появятся совсем скоро.</p>
-        </div>
+        <div class="card"><h3 style="margin-top: 0;">Заданий пока нет</h3><p style="color: var(--secondary); font-size: 14px;">Новые задания появятся совсем скоро.</p></div>
     </main>
 
     <!-- Магазин -->
     <main id="shop" class="page">
         <h2>🛒 Магазин</h2>
-        <div class="card">
-            <h3 style="margin-top: 0;">Магазин пуст</h3>
-            <p style="color: var(--secondary); font-size: 14px;">Скоро здесь можно будет обменивать награды.</p>
-        </div>
+        <div class="card"><h3 style="margin-top: 0;">Магазин пуст</h3><p style="color: var(--secondary); font-size: 14px;">Скоро здесь можно будет обменивать награды.</p></div>
     </main>
 
     <!-- Игры -->
     <main id="games" class="page">
         <h2>🎮 Игры</h2>
-        <div class="card">
-            <h3 style="margin-top: 0;">Игры скоро появятся</h3>
-            <p style="color: var(--secondary); font-size: 14px;">Здесь будут мини-игры и соревнования.</p>
-        </div>
+        <div class="card"><h3 style="margin-top: 0;">Игры скоро появятся</h3><p style="color: var(--secondary); font-size: 14px;">Здесь будут мини-игры и соревнования.</p></div>
     </main>
 
     <!-- Профиль -->
@@ -453,81 +319,49 @@
         <h2>👤 Профиль</h2>
         <div class="card">
             <h3 style="margin-top: 0;" id="profileUserName">Пользователь</h3>
-            <div style="color: var(--secondary); font-size: 15px; line-height: 1.6;">
-                ⭐ Баланс: 0<br>
-                🏆 Уровень: 1
-            </div>
+            <div style="color: var(--secondary); font-size: 15px; line-height: 1.6;">⭐ Баланс: 0<br>🏆 Уровень: 1</div>
         </div>
     </main>
 
-
     <!-- Нижнее меню с SVG иконками -->
     <nav class="bottom-nav">
-        <!-- Главная -->
         <button class="nav-button active" data-page="home" onclick="openPage('home')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            <span>Главная</span>
+            </svg><span>Главная</span>
         </button>
-
-        <!-- Задания -->
         <button class="nav-button" data-page="tasks" onclick="openPage('tasks')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline>
-            </svg>
-            <span>Задания</span>
+                <polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+            </svg><span>Задания</span>
         </button>
-
-        <!-- Магазин -->
         <button class="nav-button" data-page="shop" onclick="openPage('shop')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-            </svg>
-            <span>Магазин</span>
+                <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg><span>Магазин</span>
         </button>
-
-        <!-- Игры -->
         <button class="nav-button" data-page="games" onclick="openPage('games')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-                <path d="M6 12h4"></path>
-                <path d="M8 10v4"></path>
-                <line x1="15" y1="13" x2="15.01" y2="13"></line>
-                <line x1="18" y1="11" x2="18.01" y2="11"></line>
-            </svg>
-            <span>Игры</span>
+                <rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4"></path><path d="M8 10v4"></path><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line>
+            </svg><span>Игры</span>
         </button>
-
-        <!-- Профиль -->
         <button class="nav-button" data-page="profile" onclick="openPage('profile')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <span>Профиль</span>
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+            </svg><span>Профиль</span>
         </button>
     </nav>
 
-
     <script>
         const tg = window.Telegram.WebApp;
-
         tg.ready();
         tg.expand();
         
-        // Устанавливаем цвет верхней полоски ТГ, чтобы она сливалась с черным фоном
         tg.setHeaderColor('#000000'); 
         tg.setBackgroundColor('#000000');
 
-        // Данные юзера из Telegram
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const user = tg.initDataUnsafe.user;
             const firstName = user.first_name || "Пользователь";
@@ -544,41 +378,25 @@
             }
         }
 
-        // Переключение вкладок
         function openPage(pageId) {
-            document.querySelectorAll(".page").forEach(function(page) {
-                page.classList.remove("active");
-            });
-
+            document.querySelectorAll(".page").forEach(function(page) { page.classList.remove("active"); });
             document.getElementById(pageId).classList.add("active");
-
-            document.querySelectorAll(".nav-button").forEach(function(button) {
-                button.classList.remove("active");
-            });
-
+            document.querySelectorAll(".nav-button").forEach(function(button) { button.classList.remove("active"); });
             const activeButton = document.querySelector('.nav-button[data-page="' + pageId + '"]');
-            if (activeButton) {
-                activeButton.classList.add("active");
-            }
-
+            if (activeButton) activeButton.classList.add("active");
             window.scrollTo(0, 0);
         }
 
-        // --- ВОЗВРАЩЁННЫЙ СКРИПТ ПАДАЮЩИХ ЗВЁЗД ---
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = [];
-        let width = 0;
-        let height = 0;
+        let width = 0; let height = 0;
 
         function resizeCanvas() {
             const pixelRatio = window.devicePixelRatio || 1;
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width * pixelRatio;
-            canvas.height = height * pixelRatio;
-            canvas.style.width = width + "px";
-            canvas.style.height = height + "px";
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width * pixelRatio; canvas.height = height * pixelRatio;
+            canvas.style.width = width + "px"; canvas.style.height = height + "px";
             ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
             createStars();
         }
@@ -588,11 +406,8 @@
             const amount = Math.min(130, Math.max(65, Math.floor(width / 3)));
             for (let i = 0; i < amount; i++) {
                 stars.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    radius: Math.random() * 1.2 + 0.25,
-                    speed: Math.random() * 0.10 + 0.025,
-                    opacity: Math.random() * 0.65 + 0.25
+                    x: Math.random() * width, y: Math.random() * height,
+                    radius: Math.random() * 1.2 + 0.25, speed: Math.random() * 0.10 + 0.025, opacity: Math.random() * 0.65 + 0.25
                 });
             }
         }
@@ -600,24 +415,16 @@
         function drawStars() {
             ctx.clearRect(0, 0, width, height);
             for (const star of stars) {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fillStyle = "rgba(100, 180, 255, " + star.opacity + ")"; // Звёзды с легким синим свечением
-                ctx.fill();
-                
-                star.y += star.speed; // Звезды падают вниз
-                
-                if (star.y > height + 3) {
-                    star.y = -3;
-                    star.x = Math.random() * width;
-                }
+                ctx.beginPath(); ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(100, 180, 255, " + star.opacity + ")"; ctx.fill();
+                star.y += star.speed;
+                if (star.y > height + 3) { star.y = -3; star.x = Math.random() * width; }
             }
             requestAnimationFrame(drawStars);
         }
 
         window.addEventListener("resize", resizeCanvas);
-        resizeCanvas();
-        drawStars();
+        resizeCanvas(); drawStars();
     </script>
 </body>
 </html>
