@@ -27,18 +27,20 @@
             --blue-glow: rgba(0, 136, 255, 0.5);
         }
 
+        /* Убрали жесткий overflow, чтобы скролл работал нормально */
         html, body {
             margin: 0;
             min-height: 100vh;
             background: #000000;
             color: var(--text);
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Блокируем скролл во время загрузки */
+            padding-bottom: 90px;
         }
 
-        body.loaded {
-            overflow-y: auto; /* Возвращаем скролл после загрузки */
-            padding-bottom: 90px;
+        /* Класс, который блокирует скролл ТОЛЬКО пока идет загрузка */
+        body.is-loading {
+            overflow: hidden;
+            height: 100vh;
         }
 
         /* ================= ЭКРАН ЗАГРУЗКИ ================= */
@@ -66,7 +68,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            transform: rotate(-90deg); /* Чтобы кольцо заполнялось сверху */
+            transform: rotate(-90deg);
         }
 
         .loader-track {
@@ -80,7 +82,6 @@
             stroke: var(--blue-main);
             stroke-width: 4;
             stroke-linecap: round;
-            /* Длина окружности (2 * pi * r), радиус = 64 -> 2 * 3.14 * 64 = 402 */
             stroke-dasharray: 402;
             stroke-dashoffset: 402; 
             filter: drop-shadow(0 0 10px var(--blue-glow));
@@ -94,7 +95,7 @@
             letter-spacing: 1.5px;
             z-index: 2;
             text-shadow: 0 0 12px rgba(0, 136, 255, 0.6);
-            margin-top: 2px; /* Чуть центруем визуально */
+            margin-top: 2px;
         }
 
 
@@ -116,9 +117,9 @@
             pointer-events: none;
         }
 
-        /* ================= АНИМАЦИЯ ПОЯВЛЕНИЯ МЕНЮ ================= */
+        /* ================= АНИМАЦИЯ ПОЯВЛЕНИЯ (ЗАМЕДЛИЛ) ================= */
         @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(80px); }
+            0% { opacity: 0; transform: translateY(100px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
@@ -132,7 +133,8 @@
 
         .page.active {
             display: block;
-            animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            /* Время увеличено до 1.2 секунд для максимальной плавности */
+            animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         h1, h2 { margin: 0 0 15px; text-align: center; font-weight: 700; }
@@ -155,7 +157,6 @@
         .greeting-text { font-size: 12px; color: var(--secondary); font-weight: 500; margin-bottom: 2px; }
         .user-name { font-size: 16px; font-weight: 700; }
 
-        /* Баннер розыгрыша */
         .promo-banner {
             width: 100%;
             border-radius: 12px;
@@ -164,10 +165,8 @@
             aspect-ratio: 16 / 9; 
             border: 1px solid var(--card-border);
         }
-
         .promo-banner img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
-        /* Статистика и рейтинг */
         .global-stats { margin-bottom: 20px; }
         .stats-title { font-size: 12px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
         .stats-main-sum { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 15px; }
@@ -175,6 +174,7 @@
         .stat-item { display: flex; flex-direction: column; gap: 4px; }
         .stat-val { font-weight: 700; font-size: 16px; color: var(--blue-main); }
         .stat-label { font-size: 11px; color: var(--secondary); font-weight: 500; }
+        
         .leaderboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .leaderboard-title { font-size: 16px; font-weight: 700; }
         .leaderboard-link { font-size: 12px; color: var(--blue-main); text-decoration: none; font-weight: 600; }
@@ -207,13 +207,12 @@
             backdrop-filter: blur(15px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
             
-            /* Скрываем панель на время загрузочного экрана */
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease; /* Замедлил появление меню тоже */
         }
 
-        body.loaded .bottom-nav {
+        body.is-ready .bottom-nav {
             opacity: 1;
             visibility: visible;
         }
@@ -245,7 +244,8 @@
     </style>
 </head>
 
-<body>
+<!-- Изначально вешаем класс is-loading, чтобы заблокировать скролл пока крутится кольцо -->
+<body class="is-loading">
 
     <!-- ================= ЭКРАН ЗАГРУЗКИ ================= -->
     <div id="loading-screen">
@@ -254,15 +254,14 @@
                 <circle class="loader-track" cx="70" cy="70" r="64"></circle>
                 <circle class="loader-progress" cx="70" cy="70" r="64"></circle>
             </svg>
-            <div class="loader-text">wetruche</div>
+            <!-- Исправлен текст на vetruch -->
+            <div class="loader-text">vetruch</div>
         </div>
     </div>
 
-    <!-- Фон -->
     <canvas id="stars"></canvas>
     <div class="dark-overlay"></div>
 
-    <!-- Главная -->
     <main id="home" class="page">
         <div class="top-header">
             <div class="avatar-container">
@@ -301,25 +300,21 @@
         </div>
     </main>
 
-    <!-- Задания -->
     <main id="tasks" class="page">
         <h2>📋 Задания</h2>
         <div class="card"><h3 style="margin-top: 0;">Заданий пока нет</h3><p style="color: var(--secondary); font-size: 14px;">Новые задания появятся совсем скоро.</p></div>
     </main>
 
-    <!-- Магазин -->
     <main id="shop" class="page">
         <h2>🛒 Магазин</h2>
         <div class="card"><h3 style="margin-top: 0;">Магазин пуст</h3><p style="color: var(--secondary); font-size: 14px;">Скоро здесь можно будет обменивать награды.</p></div>
     </main>
 
-    <!-- Игры -->
     <main id="games" class="page">
         <h2>🎮 Игры</h2>
         <div class="card"><h3 style="margin-top: 0;">Игры скоро появятся</h3><p style="color: var(--secondary); font-size: 14px;">Здесь будут мини-игры и соревнования.</p></div>
     </main>
 
-    <!-- Профиль -->
     <main id="profile" class="page">
         <h2>👤 Профиль</h2>
         <div class="card">
@@ -328,7 +323,6 @@
         </div>
     </main>
 
-    <!-- Нижнее меню -->
     <nav class="bottom-nav">
         <button class="nav-button active" data-page="home" onclick="openPage('home')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -384,7 +378,6 @@
         function openPage(pageId) {
             document.querySelectorAll(".page").forEach(function(page) { page.classList.remove("active"); });
             
-            // Чтобы анимация работала четко после загрузки
             setTimeout(() => {
                 document.getElementById(pageId).classList.add("active");
             }, 10);
@@ -396,37 +389,35 @@
         }
 
         // =====================================
-        // ЛОГИКА ЗАГРУЗОЧНОГО ЭКРАНА
+        // ЛОГИКА ЗАГРУЗОЧНОГО ЭКРАНА И ФИКС СКРОЛЛА
         // =====================================
         const loaderProgress = document.querySelector('.loader-progress');
         const loadingScreen = document.getElementById('loading-screen');
-        const circumference = 402; // Длина окружности (из CSS)
-        
+        const circumference = 402; 
         let progress = 0;
         
-        // Интервал заполнения кольца (каждые 30 мс прибавляем чуть-чуть процентов)
         const loadingInterval = setInterval(() => {
-            progress += Math.random() * 3 + 1; // Случайный шаг от 1 до 4 для реалистичности
+            progress += Math.random() * 3 + 1; 
             
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(loadingInterval);
                 
-                // Как только дошло до 100%, ждем 200мс для красоты и скрываем экран
                 setTimeout(() => {
                     loadingScreen.style.opacity = '0';
                     loadingScreen.style.visibility = 'hidden';
                     
-                    // Разрешаем скролл и показываем нижнее меню
-                    document.body.classList.add('loaded');
+                    // ВАЖНО: Разрешаем скроллить страницу!
+                    document.body.classList.remove('is-loading');
                     
-                    // СРАЗУ запускаем анимацию выезда главного меню
+                    // Показываем нижнее меню
+                    document.body.classList.add('is-ready');
+                    
                     openPage('home');
                     
                 }, 200);
             }
             
-            // Вычисляем, насколько кольцо должно быть заполнено
             const offset = circumference - (progress / 100) * circumference;
             loaderProgress.style.strokeDashoffset = offset;
             
