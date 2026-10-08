@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vetruch GiftBot</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            background: #171b22;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #aeb5c1;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .menu {
+            display: grid;
+            gap: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            border: 0;
+            border-radius: 14px;
+            background: #2d8cff;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Vetruch GiftBot</h1>
+    <p class="subtitle">Главное меню</p>
+
+    <div class="menu">
+        <button onclick="showMessage('👤 Профиль')">👤 Профиль</button>
+        <button onclick="showMessage('📋 Задания')">📋 Задания</button>
+        <button onclick="showMessage('🛒 Магазин')">🛒 Магазин</button>
+        <button onclick="showMessage('🎮 Игры')">🎮 Игры</button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+
+        tg.ready();
+        tg.expand();
+
+        function showMessage(text) {
+            tg.showAlert(text + '\n\nЭтот раздел пока в разработке.');
+        }
+    </script>
+
+</body>
+</html>
