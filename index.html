@@ -230,25 +230,68 @@
 }
 
 /* Точки размещаются в ячейках сетки 3×3 */
-.die-pips[data-value="1"]::before { grid-area: 2 / 2; }
-
-.die-pips[data-value="2"]::before {
-    box-shadow:
-        0 0 5px #00eaff, 0 0 10px #008cff,
-        14px 14px 0 0 #00eaff,
-        14px 14px 5px 0 #008cff;
-    transform: translate(-7px, -7px);
+.die-pips {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
 }
 
-.die-pips[data-value="3"]::before {
-    box-shadow:
-        0 0 5px #00eaff, 0 0 10px #008cff,
-        7px 7px 0 0 #00eaff,
-        7px 7px 5px 0 #008cff,
-        14px 14px 0 0 #00eaff,
-        14px 14px 5px 0 #008cff;
-    transform: translate(-7px, -7px);
+.die-pips i {
+    display: none;
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #00eaff;
+    box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
 }
+
+/* 1 — центр */
+.die-pips[data-value="1"] i:nth-child(1) {
+    display: block;
+    top: 9px;
+    left: 9px;
+}
+
+/* 2 — диагональ */
+.die-pips[data-value="2"] i:nth-child(1),
+.die-pips[data-value="2"] i:nth-child(2) {
+    display: block;
+}
+.die-pips[data-value="2"] i:nth-child(1) { top: 0; left: 0; }
+.die-pips[data-value="2"] i:nth-child(2) { right: 0; bottom: 0; }
+
+/* 3 — диагональ и центр */
+.die-pips[data-value="3"] i:nth-child(-n+3) { display: block; }
+.die-pips[data-value="3"] i:nth-child(1) { top: 0; left: 0; }
+.die-pips[data-value="3"] i:nth-child(2) { top: 9px; left: 9px; }
+.die-pips[data-value="3"] i:nth-child(3) { right: 0; bottom: 0; }
+
+/* 4 — четыре угла */
+.die-pips[data-value="4"] i:nth-child(-n+4) { display: block; }
+.die-pips[data-value="4"] i:nth-child(1) { top: 0; left: 0; }
+.die-pips[data-value="4"] i:nth-child(2) { top: 0; right: 0; }
+.die-pips[data-value="4"] i:nth-child(3) { bottom: 0; left: 0; }
+.die-pips[data-value="4"] i:nth-child(4) { right: 0; bottom: 0; }
+
+/* 5 — четыре угла и центр */
+.die-pips[data-value="5"] i:nth-child(-n+5) { display: block; }
+.die-pips[data-value="5"] i:nth-child(1) { top: 0; left: 0; }
+.die-pips[data-value="5"] i:nth-child(2) { top: 0; right: 0; }
+.die-pips[data-value="5"] i:nth-child(3) { top: 9px; left: 9px; }
+.die-pips[data-value="5"] i:nth-child(4) { bottom: 0; left: 0; }
+.die-pips[data-value="5"] i:nth-child(5) { right: 0; bottom: 0; }
+
+/* 6 — две колонки по три */
+.die-pips[data-value="6"] i { display: block; }
+.die-pips[data-value="6"] i:nth-child(1) { top: 0; left: 0; }
+.die-pips[data-value="6"] i:nth-child(2) { top: 0; right: 0; }
+.die-pips[data-value="6"] i:nth-child(3) { top: 9px; left: 0; }
+.die-pips[data-value="6"] i:nth-child(4) { top: 9px; right: 0; }
+.die-pips[data-value="6"] i:nth-child(5) { bottom: 0; left: 0; }
+.die-pips[data-value="6"] i:nth-child(6) { right: 0; bottom: 0; }
+
 
 
 .preview-die.rolling {
