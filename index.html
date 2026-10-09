@@ -196,10 +196,24 @@
     font-style: normal;
 }
 
-.card-diamond { transform: translateY(5px) rotate(-18deg); }
-.card-heart   { transform: translateY(1px) rotate(-7deg); }
-.card-spade   { transform: translateY(1px) rotate(7deg); }
-.card-club    { transform: translateY(5px) rotate(18deg); }
+..card-diamond { --card-angle: -18deg; animation-delay: 0s; }
+.card-heart   { --card-angle: -7deg;  animation-delay: 0.5s; }
+.card-spade   { --card-angle: 7deg;   animation-delay: 1s; }
+.card-club    { --card-angle: 18deg;  animation-delay: 1.5s; }
+
+.mini-card {
+    animation: cardLift 2s ease-in-out infinite;
+}
+
+@keyframes cardLift {
+    0%, 20%, 100% {
+        transform: translateY(0) rotate(var(--card-angle));
+    }
+    8%, 14% {
+        transform: translateY(-9px) rotate(var(--card-angle));
+    }
+}
+
 
         
         .balloon-preview {
