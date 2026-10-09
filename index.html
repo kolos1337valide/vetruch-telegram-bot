@@ -55,6 +55,7 @@
         .loader-wordmark { position: absolute; color: #f4fbff; font-size: 31px; font-weight: 700; letter-spacing: 2px; opacity: 1; white-space: nowrap; text-shadow: 0 0 18px rgba(91, 198, 255, 0.55); }
         .loader-wordmark span { display: inline-block; opacity: 0; transform: translateY(8px); }
         .loader-wordmark.show span { animation: letterReveal 0.15s ease forwards; }
+        
         .loader-wordmark.show span:nth-child(1) { animation-delay: 0s; }
         .loader-wordmark.show span:nth-child(2) { animation-delay: 0.08s; }
         .loader-wordmark.show span:nth-child(3) { animation-delay: 0.16s; }
@@ -117,6 +118,7 @@
         .podium-score { font-size: 12px; color: var(--secondary); margin-top: 5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .podium-score .coin-icon { width: 14px; height: 14px; }
 
+
         /* ================= СЕТКА ИГР 2x2 ================= */
         .games-grid {
             display: grid;
@@ -150,7 +152,6 @@
             font-size: 42px;
             margin-bottom: 12px;
             line-height: 1;
-            /* Единое синее свечение для всех иконок */
             filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));
         }
 
@@ -178,6 +179,7 @@
             font-weight: 600;
             opacity: 0.8;
         }
+
 
         /* НИЖНЕЕ МЕНЮ */
         .bottom-nav {
@@ -263,8 +265,6 @@
         <h2>🎮 Игры</h2>
         
         <div class="games-grid">
-            
-            <!-- МИНЫ -->
             <div class="game-card" onclick="window.location.href='mines.html'">
                 <div class="game-icon">💣</div>
                 <div class="game-title">Мины</div>
@@ -272,7 +272,6 @@
                 <div class="game-extra">Играть</div>
             </div>
 
-            <!-- КАРТЫ -->
             <div class="game-card" onclick="window.location.href='cards.html'">
                 <div class="game-icon">🃏</div>
                 <div class="game-title">Карты</div>
@@ -280,7 +279,6 @@
                 <div class="game-extra">Играть</div>
             </div>
 
-            <!-- ШАРИК -->
             <div class="game-card" onclick="window.location.href='balloon.html'">
                 <div class="game-icon">🎈</div>
                 <div class="game-title">Шарик</div>
@@ -288,14 +286,12 @@
                 <div class="game-extra">Играть</div>
             </div>
 
-            <!-- ИЗМЕНЕННАЯ КАРТОЧКА КОСТЕЙ -->
             <div class="game-card" onclick="window.location.href='dice.html'">
                 <div class="game-icon">🎲</div>
                 <div class="game-title">Кости</div>
                 <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
-
         </div>
     </main>
 
@@ -382,26 +378,42 @@
             initBalance();
         }
 
+        // ================= УМНЫЙ ПРЕЛОАДЕР (Показывает логотип ТОЛЬКО 1 раз за сессию) =================
         const loadingScreen = document.getElementById('loading-screen');
         const loaderLogo = document.querySelector('.loader-logo');
         const loaderWordmark = document.getElementById('loader-wordmark');
 
-        setTimeout(() => {
-            loaderLogo.classList.add('hide');
-            setTimeout(() => { 
-                loaderLogo.style.visibility = 'hidden'; 
-                loaderWordmark.classList.add('show'); 
-            }, 250); 
-        }, 750);
-
-        setTimeout(() => {
-            loadingScreen.style.opacity = '0';
-            loadingScreen.style.visibility = 'hidden';
+        if (sessionStorage.getItem('vetruch_loaded')) {
+            // Если уже загружали меню в этой сессии - пропускаем заставку
+            loadingScreen.style.display = 'none';
             document.body.classList.remove('is-loading');
             document.body.classList.add('is-ready');
             openPage('home');
-        }, 1700);
+        } else {
+            // Первый вход - показываем анимацию логотипа
+            sessionStorage.setItem('vetruch_loaded', 'true');
+            
+            setTimeout(() => {
+                loaderLogo.classList.add('hide');
+                setTimeout(() => { 
+                    loaderLogo.style.visibility = 'hidden'; 
+                    loaderWordmark.classList.add('show'); 
+                }, 250); 
+            }, 750);
 
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.visibility = 'hidden';
+                document.body.classList.remove('is-loading');
+                document.body.classList.add('is-ready');
+                openPage('home');
+                
+                // Физически удаляем блок, чтобы не мешал кликать
+                setTimeout(() => { loadingScreen.style.display = 'none'; }, 300);
+            }, 1700);
+        }
+
+        // Звезды
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let width = 0; let height = 0;
