@@ -161,7 +161,62 @@
     margin: 0 auto 12px;
     filter: none;
 }
+.bomb-preview {
+    position: relative;
+    width: 48px;
+    height: 58px;
+    margin: 0 auto 12px;
+    filter: none;
+}
 
+/* Сама бомба — немного меньше */
+.bomb-body {
+    position: absolute;
+    left: 8px;
+    top: 17px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 32% 25%, #31506d 0%, #102235 28%, #06101b 68%, #02070d 100%);
+    border: 1px solid #008cff;
+    box-shadow:
+        0 0 8px #008cff,
+        0 0 18px #006dcc,
+        0 0 30px rgba(0, 136, 255, 0.65),
+        inset -7px -8px 12px rgba(0, 0, 0, 0.75),
+        inset 4px 4px 8px rgba(0, 180, 255, 0.18);
+}
+
+/* Более длинный изогнутый фитилёк */
+.bomb-fuse {
+    position: absolute;
+    left: 29px;
+    top: 5px;
+    width: 13px;
+    height: 21px;
+    border-left: 2px solid #00d9ff;
+    border-top: 2px solid #00d9ff;
+    border-radius: 9px 0 0 0;
+    transform: rotate(25deg);
+    filter: drop-shadow(0 0 4px #0088ff);
+}
+
+/* Искра на конце фитилька */
+.bomb-spark {
+    position: absolute;
+    left: 36px;
+    top: 0;
+    color: #00eaff;
+    font-size: 13px;
+    line-height: 1;
+    text-shadow:
+        0 0 4px #00eaff,
+        0 0 10px #0088ff,
+        0 0 18px #0088ff;
+}
+
+        
 .mini-card {
     position: absolute;
     top: 7px;
