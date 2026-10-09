@@ -413,9 +413,30 @@
 }
 
 .upx-link-icon {
-    color: #c05cff;
-    font-size: 18px;
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #172b32;
+    color: #b64cff;
+    box-shadow:
+        0 0 8px rgba(182, 76, 255, 0.35),
+        inset 0 0 5px rgba(182, 76, 255, 0.15);
 }
+
+.upx-link-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: #c45cff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 4px #a936ff);
+}
+
 
 .upx-arrow {
     margin-left: auto;
