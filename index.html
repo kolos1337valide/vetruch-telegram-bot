@@ -206,11 +206,50 @@
 .die-bottom { transform: rotateX(-90deg) translateZ(21px); }
 
 .die-pips {
-    color: #00eaff;
-    font-size: 11px;
-    line-height: 1;
-    text-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
+    width: 72%;
+    height: 72%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    align-items: center;
+    justify-items: center;
 }
+
+.die-pips::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #00eaff;
+    box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
+}
+
+/* По умолчанию точки скрыты */
+.die-pips {
+    color: transparent;
+}
+
+/* Точки размещаются в ячейках сетки 3×3 */
+.die-pips[data-value="1"]::before { grid-area: 2 / 2; }
+
+.die-pips[data-value="2"]::before {
+    box-shadow:
+        0 0 5px #00eaff, 0 0 10px #008cff,
+        14px 14px 0 0 #00eaff,
+        14px 14px 5px 0 #008cff;
+    transform: translate(-7px, -7px);
+}
+
+.die-pips[data-value="3"]::before {
+    box-shadow:
+        0 0 5px #00eaff, 0 0 10px #008cff,
+        7px 7px 0 0 #00eaff,
+        7px 7px 5px 0 #008cff,
+        14px 14px 0 0 #00eaff,
+        14px 14px 5px 0 #008cff;
+    transform: translate(-7px, -7px);
+}
+
 
 .preview-die.rolling {
     animation: previewDieRoll 0.8s ease-in-out;
