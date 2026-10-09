@@ -545,6 +545,35 @@
     text-align: center;
 }
 
+.upx-task .upx-progress::before {
+    background: #30233d !important;
+    box-shadow: 0 0 6px rgba(126, 67, 170, 0.35);
+}
+
+.upx-task .upx-progress-line {
+    background: #754295 !important;
+    box-shadow: 0 0 7px rgba(150, 75, 200, 0.55);
+}
+
+.upx-task .upx-locks span {
+    border-color: #754295 !important;
+    background: #171022 !important;
+    color: #a476c2 !important;
+    box-shadow: 0 0 5px rgba(126, 67, 170, 0.4);
+}
+
+/* Первый кружок — серый и пустой */
+.upx-task .upx-locks .upx-open-circle {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #777985 !important;
+    border-radius: 50%;
+    background: #202129 !important;
+    box-shadow:
+        0 0 5px rgba(130, 130, 145, 0.35),
+        inset 0 0 4px rgba(0, 0, 0, 0.45);
+}
+
         
     </style>
 </head>
@@ -866,11 +895,11 @@
     <div class="upx-progress-line"></div>
 
     <div class="upx-locks">
-        <span>🔒</span>
-        <span>🔒</span>
-        <span>🔒</span>
-        <span>🔒</span>
-        <span>🔒</span>
+        <span class="upx-open-circle"></span>
+        <span>♙</span>
+        <span>♙</span>
+        <span>♙</span>
+        <span>♙</span>
     </div>
 </div>
 
