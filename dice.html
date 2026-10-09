@@ -21,7 +21,12 @@
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
 
-        /* ИСПРАВЛЕНИЕ: Убрал justify-content: space-between, чтобы элементы не сплющивались */
+        /* ЭКРАН ЗАГРУЗКИ ДЛЯ ИГРЫ (Моментально скроется JS скриптом) */
+        #loading-screen {
+            position: fixed; inset: 0; background: #000000; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+        }
+
         .game-container { 
             position: relative; z-index: 2; display: flex; flex-direction: column; 
             min-height: 100vh; padding: 15px 16px 60px 16px; 
@@ -44,13 +49,10 @@
         .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
         .info-val { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
 
-        /* ================= ИГРОВОЕ ПОЛЕ - ГОЛОГРАФИЧЕСКИЕ КУБИКИ ================= */
+        /* ================= ИГРОВОЕ ПОЛЕ - КУБИКИ (ИСПРАВЛЕНО) ================= */
         .dice-stage { 
             display: flex; justify-content: center; align-items: center; 
-            gap: 40px; /* Раздвинул кубики между собой */
-            /* ОГРОМНЫЕ ОТСТУПЫ СВЕРХУ И СНИЗУ: 80px сверху, 90px снизу */
-            margin: 80px 0 90px 0; 
-            perspective: 1000px;
+            gap: 40px; margin: 80px 0 90px 0; perspective: 1200px; /* Увеличил перспективу, чтобы не "разъезжались" */
         }
 
         .die-container {
@@ -62,14 +64,16 @@
         }
 
         .die-face {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(0, 136, 255, 0.15), rgba(0, 212, 255, 0.25));
-            border: 2px solid rgba(0, 212, 255, 0.6); 
-            border-radius: 12px;
-            box-shadow: inset 0 0 25px rgba(0, 136, 255, 0.4), 0 0 15px rgba(0, 136, 255, 0.2);
-            display: grid; padding: 12px;
+            position: absolute; width: 80px; height: 80px;
+            /* СДЕЛАЛ ТЕМНЫЙ ПЛОТНЫЙ ФОН И МЕНЬШЕ ЗАКРУГЛЕНИЯ */
+            background: #0a0e14; 
+            border: 2px solid rgba(0, 136, 255, 0.8); 
+            border-radius: 6px; 
+            box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.3), 0 0 5px rgba(0, 136, 255, 0.5);
+            display: grid; padding: 14px;
         }
 
+        /* 3D Грани: 40px - ровно половина от 80px, так формируется идеальный куб */
         .face-1 { transform: rotateY(0deg) translateZ(40px); }
         .face-2 { transform: rotateX(90deg) translateZ(40px); }
         .face-3 { transform: rotateY(90deg) translateZ(40px); }
@@ -77,12 +81,12 @@
         .face-5 { transform: rotateX(-90deg) translateZ(40px); }
         .face-6 { transform: rotateY(180deg) translateZ(40px); }
 
-        /* Светящиеся неоновые точки */
+        /* Точки */
         .dot { 
             background: #00ffff; 
             border-radius: 50%; 
             box-shadow: 0 0 8px #00ffff, 0 0 15px var(--blue-main); 
-            width: 14px; height: 14px; 
+            width: 12px; height: 12px; /* Сделал чуть меньше, чтобы красиво сидели */
             justify-self: center; align-self: center; 
         }
         
@@ -108,7 +112,6 @@
             background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); 
             border-radius: 20px; padding: 20px; z-index: 10;
             backdrop-filter: blur(10px); 
-            /* Убрал margin-top: auto; чтобы он просто шел вниз за кубиками */
         }
         
         .mode-tabs { display: flex; background: #0a0c10; border-radius: 12px; padding: 4px; margin-bottom: 15px; }
@@ -143,14 +146,18 @@
         .action-btn:disabled { opacity: 0.8; cursor: not-allowed; }
     </style>
 </head>
-<body>
+<body class="is-loading">
+
+    <div id="loading-screen">
+        <!-- Пустой черный экран, чтобы не мигало белым при загрузке. Уберем его сразу через JS -->
+    </div>
 
     <canvas id="stars"></canvas>
     <div class="dark-overlay"></div>
 
     <div class="game-container">
         
-        <!-- ВЕРХНИЙ БЛОК -->
+        <!-- Шапка -->
         <div class="top-section">
             <div class="header">
                 <button class="back-btn" onclick="goBack()">❮ Назад</button>
@@ -169,7 +176,7 @@
             </div>
         </div>
 
-        <!-- 3D Кубики (Голографические) -->
+        <!-- 3D Кубики -->
         <div class="dice-stage">
             <div class="die-container" id="die1">
                 <div class="die-face face-1"><div class="dot"></div></div>
@@ -223,6 +230,10 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+
+        // Моментально убираем загрузочный экран для игры
+        document.getElementById('loading-screen').style.display = 'none';
+        document.body.classList.remove('is-loading');
 
         // Логика ставок и РТП
         let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
