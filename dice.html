@@ -21,10 +21,17 @@
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
 
-        .game-container { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 100vh; padding: 20px 16px 40px 16px; }
+        /* Идеальное распределение пространства */
+        .game-container { 
+            position: relative; z-index: 2; display: flex; flex-direction: column; 
+            min-height: 100vh; padding: 15px 16px 30px 16px; 
+            justify-content: space-between; 
+        }
 
-        /* Шапка */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        /* ================= ВЕРХНИЙ БЛОК ================= */
+        .top-section { display: flex; flex-direction: column; gap: 10px; width: 100%; z-index: 10; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; }
         .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; height: 40px; padding: 0 14px; border-radius: 12px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
         .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
@@ -32,16 +39,17 @@
         .game-info-bar {
             display: flex; justify-content: space-between; align-items: center;
             background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 16px; border-radius: 14px; margin-bottom: 20px;
+            padding: 12px 16px; border-radius: 14px;
             backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
         .info-val { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
 
-        /* ИГРОВОЕ ПОЛЕ - КУБИКИ */
+        /* ================= ИГРОВОЕ ПОЛЕ - ГОЛОГРАФИЧЕСКИЕ КУБИКИ ================= */
         .dice-stage { 
-            display: flex; justify-content: center; align-items: center; gap: 20px;
-            flex: 1; padding: 20px 0; perspective: 1000px;
+            display: flex; justify-content: center; align-items: center; gap: 30px;
+            flex: 1 1 auto; /* Растягивается и центрирует кубики ровно посередине */
+            perspective: 1000px;
         }
 
         .die-container {
@@ -54,9 +62,11 @@
 
         .die-face {
             position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #ffffff, #e0e0e0);
-            border: 2px solid #ccc; border-radius: 12px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+            /* Голографический эффект */
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.15), rgba(0, 212, 255, 0.25));
+            border: 2px solid rgba(0, 212, 255, 0.6); 
+            border-radius: 12px;
+            box-shadow: inset 0 0 25px rgba(0, 136, 255, 0.4), 0 0 15px rgba(0, 136, 255, 0.2);
             display: grid; padding: 12px;
         }
 
@@ -67,7 +77,14 @@
         .face-5 { transform: rotateX(-90deg) translateZ(40px); }
         .face-6 { transform: rotateY(180deg) translateZ(40px); }
 
-        .dot { background: #1a1d24; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); width: 14px; height: 14px; justify-self: center; align-self: center; }
+        /* Светящиеся неоновые точки */
+        .dot { 
+            background: #00ffff; 
+            border-radius: 50%; 
+            box-shadow: 0 0 8px #00ffff, 0 0 15px var(--blue-main); 
+            width: 14px; height: 14px; 
+            justify-self: center; align-self: center; 
+        }
         
         .face-1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
         .face-2 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
@@ -86,55 +103,38 @@
         .face-5 .dot:nth-child(5) { grid-column: 3; grid-row: 3; }
         .face-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
 
-        /* ПАНЕЛЬ УПРАВЛЕНИЯ */
-        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
+        /* ================= ПАНЕЛЬ УПРАВЛЕНИЯ ================= */
+        .controls { 
+            background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 20px; padding: 20px; z-index: 10;
+            backdrop-filter: blur(10px); 
+        }
         
         .mode-tabs { display: flex; background: #0a0c10; border-radius: 12px; padding: 4px; margin-bottom: 15px; }
         .mode-btn { flex: 1; background: transparent; border: none; color: #8c97a7; padding: 10px; font-weight: 700; font-size: 13px; border-radius: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
         .mode-btn.active { background: rgba(0, 136, 255, 0.2); color: #fff; box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.3); }
 
-        /* КНОПКИ ВЫБОРА ЧИСЕЛ ВМЕСТО ПЛЮСОВ */
-        .target-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 15px;
-        }
+        .target-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 15px; }
         .target-btn {
-            background: #1a1d24;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
-            width: 42px; height: 42px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff;
+            width: 42px; height: 42px; border-radius: 10px; font-weight: 800; font-size: 16px;
+            cursor: pointer; transition: all 0.2s;
         }
         .target-btn.active {
-            background: rgba(0, 136, 255, 0.2);
-            border-color: var(--blue-main);
-            color: var(--blue-main);
-            box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.3);
-            transform: scale(1.05);
+            background: rgba(0, 136, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main);
+            box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.3); transform: scale(1.05);
         }
-        .target-btn:disabled {
-            opacity: 0.3; pointer-events: none;
-        }
+        .target-btn:disabled { opacity: 0.3; pointer-events: none; }
 
-        /* ПОКАЗ МНОЖИТЕЛЯ */
         .multiplier-badge { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); }
         .mult-label { font-size: 11px; color: var(--secondary); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
         .mult-value { font-size: 22px; font-weight: 800; color: #00cc66; text-shadow: 0 0 10px rgba(0, 204, 102, 0.3); }
 
-        /* Ставки */
         .bet-options { display: flex; gap: 8px; margin-bottom: 20px; }
         .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 14px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; font-size: 15px; }
         .bet-btn.active { background: rgba(0, 136, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
         .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
 
-        /* Главная кнопка */
         .action-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; color: #fff; background: var(--blue-main); cursor: pointer; box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .action-btn:active { transform: scale(0.97); }
         .action-btn.win { background: #00cc66; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
@@ -149,24 +149,26 @@
 
     <div class="game-container">
         
-        <!-- Шапка -->
-        <div class="header">
-            <button class="back-btn" onclick="goBack()">❮ Назад</button>
-            <div class="balance-pill">
-                <span id="balanceDisplay">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        <!-- ВЕРХНИЙ БЛОК: Шапка и Статистика -->
+        <div class="top-section">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">❮ Назад</button>
+                <div class="balance-pill">
+                    <span id="balanceDisplay">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+                </div>
+            </div>
+
+            <div class="game-info-bar">
+                <div class="info-item">Ставка: 
+                    <span class="info-val"><span id="infoBet">20</span> <img src="coins.png" class="coin-icon"></span>
+                </div>
+                <div class="info-item">Остаток: 
+                    <span class="info-val"><span id="infoBalance">500</span> <img src="coins.png" class="coin-icon"></span>
+                </div>
             </div>
         </div>
 
-        <div class="game-info-bar">
-            <div class="info-item">Ставка: 
-                <span class="info-val"><span id="infoBet">20</span> <img src="coins.png" class="coin-icon"></span>
-            </div>
-            <div class="info-item">Остаток: 
-                <span class="info-val"><span id="infoBalance">500</span> <img src="coins.png" class="coin-icon"></span>
-            </div>
-        </div>
-
-        <!-- 3D Кубики -->
+        <!-- 3D Кубики (Голографические) -->
         <div class="dice-stage">
             <div class="die-container" id="die1">
                 <div class="die-face face-1"><div class="dot"></div></div>
@@ -221,6 +223,7 @@
         const tg = window.Telegram.WebApp;
         tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
+        // Логика ставок и РТП
         let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
         let bet = 20;
         let mode = 'exact'; // 'under', 'exact', 'over'
@@ -228,8 +231,6 @@
         let currentMultiplier = 0.00;
         let isRolling = false;
 
-        // ЖЕСТКАЯ ТАБЛИЦА СБАЛАНСИРОВАННЫХ ИКСОВ
-        // Множители подогнаны под игру (нет меньше 1.07, ограничено 10-12)
         const MULTIPLIERS = {
             'exact': { 2:12.0, 3:10.0, 4:7.5, 5:5.5, 6:4.5, 7:3.5, 8:4.5, 9:5.5, 10:7.5, 11:10.0, 12:12.0 },
             'under': { 3:10.0, 4:8.0, 5:5.0, 6:3.2, 7:2.1, 8:1.6, 9:1.35, 10:1.18, 11:1.10, 12:1.07 },
@@ -267,7 +268,6 @@
             btn.classList.add('active');
         }
 
-        // Рендерим кнопки 2-12
         function initNumberButtons() {
             targetGrid.innerHTML = '';
             for(let i = 2; i <= 12; i++) {
@@ -291,10 +291,10 @@
             
             if(mode === 'under') {
                 document.getElementById('btnModeUnder').classList.add('active');
-                if(targetNum < 3) targetNum = 3;
+                if(targetNum < 3) targetNum = 3; 
             } else if (mode === 'over') {
                 document.getElementById('btnModeOver').classList.add('active');
-                if(targetNum > 11) targetNum = 11;
+                if(targetNum > 11) targetNum = 11; 
             } else {
                 document.getElementById('btnModeExact').classList.add('active');
             }
@@ -309,7 +309,6 @@
         }
 
         function updateModeUI() {
-            // Блокируем кнопки, которые не имеют смысла
             for(let i = 2; i <= 12; i++) {
                 let btn = document.getElementById(`btnNum_${i}`);
                 btn.classList.remove('active');
@@ -321,7 +320,6 @@
                 if (i === targetNum) btn.classList.add('active');
             }
 
-            // Устанавливаем Икс
             currentMultiplier = MULTIPLIERS[mode][targetNum];
             multDisplay.textContent = 'x' + currentMultiplier.toFixed(2);
             
@@ -332,7 +330,6 @@
             multDesc.textContent = `МНОЖИТЕЛЬ НА: ${desc}`;
         }
 
-        // ================= АНИМАЦИЯ И БРОСОК =================
         const diceRotations = {
             1: {x: 0, y: 0},
             2: {x: -90, y: 0},
@@ -354,7 +351,6 @@
             actionBtn.textContent = 'БРОСАЕМ...';
             actionBtn.disabled = true;
 
-            // Блокируем кнопки выбора чисел во время броска
             document.querySelectorAll('.target-btn').forEach(b => b.disabled = true);
 
             let r1 = Math.floor(Math.random() * 6) + 1;
@@ -395,9 +391,8 @@
             }
 
             isRolling = false;
-            updateModeUI(); // Разблокирует кнопки обратно
+            updateModeUI();
 
-            // Сброс вращений без анимации, чтобы следующий бросок тоже крутился
             setTimeout(() => {
                 if(!isRolling) {
                     die1El.style.transition = 'none';
