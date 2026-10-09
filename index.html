@@ -180,7 +180,7 @@
 
         h2.games-heading { text-align: left !important; margin-left: 0 !important; color: transparent !important; background: linear-gradient(90deg, #ffffff 0%, #73caff 55%, #168bff 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; }
 
-        /* ================= ДИЗАЙН ЗАДАНИЙ (ЕДИНЫЙ) ================= */
+        /* ================= ДИЗАЙН ЗАДАНИЙ ================= */
         .featured-task {
             display: flex; align-items: flex-start; gap: 12px; padding: 16px;
             border: 1px solid #0875c9; border-radius: 18px;
@@ -200,15 +200,13 @@
         .featured-task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
         .featured-task-label { padding: 3px 9px; border-radius: 12px; background: #071a2c; color: #168bff; font-size: 12px; }
         
-        /* Белые монетки в наградах */
         .featured-task-reward { color: #ffffff !important; font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 4px;}
 
         .featured-task-title { color: #f1f1f5; font-size: 16px; line-height: 1.2; font-weight: 700; }
         .featured-task-description { margin: 12px 0 0 -56px; width: calc(100% + 56px); color: #85859f; font-size: 14px; line-height: 1.3; }
         .featured-task-icon svg { width: 22px; height: 22px; fill: none; stroke: #168bff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-
-        /* ================= МОДАЛЬНОЕ ОКНО ДЛЯ ЗАДАНИЙ ================= */
+        /* ================= ПРЕМИАЛЬНОЕ МОДАЛЬНОЕ ОКНО ДЛЯ ЗАДАНИЙ ================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); 
@@ -435,8 +433,8 @@
     <main id="tasks" class="page">
         <h2 class="games-heading">Задания</h2>
 
-        <!-- Задание: Телеграм -->
-        <div class="task-card featured-task" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true)">
+        <!-- Задание: Подписка ТГ -->
+        <div class="task-card featured-task" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 3 14.5 21l-3.8-7.7L3 9.5 21 3Z"></path>
@@ -457,8 +455,8 @@
             </div>
         </div>
 
-        <!-- Задание: YouTube -->
-        <div class="task-card featured-task" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false)">
+        <!-- Задание: Подписка YT -->
+        <div class="task-card featured-task" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="3" y="6" width="18" height="13" rx="2"></rect>
@@ -478,9 +476,9 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Задание: Привязать Kick -->
-        <div class="task-card featured-task" onclick="openTaskModal('Привязать Kick', 'https://kick.com/', false)">
+
+        <!-- Задание: Подписка Kick -->
+        <div class="task-card featured-task" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"></path>
@@ -489,18 +487,18 @@
             </div>
             <div class="featured-task-content">
                 <div class="featured-task-top">
-                    <span class="featured-task-label">Kick</span>
+                    <span class="featured-task-label">Подписка</span>
                     <span class="featured-task-reward">
                         <img src="coins.png" alt="" class="coin-icon"> 200
                     </span>
                 </div>
-                <div class="featured-task-title">Привязать аккаунт Kick</div>
-                <div class="featured-task-description">Зарегистрируйся на Kick и привяжи свой аккаунт для получения наград.</div>
+                <div class="featured-task-title">Подписаться на Kick</div>
+                <div class="featured-task-description">Зарегистрируйся на Kick и подпишись на канал для получения наград.</div>
             </div>
         </div>
-        
-        <!-- Задание: Ник на Kick Vetruch -->
-        <div class="task-card featured-task" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/', false)">
+
+        <!-- Задание: Ник на Kick -->
+        <div class="task-card featured-task" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -518,9 +516,9 @@
                 <div class="featured-task-description">Измени свой никнейм на Kick, добавив "Vetruch", и забери бонус.</div>
             </div>
         </div>
-        
-        <!-- Задание: Пригласить 3 друзей -->
-        <div class="task-card featured-task" onclick="openTaskModal('Пригласить друзей', 'https://t.me/share/url?url=https://t.me/VetruchFarm_bot', true)">
+
+        <!-- Задание: Пригласить друзей -->
+        <div class="task-card featured-task" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -537,12 +535,12 @@
                     </span>
                 </div>
                 <div class="featured-task-title">Пригласить 3 друзей</div>
-                <div class="featured-task-description">Пригласи 3 друзей в бота по своей реферальной ссылке.</div>
+                <div class="featured-task-description">Пригласи 3 друзей в бота по своей персональной ссылке.</div>
             </div>
         </div>
-        
+
         <!-- Задание: 3 сообщения на стриме -->
-        <div class="task-card featured-task" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false)">
+        <div class="task-card featured-task" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -559,9 +557,9 @@
                 <div class="featured-task-description">Напиши минимум 3 адекватных сообщения на активном стриме.</div>
             </div>
         </div>
-        
-        <!-- Задание: Деп на UP-X -->
-        <div class="task-card featured-task" onclick="openTaskModal('Депозит UP-X', 'https://up-x.com/', false)">
+
+        <!-- Задание: Деп UP-X -->
+        <div class="task-card featured-task" onclick="openTaskModal('Депозит на UP-X', 'https://up-click-me.top/tfevgr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
@@ -578,9 +576,9 @@
                 <div class="featured-task-description">Зарегистрируйся и сделай любой депозит на сайте UP-X.</div>
             </div>
         </div>
-        
-        <!-- Задание: Деп на JetTon -->
-        <div class="task-card featured-task" onclick="openTaskModal('Депозит JetTon', 'https://t.me/jetton', true)">
+
+        <!-- Задание: Деп JetTon -->
+        <div class="task-card featured-task" onclick="openTaskModal('Депозит JetTon', 'https://jettredravon.com/cihFhEkPODc?click_id=%7Bclick_id%7D&target_id=/&target_type=registration', false, 'ПЕРЕЙТИ НА САЙТ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -596,7 +594,7 @@
                     </span>
                 </div>
                 <div class="featured-task-title">Депозит на JetTon</div>
-                <div class="featured-task-description">Зарегистрируйся и пополни счет в JetTon Games через Telegram.</div>
+                <div class="featured-task-description">Зарегистрируйся и пополни счет в JetTon Games.</div>
             </div>
         </div>
 
@@ -687,10 +685,22 @@
         }
 
         // ================= ЛОГИКА МОДАЛЬНОГО ОКНА =================
-        function openTaskModal(title, url, isTg) {
+        function openTaskModal(title, url, isTg, btnText) {
             document.getElementById('modalTitle').textContent = title;
-            
             const linkBtn = document.getElementById('modalLink');
+            
+            // Динамический текст кнопки
+            linkBtn.textContent = btnText || "ПЕРЕЙТИ";
+            
+            // Если это кнопка рефералки (спец. параметр 'REF')
+            if (url === 'REF') {
+                let userId = '0';
+                if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                    userId = tg.initDataUnsafe.user.id;
+                }
+                // Генерируем ссылку с ID юзера
+                url = `https://t.me/share/url?url=https://t.me/VetruchFarm_bot?start=${userId}&text=Заходи%20играть%20в%20Vetruch%20Games%20со%20мной!`;
+            }
             
             linkBtn.onclick = function(e) {
                 e.preventDefault();
@@ -707,6 +717,7 @@
                 document.getElementById('modalHint').style.display = 'none';
             }
             
+            // Очищаем инпуты
             document.getElementById('modalUsername').value = '';
             document.getElementById('modalFileName').textContent = '📷 Загрузить скриншот';
             document.getElementById('modalFileName').style.color = '#0088ff'; 
@@ -742,11 +753,13 @@
         let savedTab = sessionStorage.getItem('vetruch_active_tab') || 'home';
 
         if (sessionStorage.getItem('vetruch_loaded')) {
+            // Если уже заходили в бота - СРАЗУ выключаем заставку
             loadingScreen.style.display = 'none';
             document.body.classList.remove('is-loading');
             document.body.classList.add('is-ready');
             openPage(savedTab);
         } else {
+            // Первый вход в бота - показываем быструю анимацию
             sessionStorage.setItem('vetruch_loaded', 'true');
             
             setTimeout(() => {
