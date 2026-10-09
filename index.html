@@ -274,6 +274,37 @@
         .nav-button:active { transform: scale(0.92); }
         .nav-button.active { color: var(--blue-main); }
         .nav-button.active svg { stroke: var(--blue-main); filter: drop-shadow(0 0 6px var(--blue-glow)); transform: translateY(-2px); }
+
+.invite-progress {
+    width: 100%;
+    margin-top: 14px;
+}
+
+.invite-progress-count {
+    display: block;
+    margin-bottom: 7px;
+    text-align: right;
+    color: #e5e5eb;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.invite-progress-track {
+    width: 100%;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #24242c;
+}
+
+.invite-progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: #777983;
+}
+
+        
     </style>
 </head>
 
@@ -534,8 +565,22 @@
                         <img src="coins.png" alt="" class="coin-icon"> 500
                     </span>
                 </div>
-                <div class="featured-task-title">Пригласить 3 друзей</div>
-                <div class="featured-task-description">Пригласи 3 друзей в бота по своей персональной ссылке.</div>
+                <div class="featured-task-title">Пригласи 3 друзей</div>
+
+<div class="featured-task-description">
+    Пригласи 3 друзей в бота по своей персональной ссылке.
+</div>
+
+<div class="invite-progress">
+    <span class="invite-progress-count">0 / 3</span>
+    <div class="invite-progress-track">
+        <div class="invite-progress-fill"></div>
+    </div>
+</div>
+</div>
+</div>
+
+
             </div>
         </div>
 
