@@ -163,6 +163,34 @@
     margin: 0 auto 12px;
     animation: balloonPreviewFloat 2s ease-in-out infinite;
 }
+        .dice-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 54px;
+    margin-bottom: 12px;
+}
+
+.preview-die {
+    display: inline-block;
+    color: #00eaff;
+    font-size: 30px;
+    line-height: 1;
+    filter: drop-shadow(0 0 5px #00eaff) drop-shadow(0 0 12px #0088ff);
+    animation: diceRoll 0.7s ease-in-out;
+}
+
+#previewDie2 {
+    animation-delay: 1.4s;
+}
+
+@keyframes diceRoll {
+    0% { transform: rotate(0) scale(1); }
+    45% { transform: rotate(180deg) scale(1.15); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
 
 .balloon-shape {
     position: absolute;
