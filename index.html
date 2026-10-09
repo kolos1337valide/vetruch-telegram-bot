@@ -572,17 +572,23 @@
     </script>
     
     <script>
-    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-    const previewDie1 = document.getElementById("previewDie1");
-    const previewDie2 = document.getElementById("previewDie2");
+    const previewDie = document.getElementById("previewDie");
+    const previewFaces = previewDie.querySelectorAll(".die-pips");
 
-    function rollPreviewDice() {
-        previewDie1.textContent = diceFaces[Math.floor(Math.random() * 6)];
-        previewDie2.textContent = diceFaces[Math.floor(Math.random() * 6)];
+    function rollPreviewDie() {
+        previewDie.classList.remove("rolling");
+        void previewDie.offsetWidth;
+
+        previewFaces.forEach(face => {
+            const value = Math.floor(Math.random() * 6) + 1;
+            face.textContent = "● ".repeat(value).trim();
+        });
+
+        previewDie.classList.add("rolling");
     }
 
-    rollPreviewDice();
-    setInterval(rollPreviewDice, 4000);
+    rollPreviewDie();
+    setInterval(rollPreviewDie, 3000);
 </script>
 
 </body>
