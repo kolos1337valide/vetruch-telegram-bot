@@ -533,5 +533,20 @@
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas(); drawStars();
     </script>
+    
+    <script>
+    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+    const previewDie1 = document.getElementById("previewDie1");
+    const previewDie2 = document.getElementById("previewDie2");
+
+    function rollPreviewDice() {
+        previewDie1.textContent = diceFaces[Math.floor(Math.random() * 6)];
+        previewDie2.textContent = diceFaces[Math.floor(Math.random() * 6)];
+    }
+
+    rollPreviewDice();
+    setInterval(rollPreviewDice, 4000);
+</script>
+
 </body>
 </html>
