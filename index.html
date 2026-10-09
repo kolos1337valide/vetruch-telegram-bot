@@ -479,6 +479,65 @@
     box-sizing: border-box !important;
 }
 
+.upx-task .upx-progress {
+    position: relative;
+    width: calc(100% + 56px) !important;
+    height: 25px;
+    margin-top: 14px;
+    margin-left: -56px !important;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+/* Серая/фиолетовая линия на всю ширину */
+.upx-task .upx-progress::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 11px;
+    height: 5px;
+    border-radius: 5px;
+    background: #292331;
+}
+
+/* Заполненная часть пока пустая */
+.upx-task .upx-progress-line {
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 0%;
+    height: 5px;
+    border-radius: 5px;
+    background: #754295;
+    z-index: 1;
+}
+
+/* Пять кружков равномерно на линии */
+.upx-task .upx-locks {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+/* Кружок с замочком */
+.upx-task .upx-locks span {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    border: 1px solid #56327a;
+    border-radius: 50%;
+    background: #171022;
+    color: #8c6ca5;
+    font-size: 10px;
+    line-height: 1;
+}
+
         
     </style>
 </head>
@@ -795,9 +854,19 @@
             </span>
         </div>
 
-        <div class="upx-progress">
-            <div class="upx-progress-line"></div>
-        </div>
+       
+            <div class="upx-progress">
+    <div class="upx-progress-line"></div>
+
+    <div class="upx-locks">
+        <span>🔒</span>
+        <span>🔒</span>
+        <span>🔒</span>
+        <span>🔒</span>
+        <span>🔒</span>
+    </div>
+</div>
+
 
         <button class="upx-button"
                 onclick="event.stopPropagation(); openTaskModal('Привязка UP-X', 'https://up-click-me.top/feygr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
