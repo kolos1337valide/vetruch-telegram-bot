@@ -153,21 +153,78 @@
         .podium-score .coin-icon { width: 14px; height: 14px; }
 
         /* ================= СЕТКА ИГР 2x2 ================= */
-        .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
-        .game-card { background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%); border: 2px solid rgba(0, 136, 255, 0.35); border-radius: 16px; padding: 24px 10px 16px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; transition: all 0.2s ease; box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.05), 0 4px 15px rgba(0,0,0,0.4); }
-        .game-card:active { transform: scale(0.95); border-color: rgba(0, 136, 255, 0.8); box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.15), 0 0 15px rgba(0, 136, 255, 0.3); }
-        .game-icon { font-size: 42px; margin-bottom: 12px; line-height: 1; filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8)); }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .game-card {
+            background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
+            border: 2px solid rgba(0, 136, 255, 0.35); 
+            border-radius: 16px;
+            padding: 24px 10px 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.05), 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .game-card:active {
+            transform: scale(0.95);
+            border-color: rgba(0, 136, 255, 0.8);
+            box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.15), 0 0 15px rgba(0, 136, 255, 0.3);
+        }
+
+        .game-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+            line-height: 1;
+            /* Единое синее свечение для всех иконок */
+            filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));
+        }
         
-        .cards-preview { position: relative; width: 82px; height: 54px; margin: 0 auto 12px; filter: none; }
-        .bomb-preview { position: relative; width: 48px; height: 58px; margin: 0 auto 12px; filter: none; transform: rotate(-10deg); animation: bombPulse 2s ease-in-out infinite; }
-        @keyframes bombPulse { 0%, 100% { transform: rotate(-10deg) scale(1); } 50% { transform: rotate(2deg) scale(1.12); } }
-        .bomb-body { position: absolute; left: 8px; top: 17px; width: 35px; height: 35px; border-radius: 50%; background: radial-gradient(circle at 32% 25%, #31506d 0%, #102235 28%, #06101b 68%, #02070d 100%); border: 1px solid #008cff; box-shadow: 0 0 8px #008cff, 0 0 18px #006dcc, 0 0 30px rgba(0, 136, 255, 0.65), inset -7px -8px 12px rgba(0, 0, 0, 0.75), inset 4px 4px 8px rgba(0, 180, 255, 0.18); }
-        .bomb-fuse { position: absolute; left: 29px; top: 5px; width: 13px; height: 21px; border-left: 2px solid #00d9ff; border-top: 2px solid #00d9ff; border-radius: 9px 0 0 0; transform: rotate(25deg); filter: drop-shadow(0 0 4px #0088ff); }
-        .bomb-spark { position: absolute; left: 36px; top: 0; color: #00eaff; font-size: 13px; line-height: 1; text-shadow: 0 0 4px #00eaff, 0 0 10px #0088ff, 0 0 18px #0088ff; }
+        .cards-preview {
+            position: relative; width: 82px; height: 54px; margin: 0 auto 12px; filter: none;
+        }
+        .bomb-preview {
+            position: relative; width: 48px; height: 58px; margin: 0 auto 12px; filter: none; transform: rotate(-10deg);
+            animation: bombPulse 2s ease-in-out infinite;
+        }
+        @keyframes bombPulse {
+            0%, 100% { transform: rotate(-10deg) scale(1); }
+            50% { transform: rotate(2deg) scale(1.12); }
+        }
+
+        .bomb-body {
+            position: absolute; left: 8px; top: 17px; width: 35px; height: 35px; border-radius: 50%;
+            background: radial-gradient(circle at 32% 25%, #31506d 0%, #102235 28%, #06101b 68%, #02070d 100%);
+            border: 1px solid #008cff;
+            box-shadow: 0 0 8px #008cff, 0 0 18px #006dcc, 0 0 30px rgba(0, 136, 255, 0.65), inset -7px -8px 12px rgba(0, 0, 0, 0.75), inset 4px 4px 8px rgba(0, 180, 255, 0.18);
+        }
+
+        .bomb-fuse {
+            position: absolute; left: 29px; top: 5px; width: 13px; height: 21px; border-left: 2px solid #00d9ff; border-top: 2px solid #00d9ff; border-radius: 9px 0 0 0;
+            transform: rotate(25deg); filter: drop-shadow(0 0 4px #0088ff);
+        }
+
+        .bomb-spark {
+            position: absolute; left: 36px; top: 0; color: #00eaff; font-size: 13px; line-height: 1;
+            text-shadow: 0 0 4px #00eaff, 0 0 10px #0088ff, 0 0 18px #0088ff;
+        }
         
-        .mini-card { position: absolute; top: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 27px; height: 40px; box-sizing: border-box; border: 1px solid #159dff; border-radius: 4px; background: linear-gradient(145deg, #10243a, #050b14); color: #37dfff; box-shadow: 0 0 7px rgba(0, 153, 255, 0.8), inset 0 0 6px rgba(0, 153, 255, 0.25); text-shadow: 0 0 5px #00cfff; }
+        .mini-card {
+            position: absolute; top: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 27px; height: 40px; box-sizing: border-box; border: 1px solid #159dff; border-radius: 4px; background: linear-gradient(145deg, #10243a, #050b14); color: #37dfff; box-shadow: 0 0 7px rgba(0, 153, 255, 0.8), inset 0 0 6px rgba(0, 153, 255, 0.25); text-shadow: 0 0 5px #00cfff;
+        }
+
         .mini-card b { font-size: 11px; line-height: 12px; }
         .mini-card i { font-size: 12px; line-height: 13px; font-style: normal; }
+
         .card-diamond { left: 2px;  top: 12px; transform: rotate(-18deg); z-index: 1; }
         .card-heart   { left: 16px; top: 7px;  transform: rotate(-6deg);  z-index: 2; }
         .card-spade   { left: 30px; top: 7px;  transform: rotate(6deg);   z-index: 3; }
@@ -177,14 +234,20 @@
         .dice-preview { width: 70px; height: 70px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; perspective: 220px; filter: none; }
         .preview-die { position: relative; width: 42px; height: 42px; transform-style: preserve-3d; transform: rotateX(-20deg) rotateY(-35deg); }
         .die-face { position: absolute; inset: 0; box-sizing: border-box; border: 2px solid #008cff; border-radius: 5px; background: linear-gradient(145deg, #101d2a, #050a10); box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.2); display: flex; align-items: center; justify-content: center; backface-visibility: hidden; }
+        
         .die-front  { transform: translateZ(21px); }
         .die-back   { transform: rotateY(180deg) translateZ(21px); }
         .die-right  { transform: rotateY(90deg) translateZ(21px); }
         .die-left   { transform: rotateY(-90deg) translateZ(21px); }
         .die-top    { transform: rotateX(90deg) translateZ(21px); }
         .die-bottom { transform: rotateX(-90deg) translateZ(21px); }
-        .die-pips { width: 72%; height: 72%; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); align-items: center; justify-items: center; color: transparent; position: relative; display: block; width: 24px; height: 24px; }
+
+        .die-pips { width: 72%; height: 72%; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); align-items: center; justify-items: center; }
+        .die-pips::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #00eaff; box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff; }
+
+        .die-pips { color: transparent; position: relative; display: block; width: 24px; height: 24px; }
         .die-pips i { display: none; position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #00eaff; box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff; }
+
         .die-pips[data-value="1"] i:nth-child(1) { display: block; top: 9px; left: 9px; }
         .die-pips[data-value="2"] i:nth-child(1), .die-pips[data-value="2"] i:nth-child(2) { display: block; }
         .die-pips[data-value="2"] i:nth-child(1) { top: 0; left: 0; } .die-pips[data-value="2"] i:nth-child(2) { right: 0; bottom: 0; }
@@ -203,13 +266,20 @@
         .balloon-shape { position: absolute; left: 9px; top: 0; width: 30px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #b8f8ff, #00d9ff 35%, #0088ff 78%); box-shadow: 0 0 10px #00d9ff, 0 0 24px #0088ff, 0 0 38px rgba(0, 136, 255, 0.8); }
         .balloon-string { position: absolute; top: 31px; left: 21px; width: 12px; height: 30px; overflow: visible; fill: none; filter: drop-shadow(0 0 4px #0088ff); }
         .balloon-string path { fill: none; stroke: #00d9ff; stroke-width: 2; stroke-linecap: round; }
+
         @keyframes balloonPreviewFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
         .game-title { font-size: 16px; font-weight: 800; color: #fff; margin: 0 0 4px 0; letter-spacing: 0.5px; text-transform: uppercase; }
         .game-subtitle { font-size: 11px; color: var(--secondary); margin: 0 0 8px 0; display: flex; align-items: center; justify-content: center; }
         .game-extra { font-size: 10px; color: var(--blue-main); font-weight: 600; opacity: 0.8; }
 
+        .games-history { position: static !important; display: block !important; width: 100%; margin: 48px 0 0 !important; padding: 0; text-align: center; transform: none !important; }
+        .games-history h2.games-heading { display: block; width: 100%; margin: 0 0 28px !important; text-align: left !important; font-size: 20px !important; line-height: 1.2; color: #dce7e7 !important; background: none !important; -webkit-text-fill-color: #dce7e7 !important; padding-left: 0px; box-sizing: border-box; }
+        .games-history-list { width: 100%; text-align: center; }
+        .history-empty { margin: 0 !important; text-align: center; font-size: 16px; }
+
         h2.games-heading { text-align: left !important; margin-left: 0 !important; color: transparent !important; background: linear-gradient(90deg, #ffffff 0%, #73caff 55%, #168bff 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; }
+
 
         /* ================= ДИЗАЙН ЗАДАНИЙ ================= */
         .featured-task {
@@ -217,10 +287,8 @@
             border: 1px solid #0875c9; border-radius: 18px;
             background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
             box-sizing: border-box; margin-bottom: 15px;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-            cursor: pointer;
+            cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;
         }
-
         .featured-task:active { transform: scale(0.97); border-color: var(--blue-main); }
 
         .featured-task-icon {
@@ -229,18 +297,32 @@
             font-size: 25px; filter: drop-shadow(0 0 7px rgba(0, 136, 255, 0.45));
         }
         
-        .featured-task-icon svg { width: 22px; height: 22px; fill: none; stroke: #168bff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-
         .featured-task-content { flex: 1; min-width: 0; }
         .featured-task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
         .featured-task-label { padding: 3px 9px; border-radius: 12px; background: #071a2c; color: #168bff; font-size: 12px; }
-        .featured-task-reward { color: #f1f1f5; font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+        
+        /* Белые монетки в наградах */
+        .featured-task-reward { color: #ffffff !important; font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 4px;}
+        .youtube-task-reward { color: #ffffff !important; font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+
         .featured-task-title { color: #f1f1f5; font-size: 16px; line-height: 1.2; font-weight: 700; }
         .featured-task-description { margin: 12px 0 0 -56px; width: calc(100% + 56px); color: #85859f; font-size: 14px; line-height: 1.3; }
 
-        .youtube-task { border: 1px solid #0875c9 !important; background: rgba(10, 14, 22, 0.88) !important; }
+        .featured-task .task-icon, .featured-task .featured-task-icon { width: 44px !important; height: 44px !important; flex: 0 0 44px !important; border-radius: 13px !important; background: #071a2c !important; color: #168bff !important; filter: none !important; box-shadow: none !important; }
+        .featured-task-icon { background: #071a2c !important; color: #168bff !important; }
+        .featured-task-icon svg { width: 22px; height: 22px; fill: none; stroke: #168bff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+        .youtube-task .task-header { display: flex; align-items: center; gap: 12px; }
+        .youtube-task .task-icon { width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center; border-radius: 13px; background: #071a2c; box-shadow: 0 0 12px rgba(0, 136, 255, 0.35); }
         .youtube-icon svg { width: 27px; height: 27px; fill: none; stroke: #168bff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 5px #008cff); }
-        .youtube-task-reward { color: #00d995; font-weight: 700; }
+        .youtube-label { display: inline-block; margin-bottom: 4px; padding: 3px 9px; border-radius: 10px; background: #071a2c; color: #168bff; font-size: 12px; }
+        .youtube-task h4 { margin: 0; }
+        .youtube-task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+        .youtube-task-reward .coin-icon { width: 14px; height: 14px; vertical-align: middle; }
+        .youtube-task { width: 100%; min-height: 0 !important; height: auto !important; padding: 16px !important; box-sizing: border-box; border: 1px solid #0875c9 !important; border-radius: 18px; background: rgba(10, 14, 22, 0.88) !important; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;}
+        .youtube-task:active { transform: scale(0.97); border-color: var(--blue-main); }
+        .youtube-task .task-info { flex: 1; min-width: 0; }
+        .youtube-task-description { margin-top: 10px; color: #85859f; font-size: 14px; line-height: 1.3; }
 
         /* ================= МОДАЛЬНОЕ ОКНО ДЛЯ ЗАДАНИЙ ================= */
         .modal-overlay {
@@ -250,54 +332,39 @@
             opacity: 0; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { display: flex; opacity: 1; }
-        
         .modal-content {
             background: linear-gradient(180deg, rgba(20, 22, 28, 0.95) 0%, rgba(10, 12, 16, 0.98) 100%);
             border: 2px solid rgba(0, 136, 255, 0.5); box-shadow: 0 0 25px rgba(0, 136, 255, 0.2);
             border-radius: 16px; width: 90%; max-width: 400px; padding: 25px 20px;
-            position: relative; text-align: center;
-            transform: translateY(20px); transition: transform 0.3s ease;
+            position: relative; text-align: center; transform: translateY(20px); transition: transform 0.3s ease;
         }
         .modal-overlay.active .modal-content { transform: translateY(0); }
-        
         .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--secondary); font-size: 20px; cursor: pointer; transition: 0.2s; }
         .modal-close:active { transform: scale(0.9); color: #fff; }
-        
         .modal-link-btn { 
             background: rgba(0, 136, 255, 0.15); border: 1px solid var(--blue-main); color: var(--blue-main); 
             padding: 12px; border-radius: 10px; width: 100%; font-weight: 700; font-size: 15px; text-align: center; 
             display: block; text-decoration: none; transition: 0.2s; margin-bottom: 10px; cursor: pointer;
         }
         .modal-link-btn:active { background: var(--blue-main); color: #fff; transform: scale(0.97); }
-
         .verify-box { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; border: 1px dashed rgba(255,255,255,0.1); text-align: left; }
         .verify-box h5 { margin: 0 0 10px 0; font-size: 13px; color: var(--secondary); font-weight: 600; }
-        
         .task-input { 
             width: 100%; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; 
             padding: 12px; border-radius: 10px; font-family: 'Inter'; font-size: 14px; margin-bottom: 10px; outline: none; 
         }
         .task-input:focus { border-color: var(--blue-main); }
-        
         .file-upload-lbl { 
             display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; 
             background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: var(--secondary); 
             padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-bottom: 15px; font-size: 14px;
         }
         .file-upload-lbl input { display: none; }
-        
         .submit-task-btn { 
             width: 100%; background: var(--blue-main); color: #fff; border: none; 
-            padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s;
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+            padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s; box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
         }
         .submit-task-btn:active { transform: scale(0.97); }
-
-
-        .games-history { position: static !important; display: block !important; width: 100%; margin: 48px 0 0 !important; padding: 0; text-align: center; transform: none !important; }
-        .games-history h2.games-heading { display: block; width: 100%; margin: 0 0 28px !important; text-align: left !important; font-size: 20px !important; line-height: 1.2; color: #dce7e7 !important; background: none !important; -webkit-text-fill-color: #dce7e7 !important; padding-left: 0px; box-sizing: border-box; }
-        .games-history-list { width: 100%; text-align: center; }
-        .history-empty { margin: 0 !important; text-align: center; font-size: 16px; }
 
         /* НИЖНЕЕ МЕНЮ */
         .bottom-nav {
@@ -311,7 +378,6 @@
         .nav-button:active { transform: scale(0.92); }
         .nav-button.active { color: var(--blue-main); }
         .nav-button.active svg { stroke: var(--blue-main); filter: drop-shadow(0 0 6px var(--blue-glow)); transform: translateY(-2px); }
-    
     </style>
 </head>
 
@@ -470,7 +536,6 @@
     <main id="tasks" class="page">
         <h2 class="games-heading">Задания</h2>
 
-        <!-- Задание: TELEGRAM (Весь блок кликабельный) -->
         <div class="task-card featured-task" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true)">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -492,24 +557,25 @@
             </div>
         </div>
 
-        <!-- Задание: YOUTUBE (Стиль выровнен, весь блок кликабельный) -->
-        <div class="task-card featured-task youtube-task" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false)">
-            <div class="featured-task-icon youtube-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="3" y="6" width="18" height="13" rx="2"></rect>
-                    <path d="M8 3v3M16 3v3M8 19v2M16 19v2"></path>
-                </svg>
-            </div>
-            <div class="featured-task-content">
-                <div class="featured-task-top">
-                    <span class="featured-task-label">Подписка</span>
-                    <span class="featured-task-reward youtube-task-reward">
-                        <img src="coins.png" alt="" class="coin-icon"> 150
-                    </span>
+        <div class="task-card youtube-task" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false)">
+            <div class="task-header">
+                <div class="task-icon youtube-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="6" width="18" height="13" rx="2"></rect>
+                        <path d="M8 3v3M16 3v3M8 19v2M16 19v2"></path>
+                    </svg>
                 </div>
-                <div class="featured-task-title">Подписка на YouTube</div>
-                <div class="featured-task-description">
-                    Подпишись на YouTube канал @vetruch
+                <div class="task-info">
+                    <div class="youtube-task-top">
+                        <span class="youtube-label">Подписка</span>
+                        <span class="youtube-task-reward">
+                            <img src="coins.png" alt="" class="coin-icon"> 150
+                        </span>
+                    </div>
+                    <h4>Подписка на YouTube</h4>
+                    <div class="youtube-task-description">
+                        Подпишись на YouTube канал @vetruch
+                    </div>
                 </div>
             </div>
         </div>
@@ -574,9 +640,6 @@
             
             document.getElementById("homeUserName").textContent = firstName;
             document.getElementById("profileUserName").textContent = firstName;
-            
-            const userHandle = user.username ? '@' + user.username : firstName;
-            document.getElementById("modalUsername").value = userHandle;
 
             if (user.photo_url) {
                 document.getElementById("homeAvatarImg").src = user.photo_url;
@@ -598,7 +661,7 @@
             initBalance();
         }
 
-        // ================= ЛОГИКА МОДАЛЬНОГО ОКНА =================
+        // Логика Модального окна заданий
         function openTaskModal(title, url, isTg) {
             document.getElementById('modalTitle').textContent = title;
             
@@ -619,6 +682,7 @@
                 document.getElementById('modalHint').style.display = 'none';
             }
             
+            document.getElementById('modalUsername').value = '';
             document.getElementById('modalFileName').textContent = '📷 Загрузить скриншот';
             document.getElementById('modalFileName').style.color = 'var(--secondary)';
             
