@@ -93,10 +93,45 @@
         .promo-banner { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 20px; aspect-ratio: 16 / 9; border: 1px solid var(--card-border); }
         .promo-banner video { width: 100%; height: 100%; display: block; object-fit: contain; }
 
-        .global-stats { margin-bottom: 20px; border: 1px solid #142b43; background: rgba(10, 10, 12, 0.58); box-shadow: 0 0 14px rgba(0, 110, 210, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04); backdrop-filter: blur(8px); }
+        .global-stats {
+            margin-bottom: 20px;
+            border: 1px solid #142b43;
+            background: rgba(10, 10, 12, 0.58);
+            box-shadow:
+                0 0 14px rgba(0, 110, 210, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+        }
+
         .stats-title { font-size: 12px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
-        .stats-main-sum { font-size: 28px; font-weight: 800; margin-bottom: 15px; color: #ffffff; background: linear-gradient(90deg, #ffffff 0%, #a9eaff 35%, #45caff 55%, #ffffff 75%, #a9eaff 100%); background-size: 200% auto; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: numberShimmer 4s linear infinite; }
-        @keyframes numberShimmer { to { background-position: 200% center; } }
+        .stats-main-sum {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+
+            color: #ffffff;
+            background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #a9eaff 35%,
+                #45caff 55%,
+                #ffffff 75%,
+                #a9eaff 100%
+            );
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            animation: numberShimmer 4s linear infinite;
+        }
+
+        @keyframes numberShimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
         .stats-row { display: flex; justify-content: center; gap: 20px; border-top: 1px solid var(--card-border); padding-top: 15px; }
         .stat-item { display: flex; flex-direction: column; gap: 4px; align-items: center; }
         .stat-val { font-weight: 700; font-size: 16px; color: var(--blue-main); display: flex; align-items: center; justify-content: center; gap: 4px; }
@@ -174,51 +209,51 @@
         .game-subtitle { font-size: 11px; color: var(--secondary); margin: 0 0 8px 0; display: flex; align-items: center; justify-content: center; }
         .game-extra { font-size: 10px; color: var(--blue-main); font-weight: 600; opacity: 0.8; }
 
-       h2.games-heading {
-    text-align: left !important;
-    margin-left: 0 !important;
-    color: transparent !important;
-    background: linear-gradient(90deg, #ffffff 0%, #8acfff 22%, #168bff 55%, #0875e8 100%) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-}
+        h2.games-heading { text-align: left !important; margin-left: 0 !important; color: transparent !important; background: linear-gradient(90deg, #ffffff 0%, #73caff 55%, #168bff 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; }
 
-
-        /* ================= ДИЗАЙН ЗАДАНИЙ (ИСПРАВЛЕННЫЙ) ================= */
-        .task-card { 
-            background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%); 
-            border: 2px solid rgba(0, 136, 255, 0.4); /* Сделал обводку жирнее и ярче */
-            border-radius: 16px; padding: 20px; margin-bottom: 15px; text-align: left; 
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.1);
+        /* ================= ДИЗАЙН ЗАДАНИЙ ================= */
+        .featured-task {
+            display: flex; align-items: flex-start; gap: 12px; padding: 16px;
+            border: 1px solid #0875c9; border-radius: 18px;
+            background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
+            box-sizing: border-box; margin-bottom: 15px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
         }
-        .task-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .task-icon { font-size: 30px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border-radius: 12px; color: var(--blue-main); filter: drop-shadow(0 0 10px rgba(0,136,255,0.8)); }
-        .task-info h4 { margin: 0 0 4px 0; font-size: 16px; color: #fff; }
-        .task-reward { font-size: 13px; color: #00cc66; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+
+        .featured-task:active { transform: scale(0.97); border-color: var(--blue-main); }
+
+        .featured-task-icon {
+            flex: 0 0 44px; width: 44px; height: 44px; display: grid; place-items: center;
+            border-radius: 13px; background: #071a2c !important; color: #168bff !important;
+            font-size: 25px; filter: drop-shadow(0 0 7px rgba(0, 136, 255, 0.45));
+        }
         
-        .task-action-btn { 
-            width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; 
-            color: #fff; background: var(--blue-main); cursor: pointer; transition: 0.2s; 
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
-        }
-        .task-action-btn:active { transform: scale(0.97); }
+        .featured-task-icon svg { width: 22px; height: 22px; fill: none; stroke: #168bff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+        .featured-task-content { flex: 1; min-width: 0; }
+        .featured-task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+        .featured-task-label { padding: 3px 9px; border-radius: 12px; background: #071a2c; color: #168bff; font-size: 12px; }
+        .featured-task-reward { color: #f1f1f5; font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+        .featured-task-title { color: #f1f1f5; font-size: 16px; line-height: 1.2; font-weight: 700; }
+        .featured-task-description { margin: 12px 0 0 -56px; width: calc(100% + 56px); color: #85859f; font-size: 14px; line-height: 1.3; }
+
+        .youtube-task { border: 1px solid #0875c9 !important; background: rgba(10, 14, 22, 0.88) !important; }
+        .youtube-icon svg { width: 27px; height: 27px; fill: none; stroke: #168bff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 5px #008cff); }
+        .youtube-task-reward { color: #00d995; font-weight: 700; }
 
         /* ================= МОДАЛЬНОЕ ОКНО ДЛЯ ЗАДАНИЙ ================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px); /* РАЗМЫТИЕ ЗАДНЕГО ФОНА */
-            z-index: 9999;
-            display: none; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); 
+            z-index: 9999; display: none; align-items: center; justify-content: center;
             opacity: 0; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { display: flex; opacity: 1; }
         
         .modal-content {
             background: linear-gradient(180deg, rgba(20, 22, 28, 0.95) 0%, rgba(10, 12, 16, 0.98) 100%);
-            border: 2px solid rgba(0, 136, 255, 0.5); /* Толстая синяя рамка */
-            box-shadow: 0 0 25px rgba(0, 136, 255, 0.2);
+            border: 2px solid rgba(0, 136, 255, 0.5); box-shadow: 0 0 25px rgba(0, 136, 255, 0.2);
             border-radius: 16px; width: 90%; max-width: 400px; padding: 25px 20px;
             position: relative; text-align: center;
             transform: translateY(20px); transition: transform 0.3s ease;
@@ -231,9 +266,9 @@
         .modal-link-btn { 
             background: rgba(0, 136, 255, 0.15); border: 1px solid var(--blue-main); color: var(--blue-main); 
             padding: 12px; border-radius: 10px; width: 100%; font-weight: 700; font-size: 15px; text-align: center; 
-            display: block; text-decoration: none; transition: 0.2s; margin-bottom: 20px;
+            display: block; text-decoration: none; transition: 0.2s; margin-bottom: 10px; cursor: pointer;
         }
-        .modal-link-btn:active { background: var(--blue-main); color: #fff; }
+        .modal-link-btn:active { background: var(--blue-main); color: #fff; transform: scale(0.97); }
 
         .verify-box { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; border: 1px dashed rgba(255,255,255,0.1); text-align: left; }
         .verify-box h5 { margin: 0 0 10px 0; font-size: 13px; color: var(--secondary); font-weight: 600; }
@@ -258,6 +293,12 @@
         }
         .submit-task-btn:active { transform: scale(0.97); }
 
+
+        .games-history { position: static !important; display: block !important; width: 100%; margin: 48px 0 0 !important; padding: 0; text-align: center; transform: none !important; }
+        .games-history h2.games-heading { display: block; width: 100%; margin: 0 0 28px !important; text-align: left !important; font-size: 20px !important; line-height: 1.2; color: #dce7e7 !important; background: none !important; -webkit-text-fill-color: #dce7e7 !important; padding-left: 0px; box-sizing: border-box; }
+        .games-history-list { width: 100%; text-align: center; }
+        .history-empty { margin: 0 !important; text-align: center; font-size: 16px; }
+
         /* НИЖНЕЕ МЕНЮ */
         .bottom-nav {
             position: fixed; z-index: 10; right: 12px; bottom: 15px; left: 12px; display: flex; align-items: center; justify-content: space-around;
@@ -270,238 +311,7 @@
         .nav-button:active { transform: scale(0.92); }
         .nav-button.active { color: var(--blue-main); }
         .nav-button.active svg { stroke: var(--blue-main); filter: drop-shadow(0 0 6px var(--blue-glow)); transform: translateY(-2px); }
-
-
-        .games-history {
-    position: static !important;
-    display: block !important;
-    width: 100%;
-    margin: 48px 0 0 !important;
-    padding: 0;
-    text-align: center;
-    transform: none !important;
-}
-
-.games-history h2.games-heading {
-    display: block;
-    width: 100%;
-    margin: 0 0 28px !important;
-    text-align: left !important;
-    font-size: 20px !important;
-    line-height: 1.2;
-    color: #dce7e7 !important;
-    background: none !important;
-    -webkit-text-fill-color: #dce7e7 !important;
-    padding-left: 0px;
-box-sizing: border-box;
-
-}
-
-.games-history-list {
-    width: 100%;
-    text-align: center;
-}
-
-.history-empty {
-    margin: 0 !important;
-    text-align: center;
-    font-size: 16px;
-}
-
-.featured-task {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 16px;
-    border: 1px solid #0875c9;
-    border-radius: 18px;
-    background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
-    box-sizing: border-box;
-}
-
-.featured-task-icon {
-    flex: 0 0 44px;
-    width: 44px;
-    height: 44px;
-    display: grid;
-    place-items: center;
-    border-radius: 13px;
-    background: #071a2c;
-    color: #168bff;
-    font-size: 25px;
-    filter: drop-shadow(0 0 7px rgba(0, 136, 255, 0.45));
-}
-
-
-.featured-task-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.featured-task-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 7px;
-}
-
-.featured-task-label {
-    padding: 3px 9px;
-    border-radius: 12px;
-    background: #071a2c;
-    color: #168bff;
-    font-size: 12px;
-}
-
-.featured-task-reward {
-    color: #f1f1f5;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.featured-task-title {
-    color: #f1f1f5;
-    font-size: 16px;
-    line-height: 1.2;
-    font-weight: 700;
-}
-
-.featured-task-description {
-    margin: 12px 0 0 -56px;
-    width: calc(100% + 56px);
-    color: #85859f;
-    font-size: 14px;
-    line-height: 1.3;
-}
-
-
-.featured-task .task-icon,
-.featured-task .featured-task-icon {
-    width: 44px !important;
-    height: 44px !important;
-    flex: 0 0 44px !important;
-    border-radius: 13px !important;
-    background: #071a2c !important;
-    color: #168bff !important;
-    filter: none !important;
-    box-shadow: none !important;
-}
-
-        .featured-task-icon {
-    background: #071a2c !important;
-    color: #168bff !important;
-}
-
-.featured-task-icon svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: #168bff;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.youtube-task .task-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.youtube-task .task-icon {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-    display: grid;
-    place-items: center;
-    border-radius: 13px;
-    background: #071a2c;
-    box-shadow: 0 0 12px rgba(0, 136, 255, 0.35);
-}
-
-.youtube-icon svg {
-    width: 27px;
-    height: 27px;
-    fill: none;
-    stroke: #168bff;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(0 0 5px #008cff);
-}
-
-.youtube-label {
-    display: inline-block;
-    margin-bottom: 4px;
-    padding: 3px 9px;
-    border-radius: 10px;
-    background: #071a2c;
-    color: #168bff;
-    font-size: 12px;
-}
-
-.youtube-task h4 {
-    margin: 0;
-}
-
-.youtube-task .task-reward {
-    color: #00d995;
-    font-weight: 700;
-}
-
-.youtube-task-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 5px;
-}
-
-.youtube-task-reward {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: #f1f1f5;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.youtube-task-reward .coin-icon {
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-}
-
-.youtube-task {
-    width: 100%;
-    min-height: 0 !important;
-    height: auto !important;
-    padding: 16px !important;
-    box-sizing: border-box;
-    border: 1px solid #0875c9 !important;
-    border-radius: 18px;
-    background: rgba(10, 14, 22, 0.88) !important;
-}
-
-.youtube-task .task-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.youtube-task .task-info {
-    flex: 1;
-    min-width: 0;
-}
-
-  .youtube-task-description {
-    margin-top: 10px;
-    color: #85859f;
-    font-size: 14px;
-    line-height: 1.3;
-}
-      
+    
     </style>
 </head>
 
@@ -513,7 +323,9 @@ box-sizing: border-box;
             <button class="modal-close" onclick="closeTaskModal()">✖</button>
             <h3 id="modalTitle" style="margin-top:0; margin-bottom: 20px; color:#fff;">Задание</h3>
             
-            <a href="#" id="modalLink" target="_blank" class="modal-link-btn">Перейти на канал</a>
+            <button id="modalLink" class="modal-link-btn">Перейти на канал</button>
+            
+            <p id="modalHint" style="font-size: 11px; color: #ff3366; margin-bottom: 20px; display: none;">* Telegram закроет приложение. После подписки зайдите снова!</p>
             
             <div class="verify-box">
                 <h5>Подтверждение выполнения:</h5>
@@ -594,6 +406,7 @@ box-sizing: border-box;
     <!-- 2. ИГРЫ -->
     <main id="games" class="page">
        <h2 class="games-heading">Игры</h2>
+        
         <div class="games-grid">
             <div class="game-card" onclick="window.location.href='mines.html'">
                 <div class="game-icon bomb-preview">
@@ -644,10 +457,10 @@ box-sizing: border-box;
                 <div class="game-extra">Играть</div>
             </div>
         </div>
-                <section class="games-history">
+        
+        <section class="games-history">
             <h2 class="games-heading">Недавние выигрыши</h2>
             <div id="gamesHistoryList" class="games-history-list">
-                
             </div>
         </section>
 
@@ -657,58 +470,49 @@ box-sizing: border-box;
     <main id="tasks" class="page">
         <h2 class="games-heading">Задания</h2>
 
-        <div class="task-card featured-task">
-    <div class="featured-task-icon">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M21 3 14.5 21l-3.8-7.7L3 9.5 21 3Z"></path>
-        <path d="m10.7 13.3 4.1-4.1"></path>
-    </svg>
-</div>
-
-
-    <div class="featured-task-content">
-        <div class="featured-task-top">
-            <span class="featured-task-label">Подписка</span>
-           <span class="featured-task-reward">
-    <img src="coins.png" alt="" class="coin-icon"> 500
-</span>
+        <!-- Задание: TELEGRAM (Весь блок кликабельный) -->
+        <div class="task-card featured-task" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true)">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 3 14.5 21l-3.8-7.7L3 9.5 21 3Z"></path>
+                    <path d="m10.7 13.3 4.1-4.1"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Подписка</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 100
+                    </span>
+                </div>
+                <div class="featured-task-title">Подпишись на тгк @vetruchtut</div>
+                <div class="featured-task-description">
+                    Главный источник информации: все анонсы, свежие новости и закрытые подгоны для тех, кто с нами в Telegram.
+                </div>
+            </div>
         </div>
 
-        <div class="featured-task-title">Подпишись на тгк @vetruchtut</div>
-
-        <div class="featured-task-description">
-            Главный источник информации: все анонсы, свежие новости и закрытые подгоны для тех, кто с нами в Telegram.
+        <!-- Задание: YOUTUBE (Стиль выровнен, весь блок кликабельный) -->
+        <div class="task-card featured-task youtube-task" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false)">
+            <div class="featured-task-icon youtube-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="6" width="18" height="13" rx="2"></rect>
+                    <path d="M8 3v3M16 3v3M8 19v2M16 19v2"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Подписка</span>
+                    <span class="featured-task-reward youtube-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 150
+                    </span>
+                </div>
+                <div class="featured-task-title">Подписка на YouTube</div>
+                <div class="featured-task-description">
+                    Подпишись на YouTube канал @vetruch
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
-
-
-       <div class="task-card youtube-task">
-    <div class="task-header">
-        <div class="task-icon youtube-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3" y="6" width="18" height="13" rx="2"></rect>
-                <path d="M8 3v3M16 3v3M8 19v2M16 19v2"></path>
-            </svg>
-        </div>
-
-        <div class="task-info">
-    <div class="youtube-task-top">
-        <span class="youtube-label">Подписка</span>
-        <span class="youtube-task-reward">
-            <img src="coins.png" alt="" class="coin-icon"> 150
-        </span>
-    </div>
-
-    <h4>Подписка на YouTube</h4>
-<div class="youtube-task-description">
-    Подпишись на YouTube канал @vetruch
-</div>
-</div>
-
-
-
 
     </main>
 
@@ -794,10 +598,26 @@ box-sizing: border-box;
             initBalance();
         }
 
-        // Логика Модального окна заданий
-        function openTaskModal(title, url) {
+        // ================= ЛОГИКА МОДАЛЬНОГО ОКНА =================
+        function openTaskModal(title, url, isTg) {
             document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalLink').href = url;
+            
+            const linkBtn = document.getElementById('modalLink');
+            
+            linkBtn.onclick = function(e) {
+                e.preventDefault();
+                if (isTg) {
+                    tg.openTelegramLink(url);
+                } else {
+                    tg.openLink(url);
+                }
+            };
+            
+            if (isTg) {
+                document.getElementById('modalHint').style.display = 'block';
+            } else {
+                document.getElementById('modalHint').style.display = 'none';
+            }
             
             document.getElementById('modalFileName').textContent = '📷 Загрузить скриншот';
             document.getElementById('modalFileName').style.color = 'var(--secondary)';
@@ -857,7 +677,6 @@ box-sizing: border-box;
             }, 1700);
         }
 
-        // ================= ЗВЁЗДЫ НА ФОНЕ =================
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let width = 0; let height = 0;
