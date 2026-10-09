@@ -309,15 +309,15 @@ box-sizing: border-box;
 }
 
 .featured-task {
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    column-gap: 12px;
-    row-gap: 12px;
-    align-items: start;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
     padding: 16px;
+    border: 1px solid #0875c9;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
     box-sizing: border-box;
 }
-
 
 .featured-task-icon {
     flex: 0 0 44px;
@@ -372,9 +372,6 @@ box-sizing: border-box;
     color: #85859f;
     font-size: 14px;
     line-height: 1.3;
-    grid-column: 1 / -1;
-    margin-top: 0;
-
 }
 
 .featured-task .task-icon,
@@ -577,21 +574,12 @@ box-sizing: border-box;
 
         <div class="featured-task-title">Подпишись на тгк @vetruchtut</div>
 
-        <div class="task-card featured-task">
-    <div class="featured-task-icon">
-        <!-- значок -->
-    </div>
-
-    <div class="featured-task-content">
-        <!-- Подписка, награда и заголовок -->
-    </div>
-
-    <div class="featured-task-description">
-        Вступи в основной бурмальный канал Малого КСера и включи уведомления! ...
+        <div class="featured-task-description">
+            Вступи в основной бурмальный канал Малого КСера и включи уведомления! ...
+        </div>
     </div>
 </div>
 
-   
 
 
         <div class="task-card">
