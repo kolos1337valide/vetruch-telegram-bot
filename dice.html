@@ -21,11 +21,10 @@
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
 
-        /* Идеальное распределение пространства */
+        /* ИСПРАВЛЕНИЕ: Убрал justify-content: space-between, чтобы элементы не сплющивались */
         .game-container { 
             position: relative; z-index: 2; display: flex; flex-direction: column; 
-            min-height: 100vh; padding: 15px 16px 30px 16px; 
-            justify-content: space-between; 
+            min-height: 100vh; padding: 15px 16px 60px 16px; 
         }
 
         /* ================= ВЕРХНИЙ БЛОК ================= */
@@ -47,8 +46,10 @@
 
         /* ================= ИГРОВОЕ ПОЛЕ - ГОЛОГРАФИЧЕСКИЕ КУБИКИ ================= */
         .dice-stage { 
-            display: flex; justify-content: center; align-items: center; gap: 30px;
-            flex: 1 1 auto; /* Растягивается и центрирует кубики ровно посередине */
+            display: flex; justify-content: center; align-items: center; 
+            gap: 40px; /* Раздвинул кубики между собой */
+            /* ОГРОМНЫЕ ОТСТУПЫ СВЕРХУ И СНИЗУ: 80px сверху, 90px снизу */
+            margin: 80px 0 90px 0; 
             perspective: 1000px;
         }
 
@@ -62,7 +63,6 @@
 
         .die-face {
             position: absolute; width: 100%; height: 100%;
-            /* Голографический эффект */
             background: linear-gradient(135deg, rgba(0, 136, 255, 0.15), rgba(0, 212, 255, 0.25));
             border: 2px solid rgba(0, 212, 255, 0.6); 
             border-radius: 12px;
@@ -108,6 +108,7 @@
             background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); 
             border-radius: 20px; padding: 20px; z-index: 10;
             backdrop-filter: blur(10px); 
+            /* Убрал margin-top: auto; чтобы он просто шел вниз за кубиками */
         }
         
         .mode-tabs { display: flex; background: #0a0c10; border-radius: 12px; padding: 4px; margin-bottom: 15px; }
@@ -149,7 +150,7 @@
 
     <div class="game-container">
         
-        <!-- ВЕРХНИЙ БЛОК: Шапка и Статистика -->
+        <!-- ВЕРХНИЙ БЛОК -->
         <div class="top-section">
             <div class="header">
                 <button class="back-btn" onclick="goBack()">❮ Назад</button>
