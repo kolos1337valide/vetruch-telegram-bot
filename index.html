@@ -154,6 +154,53 @@
             line-height: 1;
             filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));
         }
+        .cards-preview {
+    width: 82px;
+    height: 54px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: none;
+}
+
+.mini-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 25px;
+    height: 39px;
+    box-sizing: border-box;
+    border: 1px solid #159dff;
+    border-radius: 4px;
+    background: linear-gradient(145deg, #10243a, #050b14);
+    color: #37dfff;
+    box-shadow: 0 0 7px rgba(0, 153, 255, 0.8), inset 0 0 6px rgba(0, 153, 255, 0.25);
+    text-shadow: 0 0 5px #00cfff;
+}
+
+.mini-card + .mini-card {
+    margin-left: -5px;
+}
+
+.mini-card b {
+    font-size: 11px;
+    line-height: 12px;
+}
+
+.mini-card i {
+    font-size: 12px;
+    line-height: 13px;
+    font-style: normal;
+}
+
+.card-diamond { transform: translateY(5px) rotate(-18deg); }
+.card-heart   { transform: translateY(1px) rotate(-7deg); }
+.card-spade   { transform: translateY(1px) rotate(7deg); }
+.card-club    { transform: translateY(5px) rotate(18deg); }
+
         
         .balloon-preview {
     position: relative;
