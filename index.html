@@ -171,6 +171,15 @@
 animation: bombPulse 2s ease-in-out infinite;
 
 }
+        @keyframes bombPulse {
+    0%, 100% {
+        transform: rotate(-10deg) scale(1);
+    }
+    50% {
+        transform: rotate(2deg) scale(1.12);
+    }
+}
+
 
 /* Сама бомба — немного меньше */
 .bomb-body {
