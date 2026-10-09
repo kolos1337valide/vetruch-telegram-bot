@@ -306,6 +306,162 @@
     background: #777983;
 }
 
+        .upx-task {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid #56327a;
+    border-radius: 18px;
+    background: linear-gradient(
+        145deg,
+        rgba(35, 20, 52, 0.96),
+        rgba(18, 15, 29, 0.96)
+    );
+    box-shadow:
+        0 0 12px rgba(116, 55, 170, 0.18),
+        inset 0 0 18px rgba(100, 40, 150, 0.08);
+    box-sizing: border-box;
+}
+
+.upx-icon {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: #351a43;
+    color: #bd55ff;
+    box-shadow: 0 0 12px rgba(177, 65, 255, 0.22);
+}
+
+.upx-icon svg {
+    width: 25px;
+    height: 25px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.upx-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.upx-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.upx-label {
+    padding: 4px 9px;
+    border-radius: 10px;
+    background: #351a43;
+    color: #c06aff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.upx-reward,
+.upx-link-reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #f0edf5;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.upx-title {
+    margin-top: 7px;
+    color: #f4f0f8;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.upx-progress-text {
+    margin-top: 7px;
+    color: #9990aa;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.upx-link-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 15px;
+    padding: 11px;
+    border: 1px solid #56327a;
+    border-radius: 12px;
+    background: rgba(32, 22, 43, 0.8);
+    color: #9e94ad;
+    font-size: 14px;
+}
+
+.upx-link-row b {
+    color: #f1edf5;
+}
+
+.upx-link-icon {
+    color: #c05cff;
+    font-size: 18px;
+}
+
+.upx-arrow {
+    margin-left: auto;
+    color: #a99db9;
+}
+
+.upx-progress {
+    height: 5px;
+    margin-top: 14px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #292331;
+}
+
+.upx-progress-line {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: #754295;
+}
+
+.upx-button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 13px 10px;
+    border: 0;
+    border-radius: 12px;
+    background: #321b43;
+    color: #e7c8fa;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(185, 80, 255, 0.12);
+}
+
+.upx-hint {
+    margin-top: 11px;
+    color: #91869e;
+    font-size: 12px;
+    line-height: 1.25;
+    text-align: center;
+}
+
+.upx-task .coin-icon,
+.upx-link-reward .coin-icon {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+
         
     </style>
 </head>
@@ -586,24 +742,58 @@
             </div>
         </div>
 
-        <!-- Задание: 3 сообщения на стриме -->
-        <div class="task-card featured-task" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
-            <div class="featured-task-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-            </div>
-            <div class="featured-task-content">
-                <div class="featured-task-top">
-                    <span class="featured-task-label">Активность</span>
-                    <span class="featured-task-reward">
-                        <img src="coins.png" alt="" class="coin-icon"> 150
-                    </span>
-                </div>
-                <div class="featured-task-title">3 сообщения на стриме</div>
-                <div class="featured-task-description">Напиши минимум 3 адекватных сообщения на активном стриме.</div>
-            </div>
+       <!-- Задание: UP-X -->
+<div class="task-card upx-task"
+     onclick="openTaskModal('Привязка UP-X', 'https://up-click-me.top/feygr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
+
+    <div class="upx-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
+            <path d="M3 8h15a2 2 0 0 1 2 2v1h-4a2 2 0 0 0 0 4h4v1"></path>
+            <circle cx="16" cy="13" r="1"></circle>
+        </svg>
+    </div>
+
+    <div class="upx-content">
+        <div class="upx-top">
+            <span class="upx-label">5 шагов</span>
+
+            <span class="upx-reward">
+                <img src="coins.png" alt="" class="coin-icon"> 1000
+            </span>
         </div>
+
+        <div class="upx-title">UP-X</div>
+
+        <div class="upx-progress-text">
+            0 из 5 наград получено
+        </div>
+
+        <div class="upx-link-row">
+            <span class="upx-link-icon">↔</span>
+            <span>Привязка <b>UP-X</b></span>
+            <span class="upx-arrow">→</span>
+            <span class="upx-link-reward">
+                <img src="coins.png" alt="" class="coin-icon"> 1000
+            </span>
+        </div>
+
+        <div class="upx-progress">
+            <div class="upx-progress-line"></div>
+        </div>
+
+        <button class="upx-button"
+                onclick="event.stopPropagation(); openTaskModal('Привязка UP-X', 'https://up-click-me.top/feygr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
+            Привязать аккаунт · +1000
+        </button>
+
+        <div class="upx-hint">
+            Шаги можно посмотреть, но они откроются после<br>
+            привязки.
+        </div>
+    </div>
+</div>
+
 
         <!-- Задание: Деп UP-X -->
         <div class="task-card featured-task" onclick="openTaskModal('Депозит на UP-X', 'https://up-click-me.top/tfevgr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
