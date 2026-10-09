@@ -163,32 +163,65 @@
     margin: 0 auto 12px;
     animation: balloonPreviewFloat 2s ease-in-out infinite;
 }
-        .dice-preview {
+       .dice-preview {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    height: 54px;
-    margin-bottom: 12px;
+    perspective: 300px;
 }
 
 .preview-die {
-    display: inline-block;
+    position: relative;
+    width: 38px;
+    height: 38px;
+    transform-style: preserve-3d;
+    transform: rotateX(-20deg) rotateY(-30deg);
+    filter: drop-shadow(0 0 8px rgba(0, 220, 255, 0.75));
+}
+
+.die-face {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    box-sizing: border-box;
+    border: 2px solid #008cff;
+    border-radius: 5px;
+    background: linear-gradient(145deg, #101d2a, #050a10);
+    box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.die-front {
+    transform: translateZ(19px);
+}
+
+.die-top {
+    transform: rotateX(90deg) translateZ(19px);
+}
+
+.die-side {
+    transform: rotateY(90deg) translateZ(19px);
+}
+
+.die-pips {
     color: #00eaff;
-    font-size: 30px;
+    font-size: 10px;
     line-height: 1;
-    filter: drop-shadow(0 0 5px #00eaff) drop-shadow(0 0 12px #0088ff);
-    animation: diceRoll 0.7s ease-in-out;
+    text-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
 }
 
-#previewDie2 {
-    animation-delay: 1.4s;
+.preview-die.rolling {
+    animation: previewDieRoll 0.8s ease-in-out;
 }
 
-@keyframes diceRoll {
-    0% { transform: rotate(0) scale(1); }
-    45% { transform: rotate(180deg) scale(1.15); }
-    100% { transform: rotate(360deg) scale(1); }
+@keyframes previewDieRoll {
+    0%   { transform: rotateX(-20deg) rotateY(-30deg); }
+    100% { transform: rotateX(340deg) rotateY(690deg); }
 }
 
 
