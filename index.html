@@ -622,7 +622,8 @@
 
         previewFaces.forEach(face => {
             const value = Math.floor(Math.random() * 6) + 1;
-            face.textContent = "● ".repeat(value).trim();
+            face.dataset.value = value;
+
         });
 
         previewDie.classList.add("rolling");
