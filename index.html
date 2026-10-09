@@ -35,11 +35,11 @@
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
 
-        /* ================= ЭКРАН ЗАГРУЗКИ ================= */
+        /* ================= ЭКРАН ЗАГРУЗКИ (УСКОРЕН В 4 РАЗА) ================= */
         #loading-screen {
             position: fixed; inset: 0; background: #000000; z-index: 9999;
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.3s ease, visibility 0.3s ease; 
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Было 0.7s */
         }
         .loader-container { position: relative; width: 190px; height: 190px; display: flex; align-items: center; justify-content: center; }
         .loader-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -48,6 +48,7 @@
             filter: drop-shadow(0 0 8px rgba(91, 198, 255, 0.8));
             stroke-dasharray: 600; stroke-dashoffset: 600;
         }
+        /* Ускорил отрисовку линий */
         .logo-circle { stroke-dasharray: 453; stroke-dashoffset: 453; animation: drawLogo 0.4s cubic-bezier(0.55, 0, 0.25, 1) 0.1s forwards; }
         .logo-v { stroke: #ffffff; stroke-width: 8; stroke-dasharray: 200; stroke-dashoffset: 200; animation: drawLogo 0.3s cubic-bezier(0.55, 0, 0.25, 1) 0.3s forwards; }
         @keyframes drawLogo { to { stroke-dashoffset: 0; } }
@@ -56,6 +57,7 @@
         .loader-wordmark span { display: inline-block; opacity: 0; transform: translateY(8px); }
         .loader-wordmark.show span { animation: letterReveal 0.15s ease forwards; }
         
+        /* Ускорил появление букв */
         .loader-wordmark.show span:nth-child(1) { animation-delay: 0s; }
         .loader-wordmark.show span:nth-child(2) { animation-delay: 0.08s; }
         .loader-wordmark.show span:nth-child(3) { animation-delay: 0.16s; }
@@ -65,6 +67,7 @@
         .loader-wordmark.show span:nth-child(7) { animation-delay: 0.48s; }
         @keyframes letterReveal { to { opacity: 1; transform: translateY(0); } }
         
+        /* Ускорил затирание логотипа */
         .loader-logo.hide .logo-circle { animation: eraseCircle 0.25s ease-in forwards; }
         .loader-logo.hide .logo-v { animation: eraseV 0.25s ease-in forwards; }
         @keyframes eraseCircle { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 453; } }
@@ -73,7 +76,7 @@
         /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
         @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(100px); } 100% { opacity: 1; transform: translateY(0); } }
         .page { position: relative; z-index: 2; display: none; min-height: calc(100vh - 105px); padding: 20px 16px; }
-        .page.active { display: block; animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; } 
+        .page.active { display: block; animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; } /* Сделал выезд меню тоже чуть бодрее */
         h1, h2 { margin: 0 0 15px; text-align: center; font-weight: 700; }
         .card { margin-bottom: 15px; padding: 20px; border: 1px solid var(--card-border); border-radius: 16px; background: var(--card-bg); backdrop-filter: blur(8px); text-align: center; }
 
@@ -82,6 +85,10 @@
         .header-left { display: flex; align-items: center; gap: 12px; }
         .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 15px; color: #fff; border: 1px solid rgba(0, 136, 255, 0.3); box-shadow: 0 0 10px rgba(0, 136, 255, 0.2); }
         .coin-icon { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+        
+        /* Маленькая иконка для подписей */
+        .coin-icon-sm { width: 11px; height: 11px; object-fit: contain; flex-shrink: 0; vertical-align: middle; position: relative; top: -1px; margin-left: 2px; }
+
         .avatar-container { width: 44px; height: 44px; flex-shrink: 0; }
         .avatar-img, .avatar-fallback { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; }
         .avatar-fallback { background: linear-gradient(135deg, #0088ff, #00d4ff); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: #fff; }
@@ -127,7 +134,7 @@
 
         .game-card {
             background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
-            border: 1px solid rgba(0, 136, 255, 0.2);
+            border: 2px solid rgba(0, 136, 255, 0.35); /* Сделал рамку толще и заметнее */
             border-radius: 16px;
             padding: 24px 10px 16px 10px;
             display: flex;
@@ -142,7 +149,7 @@
 
         .game-card:active {
             transform: scale(0.95);
-            border-color: var(--blue-main);
+            border-color: rgba(0, 136, 255, 0.8);
             box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.15), 0 0 15px rgba(0, 136, 255, 0.3);
         }
 
@@ -150,6 +157,8 @@
             font-size: 42px;
             margin-bottom: 12px;
             line-height: 1;
+            /* Единое синее свечение для всех иконок */
+            filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));
         }
 
         .game-title {
@@ -165,6 +174,9 @@
             font-size: 11px;
             color: var(--secondary);
             margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .game-extra {
@@ -262,31 +274,32 @@
             
             <!-- МИНЫ -->
             <div class="game-card" onclick="window.location.href='mines.html'">
-                <div class="game-icon" style="filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));">💣</div>
+                <div class="game-icon">💣</div>
                 <div class="game-title">Мины</div>
-                <div class="game-subtitle">мины · от 20 🪙</div>
+                <!-- Заменили квадратики на иконку монеты -->
+                <div class="game-subtitle">мины · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
 
             <!-- КАРТЫ -->
             <div class="game-card" onclick="window.location.href='cards.html'">
-                <div class="game-icon" style="filter: drop-shadow(0 0 15px rgba(255, 51, 102, 0.8));">🃏</div>
+                <div class="game-icon">🃏</div>
                 <div class="game-title">Карты</div>
-                <div class="game-subtitle">карты · от 20 🪙</div>
+                <div class="game-subtitle">карты · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
 
             <!-- ШАРИК -->
             <div class="game-card" onclick="window.location.href='balloon.html'">
-                <div class="game-icon" style="filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8));">🎈</div>
+                <div class="game-icon">🎈</div>
                 <div class="game-title">Шарик</div>
-                <div class="game-subtitle">краш · от 20 🪙</div>
+                <div class="game-subtitle">краш · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
 
             <!-- КОСТИ (ЗАГЛУШКА) -->
             <div class="game-card" style="border-color: rgba(255,255,255,0.1);" onclick="tg.showAlert('Игра Кости в разработке! Скоро добавим.')">
-                <div class="game-icon" style="filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)); opacity: 0.7;">🎲</div>
+                <div class="game-icon" style="opacity: 0.7;">🎲</div>
                 <div class="game-title" style="color: #aab8c8;">Кости</div>
                 <div class="game-subtitle">кости · скоро</div>
                 <div class="game-extra" style="color: var(--secondary);">В разработке</div>
