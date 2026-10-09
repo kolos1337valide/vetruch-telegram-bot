@@ -155,23 +155,22 @@
             filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));
         }
         .cards-preview {
+    position: relative;
     width: 82px;
     height: 54px;
     margin: 0 auto 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     filter: none;
 }
 
 .mini-card {
-    position: relative;
+    position: absolute;
+    top: 7px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex: 0 0 25px;
-    height: 39px;
+    width: 27px;
+    height: 40px;
     box-sizing: border-box;
     border: 1px solid #159dff;
     border-radius: 4px;
@@ -179,10 +178,6 @@
     color: #37dfff;
     box-shadow: 0 0 7px rgba(0, 153, 255, 0.8), inset 0 0 6px rgba(0, 153, 255, 0.25);
     text-shadow: 0 0 5px #00cfff;
-}
-
-.mini-card + .mini-card {
-    margin-left: -5px;
 }
 
 .mini-card b {
@@ -196,38 +191,14 @@
     font-style: normal;
 }
 
-.card-diamond {
-    --card-angle: -18deg;
-    animation: cardLift 4s ease-in-out infinite;
-    animation-delay: 0s;
-}
+/* Первые три карты видны частично */
+.card-diamond { left: 4px;  top: 11px; transform: rotate(-16deg); z-index: 1; }
+.card-heart   { left: 14px; top: 8px;  transform: rotate(-7deg);  z-index: 2; }
+.card-spade   { left: 24px; top: 5px;  transform: rotate(5deg);   z-index: 3; }
 
-.card-heart {
-    --card-angle: -7deg;
-    animation: cardLift 4s ease-in-out infinite;
-    animation-delay: 1s;
-}
+/* Четвёртая карта целиком сверху */
+.card-club    { left: 38px; top: 7px;  transform: rotate(0);      z-index: 4; }
 
-.card-spade {
-    --card-angle: 7deg;
-    animation: cardLift 4s ease-in-out infinite;
-    animation-delay: 2s;
-}
-
-.card-club {
-    --card-angle: 18deg;
-    animation: cardLift 4s ease-in-out infinite;
-    animation-delay: 3s;
-}
-
-@keyframes cardLift {
-    0%, 8%, 30%, 100% {
-        transform: translateY(0) rotate(var(--card-angle));
-    }
-    12%, 22% {
-        transform: translateY(-10px) rotate(var(--card-angle));
-    }
-}
 
 
 
