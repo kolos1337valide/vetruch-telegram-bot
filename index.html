@@ -196,23 +196,39 @@
     font-style: normal;
 }
 
-.card-diamond { --card-angle: -18deg; animation-delay: 0s; }
-.card-heart   { --card-angle: -7deg;  animation-delay: 0.8s; }
-.card-spade   { --card-angle: 7deg;   animation-delay: 1.6s; }
-.card-club    { --card-angle: 18deg;  animation-delay: 2.4s; }
+.card-diamond {
+    --card-angle: -18deg;
+    animation: cardLift 4s ease-in-out infinite;
+    animation-delay: 0s;
+}
 
-.mini-card {
-    animation: cardLift 3.2s ease-in-out infinite;
+.card-heart {
+    --card-angle: -7deg;
+    animation: cardLift 4s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.card-spade {
+    --card-angle: 7deg;
+    animation: cardLift 4s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+.card-club {
+    --card-angle: 18deg;
+    animation: cardLift 4s ease-in-out infinite;
+    animation-delay: 3s;
 }
 
 @keyframes cardLift {
-    0%, 8%, 22%, 100% {
+    0%, 8%, 30%, 100% {
         transform: translateY(0) rotate(var(--card-angle));
     }
-    12%, 18% {
+    12%, 22% {
         transform: translateY(-10px) rotate(var(--card-angle));
     }
 }
+
 
 
 
