@@ -35,27 +35,81 @@
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
 
-        /* ================= ЭКРАН ЗАГРУЗКИ ================= */
+        /* ================= ЭКРАН ЗАГРУЗКИ (УСКОРЕННЫЙ) ================= */
         #loading-screen {
             position: fixed; inset: 0; background: #000000; z-index: 9999;
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.3s ease, visibility 0.3s ease; 
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        .loader-container { position: relative; width: 190px; height: 190px; display: flex; align-items: center; justify-content: center; }
-        .loader-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-        .logo-circle, .logo-v {
-            fill: none; stroke: #eaf8ff; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round;
+
+        .loader-container {
+            position: relative;
+            width: 190px;
+            height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .logo-circle,
+        .logo-v {
+            fill: none;
+            stroke: #eaf8ff;
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             filter: drop-shadow(0 0 8px rgba(91, 198, 255, 0.8));
-            stroke-dasharray: 600; stroke-dashoffset: 600;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
         }
-        .logo-circle { stroke-dasharray: 453; stroke-dashoffset: 453; animation: drawLogo 0.4s cubic-bezier(0.55, 0, 0.25, 1) 0.1s forwards; }
-        .logo-v { stroke: #ffffff; stroke-width: 8; stroke-dasharray: 200; stroke-dashoffset: 200; animation: drawLogo 0.3s cubic-bezier(0.55, 0, 0.25, 1) 0.3s forwards; }
-        @keyframes drawLogo { to { stroke-dashoffset: 0; } }
-        
-        .loader-wordmark { position: absolute; color: #f4fbff; font-size: 31px; font-weight: 700; letter-spacing: 2px; opacity: 1; white-space: nowrap; text-shadow: 0 0 18px rgba(91, 198, 255, 0.55); }
-        .loader-wordmark span { display: inline-block; opacity: 0; transform: translateY(8px); }
-        .loader-wordmark.show span { animation: letterReveal 0.15s ease forwards; }
-        
+
+        .logo-circle {
+            stroke-dasharray: 453;
+            stroke-dashoffset: 453;
+            animation: drawLogo 0.4s cubic-bezier(0.55, 0, 0.25, 1) 0.1s forwards;
+        }
+
+        .logo-v {
+            stroke: #ffffff;
+            stroke-width: 8;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: drawLogo 0.3s cubic-bezier(0.55, 0, 0.25, 1) 0.3s forwards;
+        }
+
+        @keyframes drawLogo {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .loader-wordmark {
+            position: absolute;
+            color: #f4fbff;
+            font-size: 31px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 1;
+            white-space: nowrap;
+            text-shadow: 0 0 18px rgba(91, 198, 255, 0.55);
+        }
+
+        .loader-wordmark span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        .loader-wordmark.show span {
+            animation: letterReveal 0.15s ease forwards;
+        }
+
         .loader-wordmark.show span:nth-child(1) { animation-delay: 0s; }
         .loader-wordmark.show span:nth-child(2) { animation-delay: 0.08s; }
         .loader-wordmark.show span:nth-child(3) { animation-delay: 0.16s; }
@@ -63,17 +117,33 @@
         .loader-wordmark.show span:nth-child(5) { animation-delay: 0.32s; }
         .loader-wordmark.show span:nth-child(6) { animation-delay: 0.40s; }
         .loader-wordmark.show span:nth-child(7) { animation-delay: 0.48s; }
-        @keyframes letterReveal { to { opacity: 1; transform: translateY(0); } }
-        
-        .loader-logo.hide .logo-circle { animation: eraseCircle 0.25s ease-in forwards; }
-        .loader-logo.hide .logo-v { animation: eraseV 0.25s ease-in forwards; }
-        @keyframes eraseCircle { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 453; } }
-        @keyframes eraseV { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 200; } }
+
+        @keyframes letterReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loader-logo.hide .logo-circle {
+            animation: eraseCircle 0.25s ease-in forwards;
+        }
+
+        .loader-logo.hide .logo-v {
+            animation: eraseV 0.25s ease-in forwards;
+        }
+
+        @keyframes eraseCircle {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 453; }
+        }
+
+        @keyframes eraseV {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 200; }
+        }
 
         /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
         @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(100px); } 100% { opacity: 1; transform: translateY(0); } }
         .page { position: relative; z-index: 2; display: none; min-height: calc(100vh - 105px); padding: 20px 16px; }
-        .page.active { display: block; animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; } 
+        .page.active { display: block; animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; } 
         h1, h2 { margin: 0 0 15px; text-align: center; font-weight: 700; }
         .card { margin-bottom: 15px; padding: 20px; border: 1px solid var(--card-border); border-radius: 16px; background: var(--card-bg); backdrop-filter: blur(8px); text-align: center; }
 
@@ -94,10 +164,37 @@
         .promo-banner { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 20px; aspect-ratio: 16 / 9; border: 1px solid var(--card-border); }
         .promo-banner video { width: 100%; height: 100%; display: block; object-fit: contain; }
 
-        .global-stats { margin-bottom: 20px; border: 1px solid #142b43; background: rgba(10, 10, 12, 0.58); box-shadow: 0 0 14px rgba(0, 110, 210, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04); backdrop-filter: blur(8px); }
+        .global-stats {
+            margin-bottom: 20px;
+            border: 1px solid #142b43;
+            background: rgba(10, 10, 12, 0.58);
+            box-shadow:
+                0 0 14px rgba(0, 110, 210, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+        }
+
         .stats-title { font-size: 12px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
-        .stats-main-sum { font-size: 28px; font-weight: 800; margin-bottom: 15px; color: #ffffff; background: linear-gradient(90deg, #ffffff 0%, #a9eaff 35%, #45caff 55%, #ffffff 75%, #a9eaff 100%); background-size: 200% auto; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: numberShimmer 4s linear infinite; }
-        @keyframes numberShimmer { to { background-position: 200% center; } }
+        
+        .stats-main-sum {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #ffffff;
+            background: linear-gradient(90deg, #ffffff 0%, #a9eaff 35%, #45caff 55%, #ffffff 75%, #a9eaff 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: numberShimmer 4s linear infinite;
+        }
+
+        @keyframes numberShimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
         .stats-row { display: flex; justify-content: center; gap: 20px; border-top: 1px solid var(--card-border); padding-top: 15px; }
         .stat-item { display: flex; flex-direction: column; gap: 4px; align-items: center; }
         .stat-val { font-weight: 700; font-size: 16px; color: var(--blue-main); display: flex; align-items: center; justify-content: center; gap: 4px; }
@@ -117,7 +214,6 @@
         .podium-item.first .podium-name { margin-top: 30px; }
         .podium-score { font-size: 12px; color: var(--secondary); margin-top: 5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .podium-score .coin-icon { width: 14px; height: 14px; }
-
 
         /* ================= СЕТКА ИГР 2x2 ================= */
         .games-grid {
@@ -154,310 +250,259 @@
             line-height: 1;
             filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));
         }
+
         .cards-preview {
-    position: relative;
-    width: 82px;
-    height: 54px;
-    margin: 0 auto 12px;
-    filter: none;
-}
-.bomb-preview {
-    position: relative;
-    width: 48px;
-    height: 58px;
-    margin: 0 auto 12px;
-    filter: none;
-    transform: rotate(-10deg);
-animation: bombPulse 2s ease-in-out infinite;
+            position: relative;
+            width: 82px;
+            height: 54px;
+            margin: 0 auto 12px;
+            filter: none;
+        }
 
-}
+        .bomb-preview {
+            position: relative;
+            width: 48px;
+            height: 58px;
+            margin: 0 auto 12px;
+            filter: none;
+            transform: rotate(-10deg);
+            animation: bombPulse 2s ease-in-out infinite;
+        }
+
         @keyframes bombPulse {
-    0%, 100% {
-        transform: rotate(-10deg) scale(1);
-    }
-    50% {
-        transform: rotate(2deg) scale(1.12);
-    }
-}
+            0%, 100% {
+                transform: rotate(-10deg) scale(1);
+            }
+            50% {
+                transform: rotate(2deg) scale(1.12);
+            }
+        }
 
+        /* Сама бомба — немного меньше */
+        .bomb-body {
+            position: absolute;
+            left: 8px;
+            top: 17px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 32% 25%, #31506d 0%, #102235 28%, #06101b 68%, #02070d 100%);
+            border: 1px solid #008cff;
+            box-shadow:
+                0 0 8px #008cff,
+                0 0 18px #006dcc,
+                0 0 30px rgba(0, 136, 255, 0.65),
+                inset -7px -8px 12px rgba(0, 0, 0, 0.75),
+                inset 4px 4px 8px rgba(0, 180, 255, 0.18);
+        }
 
-/* Сама бомба — немного меньше */
-.bomb-body {
-    position: absolute;
-    left: 8px;
-    top: 17px;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background:
-        radial-gradient(circle at 32% 25%, #31506d 0%, #102235 28%, #06101b 68%, #02070d 100%);
-    border: 1px solid #008cff;
-    box-shadow:
-        0 0 8px #008cff,
-        0 0 18px #006dcc,
-        0 0 30px rgba(0, 136, 255, 0.65),
-        inset -7px -8px 12px rgba(0, 0, 0, 0.75),
-        inset 4px 4px 8px rgba(0, 180, 255, 0.18);
-}
+        /* Более длинный изогнутый фитилёк */
+        .bomb-fuse {
+            position: absolute;
+            left: 29px;
+            top: 5px;
+            width: 13px;
+            height: 21px;
+            border-left: 2px solid #00d9ff;
+            border-top: 2px solid #00d9ff;
+            border-radius: 9px 0 0 0;
+            transform: rotate(25deg);
+            filter: drop-shadow(0 0 4px #0088ff);
+        }
 
-/* Более длинный изогнутый фитилёк */
-.bomb-fuse {
-    position: absolute;
-    left: 29px;
-    top: 5px;
-    width: 13px;
-    height: 21px;
-    border-left: 2px solid #00d9ff;
-    border-top: 2px solid #00d9ff;
-    border-radius: 9px 0 0 0;
-    transform: rotate(25deg);
-    filter: drop-shadow(0 0 4px #0088ff);
-}
+        /* Искра на конце фитилька */
+        .bomb-spark {
+            position: absolute;
+            left: 36px;
+            top: 0;
+            color: #00eaff;
+            font-size: 13px;
+            line-height: 1;
+            text-shadow:
+                0 0 4px #00eaff,
+                0 0 10px #0088ff,
+                0 0 18px #0088ff;
+        }
 
-/* Искра на конце фитилька */
-.bomb-spark {
-    position: absolute;
-    left: 36px;
-    top: 0;
-    color: #00eaff;
-    font-size: 13px;
-    line-height: 1;
-    text-shadow:
-        0 0 4px #00eaff,
-        0 0 10px #0088ff,
-        0 0 18px #0088ff;
-}
+        .mini-card {
+            position: absolute;
+            top: 7px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 27px;
+            height: 40px;
+            box-sizing: border-box;
+            border: 1px solid #159dff;
+            border-radius: 4px;
+            background: linear-gradient(145deg, #10243a, #050b14);
+            color: #37dfff;
+            box-shadow: 0 0 7px rgba(0, 153, 255, 0.8), inset 0 0 6px rgba(0, 153, 255, 0.25);
+            text-shadow: 0 0 5px #00cfff;
+        }
 
-        
-.mini-card {
-    position: absolute;
-    top: 7px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 27px;
-    height: 40px;
-    box-sizing: border-box;
-    border: 1px solid #159dff;
-    border-radius: 4px;
-    background: linear-gradient(145deg, #10243a, #050b14);
-    color: #37dfff;
-    box-shadow: 0 0 7px rgba(0, 153, 255, 0.8), inset 0 0 6px rgba(0, 153, 255, 0.25);
-    text-shadow: 0 0 5px #00cfff;
-}
+        .mini-card b {
+            font-size: 11px;
+            line-height: 12px;
+        }
 
-.mini-card b {
-    font-size: 11px;
-    line-height: 12px;
-}
+        .mini-card i {
+            font-size: 12px;
+            line-height: 13px;
+            font-style: normal;
+        }
 
-.mini-card i {
-    font-size: 12px;
-    line-height: 13px;
-    font-style: normal;
-}
+        /* Первые три карты видны частично */
+        .card-diamond { left: 2px;  top: 12px; transform: rotate(-18deg); z-index: 1; }
+        .card-heart   { left: 16px; top: 7px;  transform: rotate(-6deg);  z-index: 2; }
+        .card-spade   { left: 30px; top: 7px;  transform: rotate(6deg);   z-index: 3; }
+        .card-club    { left: 44px; top: 12px; transform: rotate(18deg);  z-index: 4; }
 
-/* Первые три карты видны частично */
-.card-diamond { left: 2px;  top: 12px; transform: rotate(-18deg); z-index: 1; }
-.card-heart   { left: 16px; top: 7px;  transform: rotate(-6deg);  z-index: 2; }
-.card-spade   { left: 30px; top: 7px;  transform: rotate(6deg);   z-index: 3; }
-.card-club    { left: 44px; top: 12px; transform: rotate(18deg);  z-index: 4; }
-
-
-
-
-
-
-        
         .balloon-preview {
-    position: relative;
-    display: block;
-    width: 48px;
-    height: 54px;
-    margin: 0 auto 12px;
-    animation: balloonPreviewFloat 2s ease-in-out infinite;
-}
-       ..dice-preview {
-    width: 70px;
-    height: 70px;
-    margin: 0 auto 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 220px;
-    filter: none;
+            position: relative;
+            display: block;
+            width: 48px;
+            height: 54px;
+            margin: 0 auto 12px;
+            animation: balloonPreviewFloat 2s ease-in-out infinite;
+        }
+        
+        .dice-preview {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 220px;
+            filter: none;
+        }
 
-}
+        .preview-die {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            transform-style: preserve-3d;
+            transform: rotateX(-20deg) rotateY(-35deg);
+        }
 
-.preview-die {
-    position: relative;
-    width: 42px;
-    height: 42px;
-    transform-style: preserve-3d;
-    transform: rotateX(-20deg) rotateY(-35deg);
-    
-}
+        .die-face {
+            position: absolute;
+            inset: 0;
+            box-sizing: border-box;
+            border: 2px solid #008cff;
+            border-radius: 5px;
+            background: linear-gradient(145deg, #101d2a, #050a10);
+            box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+        }
 
-.die-face {
-    position: absolute;
-    inset: 0;
-    box-sizing: border-box;
-    border: 2px solid #008cff;
-    border-radius: 5px;
-    background: linear-gradient(145deg, #101d2a, #050a10);
-    box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backface-visibility: hidden;
-}
+        .die-front  { transform: translateZ(21px); }
+        .die-back   { transform: rotateY(180deg) translateZ(21px); }
+        .die-right  { transform: rotateY(90deg) translateZ(21px); }
+        .die-left   { transform: rotateY(-90deg) translateZ(21px); }
+        .die-top    { transform: rotateX(90deg) translateZ(21px); }
+        .die-bottom { transform: rotateX(-90deg) translateZ(21px); }
 
-.die-front  { transform: translateZ(21px); }
-.die-back   { transform: rotateY(180deg) translateZ(21px); }
-.die-right  { transform: rotateY(90deg) translateZ(21px); }
-.die-left   { transform: rotateY(-90deg) translateZ(21px); }
-.die-top    { transform: rotateX(90deg) translateZ(21px); }
-.die-bottom { transform: rotateX(-90deg) translateZ(21px); }
+        .die-pips {
+            width: 72%;
+            height: 72%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            align-items: center;
+            justify-items: center;
+            color: transparent;
+            position: relative;
+            display: block;
+            width: 24px;
+            height: 24px;
+        }
 
-.die-pips {
-    width: 72%;
-    height: 72%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    align-items: center;
-    justify-items: center;
-}
+        .die-pips i {
+            display: none;
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #00eaff;
+            box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
+        }
 
-.die-pips::before {
-    content: "";
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #00eaff;
-    box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
-}
+        .die-pips[data-value="1"] i:nth-child(1) { display: block; top: 9px; left: 9px; }
+        .die-pips[data-value="2"] i:nth-child(1), .die-pips[data-value="2"] i:nth-child(2) { display: block; }
+        .die-pips[data-value="2"] i:nth-child(1) { top: 0; left: 0; }
+        .die-pips[data-value="2"] i:nth-child(2) { right: 0; bottom: 0; }
+        .die-pips[data-value="3"] i:nth-child(-n+3) { display: block; }
+        .die-pips[data-value="3"] i:nth-child(1) { top: 0; left: 0; }
+        .die-pips[data-value="3"] i:nth-child(2) { top: 9px; left: 9px; }
+        .die-pips[data-value="3"] i:nth-child(3) { right: 0; bottom: 0; }
+        .die-pips[data-value="4"] i:nth-child(-n+4) { display: block; }
+        .die-pips[data-value="4"] i:nth-child(1) { top: 0; left: 0; }
+        .die-pips[data-value="4"] i:nth-child(2) { top: 0; right: 0; }
+        .die-pips[data-value="4"] i:nth-child(3) { bottom: 0; left: 0; }
+        .die-pips[data-value="4"] i:nth-child(4) { right: 0; bottom: 0; }
+        .die-pips[data-value="5"] i:nth-child(-n+5) { display: block; }
+        .die-pips[data-value="5"] i:nth-child(1) { top: 0; left: 0; }
+        .die-pips[data-value="5"] i:nth-child(2) { top: 0; right: 0; }
+        .die-pips[data-value="5"] i:nth-child(3) { top: 9px; left: 9px; }
+        .die-pips[data-value="5"] i:nth-child(4) { bottom: 0; left: 0; }
+        .die-pips[data-value="5"] i:nth-child(5) { right: 0; bottom: 0; }
+        .die-pips[data-value="6"] i { display: block; }
+        .die-pips[data-value="6"] i:nth-child(1) { top: 0; left: 0; }
+        .die-pips[data-value="6"] i:nth-child(2) { top: 0; right: 0; }
+        .die-pips[data-value="6"] i:nth-child(3) { top: 9px; left: 0; }
+        .die-pips[data-value="6"] i:nth-child(4) { top: 9px; right: 0; }
+        .die-pips[data-value="6"] i:nth-child(5) { bottom: 0; left: 0; }
+        .die-pips[data-value="6"] i:nth-child(6) { right: 0; bottom: 0; }
 
-/* По умолчанию точки скрыты */
-.die-pips {
-    color: transparent;
-}
+        .preview-die.rolling {
+            animation: previewDieRoll 0.8s ease-in-out;
+        }
 
-/* Точки размещаются в ячейках сетки 3×3 */
-.die-pips {
-    position: relative;
-    display: block;
-    width: 24px;
-    height: 24px;
-}
+        @keyframes previewDieRoll {
+            0%   { transform: rotateX(-20deg) rotateY(-35deg); }
+            100% { transform: rotateX(340deg) rotateY(685deg); }
+        }
 
-.die-pips i {
-    display: none;
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #00eaff;
-    box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
-}
+        .balloon-shape {
+            position: absolute;
+            left: 9px;
+            top: 0;
+            width: 30px;
+            height: 34px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 32% 28%, #b8f8ff, #00d9ff 35%, #0088ff 78%);
+            box-shadow: 0 0 10px #00d9ff, 0 0 24px #0088ff, 0 0 38px rgba(0, 136, 255, 0.8);
+        }
 
-/* 1 — центр */
-.die-pips[data-value="1"] i:nth-child(1) {
-    display: block;
-    top: 9px;
-    left: 9px;
-}
+        .balloon-string {
+            position: absolute;
+            top: 31px;
+            left: 21px;
+            width: 12px;
+            height: 30px;
+            overflow: visible;
+            fill: none;
+            filter: drop-shadow(0 0 4px #0088ff);
+        }
 
-/* 2 — диагональ */
-.die-pips[data-value="2"] i:nth-child(1),
-.die-pips[data-value="2"] i:nth-child(2) {
-    display: block;
-}
-.die-pips[data-value="2"] i:nth-child(1) { top: 0; left: 0; }
-.die-pips[data-value="2"] i:nth-child(2) { right: 0; bottom: 0; }
+        .balloon-string path {
+            fill: none;
+            stroke: #00d9ff;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
 
-/* 3 — диагональ и центр */
-.die-pips[data-value="3"] i:nth-child(-n+3) { display: block; }
-.die-pips[data-value="3"] i:nth-child(1) { top: 0; left: 0; }
-.die-pips[data-value="3"] i:nth-child(2) { top: 9px; left: 9px; }
-.die-pips[data-value="3"] i:nth-child(3) { right: 0; bottom: 0; }
-
-/* 4 — четыре угла */
-.die-pips[data-value="4"] i:nth-child(-n+4) { display: block; }
-.die-pips[data-value="4"] i:nth-child(1) { top: 0; left: 0; }
-.die-pips[data-value="4"] i:nth-child(2) { top: 0; right: 0; }
-.die-pips[data-value="4"] i:nth-child(3) { bottom: 0; left: 0; }
-.die-pips[data-value="4"] i:nth-child(4) { right: 0; bottom: 0; }
-
-/* 5 — четыре угла и центр */
-.die-pips[data-value="5"] i:nth-child(-n+5) { display: block; }
-.die-pips[data-value="5"] i:nth-child(1) { top: 0; left: 0; }
-.die-pips[data-value="5"] i:nth-child(2) { top: 0; right: 0; }
-.die-pips[data-value="5"] i:nth-child(3) { top: 9px; left: 9px; }
-.die-pips[data-value="5"] i:nth-child(4) { bottom: 0; left: 0; }
-.die-pips[data-value="5"] i:nth-child(5) { right: 0; bottom: 0; }
-
-/* 6 — две колонки по три */
-.die-pips[data-value="6"] i { display: block; }
-.die-pips[data-value="6"] i:nth-child(1) { top: 0; left: 0; }
-.die-pips[data-value="6"] i:nth-child(2) { top: 0; right: 0; }
-.die-pips[data-value="6"] i:nth-child(3) { top: 9px; left: 0; }
-.die-pips[data-value="6"] i:nth-child(4) { top: 9px; right: 0; }
-.die-pips[data-value="6"] i:nth-child(5) { bottom: 0; left: 0; }
-.die-pips[data-value="6"] i:nth-child(6) { right: 0; bottom: 0; }
-
-
-
-.preview-die.rolling {
-    animation: previewDieRoll 0.8s ease-in-out;
-}
-
-@keyframes previewDieRoll {
-    0%   { transform: rotateX(-20deg) rotateY(-35deg); }
-    100% { transform: rotateX(340deg) rotateY(685deg); }
-}
-
-
-
-.balloon-shape {
-    position: absolute;
-    left: 9px;
-    top: 0;
-    width: 30px;
-    height: 34px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 32% 28%, #b8f8ff, #00d9ff 35%, #0088ff 78%);
-    box-shadow: 0 0 10px #00d9ff, 0 0 24px #0088ff, 0 0 38px rgba(0, 136, 255, 0.8);
-}
-
-.balloon-string {
-    position: absolute;
-    top: 31px;
-    left: 21px;
-    width: 12px;
-    height: 30px;
-    overflow: visible;
-    fill: none;
-    filter: drop-shadow(0 0 4px #0088ff);
-}
-
-.balloon-string path {
-    fill: none;
-    stroke: #00d9ff;
-    stroke-width: 2;
-    stroke-linecap: round;
-}
-
-
-
-
-@keyframes balloonPreviewFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-}
-
-
+        @keyframes balloonPreviewFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
 
         .game-title {
             font-size: 16px;
@@ -484,7 +529,6 @@ animation: bombPulse 2s ease-in-out infinite;
             opacity: 0.8;
         }
 
-
         /* НИЖНЕЕ МЕНЮ */
         .bottom-nav {
             position: fixed; z-index: 10; right: 12px; bottom: 15px; left: 12px; display: flex; align-items: center; justify-content: space-around;
@@ -498,21 +542,56 @@ animation: bombPulse 2s ease-in-out infinite;
         .nav-button.active { color: var(--blue-main); }
         .nav-button.active svg { stroke: var(--blue-main); filter: drop-shadow(0 0 6px var(--blue-glow)); transform: translateY(-2px); }
     
-    
-   h2.games-heading {
-    text-align: left !important;
-    margin-left: 0 !important;
-    color: transparent !important;
-    background: linear-gradient(90deg, #ffffff 0%, #8acfff 22%, #168bff 55%, #0875e8 100%) !important;
+        h2.games-heading {
+            text-align: left !important;
+            margin-left: 0 !important;
+            color: transparent !important;
+            background: linear-gradient(90deg, #ffffff 0%, #73caff 55%, #168bff 100%) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+        }
 
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-}
+        /* ================= ДИЗАЙН ЗАДАНИЙ ================= */
+        .task-card { 
+            background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%); 
+            border: 1px solid rgba(0, 136, 255, 0.2); border-radius: 16px; padding: 20px; 
+            margin-bottom: 15px; text-align: left; 
+        }
+        .task-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .task-icon { font-size: 30px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); border-radius: 12px; }
+        .task-info h4 { margin: 0 0 4px 0; font-size: 16px; color: #fff; }
+        .task-reward { font-size: 13px; color: #00cc66; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+        
+        .task-link-btn { 
+            background: rgba(0, 136, 255, 0.15); border: 1px solid var(--blue-main); color: var(--blue-main); 
+            padding: 10px; border-radius: 10px; width: 100%; font-weight: 700; font-size: 14px; text-align: center; 
+            display: block; text-decoration: none; transition: 0.2s; 
+        }
+        .task-link-btn:active { transform: scale(0.97); background: var(--blue-main); color: #fff; }
 
-
-</style>
-
+        .verify-box { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; margin-top: 15px; border: 1px dashed rgba(255,255,255,0.1); }
+        .verify-box h5 { margin: 0 0 10px 0; font-size: 14px; color: var(--secondary); font-weight: 600; }
+        
+        .task-input { 
+            width: 100%; background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; 
+            padding: 12px; border-radius: 10px; font-family: 'Inter'; font-size: 14px; margin-bottom: 10px; outline: none; 
+        }
+        .task-input:focus { border-color: var(--blue-main); }
+        
+        .file-upload-lbl { 
+            display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; 
+            background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: var(--secondary); 
+            padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-bottom: 10px; font-size: 14px;
+        }
+        .file-upload-lbl input { display: none; }
+        
+        .submit-task-btn { 
+            width: 100%; background: var(--blue-main); color: #fff; border: none; 
+            padding: 12px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s;
+        }
+        .submit-task-btn:active { transform: scale(0.97); }
+    </style>
 </head>
 
 <body class="is-loading">
@@ -583,15 +662,13 @@ animation: bombPulse 2s ease-in-out infinite;
     <main id="games" class="page">
        <h2 class="games-heading">Игры</h2>
 
-        
         <div class="games-grid">
             <div class="game-card" onclick="window.location.href='mines.html'">
                 <div class="game-icon bomb-preview">
-    <span class="bomb-fuse"></span>
-    <span class="bomb-spark">✦</span>
-    <span class="bomb-body"></span>
-</div>
-
+                    <span class="bomb-fuse"></span>
+                    <span class="bomb-spark">✦</span>
+                    <span class="bomb-body"></span>
+                </div>
                 <div class="game-title">Мины</div>
                 <div class="game-subtitle">мины · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
@@ -599,12 +676,11 @@ animation: bombPulse 2s ease-in-out infinite;
 
             <div class="game-card" onclick="window.location.href='cards.html'">
                 <div class="game-icon cards-preview">
-    <span class="mini-card card-diamond"><b>A</b><i>♦</i></span>
-    <span class="mini-card card-heart"><b>A</b><i>♥</i></span>
-    <span class="mini-card card-spade"><b>A</b><i>♠</i></span>
-    <span class="mini-card card-club"><b>A</b><i>♣</i></span>
-</div>
-
+                    <span class="mini-card card-diamond"><b>A</b><i>♦</i></span>
+                    <span class="mini-card card-heart"><b>A</b><i>♥</i></span>
+                    <span class="mini-card card-spade"><b>A</b><i>♠</i></span>
+                    <span class="mini-card card-club"><b>A</b><i>♣</i></span>
+                </div>
                 <div class="game-title">Карты</div>
                 <div class="game-subtitle">карты · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
@@ -612,14 +688,11 @@ animation: bombPulse 2s ease-in-out infinite;
 
             <div class="game-card" onclick="window.location.href='balloon.html'">
                 <div class="game-icon balloon-preview">
-    <span class="balloon-shape"></span>
-   <svg class="balloon-string" viewBox="0 0 12 30" aria-hidden="true">
-    <path d="M6 0 C6 7 1 8 6 14 C11 20 6 23 4 30" />
-</svg>
-
-</div>
-
-
+                    <span class="balloon-shape"></span>
+                    <svg class="balloon-string" viewBox="0 0 12 30" aria-hidden="true">
+                        <path d="M6 0 C6 7 1 8 6 14 C11 20 6 23 4 30" />
+                    </svg>
+                </div>
                 <div class="game-title">Шарик</div>
                 <div class="game-subtitle">краш · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
@@ -627,19 +700,15 @@ animation: bombPulse 2s ease-in-out infinite;
 
             <div class="game-card" onclick="window.location.href='dice.html'">
                <div class="game-icon dice-preview">
-    <div class="preview-die" id="previewDie">
-        <div class="die-face die-front"><span class="die-pips" data-value="1"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-        <div class="die-face die-back"><span class="die-pips" data-value="6"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-        <div class="die-face die-right"><span class="die-pips" data-value="3"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-        <div class="die-face die-left"><span class="die-pips" data-value="4"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-        <div class="die-face die-top"><span class="die-pips" data-value="2"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-        <div class="die-face die-bottom"><span class="die-pips" data-value="5"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-    </div>
-</div>
-
-
-
-
+                    <div class="preview-die" id="previewDie">
+                        <div class="die-face die-front"><span class="die-pips" data-value="1"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-back"><span class="die-pips" data-value="6"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-right"><span class="die-pips" data-value="3"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-left"><span class="die-pips" data-value="4"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-top"><span class="die-pips" data-value="2"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-bottom"><span class="die-pips" data-value="5"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                    </div>
+                </div>
                 <div class="game-title">Кости</div>
                 <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
@@ -649,8 +718,53 @@ animation: bombPulse 2s ease-in-out infinite;
 
     <!-- 3. ЗАДАНИЯ -->
     <main id="tasks" class="page">
-        <h2>📋 Задания</h2>
-        <div class="card"><h3 style="margin-top: 0;">Заданий пока нет</h3><p style="color: var(--secondary); font-size: 14px;">Новые задания появятся совсем скоро.</p></div>
+        <h2 class="games-heading">Задания</h2>
+
+        <div class="task-card">
+            <div class="task-header">
+                <div class="task-icon" style="color: #0088ff; filter: drop-shadow(0 0 10px rgba(0,136,255,0.8));">✈️</div>
+                <div class="task-info">
+                    <h4>Подписка на Telegram</h4>
+                    <div class="task-reward">+100 <img src="coins.png" class="coin-icon-sm"></div>
+                </div>
+            </div>
+            <a href="https://t.me/vetruchtut" target="_blank" class="task-link-btn">Перейти в канал</a>
+            
+            <div class="verify-box">
+                <h5>Подтверждение выполнения:</h5>
+                <input type="text" class="task-input" id="tg-username" placeholder="Ваш @username">
+                
+                <label class="file-upload-lbl">
+                    <input type="file" accept="image/*" onchange="updateFileName(this, 'tg-file-name')">
+                    <span id="tg-file-name">📷 Загрузить скриншот</span>
+                </label>
+                
+                <button class="submit-task-btn" onclick="submitTask()">Отправить на проверку</button>
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <div class="task-icon" style="color: #ff0000; filter: drop-shadow(0 0 10px rgba(255,0,0,0.8));">▶️</div>
+                <div class="task-info">
+                    <h4>Подписка на YouTube</h4>
+                    <div class="task-reward">+150 <img src="coins.png" class="coin-icon-sm"></div>
+                </div>
+            </div>
+            <a href="https://www.youtube.com/@vetruch" target="_blank" class="task-link-btn" style="color:#ff3366; border-color:#ff3366; background:rgba(255,51,102,0.15);">Смотреть канал</a>
+            
+            <div class="verify-box">
+                <h5>Подтверждение выполнения:</h5>
+                <input type="text" class="task-input" id="yt-username" placeholder="Ваш @username (Или ник в YT)">
+                
+                <label class="file-upload-lbl">
+                    <input type="file" accept="image/*" onchange="updateFileName(this, 'yt-file-name')">
+                    <span id="yt-file-name">📷 Загрузить скриншот</span>
+                </label>
+                
+                <button class="submit-task-btn" onclick="submitTask()">Отправить на проверку</button>
+            </div>
+        </div>
     </main>
 
     <!-- 4. МАГАЗИН -->
@@ -708,8 +822,14 @@ animation: bombPulse 2s ease-in-out infinite;
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const user = tg.initDataUnsafe.user;
             const firstName = user.first_name || "Пользователь";
+            
             document.getElementById("homeUserName").textContent = firstName;
             document.getElementById("profileUserName").textContent = firstName;
+            
+            const userHandle = user.username ? '@' + user.username : firstName;
+            document.getElementById("tg-username").value = userHandle;
+            document.getElementById("yt-username").value = userHandle;
+
             if (user.photo_url) {
                 document.getElementById("homeAvatarImg").src = user.photo_url;
                 document.getElementById("homeAvatarImg").style.display = "block";
@@ -730,19 +850,29 @@ animation: bombPulse 2s ease-in-out infinite;
             initBalance();
         }
 
-        // ================= УМНЫЙ ПРЕЛОАДЕР (Показывает логотип ТОЛЬКО 1 раз за сессию) =================
+        function updateFileName(input, textElementId) {
+            if(input.files && input.files[0]) {
+                const textEl = document.getElementById(textElementId);
+                textEl.textContent = "✅ " + input.files[0].name;
+                textEl.style.color = "#00cc66";
+            }
+        }
+
+        function submitTask() {
+            tg.showAlert("Отправка скриншотов в разработке! 🛠\nСкоро добавим панель администратора для проверки.");
+        }
+
+        // ================= УМНЫЙ ЗАГРУЗОЧНЫЙ ЭКРАН (Session Storage) =================
         const loadingScreen = document.getElementById('loading-screen');
         const loaderLogo = document.querySelector('.loader-logo');
         const loaderWordmark = document.getElementById('loader-wordmark');
 
         if (sessionStorage.getItem('vetruch_loaded')) {
-            // Если уже загружали меню в этой сессии - пропускаем заставку
             loadingScreen.style.display = 'none';
             document.body.classList.remove('is-loading');
             document.body.classList.add('is-ready');
             openPage('home');
         } else {
-            // Первый вход - показываем анимацию логотипа
             sessionStorage.setItem('vetruch_loaded', 'true');
             
             setTimeout(() => {
@@ -760,12 +890,10 @@ animation: bombPulse 2s ease-in-out infinite;
                 document.body.classList.add('is-ready');
                 openPage('home');
                 
-                // Физически удаляем блок, чтобы не мешал кликать
                 setTimeout(() => { loadingScreen.style.display = 'none'; }, 300);
             }, 1700);
         }
 
-        // Звезды
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let width = 0; let height = 0;
@@ -790,7 +918,7 @@ animation: bombPulse 2s ease-in-out infinite;
                 ctx.beginPath(); ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
                 ctx.fillStyle = "rgba(100, 180, 255, " + star.opacity + ")"; ctx.fill();
                 star.y += star.speed;
-                if (star.y > height + 3) { star.y = -3; star.x = Math.random() * width; }
+                if (star.y > h) { star.y = -3; star.x = Math.random() * width; }
             }
             requestAnimationFrame(drawStars);
         }
@@ -809,7 +937,6 @@ animation: bombPulse 2s ease-in-out infinite;
         previewFaces.forEach(face => {
             const value = Math.floor(Math.random() * 6) + 1;
             face.dataset.value = value;
-
         });
 
         previewDie.classList.add("rolling");
@@ -817,7 +944,6 @@ animation: bombPulse 2s ease-in-out infinite;
 
     rollPreviewDie();
     setInterval(rollPreviewDie, 4500);
-</script>
-
+    </script>
 </body>
 </html>
