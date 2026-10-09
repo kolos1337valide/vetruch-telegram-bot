@@ -272,27 +272,37 @@
         .nav-button.active svg { stroke: var(--blue-main); filter: drop-shadow(0 0 6px var(--blue-glow)); transform: translateY(-2px); }
 
 
-        ..games-history {
-    margin-top: 0;
+        .games-history {
+    position: static !important;
+    display: block !important;
+    width: 100%;
+    margin: 14px 0 0 !important;
+    padding: 0;
     text-align: center;
+    transform: none !important;
 }
 
 .games-history h2.games-heading {
-    font-size: 20px;
-    text-align: center !important;
+    display: block;
+    width: 100%;
     margin: 0 0 28px !important;
+    text-align: center !important;
+    font-size: 20px !important;
+    line-height: 1.2;
     color: #dce7e7 !important;
     background: none !important;
     -webkit-text-fill-color: #dce7e7 !important;
 }
 
 .games-history-list {
+    width: 100%;
     text-align: center;
 }
 
 .history-empty {
+    margin: 0 !important;
     text-align: center;
-    margin-top: 0;
+    font-size: 16px;
 }
 
         
