@@ -163,29 +163,28 @@
     margin: 0 auto 12px;
     animation: balloonPreviewFloat 2s ease-in-out infinite;
 }
-       .dice-preview {
-    width: 58px;
-    height: 58px;
+       ..dice-preview {
+    width: 70px;
+    height: 70px;
     margin: 0 auto 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    perspective: 300px;
+    perspective: 220px;
 }
 
 .preview-die {
     position: relative;
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     transform-style: preserve-3d;
-    transform: rotateX(-20deg) rotateY(-30deg);
+    transform: rotateX(-20deg) rotateY(-35deg);
     filter: drop-shadow(0 0 8px rgba(0, 220, 255, 0.75));
 }
 
 .die-face {
     position: absolute;
-    width: 38px;
-    height: 38px;
+    inset: 0;
     box-sizing: border-box;
     border: 2px solid #008cff;
     border-radius: 5px;
@@ -194,23 +193,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    backface-visibility: hidden;
 }
 
-.die-front {
-    transform: translateZ(19px);
-}
-
-.die-top {
-    transform: rotateX(90deg) translateZ(19px);
-}
-
-.die-side {
-    transform: rotateY(90deg) translateZ(19px);
-}
+.die-front  { transform: translateZ(21px); }
+.die-back   { transform: rotateY(180deg) translateZ(21px); }
+.die-right  { transform: rotateY(90deg) translateZ(21px); }
+.die-left   { transform: rotateY(-90deg) translateZ(21px); }
+.die-top    { transform: rotateX(90deg) translateZ(21px); }
+.die-bottom { transform: rotateX(-90deg) translateZ(21px); }
 
 .die-pips {
     color: #00eaff;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1;
     text-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
 }
@@ -220,9 +215,10 @@
 }
 
 @keyframes previewDieRoll {
-    0%   { transform: rotateX(-20deg) rotateY(-30deg); }
-    100% { transform: rotateX(340deg) rotateY(690deg); }
+    0%   { transform: rotateX(-20deg) rotateY(-35deg); }
+    100% { transform: rotateX(340deg) rotateY(685deg); }
 }
+
 
 
 .balloon-shape {
