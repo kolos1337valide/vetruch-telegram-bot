@@ -628,6 +628,39 @@
     display: none !important;
 }
 
+.upx-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.upx-collapsed-details {
+    display: none;
+    width: 100%;
+    margin-top: 5px;
+    padding-left: 0;
+}
+
+.upx-collapsed-title {
+    color: #f4f0f8;
+    font-size: 17px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.upx-collapsed-progress {
+    margin-top: 6px;
+    color: #9990aa;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Показываем название и прогресс только после сворачивания */
+.upx-task.is-collapsed .upx-collapsed-details {
+    display: block;
+}
+
         
     </style>
 </head>
@@ -930,7 +963,13 @@
             onclick="toggleUpxTask(event, this)">
         <span class="upx-toggle-arrow">⌃</span>
     </button>
+
+    <div class="upx-collapsed-details">
+        <div class="upx-collapsed-title">UP-X</div>
+        <div class="upx-collapsed-progress">0 из 5 наград получено</div>
+    </div>
 </div>
+
 
 
         <div class="upx-title">UP-X</div>
