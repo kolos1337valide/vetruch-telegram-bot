@@ -1025,27 +1025,75 @@
        
 
         <!-- Задание: Деп JetTon -->
-        <div class="task-card featured-task" onclick="openTaskModal('Депозит JetTon', 'https://jettredravon.com/cihFhEkPODc?click_id=%7Bclick_id%7D&target_id=/&target_type=registration', false, 'ПЕРЕЙТИ НА САЙТ')">
-            <div class="featured-task-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
-            </div>
-            <div class="featured-task-content">
-                <div class="featured-task-top">
-                    <span class="featured-task-label">Спонсор</span>
-                    <span class="featured-task-reward">
-                        <img src="coins.png" alt="" class="coin-icon"> 1000
-                    </span>
-                </div>
-                <div class="featured-task-title">Депозит на JetTon</div>
-                <div class="featured-task-description">Зарегистрируйся и сделай любой депозит на JetTon.</div>
+        <div class="task-card upx-task"
+     onclick="openTaskModal('Привязка JetTon', 'https://jettredravon.com/cihFhEkPODc?click_id=%7Bclick_id%7D&target_id=/&target_type=registration', false, 'ПЕРЕЙТИ НА САЙТ')">
+
+    <div class="upx-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
+            <path d="M3 8h15a2 2 0 0 1 2 2v1h-4a2 2 0 0 0 0 4h4v1"></path>
+            <circle cx="16" cy="13" r="1"></circle>
+        </svg>
+    </div>
+
+    <div class="upx-content">
+        <div class="upx-top">
+            <span class="upx-label">5 шагов</span>
+
+            <button class="upx-toggle"
+                    type="button"
+                    aria-label="Свернуть"
+                    onclick="toggleUpxTask(event, this)">
+                <span class="upx-toggle-arrow">⌃</span>
+            </button>
+
+            <div class="upx-collapsed-details">
+                <div class="upx-collapsed-title">JetTon</div>
+                <div class="upx-collapsed-progress">0 из 5 наград получено</div>
             </div>
         </div>
 
-    </main>
+        <div class="upx-title">JetTon</div>
+
+        <div class="upx-progress-text">0 из 5 наград получено</div>
+
+        <div class="upx-link-row">
+            <span class="upx-link-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.71 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+            </span>
+            <span>Привязка <b>JetTon</b></span>
+            <span class="upx-arrow">→</span>
+            <span class="upx-link-reward">
+                <img src="coins.png" alt="" class="coin-icon"> 1000
+            </span>
+        </div>
+
+        <div class="upx-progress">
+            <div class="upx-progress-line"></div>
+            <div class="upx-locks">
+                <span class="upx-open-circle"></span>
+                <span>🔒</span>
+                <span>🔒</span>
+                <span>🔒</span>
+                <span>🔒</span>
+            </div>
+        </div>
+
+        <button class="upx-button"
+                onclick="event.stopPropagation(); openTaskModal('Привязка JetTon', 'https://jettredravon.com/cihFhEkPODc?click_id=%7Bclick_id%7D&target_id=/&target_type=registration', false, 'ПЕРЕЙТИ НА САЙТ')">
+            Привязать аккаунт · +1000
+        </button>
+
+        <div class="upx-hint">
+            Шаги можно посмотреть, но они откроются после<br>
+            привязки.
+        </div>
+    </div>
+</div>
+
 
     <!-- 4. МАГАЗИН -->
     <main id="shop" class="page">
