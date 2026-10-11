@@ -11,9 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <style>
 
+    <style>
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
@@ -169,10 +168,12 @@
             to { stroke-dashoffset: 200; } 
         }
 
-        /* АНИМАЦИЯ ПОЯВЛЕНИЯ СТРАНИЦ */
-        @keyframes fadeSlideUp { 
-            0% { opacity: 0; transform: translateY(100px); } 
-            100% { opacity: 1; transform: translateY(0); } 
+        /* ================= АНИМАЦИИ ПОЯВЛЕНИЯ КОНТЕНТА ================= */
+        
+        /* Плавное появление самой страницы без сдвига */
+        @keyframes pageFadeIn { 
+            0% { opacity: 0; } 
+            100% { opacity: 1; } 
         }
 
         .page { 
@@ -185,8 +186,43 @@
 
         .page.active { 
             display: block; 
-            animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            animation: pageFadeIn 0.3s ease forwards; 
         } 
+
+        /* Анимация "выплывания" для элементов: снизу и из пустоты */
+        @keyframes smoothFloatUp {
+            0% { 
+                opacity: 0; 
+                transform: translateY(25px); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Универсальный класс для всех блоков, которые должны выплывать */
+        .page.active .anim-item {
+            opacity: 0;
+            animation: smoothFloatUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Особая анимация для ИГР (выплывают снизу и увеличиваются) */
+        @keyframes gameCardPop {
+            0% { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.85); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .page.active .game-card {
+            opacity: 0;
+            animation: gameCardPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
         h1, h2 { 
             margin: 0 0 15px; 
@@ -220,46 +256,12 @@
         .top-header { 
             display: flex; 
             align-items: center; 
+            gap: 12px; 
             margin-bottom: 20px; 
             padding: 5px 10px; 
             background: transparent; 
             border: none; 
-        }
-
-        .header-left { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-        }
-
-        .balance-pill { 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            padding: 6px 14px; 
-            border-radius: 20px; 
-            font-weight: 700; 
-            font-size: 15px; 
-            color: #fff; 
-            border: 1px solid rgba(0, 136, 255, 0.3); 
-        }
-
-        .coin-icon { 
-            width: 18px; 
-            height: 18px; 
-            object-fit: contain; 
-            flex-shrink: 0; 
-        }
-
-        .coin-icon-sm { 
-            width: 11px; 
-            height: 11px; 
-            object-fit: contain; 
-            flex-shrink: 0; 
-            vertical-align: middle; 
-            position: relative; 
-            top: -1px; 
-            margin-left: 2px; 
+            justify-content: space-between; 
         }
 
         .avatar-container { 
@@ -303,21 +305,59 @@
             font-size: 16px; 
             font-weight: 700; 
         }
-
-        .promo-banner { 
-            width: 100%; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            margin-bottom: 20px; 
-            aspect-ratio: 16 / 9; 
-            border: 1px solid var(--card-border); 
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .promo-banner video { 
-            width: 100%; 
-            height: 100%; 
-            display: block; 
+        .balance-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 136, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #fff;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 136, 255, 0.2);
+        }
+
+        .coin-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            flex-shrink: 0; 
+        }
+
+        .coin-icon-sm { 
+            width: 11px; 
+            height: 11px; 
             object-fit: contain; 
+            flex-shrink: 0; 
+            vertical-align: middle; 
+            position: relative; 
+            top: -1px; 
+            margin-left: 2px; 
+        }
+
+        .promo-banner {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            aspect-ratio: 16 / 9; 
+            border: 1px solid var(--card-border);
+        }
+       
+        .promo-banner video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
         }
 
         .global-stats {
@@ -377,7 +417,7 @@
             display: flex; 
             flex-direction: column; 
             gap: 4px; 
-            align-items: center; 
+            align-items: center;
         }
 
         .stat-val { 
@@ -387,7 +427,7 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 4px; 
+            gap: 4px;
         }
 
         .stat-label { 
@@ -442,8 +482,13 @@
             border-color: rgba(255, 215, 0, 0.2); 
         }
 
-        .podium-item.second { height: 85%; }
-        .podium-item.third { height: 75%; }
+        .podium-item.second { 
+            height: 85%; 
+        }
+
+        .podium-item.third { 
+            height: 75%; 
+        }
 
         .podium-avatar { 
             width: 40px; 
@@ -474,7 +519,9 @@
             color: #fff;
         }
 
-        .podium-item.first .podium-name { margin-top: 30px; }
+        .podium-item.first .podium-name { 
+            margin-top: 30px; 
+        }
 
         .podium-score { 
             font-size: 12px; 
@@ -487,7 +534,10 @@
             gap: 4px; 
         }
 
-        .podium-score .coin-icon { width: 14px; height: 14px; }
+        .podium-score .coin-icon { 
+            width: 14px; 
+            height: 14px; 
+        }
 
         /* ================= СЕТКА ИГР 2x2 ================= */
         .games-grid {
@@ -495,7 +545,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             margin-top: 10px;
-            clear: both; /* Сбрасываем обтекание от баланса */
+            clear: both;
         }
 
         .game-card {
@@ -560,8 +610,7 @@
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            background:
-                radial-gradient(circle at 32% 25%, #31506d 0%, #102235 28%, #06101b 68%, #02070d 100%);
+            background: radial-gradient(circle at 32% 25%, #31506d 0%, #102235 28%, #06101b 68%, #02070d 100%);
             border: 1px solid #008cff;
             box-shadow:
                 0 0 8px #008cff,
@@ -719,6 +768,7 @@
         }
 
         .die-pips[data-value="1"] i:nth-child(1) { display: block; top: 9px; left: 9px; }
+        
         .die-pips[data-value="2"] i:nth-child(1),
         .die-pips[data-value="2"] i:nth-child(2) { display: block; }
         .die-pips[data-value="2"] i:nth-child(1) { top: 0; left: 0; }
@@ -894,9 +944,6 @@
             -webkit-background-clip: text !important;
             background-clip: text !important;
             -webkit-text-fill-color: transparent !important;
-            display: inline-block;
-            margin-top: 5px !important;
-            margin-bottom: 20px !important;
         }
 
         .games-history {
@@ -907,7 +954,6 @@
             padding: 0;
             text-align: center;
             transform: none !important;
-            clear: both;
         }
 
         .games-history h2.games-heading {
@@ -948,7 +994,6 @@
             margin-bottom: 15px;
             cursor: pointer;
             transition: transform 0.2s ease, border-color 0.2s ease;
-            clear: both;
         }
 
         .featured-task:active { 
@@ -1042,7 +1087,6 @@
                 inset 0 0 18px rgba(100, 40, 150, 0.08);
             box-sizing: border-box;
             margin-bottom: 15px;
-            clear: both;
         }
 
         .upx-icon {
@@ -1509,6 +1553,14 @@
             transform: scale(0.97); 
         }
 
+        /* ВЕРХНЯЯ ПАНЕЛЬ С БАЛАНСОМ ДЛЯ ВКЛАДОК */
+        .page-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
     </style>
 </head>
 
@@ -1557,11 +1609,11 @@
     <!-- 1. ГЛАВНАЯ -->
     <main id="home" class="page">
         <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
-        <div class="balance-pill sticky-pill">
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
         </div>
 
-        <div class="top-header">
+        <div class="top-header anim-item" style="animation-delay: 0.05s;">
             <div class="header-left">
                 <div class="avatar-container">
                     <img id="homeAvatarImg" class="avatar-img" src="" alt="Avatar" style="display: none;">
@@ -1574,13 +1626,13 @@
             </div>
         </div>
 
-        <div class="promo-banner" style="clear: both;">
+        <div class="promo-banner anim-item" style="clear: both; animation-delay: 0.1s;">
             <video autoplay muted loop playsinline>
                 <source src="./banner2.mp4" type="video/mp4">
             </video>
         </div>
 
-        <div class="card global-stats">
+        <div class="card global-stats anim-item" style="animation-delay: 0.15s;">
             <div class="stats-title">💵 Всего выплачено зрителям</div>
             <div class="stats-main-sum">24 714 120 ₽</div>
             <div class="stats-row">
@@ -1589,7 +1641,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card anim-item" style="animation-delay: 0.2s;">
             <div class="leaderboard-header">
                 <div class="leaderboard-title">Рейтинг</div>
                 <a href="#" class="leaderboard-link" onclick="openPage('profile')">Лидерборд ></a>
@@ -1605,14 +1657,14 @@
     <!-- 2. ИГРЫ -->
     <main id="games" class="page">
         <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
-        <div class="balance-pill sticky-pill">
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
         </div>
 
-        <h2 class="games-heading" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block;">Игры</h2>
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Игры</h2>
         
         <div class="games-grid" style="clear: both;">
-            <div class="game-card" onclick="window.location.href='mines.html'">
+            <div class="game-card" style="animation-delay: 0.1s;" onclick="window.location.href='mines.html'">
                 <div class="game-icon bomb-preview">
                     <span class="bomb-fuse"></span>
                     <span class="bomb-spark">✦</span>
@@ -1623,7 +1675,7 @@
                 <div class="game-extra">Играть</div>
             </div>
 
-            <div class="game-card" onclick="window.location.href='cards.html'">
+            <div class="game-card" style="animation-delay: 0.2s;" onclick="window.location.href='cards.html'">
                 <div class="game-icon cards-preview">
                     <span class="mini-card card-diamond"><b>A</b><i>♦</i></span>
                     <span class="mini-card card-heart"><b>A</b><i>♥</i></span>
@@ -1635,7 +1687,7 @@
                 <div class="game-extra">Играть</div>
             </div>
 
-            <div class="game-card" onclick="window.location.href='balloon.html'">
+            <div class="game-card" style="animation-delay: 0.3s;" onclick="window.location.href='balloon.html'">
                 <div class="game-icon balloon-preview">
                     <span class="balloon-shape"></span>
                     <svg class="balloon-string" viewBox="0 0 12 30" aria-hidden="true"><path d="M6 0 C6 7 1 8 6 14 C11 20 6 23 4 30" /></svg>
@@ -1645,7 +1697,7 @@
                 <div class="game-extra">Играть</div>
             </div>
 
-            <div class="game-card" onclick="window.location.href='dice.html'">
+            <div class="game-card" style="animation-delay: 0.4s;" onclick="window.location.href='dice.html'">
                <div class="game-icon dice-preview">
                     <div class="preview-die" id="previewDie">
                         <div class="die-face die-front"><span class="die-pips" data-value="1"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
@@ -1662,7 +1714,7 @@
             </div>
         </div>
         
-        <section class="games-history">
+        <section class="games-history anim-item" style="animation-delay: 0.5s;">
             <h2 class="games-heading">Недавние выигрыши</h2>
             <div id="gamesHistoryList" class="games-history-list">
             </div>
@@ -1673,14 +1725,14 @@
     <!-- 3. ЗАДАНИЯ -->
     <main id="tasks" class="page">
         <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
-        <div class="balance-pill sticky-pill">
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
         </div>
 
-        <h2 class="games-heading" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block;">Задания</h2>
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Задания</h2>
 
-        <!-- Задание: Подписка ТГ -->
-        <div class="task-card featured-task" style="clear: both;" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
+        <!-- 1. Задание: Подписка ТГ -->
+        <div class="task-card featured-task anim-item" style="clear: both; animation-delay: 0.1s;" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 3 14.5 21l-3.8-7.7L3 9.5 21 3Z"></path>
@@ -1701,8 +1753,8 @@
             </div>
         </div>
 
-        <!-- Задание: Подписка YT -->
-        <div class="task-card featured-task" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <!-- 2. Задание: Подписка YT -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.15s;" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="3" y="6" width="18" height="13" rx="2"></rect>
@@ -1723,8 +1775,8 @@
             </div>
         </div>
 
-        <!-- Задание: Подписка Kick -->
-        <div class="task-card featured-task" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <!-- 3. Задание: Подписка Kick -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.2s;" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"></path>
@@ -1743,8 +1795,8 @@
             </div>
         </div>
 
-        <!-- Задание: UP-X (Привязка 5 шагов) -->
-        <div class="task-card upx-task">
+        <!-- 4. Задание: UP-X (Привязка 5 шагов) -->
+        <div class="task-card upx-task anim-item" style="animation-delay: 0.25s;">
             <div class="upx-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
@@ -1795,8 +1847,8 @@
             </div>
         </div>
 
-        <!-- Задание: JetTon (Привязка 5 шагов) -->
-        <div class="task-card upx-task">
+        <!-- 5. Задание: JetTon (Привязка 5 шагов) -->
+        <div class="task-card upx-task anim-item" style="animation-delay: 0.3s;">
             <div class="upx-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
@@ -1847,8 +1899,27 @@
             </div>
         </div>
 
-        <!-- Задание: 3 сообщения на стриме -->
-        <div class="task-card featured-task" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <!-- 6. Задание: Деп UP-X -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.35s;" onclick="openTaskModal('Депозит на UP-X', 'https://up-click-me.top/tfevgr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Спонсор</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 1000
+                    </span>
+                </div>
+                <div class="featured-task-title">Депозит на UP-X</div>
+                <div class="featured-task-description">Зарегистрируйся и сделай любой депозит на сайте UP-X.</div>
+            </div>
+        </div>
+
+        <!-- 7. Задание: 3 сообщения на стриме -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.4s;" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -1866,8 +1937,8 @@
             </div>
         </div>
 
-        <!-- Задание: Ник на Kick -->
-        <div class="task-card featured-task" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <!-- 8. Задание: Ник на Kick -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.45s;" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -1886,8 +1957,8 @@
             </div>
         </div>
 
-        <!-- Задание: Пригласить друзей -->
-        <div class="task-card featured-task" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
+        <!-- 9. Задание: Пригласить друзей -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.5s;" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -1916,19 +1987,19 @@
 
     <!-- 4. МАГАЗИН -->
     <main id="shop" class="page">
-        <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
-        <div class="balance-pill sticky-pill">
-            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        <div class="page-top-bar anim-item" style="animation-delay: 0s;">
+            <h2 class="games-heading" style="margin: 0 !important;">Магазин</h2>
+            <div class="balance-pill">
+                <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+            </div>
         </div>
-
-        <h2 class="games-heading" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block;">🛒 Магазин</h2>
-        <div class="card" style="clear: both;"><h3 style="margin-top: 0;">Магазин пуст</h3><p style="color: var(--secondary); font-size: 14px;">Скоро здесь можно будет обменивать награды.</p></div>
+        <div class="card anim-item" style="clear: both; animation-delay: 0.1s;"><h3 style="margin-top: 0;">Магазин пуст</h3><p style="color: var(--secondary); font-size: 14px;">Скоро здесь можно будет обменивать награды.</p></div>
     </main>
 
     <!-- 5. ПРОФИЛЬ -->
     <main id="profile" class="page">
-        <h2>👤 Профиль</h2>
-        <div class="card">
+        <h2 class="anim-item" style="animation-delay: 0.05s;">👤 Профиль</h2>
+        <div class="card anim-item" style="animation-delay: 0.1s;">
             <h3 style="margin-top: 0; margin-bottom: 15px;" id="profileUserName">Пользователь</h3>
             
             <div style="color: var(--secondary); font-size: 15px; line-height: 1.6; display: flex; flex-direction: column; align-items: center; gap: 8px;">
