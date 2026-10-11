@@ -1265,5 +1265,21 @@
     rollPreviewDie();
     setInterval(rollPreviewDie, 4500);
     </script>
+
+<script>
+function toggleUpxTask(event, button) {
+    event.stopPropagation();
+
+    const task = button.closest('.upx-task');
+    const collapsed = task.classList.toggle('is-collapsed');
+
+    button.setAttribute(
+        'aria-label',
+        collapsed ? 'Развернуть' : 'Свернуть'
+    );
+}
+</script>
+
+    
 </body>
 </html>
