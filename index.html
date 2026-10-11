@@ -11,9 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <style>
 
+    <style>
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
@@ -204,15 +203,20 @@
             text-align: center; 
         }
 
-        /* ШАПКА И БАЛАНС */
-        .top-header { 
+        /* ================= ПРИЛИПАЮЩИЕ ПАНЕЛИ С БАЛАНСОМ ================= */
+        .top-header, .page-top-bar { 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            margin-bottom: 20px; 
-            padding: 5px 10px; 
-            background: transparent; 
-            border: none; 
+            margin: -20px -16px 20px -16px; 
+            padding: 15px 16px; 
+            background: rgba(10, 12, 16, 0.85); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            position: sticky; 
+            top: 0; 
+            z-index: 90; 
         }
 
         .header-left { 
@@ -543,7 +547,6 @@
             }
         }
 
-        /* Сама бомба — немного меньше */
         .bomb-body {
             position: absolute;
             left: 8px;
@@ -562,7 +565,6 @@
                 inset 4px 4px 8px rgba(0, 180, 255, 0.18);
         }
 
-        /* Более длинный изогнутый фитилёк */
         .bomb-fuse {
             position: absolute;
             left: 29px;
@@ -576,7 +578,6 @@
             filter: drop-shadow(0 0 4px #0088ff);
         }
 
-        /* Искра на конце фитилька */
         .bomb-spark {
             position: absolute;
             left: 36px;
@@ -619,7 +620,6 @@
             font-style: normal;
         }
 
-        /* Первые три карты видны частично */
         .card-diamond { left: 2px;  top: 12px; transform: rotate(-18deg); z-index: 1; }
         .card-heart   { left: 16px; top: 7px;  transform: rotate(-6deg);  z-index: 2; }
         .card-spade   { left: 30px; top: 7px;  transform: rotate(6deg);   z-index: 3; }
@@ -694,7 +694,6 @@
             display: none;
         }
 
-        /* По умолчанию точки скрыты */
         .die-pips {
             color: transparent;
             position: relative;
@@ -713,14 +712,12 @@
             box-shadow: 0 0 5px #00eaff, 0 0 10px #008cff;
         }
 
-        /* 1 — центр */
         .die-pips[data-value="1"] i:nth-child(1) {
             display: block;
             top: 9px;
             left: 9px;
         }
 
-        /* 2 — диагональ */
         .die-pips[data-value="2"] i:nth-child(1),
         .die-pips[data-value="2"] i:nth-child(2) {
             display: block;
@@ -728,20 +725,17 @@
         .die-pips[data-value="2"] i:nth-child(1) { top: 0; left: 0; }
         .die-pips[data-value="2"] i:nth-child(2) { right: 0; bottom: 0; }
 
-        /* 3 — диагональ и центр */
         .die-pips[data-value="3"] i:nth-child(-n+3) { display: block; }
         .die-pips[data-value="3"] i:nth-child(1) { top: 0; left: 0; }
         .die-pips[data-value="3"] i:nth-child(2) { top: 9px; left: 9px; }
         .die-pips[data-value="3"] i:nth-child(3) { right: 0; bottom: 0; }
 
-        /* 4 — четыре угла */
         .die-pips[data-value="4"] i:nth-child(-n+4) { display: block; }
         .die-pips[data-value="4"] i:nth-child(1) { top: 0; left: 0; }
         .die-pips[data-value="4"] i:nth-child(2) { top: 0; right: 0; }
         .die-pips[data-value="4"] i:nth-child(3) { bottom: 0; left: 0; }
         .die-pips[data-value="4"] i:nth-child(4) { right: 0; bottom: 0; }
 
-        /* 5 — четыре угла и центр */
         .die-pips[data-value="5"] i:nth-child(-n+5) { display: block; }
         .die-pips[data-value="5"] i:nth-child(1) { top: 0; left: 0; }
         .die-pips[data-value="5"] i:nth-child(2) { top: 0; right: 0; }
@@ -749,7 +743,6 @@
         .die-pips[data-value="5"] i:nth-child(4) { bottom: 0; left: 0; }
         .die-pips[data-value="5"] i:nth-child(5) { right: 0; bottom: 0; }
 
-        /* 6 — две колонки по три */
         .die-pips[data-value="6"] i { display: block; }
         .die-pips[data-value="6"] i:nth-child(1) { top: 0; left: 0; }
         .die-pips[data-value="6"] i:nth-child(2) { top: 0; right: 0; }
@@ -2123,7 +2116,6 @@
             }, 1700);
         }
 
-        // ================= Анимация звезд на фоне =================
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let width = 0; let height = 0;
@@ -2157,7 +2149,6 @@
     </script>
     
     <script>
-    // Анимация кубика на превью карточки
     const previewDie = document.getElementById("previewDie");
     const previewFaces = previewDie.querySelectorAll(".die-pips");
 
