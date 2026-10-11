@@ -600,6 +600,54 @@
     margin-bottom: 12px !important;
 }
 
+        .upx-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.upx-toggle {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #a899c5;
+    cursor: pointer;
+}
+
+.upx-arrow {
+    display: block;
+    font-size: 23px;
+    line-height: 1;
+    transform: translateY(2px);
+    transition: transform 0.2s ease;
+}
+
+.upx-collapse-content {
+    max-height: 500px;
+    overflow: hidden;
+    opacity: 1;
+    transition:
+        max-height 0.3s ease,
+        opacity 0.2s ease,
+        margin-top 0.3s ease;
+}
+
+.upx-task.is-collapsed .upx-collapse-content {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    pointer-events: none;
+}
+
+.upx-task.is-collapsed .upx-arrow {
+    transform: rotate(180deg) translateY(-2px);
+}
+
         
     </style>
 </head>
@@ -894,13 +942,19 @@
 
     <div class="upx-content">
         <div class="upx-top">
-            <span class="upx-label">5 шагов</span>
+    <span class="upx-label">5 шагов</span>
 
-            <span class="upx-reward">
-                <img src="coins.png" alt="" class="coin-icon"> 1000
-            </span>
-        </div>
+    <button class="upx-toggle"
+            type="button"
+            aria-label="Свернуть"
+            onclick="toggleUpxTask(event, this)">
+        <span class="upx-arrow">⌃</span>
+    </button>
+</div>
 
+<div class="upx-collapse-content">
+
+        
         <div class="upx-title">UP-X</div>
 
         <div class="upx-progress-text">
