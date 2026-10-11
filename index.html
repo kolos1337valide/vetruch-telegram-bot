@@ -600,6 +600,34 @@
     margin-bottom: 12px !important;
 }
 
+        .upx-toggle {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    color: #a994c5;
+    cursor: pointer;
+}
+
+.upx-toggle-arrow {
+    display: block;
+    font-size: 23px;
+    line-height: 1;
+    transition: transform 0.25s ease;
+}
+
+.upx-task.is-collapsed .upx-toggle-arrow {
+    transform: rotate(180deg);
+}
+
+/* Скрываем содержимое UP-X, не меняя HTML-структуру */
+.upx-task.is-collapsed .upx-content > :not(.upx-top) {
+    display: none !important;
+}
+
         
     </style>
 </head>
@@ -894,12 +922,16 @@
 
     <div class="upx-content">
         <div class="upx-top">
-            <span class="upx-label">5 шагов</span>
+    <span class="upx-label">5 шагов</span>
 
-            <span class="upx-reward">
-                <img src="coins.png" alt="" class="coin-icon"> 1000
-            </span>
-        </div>
+    <button class="upx-toggle"
+            type="button"
+            aria-label="Свернуть"
+            onclick="toggleUpxTask(event, this)">
+        <span class="upx-toggle-arrow">⌃</span>
+    </button>
+</div>
+
 
         <div class="upx-title">UP-X</div>
 
@@ -1211,5 +1243,19 @@
     rollPreviewDie();
     setInterval(rollPreviewDie, 4500);
     </script>
+
+<script>
+function toggleUpxTask(event, button) {
+    event.stopPropagation();
+
+    const task = button.closest('.upx-task');
+
+    if (task) {
+        task.classList.toggle('is-collapsed');
+    }
+}
+</script>
+
+    
 </body>
 </html>
