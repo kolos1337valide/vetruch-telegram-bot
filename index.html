@@ -2300,10 +2300,17 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready(); tg.expand();
-        tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+tg.ready(); 
+tg.expand(); 
+tg.setHeaderColor('#000000'); 
+tg.setBackgroundColor('#000000');
 
-        function initBalance() {
+function selectShopProduct(productName) {
+    tg.showAlert('Товар "' + productName + '" выбран!');
+}
+
+function initBalance(){
+
             let bal = localStorage.getItem('vetruch_balance');
             if (bal === null) { bal = 500; localStorage.setItem('vetruch_balance', bal); }
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
