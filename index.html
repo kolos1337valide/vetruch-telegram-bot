@@ -13,6 +13,20 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
+
+/* Базовое состояние карточки до появления */
+.shop-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Класс, который запускает плавное появление */
+.shop-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+        
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
