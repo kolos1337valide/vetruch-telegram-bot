@@ -2404,9 +2404,17 @@
         }
 
         function submitTask() {
-            tg.showAlert("Отправка скриншотов в разработке! 🛠\nСкоро добавим панель администратора для проверки.");
-        }
+            function selectShopItem(itemName) {
+    if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.showAlert(
+            'Товар "' + itemName + '" выбран! Цены и покупку настроим следующим шагом 🚀'
+        );
+    } else {
+        alert('Товар "' + itemName + '" выбран!');
+    }
+}
 
+           
         // ================= УМНЫЙ ЗАГРУЗОЧНЫЙ ЭКРАН И ПАМЯТЬ ВКЛАДОК =================
         const loadingScreen = document.getElementById('loading-screen');
         const loaderLogo = document.querySelector('.loader-logo');
