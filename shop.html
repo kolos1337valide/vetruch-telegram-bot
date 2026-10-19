@@ -13,8 +13,8 @@
         :root {
             --bg: #000000; --text: #ffffff; --secondary: #8c97a7;
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
-            --card-bg: rgba(18, 14, 28, 0.82); 
-            --card-border: rgba(130, 90, 220, 0.3);
+            --card-bg: rgba(20, 16, 32, 0.75); 
+            --card-border: rgba(140, 90, 240, 0.28);
         }
         
         body { 
@@ -56,37 +56,37 @@
             margin-bottom: 20px;
         }
 
-        /* Дизайн карточки точь-в-точь как на первом референсе */
+        /* Карточка точь-в-точь как на вашем эталоне со 2 скриншота */
         .shop-card {
             background: var(--card-bg);
             border: 1.5px solid var(--card-border);
-            border-radius: 22px;
-            padding: 12px;
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 10px 10px 14px 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(120, 80, 200, 0.05);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(130, 80, 230, 0.05);
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .shop-card:active { transform: scale(0.97); border-color: #a855f7; }
 
-        /* Квадратная картинка с внутренними отступами и скруглением */
+        /* Картинка на всю ширину верхней части карточки */
         .shop-card-img-wrap {
             width: 100%;
             aspect-ratio: 1;
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
-            background: #05080c;
+            background: #000;
             margin-bottom: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .shop-card-img-wrap img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ровно заполняет квадратную область без черных полос */
+            object-fit: cover;
             display: block;
         }
 
@@ -98,7 +98,7 @@
             margin-bottom: 12px;
             text-align: left;
             line-height: 1.3;
-            min-height: 34px;
+            min-height: 32px;
             display: flex;
             align-items: center;
             padding: 0 2px;
@@ -159,7 +159,7 @@
         <div class="shop-grid">
             
             <div class="shop-card">
-                <div class="shop-card-img-wrap"><img src="IMG_1068.PNG" alt="iPhone 18 PRO MAX"></div>
+                <div class="shop-card-img-wrap"><img src="IMG_1068.jpg" alt="iPhone 18 PRO MAX"></div>
                 <div class="shop-card-title">iPhone 18 PRO MAX</div>
                 <button class="shop-btn" onclick="buyItem('iPhone 18 PRO MAX')">КУПИТЬ</button>
             </div>
