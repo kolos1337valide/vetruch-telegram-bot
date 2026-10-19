@@ -13,7 +13,7 @@
         :root {
             --bg: #000000; --text: #ffffff; --secondary: #8c97a7;
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
-            --card-bg: rgba(20, 22, 28, 0.75); --card-border: rgba(0, 136, 255, 0.25);
+            --card-bg: rgba(14, 16, 22, 0.85); --card-border: rgba(0, 136, 255, 0.3);
         }
         
         body { 
@@ -30,7 +30,7 @@
             min-height: 100vh; padding: 20px 16px 40px 16px; 
         }
 
-        /* Шапка: убрали кнопку назад, оставили заголовок и баланс */
+        /* Шапка */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         
         h2.shop-heading {
@@ -55,57 +55,61 @@
             margin-bottom: 20px;
         }
 
+        /* Карточка точь-в-точь как на 2 скрине */
         .shop-card {
             background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 18px;
-            padding: 10px;
+            border: 1.5px solid var(--card-border);
+            border-radius: 20px;
+            overflow: hidden; /* Обрезает картинку по радиусу карточки сверху */
+            padding: 0 12px 14px 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 136, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 136, 255, 0.08);
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .shop-card:active { transform: scale(0.97); border-color: var(--blue-main); }
 
-        /* Картинка на всю ширину и высоту блока без пустот */
+        /* Картинка на всю ширину от края до края сверху */
         .shop-card-img-wrap {
-            width: 100%;
+            width: calc(100% + 24px); /* Растягиваем на всю ширину с учетом паддингов карточки */
+            margin-left: -12px;
+            margin-right: -12px;
             aspect-ratio: 1;
-            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 8px;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: #000;
+            background: #05080c;
+            margin-bottom: 12px;
         }
 
         .shop-card-img-wrap img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Заполняет всю рамку как надо */
+            object-fit: cover;
             display: block;
         }
 
+        /* Название товара прямо над кнопкой */
         .shop-card-title {
             font-size: 13px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 10px;
-            text-align: center;
+            margin-bottom: 12px;
+            text-align: left; /* Как на 2 скрине выравнивание слева */
             line-height: 1.3;
             min-height: 34px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            padding: 0 2px;
         }
 
-        /* ГОЛУБАЯ КНОПКА ПО ЗАПРОСУ ШЕФА */
+        /* Голубая кнопка */
         .shop-btn {
             width: 100%;
             background: linear-gradient(135deg, #0088ff, #00d9ff);
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 12px;
             color: #fff;
             font-weight: 800;
@@ -143,7 +147,7 @@
 
     <div class="game-container">
         
-        <!-- Шапка: заголовок слева, баланс справа -->
+        <!-- Шапка -->
         <div class="header">
             <h2 class="shop-heading">Магазин</h2>
             <div class="balance-pill">
@@ -235,7 +239,7 @@
         </div>
     </div>
 
-    <!-- Нижнее меню с полными ссылками на все вкладки бота -->
+    <!-- Нижнее меню -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-button" onclick="setTab('home')">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Главная</span>
@@ -286,10 +290,10 @@
         function drawStars() {
             ctx.clearRect(0, 0, w, h);
             for (const star of stars) {
-                ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(100, 180, 255, ${star.o})`; ctx.fill();
-                star.y += star.s;
-                if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
+                ctx.beginPath(); ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 180, 255, ${star.opacity})`; ctx.fill();
+                star.y += star.speed;
+                if (star.y > h + 3) { star.y = -3; star.x = Math.random() * w; }
             }
             requestAnimationFrame(drawStars);
         }
