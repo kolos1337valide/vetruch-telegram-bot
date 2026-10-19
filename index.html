@@ -13,6 +13,18 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
+
+.shop-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* чтобы все карточки тянулись по высоте сетки */
+}
+
+.shop-card .shop-btn {
+    margin-top: auto; /* прижимает кнопку строго к низу карточки */
+}
+        
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
