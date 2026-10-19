@@ -56,13 +56,12 @@
             margin-bottom: 20px;
         }
 
-        /* Дизайн карточки точь-в-точь как на вашем референсе */
+        /* Дизайн карточки точь-в-точь как на первом референсе */
         .shop-card {
             background: var(--card-bg);
             border: 1.5px solid var(--card-border);
-            border-radius: 20px;
-            overflow: hidden;
-            padding: 0; /* Убираем внутренние отступы, чтобы картинка приликла к краям */
+            border-radius: 22px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -73,41 +72,36 @@
         }
         .shop-card:active { transform: scale(0.97); border-color: #a855f7; }
 
-        /* Картинка строго на всю ширину и высоту верха карточки */
+        /* Квадратная картинка с внутренними отступами и скруглением */
         .shop-card-img-wrap {
             width: 100%;
             aspect-ratio: 1;
+            border-radius: 14px;
             overflow: hidden;
             background: #05080c;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .shop-card-img-wrap img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Ровно заполняет квадратную область без черных полос */
             display: block;
         }
 
-        /* Контейнер для текста и кнопки внутри карточки с отступами */
-        .shop-card-content {
-            padding: 10px 12px 14px 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex-grow: 1;
-        }
-
-        /* Название товара над кнопкой */
+        /* Название товара */
         .shop-card-title {
             font-size: 13px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-align: left;
             line-height: 1.3;
-            min-height: 32px;
+            min-height: 34px;
             display: flex;
             align-items: center;
+            padding: 0 2px;
         }
 
         /* Кнопка */
@@ -115,8 +109,8 @@
             width: 100%;
             background: linear-gradient(135deg, #0088ff, #00d9ff);
             border: none;
-            border-radius: 12px;
-            padding: 11px;
+            border-radius: 14px;
+            padding: 12px;
             color: #fff;
             font-weight: 800;
             font-size: 14px;
@@ -166,106 +160,80 @@
             
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1068.PNG" alt="iPhone 18 PRO MAX"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">iPhone 18 PRO MAX</div>
-                    <button class="shop-btn" onclick="buyItem('iPhone 18 PRO MAX')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">iPhone 18 PRO MAX</div>
+                <button class="shop-btn" onclick="buyItem('iPhone 18 PRO MAX')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1073.jpg" alt="iPhone DUO"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">iPhone DUO</div>
-                    <button class="shop-btn" onclick="buyItem('iPhone DUO')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">iPhone DUO</div>
+                <button class="shop-btn" onclick="buyItem('iPhone DUO')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1070.jpg" alt="AirPods PRO 3"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">AirPods PRO 3</div>
-                    <button class="shop-btn" onclick="buyItem('AirPods PRO 3')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">AirPods PRO 3</div>
+                <button class="shop-btn" onclick="buyItem('AirPods PRO 3')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1074.jpg" alt="Бонуска за 10 000₽"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">Бонуска за 10 000₽</div>
-                    <button class="shop-btn" onclick="buyItem('Бонуска за 10 000₽')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">Бонуска за 10 000₽</div>
+                <button class="shop-btn" onclick="buyItem('Бонуска за 10 000₽')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1072.jpg" alt="5000 рублей"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">5000 рублей</div>
-                    <button class="shop-btn" onclick="buyItem('5000 рублей')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">5000 рублей</div>
+                <button class="shop-btn" onclick="buyItem('5000 рублей')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1069.jpg" alt="2500 рублей"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">2500 рублей</div>
-                    <button class="shop-btn" onclick="buyItem('2500 рублей')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">2500 рублей</div>
+                <button class="shop-btn" onclick="buyItem('2500 рублей')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1071.jpg" alt="1000 рублей"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">1000 рублей</div>
-                    <button class="shop-btn" onclick="buyItem('1000 рублей')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">1000 рублей</div>
+                <button class="shop-btn" onclick="buyItem('1000 рублей')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1075.jpg" alt="Выбрать слот для стрима"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">Выбрать слот для стрима</div>
-                    <button class="shop-btn" onclick="buyItem('Выбрать слот для стрима')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">Выбрать слот для стрима</div>
+                <button class="shop-btn" onclick="buyItem('Выбрать слот для стрима')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1076.jpg" alt="Telegram Premium на 1 год"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">Telegram Premium на 1 год</div>
-                    <button class="shop-btn" onclick="buyItem('Telegram Premium на 1 год')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">Telegram Premium на 1 год</div>
+                <button class="shop-btn" onclick="buyItem('Telegram Premium на 1 год')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1079.jpg" alt="Telegram Premium 6 месяцев"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">Telegram Premium 6 месяцев</div>
-                    <button class="shop-btn" onclick="buyItem('Telegram Premium 6 месяцев')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">Telegram Premium 6 месяцев</div>
+                <button class="shop-btn" onclick="buyItem('Telegram Premium 6 месяцев')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1080.jpg" alt="Telegram Premium 3 месяца"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">Telegram Premium 3 месяца</div>
-                    <button class="shop-btn" onclick="buyItem('Telegram Premium 3 месяца')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">Telegram Premium 3 месяца</div>
+                <button class="shop-btn" onclick="buyItem('Telegram Premium 3 месяца')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1077.jpg" alt="VIP либо OG в чате"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">VIP либо OG в чате</div>
-                    <button class="shop-btn" onclick="buyItem('VIP либо OG в чате')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">VIP либо OG в чате</div>
+                <button class="shop-btn" onclick="buyItem('VIP либо OG в чате')">КУПИТЬ</button>
             </div>
 
             <div class="shop-card">
                 <div class="shop-card-img-wrap"><img src="IMG_1078.jpg" alt="VPN 1 месяц"></div>
-                <div class="shop-card-content">
-                    <div class="shop-card-title">VPN 1 месяц</div>
-                    <button class="shop-btn" onclick="buyItem('VPN 1 месяц')">КУПИТЬ</button>
-                </div>
+                <div class="shop-card-title">VPN 1 месяц</div>
+                <button class="shop-btn" onclick="buyItem('VPN 1 месяц')">КУПИТЬ</button>
             </div>
 
         </div>
