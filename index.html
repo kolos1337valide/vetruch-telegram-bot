@@ -1671,6 +1671,71 @@
     }
 }
 
+
+/* ФИНАЛЬНЫЙ РАЗМЕР КАРТОЧЕК МАГАЗИНА */
+
+.shop-products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+}
+
+.shop-product-card {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border-radius: 20px !important;
+}
+
+/* Было почти квадратом, станет как на нужном скриншоте */
+.shop-product-image {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1.4 / 1 !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+}
+
+.shop-product-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.shop-product-info {
+    min-height: 0 !important;
+    padding: 10px 10px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+}
+
+.shop-product-name {
+    min-height: 20px !important;
+    height: auto !important;
+    margin: 0 0 9px !important;
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.shop-product-buy {
+    min-height: 42px !important;
+    height: 42px !important;
+    margin-top: auto !important;
+    padding: 8px !important;
+    border-radius: 14px !important;
+    font-size: 13px !important;
+}
+
+
         
     </style>
 </head>
