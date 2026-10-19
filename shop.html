@@ -13,7 +13,9 @@
         :root {
             --bg: #000000; --text: #ffffff; --secondary: #8c97a7;
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
-            --card-bg: rgba(14, 16, 22, 0.85); --card-border: rgba(0, 136, 255, 0.3);
+            /* Точный темный полупрозрачный фон с размытием как на референсе */
+            --card-bg: rgba(18, 14, 28, 0.78); 
+            --card-border: rgba(130, 90, 220, 0.25);
         }
         
         body { 
@@ -21,7 +23,7 @@
             min-height: 100vh; overflow-x: hidden; padding-bottom: 90px; 
         }
 
-        /* Фон */
+        /* Фон со звездами */
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%); pointer-events: none; }
 
@@ -55,32 +57,32 @@
             margin-bottom: 20px;
         }
 
-        /* Карточка точь-в-точь как на 2 скрине */
+        /* Карточка с размытием фона и мягким переходом */
         .shop-card {
             background: var(--card-bg);
             border: 1.5px solid var(--card-border);
-            border-radius: 20px;
-            overflow: hidden; /* Обрезает картинку по радиусу карточки сверху */
+            border-radius: 22px;
+            overflow: hidden;
             padding: 0 12px 14px 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 136, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(120, 80, 200, 0.05);
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
-        .shop-card:active { transform: scale(0.97); border-color: var(--blue-main); }
+        .shop-card:active { transform: scale(0.97); border-color: #a855f7; }
 
-        /* Картинка на всю ширину от края до края сверху */
+        /* Картинка на всю ширину карточки до самых краев */
         .shop-card-img-wrap {
-            width: calc(100% + 24px); /* Растягиваем на всю ширину с учетом паддингов карточки */
+            width: calc(100% + 24px);
             margin-left: -12px;
             margin-right: -12px;
             aspect-ratio: 1;
             overflow: hidden;
             background: #05080c;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .shop-card-img-wrap img {
@@ -90,21 +92,21 @@
             display: block;
         }
 
-        /* Название товара прямо над кнопкой */
+        /* Название товара чуть выше кнопки с точным отступом */
         .shop-card-title {
             font-size: 13px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 12px;
-            text-align: left; /* Как на 2 скрине выравнивание слева */
+            margin-bottom: 10px;
+            text-align: left;
             line-height: 1.3;
-            min-height: 34px;
+            min-height: 32px;
             display: flex;
             align-items: center;
             padding: 0 2px;
         }
 
-        /* Голубая кнопка */
+        /* Твоя кнопка (голубой градиент) */
         .shop-btn {
             width: 100%;
             background: linear-gradient(135deg, #0088ff, #00d9ff);
@@ -115,7 +117,7 @@
             font-weight: 800;
             font-size: 14px;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.4);
+            box-shadow: 0 0 18px rgba(0, 136, 255, 0.45);
             text-align: center;
             transition: 0.2s;
         }
