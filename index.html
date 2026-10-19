@@ -2339,6 +2339,31 @@
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas(); drawStars();
     </script>
+
+<script>
+    // Твои текущие функции...
+
+    // 1. Добавляем саму функцию красивого появления карточек
+    function animateShopCards() {
+        const cards = document.querySelectorAll('#shop .shop-card'); // Ищет все карточки внутри магазина
+        cards.forEach((card, index) => {
+            card.classList.remove('visible'); // Сбрасываем, чтобы анимировалось заново
+            setTimeout(() => {
+                card.classList.add('visible'); // Плавное появление с задержкой
+            }, index * 60); // 60мс задержки между карточками
+        });
+    }
+
+    // 2. Находим твою функцию переключения страниц/вкладок (она может называться openTab, openPage или как-то так)
+    function openPage(pageName) {
+        // ... твой существующий код скрытия/показа страниц ...
+
+        // Если открыли вкладку магазина — запускаем анимацию карточек!
+        if (pageName === 'shop') {
+            animateShopCards();
+        }
+    }
+</script>
     
     <script>
     const previewDie = document.getElementById("previewDie");
