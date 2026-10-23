@@ -3585,8 +3585,26 @@
         tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
         function initBalance() {
+            let myId = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id)
+                ? String(tg.initDataUnsafe.user.id)
+                : 'local_user';
+
+            let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
             let bal = localStorage.getItem('vetruch_balance');
-            if (bal === null) { bal = 500; localStorage.setItem('vetruch_balance', bal); }
+
+            if (balancesMap[myId] !== undefined) {
+                bal = balancesMap[myId];
+                localStorage.setItem('vetruch_balance', bal);
+            } else if (bal === null) {
+                bal = 500;
+                localStorage.setItem('vetruch_balance', bal);
+                balancesMap[myId] = 500;
+                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+            } else {
+                balancesMap[myId] = parseInt(bal, 10);
+                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+            }
+
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
         }
         initBalance();
