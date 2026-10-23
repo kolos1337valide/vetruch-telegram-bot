@@ -3461,7 +3461,94 @@ html
         </button>
 
     </main>
+<!-- 6. СКРЫТАЯ ВКЛАДКА: АДМИН-ПАНЕЛЬ (НЕТ В НИЖНЕМ МЕНЮ) -->
+    <main id="admin" class="page">
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
+            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
 
+        <div class="admin-top-bar anim-item" style="animation-delay: 0.05s;">
+            <button type="button" class="admin-back-btn" onclick="openPage('profile')">
+                ← Назад
+            </button>
+            <h2 class="games-heading" style="margin: 0 !important;">Админ-панель</h2>
+        </div>
+
+        <!-- Переключатель 3 разделов: Задания / Магазин / Накрутка по ID -->
+        <div class="admin-tabs anim-item" style="animation-delay: 0.1s;">
+            <button type="button" class="admin-tab-btn active" data-adm="adm-tasks" onclick="switchAdminTab('adm-tasks', this)">
+                📋 Задания
+            </button>
+            <button type="button" class="admin-tab-btn" data-adm="adm-shop" onclick="switchAdminTab('adm-shop', this)">
+                🛒 Магазин
+            </button>
+            <button type="button" class="admin-tab-btn" data-adm="adm-users" onclick="switchAdminTab('adm-users', this)">
+                💎 По ID
+            </button>
+        </div>
+
+        <!-- ГРАФА 1: ЗАДАНИЯ (ПРОВЕРКА СКРИНШОТОВ) -->
+        <div id="adm-tasks" class="admin-section active">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>Заявки на проверку заданий</span>
+                    <span class="admin-badge-count" id="adminTasksCount">0</span>
+                </div>
+                <div id="adminTasksList"></div>
+            </div>
+        </div>
+
+        <!-- ГРАФА 2: МАГАЗИН (ЗАЯВКИ НА ВЫВОД ПРИЗОВ) -->
+        <div id="adm-shop" class="admin-section">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>Заказы призов из магазина</span>
+                    <span class="admin-badge-count" id="adminShopCount">0</span>
+                </div>
+                <div id="adminShopList"></div>
+            </div>
+        </div>
+
+        <!-- ГРАФА 3: НАКРУТКА МОНЕТ ПО ID ЧЕЛОВЕКА -->
+        <div id="adm-users" class="admin-section">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>Накрутка баланса по Telegram ID</span>
+                </div>
+
+                <label class="admin-field-label">Telegram ID игрока:</label>
+                <input type="number" id="adminTargetIdInput" class="task-input" placeholder="Например: 1067693099">
+
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminTargetIdInput').value='1067693099'">ID: 1067693099</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminTargetIdInput').value='978548564'">ID: 978548564</span>
+                </div>
+
+                <label class="admin-field-label">Количество монет:</label>
+                <input type="number" id="adminCoinsAmountInput" class="task-input" placeholder="Введите сумму монет">
+
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminCoinsAmountInput').value='500'">+500</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminCoinsAmountInput').value='1000'">+1 000</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminCoinsAmountInput').value='5000'">+5 000</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminCoinsAmountInput').value='25000'">+25 000</span>
+                </div>
+
+                <div class="admin-balance-btns">
+                    <button type="button" class="admin-btn-approve" onclick="adminModifyUserBalance('add')">
+                        ➕ Начислить
+                    </button>
+                    <button type="button" class="admin-btn-reject" onclick="adminModifyUserBalance('sub')">
+                        ➖ Списать
+                    </button>
+                </div>
+
+                <button type="button" class="submit-task-btn" style="margin-top: 10px; padding: 13px;" onclick="adminModifyUserBalance('set')">
+                    🎯 Установить точный баланс
+                </button>
+            </div>
+        </div>
+    </main>
     
     <!-- НИЖНЕЕ МЕНЮ -->
     <nav class="bottom-nav">
