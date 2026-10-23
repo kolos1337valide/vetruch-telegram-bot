@@ -3471,7 +3471,7 @@
         </button>
 
     </main>
-<!-- СТИЛИ ФИКСА ШАПКИ И ЖИВОЙ АДМИНКИ -->
+<!-- СТИЛИ ФИКСА ШАПКИ, МОДАЛКИ МАГАЗИНА И ЖИВОЙ АДМИНКИ -->
     <style>
         .sticky-pill {
             position: -webkit-sticky;
@@ -3569,7 +3569,55 @@
             font-size: 13px;
             font-weight: 700;
         }
+
+        .shop-modal-price-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(0, 136, 255, 0.1);
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            margin-bottom: 16px;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        .purchase-history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            margin-bottom: 8px;
+            text-align: left;
+        }
     </style>
+
+    <!-- МОДАЛЬНОЕ ОКНО ПОКУПКИ В МАГАЗИНЕ -->
+    <div id="shopBuyModal" class="modal-overlay" onclick="if(event.target === this) closeShopBuyModal()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeShopBuyModal()">✖</button>
+            <h3 id="shopModalItemTitle" style="margin-top: 0; margin-bottom: 16px; color: #ffffff; font-size: 19px;">Покупка</h3>
+
+            <div class="shop-modal-price-box">
+                <span style="color: var(--secondary);">Стоимость:</span>
+                <span style="display: inline-flex; align-items: center; gap: 5px; color: #ffffff; font-size: 15px; font-weight: 800;">
+                    <span id="shopModalItemPrice">0</span>
+                    <img src="coins.png" alt="coins" class="coin-icon">
+                </span>
+            </div>
+
+            <div class="verify-box">
+                <h5>ДАННЫЕ ДЛЯ ВЫДАЧИ ПРИЗА:</h5>
+                <input type="text" class="task-input" id="shopModalUsername" placeholder="Ваш @username в Telegram">
+                <button type="button" class="submit-task-btn" onclick="confirmShopPurchase()">ПОДТВЕРДИТЬ ПОКУПКУ</button>
+                <div id="shopModalFeedback" class="admin-status-toast"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- 6. СКРЫТАЯ ВКЛАДКА: АДМИН-ПАНЕЛЬ (НЕТ В НИЖНЕМ МЕНЮ) -->
     <main id="admin" class="page">
@@ -3657,7 +3705,6 @@
                     🎯 Установить точный баланс
                 </button>
 
-                <!-- Встроенное уведомление (не зависает в ТГ!) -->
                 <div id="adminStatusToast" class="admin-status-toast"></div>
             </div>
 
@@ -3695,11 +3742,64 @@
         tg.ready(); tg.expand();
         tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
+        // ================= ЭКОНОМИКА МАГАЗИНА И НАГРАДЫ ЗАДАНИЙ =================
+        const SHOP_PRICES = {
+            'iPhone 18 PRO MAX': 1200000,
+            'iPhone DUO': 1500000,
+            'AirPods PRO 3': 250000,
+            'Бонуска за 10 000₽': 95000,
+            '5000 рублей': 50000,
+            '2500 рублей': 25000,
+            '1000 рублей': 10000,
+            'Выбрать слот для стрима': 15000,
+            'Telegram Premium на 1 год': 35000,
+            'Telegram Premium 6 месяцев': 20000,
+            'Telegram Premium 3 месяца': 12000,
+            'VIP либо OG в чате': 5000,
+            'VPN 1 месяц': 3500
+        };
+
+        const TASK_REWARDS = {
+            'Подписка на Telegram': 100,
+            'Подписка на YouTube': 150,
+            'Подписаться на Kick': 200,
+            'Привязка UP-X': 1000,
+            'Привязка JetTon': 1000,
+            'Активность на стриме': 150,
+            'Никнейм на Kick': 300,
+            'Пригласить 3 друзей': 500
+        };
+
+        function formatCoins(num) {
+            return Number(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function initShopPricesUI() {
+            document.querySelectorAll('#shop .shop-card').forEach(card => {
+                const titleEl = card.querySelector('.shop-card-title');
+                const priceEl = card.querySelector('.shop-btn-price');
+                if (titleEl && priceEl) {
+                    const itemName = titleEl.textContent.trim();
+                    if (SHOP_PRICES[itemName] !== undefined) {
+                        priceEl.innerHTML = `<img src="coins.png" alt="" class="coin-icon"> ${formatCoins(SHOP_PRICES[itemName])}`;
+                    }
+                }
+            });
+        }
+        initShopPricesUI();
+
         function getCurrentTgId() {
             if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
                 return String(tg.initDataUnsafe.user.id);
             }
             return '1067693099';
+        }
+
+        function getDefaultUsername() {
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.username) {
+                return '@' + tg.initDataUnsafe.user.username;
+            }
+            return '';
         }
 
         function initBalance() {
@@ -3721,12 +3821,141 @@
             }
 
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
+            renderProfilePurchases();
         }
-        initBalance();
+
+        // ================= ПОКУПКА В МАГАЗИНЕ И ИНВЕНТАРЬ ПРОФИЛЯ =================
+        let selectedShopItem = '';
 
         function buyItem(itemName) {
-            tg.showAlert(`Товар "${itemName}" выбран! Цены настроим позже, шеф 🚀`);
+            selectedShopItem = itemName;
+            const price = SHOP_PRICES[itemName] || 10000;
+            document.getElementById('shopModalItemTitle').textContent = itemName;
+            document.getElementById('shopModalItemPrice').textContent = formatCoins(price);
+
+            const userInp = document.getElementById('shopModalUsername');
+            if (!userInp.value) {
+                userInp.value = getDefaultUsername();
+            }
+
+            const fb = document.getElementById('shopModalFeedback');
+            fb.style.display = 'none';
+
+            const modal = document.getElementById('shopBuyModal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('active'); }, 10);
         }
+
+        function closeShopBuyModal() {
+            const modal = document.getElementById('shopBuyModal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        function showShopFeedback(msg, isError) {
+            const fb = document.getElementById('shopModalFeedback');
+            fb.style.display = 'block';
+            fb.style.background = isError ? 'rgba(255, 51, 102, 0.15)' : 'rgba(0, 230, 118, 0.15)';
+            fb.style.borderColor = isError ? 'rgba(255, 51, 102, 0.45)' : 'rgba(0, 230, 118, 0.45)';
+            fb.style.color = isError ? '#ff3366' : '#00e676';
+            fb.textContent = msg;
+        }
+
+        function confirmShopPurchase() {
+            let username = document.getElementById('shopModalUsername').value.trim();
+            if (!username) {
+                showShopFeedback("⚠️ Введите ваш @username из Telegram!", true);
+                return;
+            }
+            if (!username.startsWith('@')) {
+                username = '@' + username;
+            }
+
+            const price = SHOP_PRICES[selectedShopItem] || 10000;
+            const myId = getCurrentTgId();
+            let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+
+            if (curBal < price) {
+                const diff = price - curBal;
+                showShopFeedback(`❌ Недостаточно монет! Не хватает ещё ${formatCoins(diff)} монет.`, true);
+                return;
+            }
+
+            // Списываем монеты
+            curBal -= price;
+            localStorage.setItem('vetruch_balance', curBal);
+            let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+            balancesMap[myId] = curBal;
+            localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+            // Отправляем заказ в Админ-панель
+            const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            const orderId = Date.now();
+            let orders = getAdminShopOrders();
+            orders.unshift({
+                id: orderId,
+                user: username,
+                userId: myId,
+                item: selectedShopItem,
+                price: price,
+                date: `Сегодня, ${nowStr}`
+            });
+            localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
+
+            // Сохраняем в "Мои покупки" в Профиле
+            let myPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+            myPurchases.unshift({
+                id: orderId,
+                item: selectedShopItem,
+                price: price,
+                status: 'Ожидает выдачи ⏳'
+            });
+            localStorage.setItem('vetruch_my_purchases', JSON.stringify(myPurchases));
+
+            initBalance();
+            showShopFeedback("✅ Покупка успешна! Заказ передан в Админ-панель.", false);
+
+            setTimeout(() => {
+                closeShopBuyModal();
+            }, 1300);
+        }
+
+        function renderProfilePurchases() {
+            const myPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+            const emptyBox = document.querySelector('#profile .profile-inventory-empty');
+            if (!emptyBox) return;
+
+            const sectionCard = emptyBox.closest('.profile-section-card');
+            const countSub = sectionCard ? sectionCard.querySelector('.profile-section-sub') : null;
+            if (countSub) {
+                countSub.textContent = `${myPurchases.length} предм.`;
+            }
+
+            let listWrap = document.getElementById('profilePurchasesListWrap');
+            if (!listWrap) {
+                listWrap = document.createElement('div');
+                listWrap.id = 'profilePurchasesListWrap';
+                emptyBox.parentNode.insertBefore(listWrap, emptyBox);
+            }
+
+            if (myPurchases.length === 0) {
+                emptyBox.style.display = 'block';
+                listWrap.innerHTML = '';
+            } else {
+                emptyBox.style.display = 'none';
+                listWrap.innerHTML = myPurchases.map(p => `
+                    <div class="purchase-history-item">
+                        <div>
+                            <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">🎁 ${p.item}</div>
+                            <div style="font-size: 11px; color: var(--secondary); margin-top: 2px;">Списано: ${formatCoins(p.price)} монет</div>
+                        </div>
+                        <span class="profile-status-pill ${p.status.includes('Выдано') ? 'connected' : 'action'}">${p.status}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        initBalance();
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const user = tg.initDataUnsafe.user;
@@ -3816,12 +4045,7 @@
         function getAdminTasks() {
             let list = localStorage.getItem('vetruch_admin_tasks');
             if (!list) {
-                const demo = [
-                    { id: 101, user: '@player_one', userId: '849201442', title: 'Подписка на Telegram', reward: 100 },
-                    { id: 102, user: '@kick_streamer', userId: '512994011', title: 'Привязка UP-X', reward: 1000 }
-                ];
-                localStorage.setItem('vetruch_admin_tasks', JSON.stringify(demo));
-                return demo;
+                return [];
             }
             return JSON.parse(list);
         }
@@ -3829,12 +4053,7 @@
         function getAdminShopOrders() {
             let list = localStorage.getItem('vetruch_admin_shop');
             if (!list) {
-                const demo = [
-                    { id: 201, user: '@lucky_winner', userId: '738192004', item: 'Telegram Premium 3 месяца', date: 'Сегодня, 14:20' },
-                    { id: 202, user: '@vetruch_fan', userId: '391044812', item: '1000 рублей', date: 'Сегодня, 15:05' }
-                ];
-                localStorage.setItem('vetruch_admin_shop', JSON.stringify(demo));
-                return demo;
+                return [];
             }
             return JSON.parse(list);
         }
@@ -3856,9 +4075,10 @@
                             <span class="admin-req-user">${t.user}</span>
                             <span class="admin-req-id">ID: ${t.userId}</span>
                         </div>
-                        <div class="admin-req-title">${t.title} (+${t.reward} монет)</div>
+                        <div class="admin-req-title">${t.title} (+${formatCoins(t.reward)} монет)</div>
+                        ${t.screenshot ? `<img src="${t.screenshot}" alt="Скриншот" class="admin-req-img">` : ''}
                         <div class="admin-req-actions">
-                            <button type="button" class="admin-btn-approve" onclick="handleTaskRequest(${t.id}, true)">✓ Принять</button>
+                            <button type="button" class="admin-btn-approve" onclick="handleTaskRequest(${t.id}, true)">✓ Принять (+${t.reward})</button>
                             <button type="button" class="admin-btn-reject" onclick="handleTaskRequest(${t.id}, false)">✕ Отклонить</button>
                         </div>
                     </div>
@@ -3876,10 +4096,10 @@
                             <span class="admin-req-id">ID: ${s.userId}</span>
                         </div>
                         <div class="admin-req-title">🎁 ${s.item}</div>
-                        <div style="font-size: 11px; color: var(--secondary); margin-bottom: 10px;">${s.date}</div>
+                        <div style="font-size: 11px; color: var(--secondary); margin-bottom: 10px;">Цена: ${formatCoins(s.price || 0)} монет · ${s.date}</div>
                         <div class="admin-req-actions">
                             <button type="button" class="admin-btn-approve" onclick="handleShopOrder(${s.id}, true)">✓ Выдано</button>
-                            <button type="button" class="admin-btn-reject" onclick="handleShopOrder(${s.id}, false)">✕ Отмена</button>
+                            <button type="button" class="admin-btn-reject" onclick="handleShopOrder(${s.id}, false)">✕ Отмена (Возврат)</button>
                         </div>
                     </div>
                 `).join('');
@@ -3909,8 +4129,28 @@
 
         function handleShopOrder(orderId, isCompleted) {
             let orders = getAdminShopOrders();
+            const target = orders.find(o => o.id === orderId);
             orders = orders.filter(o => o.id !== orderId);
             localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
+
+            // Обновляем статус в "Мои покупки" или возвращаем монеты при отмене
+            let myPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+            if (isCompleted) {
+                myPurchases = myPurchases.map(p => p.id === orderId ? { ...p, status: 'Выдано ✓' } : p);
+            } else if (target) {
+                myPurchases = myPurchases.filter(p => p.id !== orderId);
+                let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+                let userBal = balancesMap[target.userId] !== undefined ? Number(balancesMap[target.userId]) : 500;
+                userBal += Number(target.price || 0);
+                balancesMap[target.userId] = userBal;
+                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+                if (String(target.userId) === getCurrentTgId()) {
+                    localStorage.setItem('vetruch_balance', userBal);
+                }
+            }
+            localStorage.setItem('vetruch_my_purchases', JSON.stringify(myPurchases));
+            initBalance();
             renderAdminLists();
         }
 
@@ -3933,7 +4173,7 @@
                         ID: ${id} ${id === myId ? '(Вы)' : ''}
                     </span>
                     <span style="display: inline-flex; align-items: center; gap: 5px; color: #00e676;">
-                        ${balancesMap[id]} <img src="coins.png" alt="" class="coin-icon-sm">
+                        ${formatCoins(balancesMap[id])} <img src="coins.png" alt="" class="coin-icon-sm">
                     </span>
                 </div>
             `).join('');
@@ -3972,7 +4212,7 @@
             }
 
             renderAdminBalancesTable();
-            showAdminToast(`✅ ID ${targetId}: баланс обновлён до ${curBal} монет!`, false);
+            showAdminToast(`✅ ID ${targetId}: баланс обновлён до ${formatCoins(curBal)} монет!`, false);
         }
 
         function copyProfileId() {
@@ -4022,8 +4262,13 @@
             initBalance();
         }
 
-        // ================= ЛОГИКА МОДАЛЬНОГО ОКНА =================
+        // ================= ЛОГИКА МОДАЛЬНОГО ОКНА ЗАДАНИЙ =================
+        let currentTaskTitle = '';
+        let currentTaskScreenshotBase64 = '';
+
         function openTaskModal(title, url, isTg, btnText) {
+            currentTaskTitle = title;
+            currentTaskScreenshotBase64 = '';
             document.getElementById('modalTitle').textContent = title;
             const linkBtn = document.getElementById('modalLink');
             
@@ -4052,7 +4297,7 @@
                 document.getElementById('modalHint').style.display = 'none';
             }
             
-            document.getElementById('modalUsername').value = '';
+            document.getElementById('modalUsername').value = getDefaultUsername();
             document.getElementById('modalFileName').textContent = '📷 Загрузить скриншот';
             document.getElementById('modalFileName').style.color = '#0088ff'; 
             
@@ -4068,15 +4313,68 @@
         }
 
         function updateModalFileName(input) {
-            if(input.files && input.files[0]) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
                 const textEl = document.getElementById('modalFileName');
-                textEl.textContent = "✅ " + input.files[0].name;
+                textEl.textContent = "✅ " + file.name;
                 textEl.style.color = "#00cc66";
+
+                // Сжимаем скриншот для сохранения в Админ-панели
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const maxW = 480;
+                        const scale = Math.min(1, maxW / img.width);
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        currentTaskScreenshotBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         }
 
         function submitTask() {
-            tg.showAlert("Отправка скриншотов в разработке! 🛠\nСкоро добавим панель администратора для проверки.");
+            let username = document.getElementById('modalUsername').value.trim();
+            const textEl = document.getElementById('modalFileName');
+
+            if (!username) {
+                textEl.textContent = "⚠️ Сначала укажите ваш @username!";
+                textEl.style.color = "#ff3366";
+                return;
+            }
+            if (!currentTaskScreenshotBase64) {
+                textEl.textContent = "⚠️ Прикрепите скриншот выполнения!";
+                textEl.style.color = "#ff3366";
+                return;
+            }
+            if (!username.startsWith('@')) {
+                username = '@' + username;
+            }
+
+            const reward = TASK_REWARDS[currentTaskTitle] || 150;
+            let tasks = getAdminTasks();
+            tasks.unshift({
+                id: Date.now(),
+                user: username,
+                userId: getCurrentTgId(),
+                title: currentTaskTitle,
+                reward: reward,
+                screenshot: currentTaskScreenshotBase64
+            });
+            localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
+
+            textEl.textContent = "🚀 Отправлено на проверку в Админ-панель!";
+            textEl.style.color = "#00e676";
+
+            setTimeout(() => {
+                closeTaskModal();
+            }, 1100);
         }
 
         // ================= УМНЫЙ ЗАГРУЗОЧНЫЙ ЭКРАН И ПАМЯТЬ ВКЛАДОК =================
