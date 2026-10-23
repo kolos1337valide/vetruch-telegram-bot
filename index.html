@@ -3804,21 +3804,22 @@
 
         function initBalance() {
             const myId = getCurrentTgId();
+            const lastId = localStorage.getItem('vetruch_last_user_id');
             let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
             let bal = localStorage.getItem('vetruch_balance');
 
-            if (balancesMap[myId] !== undefined) {
+            if (bal === null) {
+                bal = balancesMap[myId] !== undefined ? balancesMap[myId] : 500;
+                localStorage.setItem('vetruch_balance', bal);
+            } else if (lastId && lastId !== myId && balancesMap[myId] !== undefined) {
                 bal = balancesMap[myId];
                 localStorage.setItem('vetruch_balance', bal);
-            } else if (bal === null) {
-                bal = 500;
-                localStorage.setItem('vetruch_balance', bal);
-                balancesMap[myId] = 500;
-                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
-            } else {
-                balancesMap[myId] = parseInt(bal, 10);
-                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
             }
+
+            bal = parseInt(bal, 10);
+            balancesMap[myId] = bal;
+            localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+            localStorage.setItem('vetruch_last_user_id', myId);
 
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
             renderProfilePurchases();
