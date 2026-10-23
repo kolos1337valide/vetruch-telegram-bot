@@ -3471,7 +3471,107 @@
         </button>
 
     </main>
-<!-- 6. СКРЫТАЯ ВКЛАДКА: АДМИН-ПАНЕЛЬ (НЕТ В НИЖНЕМ МЕНЮ) -->
+<!-- СТИЛИ ФИКСА ШАПКИ И ЖИВОЙ АДМИНКИ -->
+    <style>
+        .sticky-pill {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 12px;
+            float: right;
+            z-index: 1000;
+            margin-left: 10px;
+            background: rgba(14, 20, 30, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 12px rgba(0, 136, 255, 0.25);
+        }
+
+        .page.active .sticky-pill {
+            animation: pageFadeIn 0.3s ease backwards;
+        }
+
+        .admin-top-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            min-height: 36px;
+            padding-right: 115px;
+        }
+
+        .admin-top-bar .games-heading {
+            font-size: 17px !important;
+            margin: 0 !important;
+            white-space: nowrap;
+        }
+
+        .admin-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 11px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .admin-back-btn:active {
+            transform: scale(0.95);
+            border-color: var(--blue-main);
+        }
+
+        .admin-tabs {
+            clear: both;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+            background: rgba(15, 18, 25, 0.9);
+            padding: 6px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .admin-status-toast {
+            display: none;
+            margin-top: 12px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            background: rgba(0, 230, 118, 0.14);
+            border: 1px solid rgba(0, 230, 118, 0.4);
+            color: #00e676;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .admin-balances-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .admin-bal-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            font-size: 13px;
+            font-weight: 700;
+        }
+    </style>
+
+    <!-- 6. СКРЫТАЯ ВКЛАДКА: АДМИН-ПАНЕЛЬ (НЕТ В НИЖНЕМ МЕНЮ) -->
     <main id="admin" class="page">
         <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
@@ -3481,7 +3581,7 @@
             <button type="button" class="admin-back-btn" onclick="openPage('profile')">
                 ← Назад
             </button>
-            <h2 class="games-heading" style="margin: 0 !important;">Админ-панель</h2>
+            <h2 class="games-heading">Админ-панель</h2>
         </div>
 
         <!-- Переключатель 3 разделов: Задания / Магазин / Накрутка по ID -->
@@ -3556,6 +3656,17 @@
                 <button type="button" class="submit-task-btn" style="margin-top: 10px; padding: 13px;" onclick="adminModifyUserBalance('set')">
                     🎯 Установить точный баланс
                 </button>
+
+                <!-- Встроенное уведомление (не зависает в ТГ!) -->
+                <div id="adminStatusToast" class="admin-status-toast"></div>
+            </div>
+
+            <!-- Живая таблица балансов всех ID -->
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>Текущие балансы по ID</span>
+                </div>
+                <div id="adminBalancesTable" class="admin-balances-list"></div>
             </div>
         </div>
     </main>
@@ -3584,11 +3695,15 @@
         tg.ready(); tg.expand();
         tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
-        function initBalance() {
-            let myId = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id)
-                ? String(tg.initDataUnsafe.user.id)
-                : 'local_user';
+        function getCurrentTgId() {
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+                return String(tg.initDataUnsafe.user.id);
+            }
+            return '1067693099';
+        }
 
+        function initBalance() {
+            const myId = getCurrentTgId();
             let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
             let bal = localStorage.getItem('vetruch_balance');
 
@@ -3646,10 +3761,7 @@
         const ALLOWED_ADMIN_IDS = [1067693099, 978548564];
 
         function checkAdminAccess() {
-            let currentUserId = 0;
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
-                currentUserId = Number(tg.initDataUnsafe.user.id);
-            }
+            const currentUserId = Number(getCurrentTgId());
             const adminBtn = document.getElementById('adminPanelEntryBtn');
             if (adminBtn) {
                 if (ALLOWED_ADMIN_IDS.includes(currentUserId)) {
@@ -3662,15 +3774,16 @@
         checkAdminAccess();
 
         function openAdminPage() {
-            let currentUserId = 0;
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
-                currentUserId = Number(tg.initDataUnsafe.user.id);
-            }
+            const currentUserId = Number(getCurrentTgId());
             if (!ALLOWED_ADMIN_IDS.includes(currentUserId)) {
-                tg.showAlert("⛔ Доступ запрещён! Панель доступна только главным администраторам.");
                 return;
             }
+            const idInput = document.getElementById('adminTargetIdInput');
+            if (idInput && !idInput.value) {
+                idInput.value = String(currentUserId);
+            }
             renderAdminLists();
+            renderAdminBalancesTable();
             openPage('admin');
         }
 
@@ -3679,9 +3792,27 @@
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             btnEl.classList.add('active');
+            if (tabId === 'adm-users') {
+                renderAdminBalancesTable();
+            }
         }
 
-        // Демо-данные + хранилище для Заданий и Магазина
+        let adminToastTimer = null;
+        function showAdminToast(message, isError) {
+            const toast = document.getElementById('adminStatusToast');
+            if (!toast) return;
+            toast.style.display = 'block';
+            toast.style.background = isError ? 'rgba(255, 51, 102, 0.15)' : 'rgba(0, 230, 118, 0.15)';
+            toast.style.borderColor = isError ? 'rgba(255, 51, 102, 0.45)' : 'rgba(0, 230, 118, 0.45)';
+            toast.style.color = isError ? '#ff3366' : '#00e676';
+            toast.textContent = message;
+
+            if (adminToastTimer) clearTimeout(adminToastTimer);
+            adminToastTimer = setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3500);
+        }
+
         function getAdminTasks() {
             let list = localStorage.getItem('vetruch_admin_tasks');
             if (!list) {
@@ -3760,27 +3891,52 @@
             const target = tasks.find(t => t.id === reqId);
             tasks = tasks.filter(t => t.id !== reqId);
             localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
-            renderAdminLists();
 
             if (isApproved && target) {
-                tg.showAlert(`✅ Задание для ${target.user} (ID: ${target.userId}) одобрено! Начислено +${target.reward} монет.`);
-            } else {
-                tg.showAlert(`❌ Заявка отклонена.`);
+                let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+                let userBal = balancesMap[target.userId] !== undefined ? Number(balancesMap[target.userId]) : 500;
+                userBal += Number(target.reward);
+                balancesMap[target.userId] = userBal;
+                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+                if (String(target.userId) === getCurrentTgId()) {
+                    localStorage.setItem('vetruch_balance', userBal);
+                    initBalance();
+                }
             }
+            renderAdminLists();
         }
 
         function handleShopOrder(orderId, isCompleted) {
             let orders = getAdminShopOrders();
-            const target = orders.find(o => o.id === orderId);
             orders = orders.filter(o => o.id !== orderId);
             localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
             renderAdminLists();
+        }
 
-            if (isCompleted && target) {
-                tg.showAlert(`🎁 Заказ "${target.item}" для ${target.user} отмечен как выданный!`);
-            } else {
-                tg.showAlert(`❌ Заказ отменён.`);
-            }
+        function renderAdminBalancesTable() {
+            const tableEl = document.getElementById('adminBalancesTable');
+            if (!tableEl) return;
+
+            const myId = getCurrentTgId();
+            let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+
+            if (balancesMap['1067693099'] === undefined) balancesMap['1067693099'] = 500;
+            if (balancesMap['978548564'] === undefined) balancesMap['978548564'] = 500;
+            balancesMap[myId] = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+            localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+            const ids = Object.keys(balancesMap);
+            tableEl.innerHTML = ids.map(id => `
+                <div class="admin-bal-row" onclick="document.getElementById('adminTargetIdInput').value='${id}'" style="cursor: pointer;">
+                    <span style="color: ${id === myId ? '#00d9ff' : '#ffffff'};">
+                        ID: ${id} ${id === myId ? '(Вы)' : ''}
+                    </span>
+                    <span style="display: inline-flex; align-items: center; gap: 5px; color: #00e676;">
+                        ${balancesMap[id]} <img src="coins.png" alt="" class="coin-icon-sm">
+                    </span>
+                </div>
+            `).join('');
         }
 
         function adminModifyUserBalance(mode) {
@@ -3788,18 +3944,16 @@
             const amount = parseInt(document.getElementById('adminCoinsAmountInput').value.trim(), 10);
 
             if (!targetId) {
-                tg.showAlert("⚠️ Введите Telegram ID человека!");
+                showAdminToast("⚠️ Введите Telegram ID игрока!", true);
                 return;
             }
             if (isNaN(amount) || amount < 0) {
-                tg.showAlert("⚠️ Введите корректное количество монет!");
+                showAdminToast("⚠️ Введите сумму монет!", true);
                 return;
             }
 
+            const currentMyId = getCurrentTgId();
             let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
-            let currentMyId = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id)
-                ? String(tg.initDataUnsafe.user.id)
-                : 'local_user';
 
             let curBal = (targetId === currentMyId)
                 ? parseInt(localStorage.getItem('vetruch_balance') || '500', 10)
@@ -3812,14 +3966,15 @@
             balancesMap[targetId] = curBal;
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
 
-            // Обновляем плашку баланса сверху ТОЛЬКО если админ начислил монеты самому себе!
             if (targetId === currentMyId) {
                 localStorage.setItem('vetruch_balance', curBal);
                 initBalance();
             }
 
-            tg.showAlert(`💎 Готово! Баланс пользователя с ID ${targetId} теперь: ${curBal} монет.`);
+            renderAdminBalancesTable();
+            showAdminToast(`✅ ID ${targetId}: баланс обновлён до ${curBal} монет!`, false);
         }
+
         function copyProfileId() {
             const idText = document.getElementById('profileUserId').textContent;
             if (navigator.clipboard) {
@@ -3860,7 +4015,9 @@
             
             window.scrollTo(0, 0);
             
-            sessionStorage.setItem('vetruch_active_tab', pageId);
+            if (pageId !== 'admin') {
+                sessionStorage.setItem('vetruch_active_tab', pageId);
+            }
             
             initBalance();
         }
@@ -3928,6 +4085,7 @@
         const loaderWordmark = document.getElementById('loader-wordmark');
 
         let savedTab = sessionStorage.getItem('vetruch_active_tab') || 'home';
+        if (savedTab === 'admin') savedTab = 'profile';
 
         if (sessionStorage.getItem('vetruch_loaded')) {
             loadingScreen.style.display = 'none';
