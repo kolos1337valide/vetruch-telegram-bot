@@ -3796,15 +3796,14 @@
                 return;
             }
 
-            // Сохраняем баланс по конкретному ID
             let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
             let currentMyId = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id)
                 ? String(tg.initDataUnsafe.user.id)
-                : '';
+                : 'local_user';
 
             let curBal = (targetId === currentMyId)
                 ? parseInt(localStorage.getItem('vetruch_balance') || '500', 10)
-                : (balancesMap[targetId] !== undefined ? balancesMap[targetId] : 500);
+                : (balancesMap[targetId] !== undefined ? Number(balancesMap[targetId]) : 500);
 
             if (mode === 'add') curBal += amount;
             if (mode === 'sub') curBal = Math.max(0, curBal - amount);
@@ -3813,15 +3812,14 @@
             balancesMap[targetId] = curBal;
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
 
-            // Если крутим себе (или тестим) — сразу обновляем наш баланс на экране
-            if (targetId === currentMyId || ALLOWED_ADMIN_IDS.includes(Number(targetId))) {
+            // Обновляем плашку баланса сверху ТОЛЬКО если админ начислил монеты самому себе!
+            if (targetId === currentMyId) {
                 localStorage.setItem('vetruch_balance', curBal);
                 initBalance();
             }
 
-            tg.showAlert(`💎 Готово! Баланс пользователя ID ${targetId} теперь: ${curBal} монет.`);
+            tg.showAlert(`💎 Готово! Баланс пользователя с ID ${targetId} теперь: ${curBal} монет.`);
         }
-
         function copyProfileId() {
             const idText = document.getElementById('profileUserId').textContent;
             if (navigator.clipboard) {
