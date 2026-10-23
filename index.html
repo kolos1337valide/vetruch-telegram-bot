@@ -3440,8 +3440,8 @@ html
             </div>
         </div>
 
-        <!-- 6. КНОПКА АДМИН-ПАНЕЛИ -->
-        <button type="button" class="admin-panel-btn anim-item" style="animation-delay: 0.35s;" onclick="openAdminDevModal()">
+       <!-- 6. КНОПКА АДМИН-ПАНЕЛИ (ТОЛЬКО ДЛЯ 2 АДМИНОВ) -->
+        <button type="button" id="adminPanelEntryBtn" class="admin-panel-btn anim-item" style="display: none; animation-delay: 0.35s;" onclick="openAdminPage()">
             <div class="admin-panel-left">
                 <div class="admin-panel-icon">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -3454,7 +3454,7 @@ html
                         Панель администратора
                         <span class="admin-root-tag">ROOT</span>
                     </div>
-                    <div class="admin-panel-sub">Управление ботом, заявками и балансами</div>
+                    <div class="admin-panel-sub">Задания, магазин и накрутка по ID</div>
                 </div>
             </div>
             <div class="admin-panel-arrow">➔</div>
