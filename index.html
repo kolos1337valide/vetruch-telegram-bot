@@ -2436,7 +2436,227 @@ html
             line-height: 1.45;
             margin: 0 0 22px 0;
         }
+/* ================= ВКЛАДКА АДМИН-ПАНЕЛИ ================= */
+        .admin-top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            clear: both;
+        }
 
+        .admin-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .admin-back-btn:active {
+            transform: scale(0.95);
+            border-color: var(--blue-main);
+        }
+
+        .admin-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+            background: rgba(15, 18, 25, 0.9);
+            padding: 6px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .admin-tab-btn {
+            padding: 10px 6px;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: var(--secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .admin-tab-btn.active {
+            background: linear-gradient(135deg, #8b5cf6 0%, #0088ff 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+            animation: smoothFloatUp 0.35s ease backwards;
+        }
+
+        .admin-box {
+            background: linear-gradient(180deg, rgba(20, 22, 30, 0.88) 0%, rgba(11, 13, 19, 0.96) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.28);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .admin-box-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-badge-count {
+            padding: 3px 9px;
+            border-radius: 10px;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.45);
+            color: #d8b4fe;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .admin-req-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 13px;
+            margin-bottom: 10px;
+        }
+
+        .admin-req-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            gap: 8px;
+        }
+
+        .admin-req-user {
+            font-size: 13px;
+            font-weight: 800;
+            color: #60a5fa;
+        }
+
+        .admin-req-id {
+            font-size: 11px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .admin-req-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .admin-req-img {
+            width: 100%;
+            max-height: 170px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .admin-req-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .admin-btn-approve {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 230, 118, 0.4);
+            background: rgba(0, 230, 118, 0.15);
+            color: #00e676;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .admin-btn-approve:active {
+            transform: scale(0.95);
+        }
+
+        .admin-btn-reject {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 51, 102, 0.4);
+            background: rgba(255, 51, 102, 0.15);
+            color: #ff3366;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .admin-btn-reject:active {
+            transform: scale(0.95);
+        }
+
+        .admin-field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 6px;
+        }
+
+        .admin-chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .admin-chip {
+            padding: 6px 10px;
+            border-radius: 9px;
+            background: rgba(0, 136, 255, 0.12);
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            color: #7cd4ff;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .admin-chip:active {
+            transform: scale(0.94);
+        }
+
+        .admin-balance-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 6px;
+        }
     </style>
 </head>
 
