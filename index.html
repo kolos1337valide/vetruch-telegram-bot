@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1692,6 +1693,750 @@
             margin-bottom: 20px;
         }
 
+        /* ================= УЛЬТРА-ПРОФИЛЬ (CYBER VIP DESIGN) ================= */
+        .profile-hero-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            padding: 22px 18px 20px 18px;
+            margin-bottom: 14px;
+            background:
+                radial-gradient(120% 100% at 50% 0%, rgba(0, 136, 255, 0.24) 0%, rgba(110, 40, 220, 0.08) 48%, rgba(12, 14, 20, 0.96) 100%),
+                linear-gradient(180deg, rgba(20, 24, 34, 0.9) 0%, rgba(10, 12, 18, 0.98) 100%);
+            border: 1px solid rgba(0, 153, 255, 0.35);
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.75),
+                0 0 24px rgba(0, 136, 255, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            clear: both;
+        }
+
+        .profile-hero-glow {
+            position: absolute;
+            top: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 110px;
+            background: radial-gradient(circle, rgba(0, 180, 255, 0.4) 0%, rgba(0, 136, 255, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .profile-hero-top {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .profile-vip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(0, 136, 255, 0.14);
+            border: 1px solid rgba(0, 170, 255, 0.35);
+            color: #7cd4ff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            box-shadow: 0 0 12px rgba(0, 136, 255, 0.2);
+        }
+
+        .profile-online-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00ff88;
+            box-shadow: 0 0 8px #00ff88;
+        }
+
+        .profile-id-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ba8ba;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .profile-id-pill:active {
+            transform: scale(0.94);
+            border-color: var(--blue-main);
+            color: #ffffff;
+        }
+
+        .profile-id-pill svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .profile-Identity {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-avatar-stage {
+            position: relative;
+            width: 88px;
+            height: 88px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-avatar-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: 26px;
+            background: conic-gradient(from 0deg, #0088ff, #00f0ff, #8b5cf6, #0088ff);
+            animation: profileRingSpin 6s linear infinite;
+            filter: drop-shadow(0 0 12px rgba(0, 136, 255, 0.45));
+        }
+
+        @keyframes profileRingSpin {
+            0% {
+                filter: hue-rotate(0deg) drop-shadow(0 0 12px rgba(0, 136, 255, 0.45));
+            }
+            50% {
+                filter: hue-rotate(25deg) drop-shadow(0 0 18px rgba(0, 217, 255, 0.7));
+            }
+            100% {
+                filter: hue-rotate(0deg) drop-shadow(0 0 12px rgba(0, 136, 255, 0.45));
+            }
+        }
+
+        .profile-avatar-box {
+            position: relative;
+            z-index: 1;
+            width: 84px;
+            height: 84px;
+            border-radius: 23px;
+            overflow: hidden;
+            background: #0c1018;
+            border: 3px solid #0b0e15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .profile-avatar-fallback {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0088ff 0%, #00d4ff 55%, #6d28d9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-lvl-chip {
+            position: absolute;
+            bottom: -7px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            background: linear-gradient(90deg, #0088ff, #00d4ff);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            border: 2px solid #0c0e15;
+            box-shadow: 0 3px 10px rgba(0, 136, 255, 0.5);
+            white-space: nowrap;
+        }
+
+        .profile-main-name {
+            margin: 4px 0 3px 0;
+            font-size: 21px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .profile-verified-icon {
+            width: 18px;
+            height: 18px;
+            color: #00b7ff;
+            filter: drop-shadow(0 0 6px rgba(0, 183, 255, 0.6));
+            flex-shrink: 0;
+        }
+
+        .profile-handle {
+            font-size: 13px;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .profile-xp-box {
+            width: 100%;
+            background: rgba(8, 11, 18, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 11px 13px;
+            text-align: left;
+        }
+
+        .profile-xp-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .profile-xp-rank {
+            color: #e2eeff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-xp-nums {
+            color: #5ac8ff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .profile-xp-track {
+            width: 100%;
+            height: 7px;
+            background: #171d29;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-xp-fill {
+            width: 24%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #0077ff 0%, #00e1ff 60%, #a855f7 100%);
+            box-shadow: 0 0 12px rgba(0, 195, 255, 0.7);
+        }
+
+        /* Bento-сетка статистики 2x2 */
+        .profile-bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .profile-bento-item {
+            background: linear-gradient(180deg, rgba(20, 23, 31, 0.85) 0%, rgba(11, 13, 19, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 14px 13px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        }
+
+        .profile-bento-item.accent-balance {
+            border-color: rgba(0, 136, 255, 0.38);
+            background:
+                radial-gradient(100% 100% at 100% 0%, rgba(0, 136, 255, 0.16) 0%, rgba(0, 0, 0, 0) 70%),
+                linear-gradient(180deg, rgba(20, 23, 31, 0.9) 0%, rgba(11, 13, 19, 0.96) 100%);
+        }
+
+        .profile-bento-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .profile-bento-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(0, 136, 255, 0.12);
+            border: 1px solid rgba(0, 136, 255, 0.25);
+            color: #29a9ff;
+            display: grid;
+            place-items: center;
+        }
+
+        .profile-bento-icon svg {
+            width: 17px;
+            height: 17px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .profile-bento-val {
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            line-height: 1.1;
+        }
+
+        .profile-bento-label {
+            font-size: 11.5px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Реферальный VIP-блок в профиле */
+        .profile-ref-card {
+            background:
+                radial-gradient(110% 120% at 0% 0%, rgba(0, 136, 255, 0.18) 0%, rgba(168, 85, 247, 0.12) 55%, rgba(12, 14, 20, 0.96) 100%);
+            border: 1px solid rgba(0, 153, 255, 0.35);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+        }
+
+        .profile-ref-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .profile-ref-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .profile-ref-bonus {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 10px;
+            background: rgba(0, 136, 255, 0.18);
+            border: 1px solid rgba(0, 162, 255, 0.35);
+            color: #8ce0ff;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .profile-ref-desc {
+            font-size: 12.5px;
+            color: #93a0b4;
+            line-height: 1.35;
+            margin: 0 0 13px 0;
+        }
+
+        .profile-ref-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .profile-ref-share-btn {
+            flex: 1;
+            border: none;
+            border-radius: 12px;
+            padding: 11px 14px;
+            background: linear-gradient(90deg, #0088ff 0%, #00c6ff 100%);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 136, 255, 0.35);
+            transition: transform 0.2s ease;
+        }
+
+        .profile-ref-share-btn:active {
+            transform: scale(0.96);
+        }
+
+        .profile-ref-copy-btn {
+            width: 44px;
+            height: 42px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 153, 255, 0.4);
+            background: rgba(0, 136, 255, 0.12);
+            color: #5bc6ff;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .profile-ref-copy-btn:active {
+            transform: scale(0.93);
+            background: rgba(0, 136, 255, 0.28);
+        }
+
+        .profile-ref-copy-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Секция интеграций / привязок и покупок */
+        .profile-section-card {
+            background: linear-gradient(180deg, rgba(20, 22, 28, 0.82) 0%, rgba(11, 13, 18, 0.94) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .profile-section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .profile-section-title {
+            font-size: 14.5px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.2px;
+        }
+
+        .profile-section-sub {
+            font-size: 11.5px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .profile-bind-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .profile-bind-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 13px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .profile-bind-row.clickable {
+            cursor: pointer;
+        }
+
+        .profile-bind-row.clickable:active {
+            transform: scale(0.98);
+            border-color: rgba(0, 136, 255, 0.45);
+        }
+
+        .profile-bind-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-bind-ico {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .profile-bind-ico.tg-ico {
+            background: rgba(0, 136, 255, 0.16);
+            color: #29a9ff;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+        }
+
+        .profile-bind-ico.kick-ico {
+            background: rgba(83, 252, 24, 0.12);
+            color: #53fc18;
+            border: 1px solid rgba(83, 252, 24, 0.28);
+        }
+
+        .profile-bind-ico.upx-ico {
+            background: rgba(189, 85, 255, 0.15);
+            color: #c975ff;
+            border: 1px solid rgba(189, 85, 255, 0.3);
+        }
+
+        .profile-bind-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .profile-bind-desc {
+            font-size: 11px;
+            color: var(--secondary);
+            margin-top: 1px;
+        }
+
+        .profile-status-pill {
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .profile-status-pill.connected {
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            color: #00e676;
+        }
+
+        .profile-status-pill.action {
+            background: rgba(0, 136, 255, 0.14);
+            border: 1px solid rgba(0, 136, 255, 0.32);
+            color: #5bc6ff;
+        }
+
+        /* Пустой стейт инвентаря */
+        .profile-inventory-empty {
+            padding: 18px 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .profile-inventory-empty-text {
+            font-size: 12.5px;
+            color: var(--secondary);
+            margin: 6px 0 12px 0;
+        }
+
+        .profile-shop-Action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 136, 255, 0.4);
+            background: rgba(0, 136, 255, 0.14);
+            color: #6fd0ff;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .profile-shop-Action:active {
+            transform: scale(0.95);
+        }
+
+        /* ================= КНОПКА АДМИН-ПАНЕЛИ ================= */
+        .admin-panel-btn {
+            width: 100%;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            padding: 15px 16px;
+            border-radius: 18px;
+            border: 1.5px solid rgba(168, 85, 247, 0.55);
+            background:
+                radial-gradient(120% 140% at 100% 0%, rgba(168, 85, 247, 0.25) 0%, rgba(0, 136, 255, 0.15) 55%, rgba(14, 16, 24, 0.96) 100%);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.65),
+                0 0 20px rgba(168, 85, 247, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .admin-panel-btn:active {
+            transform: scale(0.97);
+            border-color: #c084fc;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+        }
+
+        .admin-panel-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-panel-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.28), rgba(0, 136, 255, 0.25));
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            color: #e9d5ff;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 14px rgba(168, 85, 247, 0.35);
+        }
+
+        .admin-panel-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .admin-panel-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .admin-root-tag {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(168, 85, 247, 0.25);
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            color: #d8b4fe;
+            letter-spacing: 0.6px;
+        }
+
+        .admin-panel-sub {
+            font-size: 11.5px;
+            color: #9ca3af;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .admin-panel-arrow {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #d8b4fe;
+            display: grid;
+            place-items: center;
+            font-size: 16px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        /* ================= ТАБЛИЧКА (МОДАЛКА) "В РАЗРАБОТКЕ" ================= */
+        .dev-badge-icon {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 16px auto;
+            border-radius: 20px;
+            background: radial-gradient(circle at 30% 30%, rgba(168, 85, 247, 0.3), rgba(0, 136, 255, 0.15));
+            border: 1.5px solid rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+            display: grid;
+            place-items: center;
+            color: #d8b4fe;
+        }
+
+        .dev-badge-icon svg {
+            width: 34px;
+            height: 34px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: devGearRotate 8s linear infinite;
+        }
+
+        @keyframes devGearRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .dev-status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .dev-modal-text {
+            font-size: 13.5px;
+            color: #9ca8ba;
+            line-height: 1.45;
+            margin: 0 0 22px 0;
+        }
+
     </style>
 </head>
 
@@ -1718,6 +2463,26 @@
                 
                 <button class="submit-task-btn" onclick="submitTask()">Отправить на проверку</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ТАБЛИЧКА "АДМИН-ПАНЕЛЬ В РАЗРАБОТКЕ" -->
+    <div id="adminDevModal" class="modal-overlay" onclick="if(event.target === this) closeAdminDevModal()">
+        <div class="modal-content" style="border-color: #a855f7; box-shadow: 0 0 40px rgba(168, 85, 247, 0.35);">
+            <button class="modal-close" onclick="closeAdminDevModal()">✖</button>
+            <div class="dev-badge-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
+            <div class="dev-status-chip">🛠 В РАЗРАБОТКЕ</div>
+            <h3 style="margin: 0 0 10px 0; color: #ffffff; font-size: 20px; font-weight: 800;">Админ-панель</h3>
+            <p class="dev-modal-text">
+                Панель администратора сейчас находится в разработке.<br><br>
+                Скоро здесь появится проверка скриншотов заданий, управление балансами игроков и выдача наград из магазина.
+            </p>
+            <button class="submit-task-btn" style="background: linear-gradient(90deg, #8b5cf6, #0088ff);" onclick="closeAdminDevModal()">ПОНЯТНО</button>
         </div>
     </div>
 
@@ -2254,17 +3019,227 @@
 
     <!-- 5. ПРОФИЛЬ -->
     <main id="profile" class="page">
-        <h2 class="anim-item" style="animation-delay: 0.05s;">👤 Профиль</h2>
-        <div class="card anim-item" style="animation-delay: 0.1s;">
-            <h3 style="margin-top: 0; margin-bottom: 15px;" id="profileUserName">Пользователь</h3>
-            
-            <div style="color: var(--secondary); font-size: 15px; line-height: 1.6; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    ⭐ Баланс: <span class="app-balance" style="color: #fff; font-weight: bold; font-size: 16px;">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
+            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Профиль</h2>
+
+        <!-- 1. ГЛАВНАЯ VIP-КАРТОЧКА ПРОФИЛЯ -->
+        <div class="profile-hero-card anim-item" style="animation-delay: 0.1s;">
+            <div class="profile-hero-glow"></div>
+
+            <div class="profile-hero-top">
+                <div class="profile-vip-badge">
+                    <span class="profile-online-dot"></span>
+                    VIP · ИГРОК
                 </div>
-                <div>🏆 Уровень: 1</div>
+                <button type="button" class="profile-id-pill" onclick="copyProfileId()">
+                    <span>ID: <b id="profileUserId">00000000</b></span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="profile-Identity">
+                <div class="profile-avatar-stage">
+                    <div class="profile-avatar-ring"></div>
+                    <div class="profile-avatar-box">
+                        <img id="profileAvatarImg" src="" alt="Avatar">
+                        <div id="profileAvatarFallback" class="profile-avatar-fallback">V</div>
+                    </div>
+                    <span class="profile-lvl-chip">LVL 1</span>
+                </div>
+
+                <h3 class="profile-main-name">
+                    <span id="profileUserName">Пользователь</span>
+                    <svg class="profile-verified-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l2.4 2.1 3.1-.4 1.2 2.9 2.9 1.2-.4 3.1L23.3 13l-2.1 2.4.4 3.1-2.9 1.2-1.2 2.9-3.1-.4L12 24.3l-2.4-2.1-3.1.4-1.2-2.9-2.9-1.2.4-3.1L.7 13l2.1-2.4-.4-3.1 2.9-1.2 1.2-2.9 3.1.4L12 2zm-1.2 13.6l5.3-5.3-1.4-1.4-3.9 3.9-1.9-1.9-1.4 1.4 3.3 3.3z"></path>
+                    </svg>
+                </h3>
+                <div class="profile-handle" id="profileUserHandle">@vetruch_player</div>
+
+                <div class="profile-xp-box">
+                    <div class="profile-xp-head">
+                        <span class="profile-xp-rank">🏆 Лига: Новичок</span>
+                        <span class="profile-xp-nums">120 / 500 XP</span>
+                    </div>
+                    <div class="profile-xp-track">
+                        <div class="profile-xp-fill"></div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- 2. BENTO-СЕТКА СТАТИСТИКИ 2x2 -->
+        <div class="profile-bento-grid anim-item" style="animation-delay: 0.15s;">
+            <div class="profile-bento-item accent-balance">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                            <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                            <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">
+                    <span class="app-balance">500</span>
+                    <img src="coins.png" alt="coins" class="coin-icon">
+                </div>
+                <div class="profile-bento-label">Текущий баланс</div>
+            </div>
+
+            <div class="profile-bento-item">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                            <path d="M6 12h4"></path>
+                            <path d="M8 10v4"></path>
+                            <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                            <line x1="18" y1="11" x2="18.01" y2="11"></line>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">
+                    0 <img src="coins.png" alt="coins" class="coin-icon">
+                </div>
+                <div class="profile-bento-label">Выиграно в играх</div>
+            </div>
+
+            <div class="profile-bento-item">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">0 / 8</div>
+                <div class="profile-bento-label">Заданий выполнено</div>
+            </div>
+
+            <div class="profile-bento-item">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">0</div>
+                <div class="profile-bento-label">Приглашено друзей</div>
+            </div>
+        </div>
+
+        <!-- 3. РЕФЕРАЛЬНАЯ ПРОГРАММА -->
+        <div class="profile-ref-card anim-item" style="animation-delay: 0.2s;">
+            <div class="profile-ref-head">
+                <div class="profile-ref-title">🚀 Реферальная система</div>
+                <span class="profile-ref-bonus">+500 <img src="coins.png" alt="" class="coin-icon-sm"></span>
+            </div>
+            <p class="profile-ref-desc">
+                Зови друзей в Vetruch GiftBot по своей персональной ссылке и забирай награду за каждых 3 активных рефералов!
+            </p>
+            <div class="profile-ref-actions">
+                <button type="button" class="profile-ref-share-btn" onclick="shareProfileRefLink()">
+                    ПРИГЛАСИТЬ ДРУЗЕЙ
+                </button>
+                <button type="button" class="profile-ref-copy-btn" onclick="copyProfileRefLink()" aria-label="Скопировать ссылку">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. ПРИВЯЗКА АККАУНТОВ -->
+        <div class="profile-section-card anim-item" style="animation-delay: 0.25s;">
+            <div class="profile-section-head">
+                <span class="profile-section-title">🔗 Привязка аккаунтов</span>
+                <span class="profile-section-sub">1 из 3 активно</span>
+            </div>
+
+            <div class="profile-bind-list">
+                <div class="profile-bind-row">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico tg-ico">TG</div>
+                        <div>
+                            <div class="profile-bind-name">Telegram аккаунт</div>
+                            <div class="profile-bind-desc">Синхронизирован автоматически</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill connected">Активно ✓</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openPage('tasks')">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico kick-ico">K</div>
+                        <div>
+                            <div class="profile-bind-name">Kick (@vetruch)</div>
+                            <div class="profile-bind-desc">Бонус +500 монет за задания</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action">Задания ➔</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openPage('tasks')">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico upx-ico">VIP</div>
+                        <div>
+                            <div class="profile-bind-name">UP-X & JetTon</div>
+                            <div class="profile-bind-desc">Награда +2 000 монет за привязку</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action">Привязать ➔</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ИНВЕНТАРЬ / МОИ ПОКУПКИ -->
+        <div class="profile-section-card anim-item" style="animation-delay: 0.3s;">
+            <div class="profile-section-head">
+                <span class="profile-section-title">🎁 Мои покупки</span>
+                <span class="profile-section-sub">0 предметов</span>
+            </div>
+            <div class="profile-inventory-empty">
+                <div style="font-size: 28px; filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.5));">📦</div>
+                <div class="profile-inventory-empty-text">У вас пока нет купленных призов из магазина</div>
+                <button type="button" class="profile-shop-Action" onclick="openPage('shop')">
+                    Перейти в магазин ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- 6. КНОПКА АДМИН-ПАНЕЛИ -->
+        <button type="button" class="admin-panel-btn anim-item" style="animation-delay: 0.35s;" onclick="openAdminDevModal()">
+            <div class="admin-panel-left">
+                <div class="admin-panel-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="admin-panel-title">
+                        Панель администратора
+                        <span class="admin-root-tag">ROOT</span>
+                    </div>
+                    <div class="admin-panel-sub">Управление ботом, заявками и балансами</div>
+                </div>
+            </div>
+            <div class="admin-panel-arrow">➔</div>
+        </button>
+
     </main>
 
     
@@ -2310,13 +3285,68 @@
             document.getElementById("homeUserName").textContent = firstName;
             document.getElementById("profileUserName").textContent = firstName;
 
+            if (user.username) {
+                document.getElementById("profileUserHandle").textContent = "@" + user.username;
+            }
+            if (user.id) {
+                document.getElementById("profileUserId").textContent = user.id;
+            }
+
             if (user.photo_url) {
                 document.getElementById("homeAvatarImg").src = user.photo_url;
                 document.getElementById("homeAvatarImg").style.display = "block";
                 document.getElementById("homeAvatarFallback").style.display = "none";
+
+                document.getElementById("profileAvatarImg").src = user.photo_url;
+                document.getElementById("profileAvatarImg").style.display = "block";
+                document.getElementById("profileAvatarFallback").style.display = "none";
             } else {
-                document.getElementById("homeAvatarFallback").textContent = firstName.charAt(0).toUpperCase();
+                const firstLetter = firstName.charAt(0).toUpperCase();
+                document.getElementById("homeAvatarFallback").textContent = firstLetter;
+                document.getElementById("profileAvatarFallback").textContent = firstLetter;
             }
+        }
+
+        // ================= ФУНКЦИИ ПРОФИЛЯ И АДМИН-ТАБЛИЧКИ =================
+        function openAdminDevModal() {
+            const modal = document.getElementById('adminDevModal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('active'); }, 10);
+        }
+
+        function closeAdminDevModal() {
+            const modal = document.getElementById('adminDevModal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        function copyProfileId() {
+            const idText = document.getElementById('profileUserId').textContent;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(idText);
+            }
+            tg.showAlert(`Ваш ID (${idText}) скопирован в буфер обмена! 📋`);
+        }
+
+        function shareProfileRefLink() {
+            let userId = '0';
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                userId = tg.initDataUnsafe.user.id;
+            }
+            const shareUrl = `https://t.me/share/url?url=https://t.me/VetruchFarm_bot?start=${userId}&text=Заходи%20играть%20в%20Vetruch%20Games%20со%20мной!`;
+            tg.openTelegramLink(shareUrl);
+        }
+
+        function copyProfileRefLink() {
+            let userId = '0';
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                userId = tg.initDataUnsafe.user.id;
+            }
+            const refLink = `https://t.me/VetruchFarm_bot?start=${userId}`;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(refLink);
+            }
+            tg.showAlert("Реферальная ссылка скопирована! Отправь её друзьям 🚀");
         }
 
         // ================= УПРАВЛЕНИЕ ВКЛАДКАМИ (ПАМЯТЬ) =================
