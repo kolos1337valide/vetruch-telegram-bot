@@ -3614,17 +3614,184 @@ html
             }
         }
 
-        // ================= ФУНКЦИИ ПРОФИЛЯ И АДМИН-ТАБЛИЧКИ =================
-        function openAdminDevModal() {
-            const modal = document.getElementById('adminDevModal');
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('active'); }, 10);
+        // ================= ДОСТУП К АДМИНКЕ ТОЛЬКО ДЛЯ 2 ID =================
+        const ALLOWED_ADMIN_IDS = [1067693099, 978548564];
+
+        function checkAdminAccess() {
+            let currentUserId = 0;
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+                currentUserId = Number(tg.initDataUnsafe.user.id);
+            }
+            const adminBtn = document.getElementById('adminPanelEntryBtn');
+            if (adminBtn) {
+                if (ALLOWED_ADMIN_IDS.includes(currentUserId)) {
+                    adminBtn.style.display = 'flex';
+                } else {
+                    adminBtn.style.display = 'none';
+                }
+            }
+        }
+        checkAdminAccess();
+
+        function openAdminPage() {
+            let currentUserId = 0;
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+                currentUserId = Number(tg.initDataUnsafe.user.id);
+            }
+            if (!ALLOWED_ADMIN_IDS.includes(currentUserId)) {
+                tg.showAlert("⛔ Доступ запрещён! Панель доступна только главным администраторам.");
+                return;
+            }
+            renderAdminLists();
+            openPage('admin');
         }
 
-        function closeAdminDevModal() {
-            const modal = document.getElementById('adminDevModal');
-            modal.classList.remove('active');
-            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        function switchAdminTab(tabId, btnEl) {
+            document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
+        }
+
+        // Демо-данные + хранилище для Заданий и Магазина
+        function getAdminTasks() {
+            let list = localStorage.getItem('vetruch_admin_tasks');
+            if (!list) {
+                const demo = [
+                    { id: 101, user: '@player_one', userId: '849201442', title: 'Подписка на Telegram', reward: 100 },
+                    { id: 102, user: '@kick_streamer', userId: '512994011', title: 'Привязка UP-X', reward: 1000 }
+                ];
+                localStorage.setItem('vetruch_admin_tasks', JSON.stringify(demo));
+                return demo;
+            }
+            return JSON.parse(list);
+        }
+
+        function getAdminShopOrders() {
+            let list = localStorage.getItem('vetruch_admin_shop');
+            if (!list) {
+                const demo = [
+                    { id: 201, user: '@lucky_winner', userId: '738192004', item: 'Telegram Premium 3 месяца', date: 'Сегодня, 14:20' },
+                    { id: 202, user: '@vetruch_fan', userId: '391044812', item: '1000 рублей', date: 'Сегодня, 15:05' }
+                ];
+                localStorage.setItem('vetruch_admin_shop', JSON.stringify(demo));
+                return demo;
+            }
+            return JSON.parse(list);
+        }
+
+        function renderAdminLists() {
+            const tasks = getAdminTasks();
+            const shopOrders = getAdminShopOrders();
+
+            document.getElementById('adminTasksCount').textContent = tasks.length;
+            document.getElementById('adminShopCount').textContent = shopOrders.length;
+
+            const tasksContainer = document.getElementById('adminTasksList');
+            if (tasks.length === 0) {
+                tasksContainer.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center; padding: 14px 0;">Нет новых заявок по заданиям ✅</div>';
+            } else {
+                tasksContainer.innerHTML = tasks.map(t => `
+                    <div class="admin-req-item">
+                        <div class="admin-req-head">
+                            <span class="admin-req-user">${t.user}</span>
+                            <span class="admin-req-id">ID: ${t.userId}</span>
+                        </div>
+                        <div class="admin-req-title">${t.title} (+${t.reward} монет)</div>
+                        <div class="admin-req-actions">
+                            <button type="button" class="admin-btn-approve" onclick="handleTaskRequest(${t.id}, true)">✓ Принять</button>
+                            <button type="button" class="admin-btn-reject" onclick="handleTaskRequest(${t.id}, false)">✕ Отклонить</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const shopContainer = document.getElementById('adminShopList');
+            if (shopOrders.length === 0) {
+                shopContainer.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center; padding: 14px 0;">Нет активных заказов из магазина 🛒</div>';
+            } else {
+                shopContainer.innerHTML = shopOrders.map(s => `
+                    <div class="admin-req-item">
+                        <div class="admin-req-head">
+                            <span class="admin-req-user">${s.user}</span>
+                            <span class="admin-req-id">ID: ${s.userId}</span>
+                        </div>
+                        <div class="admin-req-title">🎁 ${s.item}</div>
+                        <div style="font-size: 11px; color: var(--secondary); margin-bottom: 10px;">${s.date}</div>
+                        <div class="admin-req-actions">
+                            <button type="button" class="admin-btn-approve" onclick="handleShopOrder(${s.id}, true)">✓ Выдано</button>
+                            <button type="button" class="admin-btn-reject" onclick="handleShopOrder(${s.id}, false)">✕ Отмена</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function handleTaskRequest(reqId, isApproved) {
+            let tasks = getAdminTasks();
+            const target = tasks.find(t => t.id === reqId);
+            tasks = tasks.filter(t => t.id !== reqId);
+            localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
+            renderAdminLists();
+
+            if (isApproved && target) {
+                tg.showAlert(`✅ Задание для ${target.user} (ID: ${target.userId}) одобрено! Начислено +${target.reward} монет.`);
+            } else {
+                tg.showAlert(`❌ Заявка отклонена.`);
+            }
+        }
+
+        function handleShopOrder(orderId, isCompleted) {
+            let orders = getAdminShopOrders();
+            const target = orders.find(o => o.id === orderId);
+            orders = orders.filter(o => o.id !== orderId);
+            localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
+            renderAdminLists();
+
+            if (isCompleted && target) {
+                tg.showAlert(`🎁 Заказ "${target.item}" для ${target.user} отмечен как выданный!`);
+            } else {
+                tg.showAlert(`❌ Заказ отменён.`);
+            }
+        }
+
+        function adminModifyUserBalance(mode) {
+            const targetId = document.getElementById('adminTargetIdInput').value.trim();
+            const amount = parseInt(document.getElementById('adminCoinsAmountInput').value.trim(), 10);
+
+            if (!targetId) {
+                tg.showAlert("⚠️ Введите Telegram ID человека!");
+                return;
+            }
+            if (isNaN(amount) || amount < 0) {
+                tg.showAlert("⚠️ Введите корректное количество монет!");
+                return;
+            }
+
+            // Сохраняем баланс по конкретному ID
+            let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+            let currentMyId = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id)
+                ? String(tg.initDataUnsafe.user.id)
+                : '';
+
+            let curBal = (targetId === currentMyId)
+                ? parseInt(localStorage.getItem('vetruch_balance') || '500', 10)
+                : (balancesMap[targetId] !== undefined ? balancesMap[targetId] : 500);
+
+            if (mode === 'add') curBal += amount;
+            if (mode === 'sub') curBal = Math.max(0, curBal - amount);
+            if (mode === 'set') curBal = amount;
+
+            balancesMap[targetId] = curBal;
+            localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+            // Если крутим себе (или тестим) — сразу обновляем наш баланс на экране
+            if (targetId === currentMyId || ALLOWED_ADMIN_IDS.includes(Number(targetId))) {
+                localStorage.setItem('vetruch_balance', curBal);
+                initBalance();
+            }
+
+            tg.showAlert(`💎 Готово! Баланс пользователя ID ${targetId} теперь: ${curBal} монет.`);
         }
 
         function copyProfileId() {
