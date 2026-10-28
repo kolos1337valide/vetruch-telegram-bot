@@ -3594,6 +3594,20 @@
             margin-bottom: 8px;
             text-align: left;
         }
+
+        .cloud-status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            font-size: 11.5px;
+            font-weight: 700;
+            background: rgba(0, 136, 255, 0.08);
+            border: 1px solid rgba(0, 136, 255, 0.25);
+            color: #8ce0ff;
+        }
     </style>
 
     <!-- МОДАЛЬНОЕ ОКНО ПОКУПКИ В МАГАЗИНЕ -->
@@ -3630,6 +3644,11 @@
                 ← Назад
             </button>
             <h2 class="games-heading">Админ-панель</h2>
+        </div>
+
+        <div id="adminCloudStatus" class="cloud-status-bar anim-item" style="animation-delay: 0.08s;">
+            <span>☁️ Синхронизация...</span>
+            <button type="button" onclick="syncFromCloud(true)" style="background: transparent; border: none; color: #00d9ff; font-weight: 800; cursor: pointer; font-size: 11.5px;">🔄 Обновить</button>
         </div>
 
         <!-- Переключатель 3 разделов: Задания / Магазин / Накрутка по ID -->
@@ -3742,6 +3761,16 @@
         tg.ready(); tg.expand();
         tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
+        // =========================================================================
+        // 👇 ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ FIREBASE REALTIME DATABASE 👇
+        // Пример: const FIREBASE_DB_URL = "https://vetruch-bot-default-rtdb.firebaseio.com";
+        // =========================================================================
+        const FIREBASE_DB_URL = "";
+
+        function getCleanDbUrl() {
+            return FIREBASE_DB_URL ? FIREBASE_DB_URL.trim().replace(/\/+$/, '') : '';
+        }
+
         // ================= ЭКОНОМИКА МАГАЗИНА И НАГРАДЫ ЗАДАНИЙ =================
         const SHOP_PRICES = {
             'iPhone 18 PRO MAX': 1200000,
@@ -3802,6 +3831,49 @@
             return '';
         }
 
+        // ================= ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ МЕЖДУ ТЕЛЕФОНАМИ =================
+        async function cloudGet(path) {
+            const base = getCleanDbUrl();
+            if (!base) return null;
+            try {
+                const res = await fetch(`${base}/${path}.json`);
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function cloudPut(path, data) {
+            const base = getCleanDbUrl();
+            if (!base) return false;
+            try {
+                await fetch(`${base}/${path}.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function updateCloudStatusUI() {
+            const bar = document.getElementById('adminCloudStatus');
+            if (!bar) return;
+            const span = bar.querySelector('span');
+            if (getCleanDbUrl()) {
+                span.textContent = '🟢 Облако активно (заявки со всех устройств)';
+                bar.style.borderColor = 'rgba(0, 230, 118, 0.35)';
+                bar.style.color = '#00e676';
+            } else {
+                span.textContent = '🟠 Локальный режим (вставьте ссылку FIREBASE_DB_URL)';
+                bar.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+                bar.style.color = '#fbbf24';
+            }
+        }
+
         function initBalance() {
             const myId = getCurrentTgId();
             const lastId = localStorage.getItem('vetruch_last_user_id');
@@ -3823,6 +3895,52 @@
 
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
             renderProfilePurchases();
+        }
+
+        async function syncFromCloud(refreshAdmin) {
+            updateCloudStatusUI();
+            const base = getCleanDbUrl();
+            if (!base) return;
+
+            const myId = getCurrentTgId();
+            const localBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+            const lastSyncedBal = parseInt(localStorage.getItem('vetruch_cloud_synced_bal') || String(localBal), 10);
+            const gameDelta = localBal - lastSyncedBal;
+
+            const cloudState = await cloudGet('vetruch_app');
+            let balancesMap = (cloudState && cloudState.balances) ? cloudState.balances : JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+            let tasksList = (cloudState && Array.isArray(cloudState.tasks)) ? cloudState.tasks : [];
+            let shopList = (cloudState && Array.isArray(cloudState.shop)) ? cloudState.shop : [];
+            let allPurchases = (cloudState && cloudState.purchases) ? cloudState.purchases : {};
+
+            // Умное слияние баланса (сохраняет и выигрыши в играх, и начисления из админки!)
+            let finalMyBal = localBal;
+            if (balancesMap[myId] !== undefined) {
+                finalMyBal = Math.max(0, Number(balancesMap[myId]) + gameDelta);
+            }
+            balancesMap[myId] = finalMyBal;
+
+            localStorage.setItem('vetruch_balance', finalMyBal);
+            localStorage.setItem('vetruch_cloud_synced_bal', finalMyBal);
+            localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+            localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasksList));
+            localStorage.setItem('vetruch_admin_shop', JSON.stringify(shopList));
+
+            if (allPurchases[myId]) {
+                localStorage.setItem('vetruch_my_purchases', JSON.stringify(allPurchases[myId]));
+            }
+
+            if (gameDelta !== 0 || !cloudState || !cloudState.balances || cloudState.balances[myId] === undefined) {
+                await cloudPut(`vetruch_app/balances/${myId}`, finalMyBal);
+            }
+
+            document.querySelectorAll('.app-balance').forEach(el => el.textContent = finalMyBal);
+            renderProfilePurchases();
+
+            if (refreshAdmin) {
+                renderAdminLists();
+                renderAdminBalancesTable();
+            }
         }
 
         // ================= ПОКУПКА В МАГАЗИНЕ И ИНВЕНТАРЬ ПРОФИЛЯ =================
@@ -3862,7 +3980,7 @@
             fb.textContent = msg;
         }
 
-        function confirmShopPurchase() {
+        async function confirmShopPurchase() {
             let username = document.getElementById('shopModalUsername').value.trim();
             if (!username) {
                 showShopFeedback("⚠️ Введите ваш @username из Telegram!", true);
@@ -3882,29 +4000,35 @@
                 return;
             }
 
+            showShopFeedback("⏳ Оформляем заказ...", false);
+
             // Списываем монеты
             curBal -= price;
             localStorage.setItem('vetruch_balance', curBal);
+            localStorage.setItem('vetruch_cloud_synced_bal', curBal);
             let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
             balancesMap[myId] = curBal;
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
 
-            // Отправляем заказ в Админ-панель
             const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
             const orderId = Date.now();
-            let orders = getAdminShopOrders();
-            orders.unshift({
+            const newOrder = {
                 id: orderId,
                 user: username,
                 userId: myId,
                 item: selectedShopItem,
                 price: price,
                 date: `Сегодня, ${nowStr}`
-            });
+            };
+
+            // Подтягиваем актуальный список заказов из облака и добавляем новый
+            let orders = (await cloudGet('vetruch_app/shop')) || getAdminShopOrders();
+            if (!Array.isArray(orders)) orders = [];
+            orders.unshift(newOrder);
             localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
 
-            // Сохраняем в "Мои покупки" в Профиле
-            let myPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+            let myPurchases = (await cloudGet(`vetruch_app/purchases/${myId}`)) || JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+            if (!Array.isArray(myPurchases)) myPurchases = [];
             myPurchases.unshift({
                 id: orderId,
                 item: selectedShopItem,
@@ -3913,12 +4037,17 @@
             });
             localStorage.setItem('vetruch_my_purchases', JSON.stringify(myPurchases));
 
+            // Отправляем в общую базу для всех админов
+            await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+            await cloudPut('vetruch_app/shop', orders);
+            await cloudPut(`vetruch_app/purchases/${myId}`, myPurchases);
+
             initBalance();
-            showShopFeedback("✅ Покупка успешна! Заказ передан в Админ-панель.", false);
+            showShopFeedback("✅ Покупка успешна! Заказ отправлен всем админам.", false);
 
             setTimeout(() => {
                 closeShopBuyModal();
-            }, 1300);
+            }, 1200);
         }
 
         function renderProfilePurchases() {
@@ -3957,6 +4086,7 @@
         }
 
         initBalance();
+        syncFromCloud(false);
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const user = tg.initDataUnsafe.user;
@@ -4003,7 +4133,7 @@
         }
         checkAdminAccess();
 
-        function openAdminPage() {
+        async function openAdminPage() {
             const currentUserId = Number(getCurrentTgId());
             if (!ALLOWED_ADMIN_IDS.includes(currentUserId)) {
                 return;
@@ -4012,9 +4142,10 @@
             if (idInput && !idInput.value) {
                 idInput.value = String(currentUserId);
             }
+            openPage('admin');
             renderAdminLists();
             renderAdminBalancesTable();
-            openPage('admin');
+            await syncFromCloud(true);
         }
 
         function switchAdminTab(tabId, btnEl) {
@@ -4022,9 +4153,7 @@
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             btnEl.classList.add('active');
-            if (tabId === 'adm-users') {
-                renderAdminBalancesTable();
-            }
+            syncFromCloud(true);
         }
 
         let adminToastTimer = null;
@@ -4045,18 +4174,24 @@
 
         function getAdminTasks() {
             let list = localStorage.getItem('vetruch_admin_tasks');
-            if (!list) {
+            if (!list) return [];
+            try {
+                const parsed = JSON.parse(list);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
                 return [];
             }
-            return JSON.parse(list);
         }
 
         function getAdminShopOrders() {
             let list = localStorage.getItem('vetruch_admin_shop');
-            if (!list) {
+            if (!list) return [];
+            try {
+                const parsed = JSON.parse(list);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
                 return [];
             }
-            return JSON.parse(list);
         }
 
         function renderAdminLists() {
@@ -4107,52 +4242,71 @@
             }
         }
 
-        function handleTaskRequest(reqId, isApproved) {
-            let tasks = getAdminTasks();
+        async function handleTaskRequest(reqId, isApproved) {
+            let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
             const target = tasks.find(t => t.id === reqId);
             tasks = tasks.filter(t => t.id !== reqId);
             localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
+            await cloudPut('vetruch_app/tasks', tasks);
 
             if (isApproved && target) {
-                let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+                let balancesMap = (await cloudGet('vetruch_app/balances')) || JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
                 let userBal = balancesMap[target.userId] !== undefined ? Number(balancesMap[target.userId]) : 500;
                 userBal += Number(target.reward);
                 balancesMap[target.userId] = userBal;
                 localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+                await cloudPut(`vetruch_app/balances/${target.userId}`, userBal);
 
                 if (String(target.userId) === getCurrentTgId()) {
                     localStorage.setItem('vetruch_balance', userBal);
+                    localStorage.setItem('vetruch_cloud_synced_bal', userBal);
                     initBalance();
                 }
             }
             renderAdminLists();
+            renderAdminBalancesTable();
         }
 
-        function handleShopOrder(orderId, isCompleted) {
-            let orders = getAdminShopOrders();
+        async function handleShopOrder(orderId, isCompleted) {
+            let orders = (await cloudGet('vetruch_app/shop')) || getAdminShopOrders();
             const target = orders.find(o => o.id === orderId);
             orders = orders.filter(o => o.id !== orderId);
             localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
+            await cloudPut('vetruch_app/shop', orders);
 
-            // Обновляем статус в "Мои покупки" или возвращаем монеты при отмене
-            let myPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
-            if (isCompleted) {
-                myPurchases = myPurchases.map(p => p.id === orderId ? { ...p, status: 'Выдано ✓' } : p);
-            } else if (target) {
-                myPurchases = myPurchases.filter(p => p.id !== orderId);
-                let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
-                let userBal = balancesMap[target.userId] !== undefined ? Number(balancesMap[target.userId]) : 500;
-                userBal += Number(target.price || 0);
-                balancesMap[target.userId] = userBal;
-                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+            if (target) {
+                const buyerId = String(target.userId);
+                let buyerPurchases = (await cloudGet(`vetruch_app/purchases/${buyerId}`)) || [];
+                if (buyerId === getCurrentTgId() && buyerPurchases.length === 0) {
+                    buyerPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+                }
 
-                if (String(target.userId) === getCurrentTgId()) {
-                    localStorage.setItem('vetruch_balance', userBal);
+                if (isCompleted) {
+                    buyerPurchases = buyerPurchases.map(p => p.id === orderId ? { ...p, status: 'Выдано ✓' } : p);
+                } else {
+                    buyerPurchases = buyerPurchases.filter(p => p.id !== orderId);
+                    let balancesMap = (await cloudGet('vetruch_app/balances')) || JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+                    let userBal = balancesMap[buyerId] !== undefined ? Number(balancesMap[buyerId]) : 500;
+                    userBal += Number(target.price || 0);
+                    balancesMap[buyerId] = userBal;
+                    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+                    await cloudPut(`vetruch_app/balances/${buyerId}`, userBal);
+
+                    if (buyerId === getCurrentTgId()) {
+                        localStorage.setItem('vetruch_balance', userBal);
+                        localStorage.setItem('vetruch_cloud_synced_bal', userBal);
+                    }
+                }
+
+                await cloudPut(`vetruch_app/purchases/${buyerId}`, buyerPurchases);
+                if (buyerId === getCurrentTgId()) {
+                    localStorage.setItem('vetruch_my_purchases', JSON.stringify(buyerPurchases));
                 }
             }
-            localStorage.setItem('vetruch_my_purchases', JSON.stringify(myPurchases));
+
             initBalance();
             renderAdminLists();
+            renderAdminBalancesTable();
         }
 
         function renderAdminBalancesTable() {
@@ -4180,7 +4334,7 @@
             `).join('');
         }
 
-        function adminModifyUserBalance(mode) {
+        async function adminModifyUserBalance(mode) {
             const targetId = document.getElementById('adminTargetIdInput').value.trim();
             const amount = parseInt(document.getElementById('adminCoinsAmountInput').value.trim(), 10);
 
@@ -4194,7 +4348,7 @@
             }
 
             const currentMyId = getCurrentTgId();
-            let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+            let balancesMap = (await cloudGet('vetruch_app/balances')) || JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
 
             let curBal = (targetId === currentMyId)
                 ? parseInt(localStorage.getItem('vetruch_balance') || '500', 10)
@@ -4206,14 +4360,16 @@
 
             balancesMap[targetId] = curBal;
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+            await cloudPut(`vetruch_app/balances/${targetId}`, curBal);
 
             if (targetId === currentMyId) {
                 localStorage.setItem('vetruch_balance', curBal);
+                localStorage.setItem('vetruch_cloud_synced_bal', curBal);
                 initBalance();
             }
 
             renderAdminBalancesTable();
-            showAdminToast(`✅ ID ${targetId}: баланс обновлён до ${formatCoins(curBal)} монет!`, false);
+            showAdminToast(`✅ ID ${targetId}: баланс в облаке обновлён до ${formatCoins(curBal)} монет!`, false);
         }
 
         function copyProfileId() {
@@ -4261,6 +4417,7 @@
             }
             
             initBalance();
+            syncFromCloud(pageId === 'admin');
         }
 
         // ================= ЛОГИКА МОДАЛЬНОГО ОКНА ЗАДАНИЙ =================
@@ -4320,7 +4477,6 @@
                 textEl.textContent = "✅ " + file.name;
                 textEl.style.color = "#00cc66";
 
-                // Сжимаем скриншот для сохранения в Админ-панели
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = new Image();
@@ -4332,7 +4488,7 @@
                         canvas.height = img.height * scale;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        currentTaskScreenshotBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                        currentTaskScreenshotBase64 = canvas.toDataURL('image/jpeg', 0.65);
                     };
                     img.src = e.target.result;
                 };
@@ -4340,7 +4496,7 @@
             }
         }
 
-        function submitTask() {
+        async function submitTask() {
             let username = document.getElementById('modalUsername').value.trim();
             const textEl = document.getElementById('modalFileName');
 
@@ -4358,8 +4514,13 @@
                 username = '@' + username;
             }
 
+            textEl.textContent = "⏳ Отправляем заявку...";
+            textEl.style.color = "#00d9ff";
+
             const reward = TASK_REWARDS[currentTaskTitle] || 150;
-            let tasks = getAdminTasks();
+            let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+            if (!Array.isArray(tasks)) tasks = [];
+
             tasks.unshift({
                 id: Date.now(),
                 user: username,
@@ -4368,15 +4529,24 @@
                 reward: reward,
                 screenshot: currentTaskScreenshotBase64
             });
-            localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
 
-            textEl.textContent = "🚀 Отправлено на проверку в Админ-панель!";
+            localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
+            await cloudPut('vetruch_app/tasks', tasks);
+
+            textEl.textContent = "🚀 Отправлено на проверку всем админам!";
             textEl.style.color = "#00e676";
 
             setTimeout(() => {
                 closeTaskModal();
             }, 1100);
         }
+
+        // Автообновление из облака каждые 5 секунд
+        setInterval(() => {
+            const adminPage = document.getElementById('admin');
+            const isAdminOpen = adminPage && adminPage.classList.contains('active');
+            syncFromCloud(isAdminOpen);
+        }, 5000);
 
         // ================= УМНЫЙ ЗАГРУЗОЧНЫЙ ЭКРАН И ПАМЯТЬ ВКЛАДОК =================
         const loadingScreen = document.getElementById('loading-screen');
