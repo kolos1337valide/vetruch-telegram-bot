@@ -3608,6 +3608,11 @@
             border: 1px solid rgba(0, 136, 255, 0.25);
             color: #8ce0ff;
         }
+
+        .invite-progress-fill {
+            transition: width 0.4s ease, background 0.3s ease;
+            background: linear-gradient(90deg, #0088ff, #00e1ff);
+        }
     </style>
 
     <!-- МОДАЛЬНОЕ ОКНО ПОКУПКИ В МАГАЗИНЕ -->
@@ -3762,10 +3767,10 @@
         tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
         // =========================================================================
-        // 👇 ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ FIREBASE REALTIME DATABASE 👇
-        // Пример: const FIREBASE_DB_URL = "https://vetruch-bot-default-rtdb.firebaseio.com";
+        // ПОДКЛЮЧЕННАЯ ОБЛАЧНАЯ БАЗА FIREBASE
         // =========================================================================
         const FIREBASE_DB_URL = "https://vetruchbot-default-rtdb.firebaseio.com";
+        const BOT_USERNAME = "VetruchFarm_bot";
 
         function getCleanDbUrl() {
             return FIREBASE_DB_URL ? FIREBASE_DB_URL.trim().replace(/\/+$/, '') : '';
@@ -3831,6 +3836,11 @@
             return '';
         }
 
+        function getMyRefLink() {
+            const myId = getCurrentTgId();
+            return `https://t.me/${BOT_USERNAME}?start=${myId}`;
+        }
+
         // ================= ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ МЕЖДУ ТЕЛЕФОНАМИ =================
         async function cloudGet(path) {
             const base = getCleanDbUrl();
@@ -3874,6 +3884,92 @@
             }
         }
 
+        // ================= АВТОМАТИЧЕСКАЯ СИСТЕМА РЕФЕРАЛОВ =================
+        function getStartParamReferrer() {
+            if (tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+                return String(tg.initDataUnsafe.start_param).replace('ref_', '').trim();
+            }
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromQuery = urlParams.get('tgWebAppStartParam') || urlParams.get('ref') || urlParams.get('start') || urlParams.get('startapp');
+            if (fromQuery) {
+                return String(fromQuery).replace('ref_', '').trim();
+            }
+            return '';
+        }
+
+        async function processReferralOnStart() {
+            const myId = getCurrentTgId();
+            const inviterId = getStartParamReferrer();
+            if (!inviterId || inviterId === myId || inviterId === '0') return;
+
+            // Проверяем, не был ли этот игрок уже засчитан раньше
+            const alreadyReferred = await cloudGet(`vetruch_app/referred_by/${myId}`);
+            if (alreadyReferred) return;
+
+            await cloudPut(`vetruch_app/referred_by/${myId}`, inviterId);
+
+            // Добавляем игрока в список рефералов пригласившего
+            let inviterRefs = (await cloudGet(`vetruch_app/referrals/${inviterId}`)) || [];
+            if (!Array.isArray(inviterRefs)) inviterRefs = [];
+
+            if (!inviterRefs.includes(myId)) {
+                inviterRefs.push(myId);
+                await cloudPut(`vetruch_app/referrals/${inviterId}`, inviterRefs);
+            }
+
+            // Если у пригласившего набралось 3 реферала — автоматически выдаём ему +500 монет!
+            if (inviterRefs.length >= 3) {
+                const alreadyRewarded = await cloudGet(`vetruch_app/ref_reward_done/${inviterId}`);
+                if (!alreadyRewarded) {
+                    await cloudPut(`vetruch_app/ref_reward_done/${inviterId}`, true);
+                    let balancesMap = (await cloudGet('vetruch_app/balances')) || {};
+                    let invBal = balancesMap[inviterId] !== undefined ? Number(balancesMap[inviterId]) : 500;
+                    invBal += 500;
+                    await cloudPut(`vetruch_app/balances/${inviterId}`, invBal);
+
+                    let tasksDone = (await cloudGet(`vetruch_app/tasks_done/${inviterId}`)) || 0;
+                    await cloudPut(`vetruch_app/tasks_done/${inviterId}`, Number(tasksDone) + 1);
+                }
+            }
+        }
+
+        function updateReferralsAndTasksUI(refCount, tasksDoneCount) {
+            localStorage.setItem('vetruch_my_ref_count', refCount);
+
+            // 1. Обновляем карточку "Пригласи 3 друзей" во вкладке Задания
+            const countSpan = document.querySelector('#tasks .invite-progress-count');
+            const fillBar = document.querySelector('#tasks .invite-progress-fill');
+            if (countSpan) {
+                if (refCount >= 3) {
+                    countSpan.textContent = `✅ Выполнено (${refCount} / 3)`;
+                    countSpan.style.color = '#00e676';
+                } else {
+                    countSpan.textContent = `${refCount} / 3`;
+                    countSpan.style.color = '#e5e5eb';
+                }
+            }
+            if (fillBar) {
+                const pct = Math.min(100, Math.round((refCount / 3) * 100));
+                fillBar.style.width = pct + '%';
+                if (refCount >= 3) {
+                    fillBar.style.background = '#00e676';
+                }
+            }
+
+            // 2. Обновляем счётчики "Приглашено друзей" и "Заданий выполнено" в Профиле
+            document.querySelectorAll('#profile .profile-bento-item').forEach(item => {
+                const lbl = item.querySelector('.profile-bento-label');
+                const val = item.querySelector('.profile-bento-val');
+                if (!lbl || !val) return;
+                if (lbl.textContent.includes('Приглашено друзей')) {
+                    val.textContent = refCount;
+                }
+                if (lbl.textContent.includes('Заданий выполнено')) {
+                    val.textContent = `${tasksDoneCount} / 8`;
+                }
+            });
+        }
+
         function initBalance() {
             const myId = getCurrentTgId();
             const lastId = localStorage.getItem('vetruch_last_user_id');
@@ -3912,12 +4008,29 @@
             let tasksList = (cloudState && Array.isArray(cloudState.tasks)) ? cloudState.tasks : [];
             let shopList = (cloudState && Array.isArray(cloudState.shop)) ? cloudState.shop : [];
             let allPurchases = (cloudState && cloudState.purchases) ? cloudState.purchases : {};
+            let allReferrals = (cloudState && cloudState.referrals) ? cloudState.referrals : {};
+            let refRewardDoneMap = (cloudState && cloudState.ref_reward_done) ? cloudState.ref_reward_done : {};
+            let tasksDoneMap = (cloudState && cloudState.tasks_done) ? cloudState.tasks_done : {};
 
-            // Умное слияние баланса (сохраняет и выигрыши в играх, и начисления из админки!)
+            const myRefs = Array.isArray(allReferrals[myId]) ? allReferrals[myId] : [];
+            const myRefCount = myRefs.length;
+            let myTasksDone = Number(tasksDoneMap[myId] || 0);
+
+            // Умное слияние баланса
             let finalMyBal = localBal;
             if (balancesMap[myId] !== undefined) {
                 finalMyBal = Math.max(0, Number(balancesMap[myId]) + gameDelta);
             }
+
+            // Авто-награда +500 монет, если набрано 3 реферала и ещё не выдано
+            if (myRefCount >= 3 && !refRewardDoneMap[myId]) {
+                finalMyBal += 500;
+                myTasksDone += 1;
+                await cloudPut(`vetruch_app/ref_reward_done/${myId}`, true);
+                await cloudPut(`vetruch_app/tasks_done/${myId}`, myTasksDone);
+                await cloudPut(`vetruch_app/balances/${myId}`, finalMyBal);
+            }
+
             balancesMap[myId] = finalMyBal;
 
             localStorage.setItem('vetruch_balance', finalMyBal);
@@ -3936,6 +4049,7 @@
 
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = finalMyBal);
             renderProfilePurchases();
+            updateReferralsAndTasksUI(myRefCount, myTasksDone);
 
             if (refreshAdmin) {
                 renderAdminLists();
@@ -4002,7 +4116,6 @@
 
             showShopFeedback("⏳ Оформляем заказ...", false);
 
-            // Списываем монеты
             curBal -= price;
             localStorage.setItem('vetruch_balance', curBal);
             localStorage.setItem('vetruch_cloud_synced_bal', curBal);
@@ -4021,7 +4134,6 @@
                 date: `Сегодня, ${nowStr}`
             };
 
-            // Подтягиваем актуальный список заказов из облака и добавляем новый
             let orders = (await cloudGet('vetruch_app/shop')) || getAdminShopOrders();
             if (!Array.isArray(orders)) orders = [];
             orders.unshift(newOrder);
@@ -4037,7 +4149,6 @@
             });
             localStorage.setItem('vetruch_my_purchases', JSON.stringify(myPurchases));
 
-            // Отправляем в общую базу для всех админов
             await cloudPut(`vetruch_app/balances/${myId}`, curBal);
             await cloudPut('vetruch_app/shop', orders);
             await cloudPut(`vetruch_app/purchases/${myId}`, myPurchases);
@@ -4086,7 +4197,9 @@
         }
 
         initBalance();
-        syncFromCloud(false);
+        processReferralOnStart().then(() => {
+            syncFromCloud(false);
+        });
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const user = tg.initDataUnsafe.user;
@@ -4257,6 +4370,9 @@
                 localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
                 await cloudPut(`vetruch_app/balances/${target.userId}`, userBal);
 
+                let tasksDone = (await cloudGet(`vetruch_app/tasks_done/${target.userId}`)) || 0;
+                await cloudPut(`vetruch_app/tasks_done/${target.userId}`, Number(tasksDone) + 1);
+
                 if (String(target.userId) === getCurrentTgId()) {
                     localStorage.setItem('vetruch_balance', userBal);
                     localStorage.setItem('vetruch_cloud_synced_bal', userBal);
@@ -4381,20 +4497,13 @@
         }
 
         function shareProfileRefLink() {
-            let userId = '0';
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                userId = tg.initDataUnsafe.user.id;
-            }
-            const shareUrl = `https://t.me/share/url?url=https://t.me/VetruchFarm_bot?start=${userId}&text=Заходи%20играть%20в%20Vetruch%20Games%20со%20мной!`;
+            const refLink = getMyRefLink();
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent('Заходи играть в Vetruch Games со мной!')}`;
             tg.openTelegramLink(shareUrl);
         }
 
         function copyProfileRefLink() {
-            let userId = '0';
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                userId = tg.initDataUnsafe.user.id;
-            }
-            const refLink = `https://t.me/VetruchFarm_bot?start=${userId}`;
+            const refLink = getMyRefLink();
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(refLink);
             }
@@ -4429,36 +4538,68 @@
             currentTaskScreenshotBase64 = '';
             document.getElementById('modalTitle').textContent = title;
             const linkBtn = document.getElementById('modalLink');
-            
-            linkBtn.textContent = btnText || "ПЕРЕЙТИ";
-            
+            const verifyBox = document.querySelector('#taskModal .verify-box');
+            let refAutoBox = document.getElementById('refAutoModalBox');
+
+            if (!refAutoBox && verifyBox) {
+                refAutoBox = document.createElement('div');
+                refAutoBox.id = 'refAutoModalBox';
+                refAutoBox.className = 'verify-box';
+                refAutoBox.style.textAlign = 'center';
+                verifyBox.parentNode.insertBefore(refAutoBox, verifyBox);
+            }
+
             if (url === 'REF') {
-                let userId = '0';
-                if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                    userId = tg.initDataUnsafe.user.id;
-                }
-                url = `https://t.me/share/url?url=https://t.me/VetruchFarm_bot?start=${userId}&text=Заходи%20играть%20в%20Vetruch%20Games%20со%20мной!`;
-            }
-            
-            linkBtn.onclick = function(e) {
-                e.preventDefault();
-                if (isTg) {
-                    tg.openTelegramLink(url);
-                } else {
-                    tg.openLink(url);
-                }
-            };
-            
-            if (isTg) {
-                document.getElementById('modalHint').style.display = 'block';
-            } else {
+                const refLink = getMyRefLink();
+                const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent('Заходи играть в Vetruch Games со мной!')}`;
+                const myRefCount = parseInt(localStorage.getItem('vetruch_my_ref_count') || '0', 10);
+
+                linkBtn.textContent = "ОТПРАВИТЬ ССЫЛКУ ДРУГУ";
+                linkBtn.onclick = function(e) {
+                    e.preventDefault();
+                    tg.openTelegramLink(shareUrl);
+                };
+
                 document.getElementById('modalHint').style.display = 'none';
+                if (verifyBox) verifyBox.style.display = 'none';
+                if (refAutoBox) {
+                    refAutoBox.style.display = 'block';
+                    refAutoBox.innerHTML = `
+                        <h5>АВТОМАТИЧЕСКАЯ ПРОВЕРКА:</h5>
+                        <div style="font-size: 15px; font-weight: 800; color: ${myRefCount >= 3 ? '#00e676' : '#00d9ff'}; margin-bottom: 8px;">
+                            Приглашено друзей: ${myRefCount} из 3
+                        </div>
+                        <div style="font-size: 12px; color: var(--secondary); line-height: 1.4; margin-bottom: 14px;">
+                            Скриншот не требуется! Как только 3 друга перейдут по вашей ссылке, задание выполнится и +500 монет начислятся автоматически.
+                        </div>
+                        <button type="button" class="submit-task-btn" onclick="copyProfileRefLink()">📋 СКОПИРОВАТЬ ССЫЛКУ</button>
+                    `;
+                }
+            } else {
+                if (verifyBox) verifyBox.style.display = 'block';
+                if (refAutoBox) refAutoBox.style.display = 'none';
+
+                linkBtn.textContent = btnText || "ПЕРЕЙТИ";
+                linkBtn.onclick = function(e) {
+                    e.preventDefault();
+                    if (isTg) {
+                        tg.openTelegramLink(url);
+                    } else {
+                        tg.openLink(url);
+                    }
+                };
+
+                if (isTg) {
+                    document.getElementById('modalHint').style.display = 'block';
+                } else {
+                    document.getElementById('modalHint').style.display = 'none';
+                }
+
+                document.getElementById('modalUsername').value = getDefaultUsername();
+                document.getElementById('modalFileName').textContent = '📷 Загрузить скриншот';
+                document.getElementById('modalFileName').style.color = '#0088ff';
             }
-            
-            document.getElementById('modalUsername').value = getDefaultUsername();
-            document.getElementById('modalFileName').textContent = '📷 Загрузить скриншот';
-            document.getElementById('modalFileName').style.color = '#0088ff'; 
-            
+
             const modal = document.getElementById('taskModal');
             modal.style.display = 'flex';
             setTimeout(() => { modal.classList.add('active'); }, 10);
