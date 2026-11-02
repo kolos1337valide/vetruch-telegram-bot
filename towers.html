@@ -1,1 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Башни - Vetruch</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg: #000000; --text: #ffffff;
+            --blue-main: #00d9ff; --blue-glow: rgba(0, 217, 255, 0.5);
+            --cell-bg: #1a1d24; --cell-safe: rgba(0, 217, 255, 0.15); --cell-mine: rgba(255, 51, 102, 0.2);
+        }
+        
+        body { 
+            margin: 0; background: var(--bg); color: var(--text); 
+            min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
+        }
+
+        #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%); pointer-events: none; }
+
+        .game-container { 
+            position: relative; z-index: 2; display: flex; flex-direction: column; 
+            min-height: 100vh; padding: 15px 16px 40px 16px; 
+        }
+
+        /* Верхняя панель */
+        .top-section { display: flex; flex-direction: column; gap: 10px; width: 100%; z-index: 10; margin-bottom: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; height: 40px; padding: 0 14px; border-radius: 12px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
+        .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
+
+        .game-info-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 16px; border-radius: 14px;
+            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
+        .info-val { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
+
+        /* Игровое поле БАШНИ */
+        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; flex: 1; }
+        
+        .towers-grid { 
+            display: flex; 
+            flex-direction: column-reverse; /* Ряд 0 будет внизу */
+            gap: 8px; 
+            width: 100%; 
+            max-width: 380px; 
+            margin: 0 auto; 
+        }
+
+        .tower-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            opacity: 0.4; /* Изначально ряды тусклые */
+            transition: opacity 0.3s ease;
+            pointer-events: none; /* Блокируем клики по умолчанию */
+        }
+
+        .tower-row.active {
+            opacity: 1;
+            pointer-events: auto; /* Разрешаем клик только на активном ряду */
+        }
+        
+        .tower-row.completed {
+            opacity: 0.9;
+        }
+
+        .tower-mult-badge {
+            width: 52px;
+            height: 42px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: #8c97a7;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .tower-row.active .tower-mult-badge {
+            background: rgba(0, 217, 255, 0.15);
+            border-color: var(--blue-main);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .tower-row.completed .tower-mult-badge {
+            color: #00cc66;
+            border-color: rgba(0, 204, 102, 0.3);
+        }
+
+        .tower-cells {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .cell { 
+            background: var(--cell-bg); 
+            border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 22px; 
+            cursor: pointer; 
+            border: 1px solid rgba(255,255,255,0.08); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+            flex: 1;
+            height: 42px;
+        }
+        
+        .tower-row.active .cell:active { transform: scale(0.92); }
+
+        .cell.safe { 
+            background: var(--cell-safe); border: 1px solid var(--blue-main); 
+            box-shadow: inset 0 0 15px rgba(0,217,255,0.3); 
+            animation: pop 0.4s ease forwards; 
+        }
+        .cell.mine { 
+            background: var(--cell-mine); border: 1px solid #ff3366; 
+            box-shadow: inset 0 0 15px rgba(255,51,102,0.4); 
+            animation: shake 0.4s ease forwards; 
+        }
+
+        @keyframes pop { 
+            0% { transform: scale(0.8); opacity: 0; } 
+            50% { transform: scale(1.1); } 
+            100% { transform: scale(1); opacity: 1; } 
+        }
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); } 
+            25% { transform: translateX(-4px); } 
+            75% { transform: translateX(4px); } 
+        }
+
+        /* Управление ставкой */
+        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
+        
+        .bet-options { display: flex; gap: 8px; margin-bottom: 15px; }
+        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; font-size: 15px;}
+        .bet-btn.active { background: rgba(0, 217, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
+        .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+        .action-btn { 
+            width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; 
+            color: #111; background: linear-gradient(90deg, #00ffff, #0088ff); cursor: pointer; 
+            box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; 
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .action-btn:active { transform: scale(0.97); }
+        
+        .action-btn.cashout { background: #00cc66; color: #fff; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
+        .action-btn.bust { background: #ff3366; color: #fff; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); pointer-events: none;}
+        .action-btn:disabled { background: #2a2d35; color: #555; box-shadow: none; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <canvas id="stars"></canvas>
+    <div class="dark-overlay"></div>
+
+    <div class="game-container">
+        
+        <div class="top-section">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">❮ Назад</button>
+                <div class="balance-pill">
+                    <span id="balanceDisplay">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+                </div>
+            </div>
+
+            <div class="game-info-bar">
+                <div class="info-item">Ставка: 
+                    <span class="info-val"><span id="infoBet">20</span> <img src="coins.png" class="coin-icon"></span>
+                </div>
+                <div class="info-item">Остаток: 
+                    <span class="info-val"><span id="infoBalance">500</span> <img src="coins.png" class="coin-icon"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Сетка Башни -->
+        <div class="grid-wrapper">
+            <div class="towers-grid" id="grid">
+                <!-- Ряды генерируются через JS -->
+            </div>
+        </div>
+
+        <!-- Панель управления -->
+        <div class="controls">
+            <div class="bet-options">
+                <button class="bet-btn active" onclick="setBet(20, this)">20</button>
+                <button class="bet-btn" onclick="setBet(50, this)">50</button>
+                <button class="bet-btn" onclick="setBet(100, this)">100</button>
+                <button class="bet-btn" onclick="setBet(200, this)">200</button>
+            </div>
+
+            <button class="action-btn" id="actionBtn" onclick="handleAction()">НАЧАТЬ ИГРУ</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+
+        let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
+        let bet = 20;
+        
+        let state = 'idle'; // idle, playing, finished
+        let currentRow = 0;
+        let currentWin = 0;
+        let bombPositions = []; // массив позиций бомб для каждого ряда (0, 1 или 2)
+
+        // Настройки 8 рядов. Множители настроены так, чтобы держать баланс.
+        const ROW_COUNT = 8;
+        const COLS_PER_ROW = 3;
+        const MULTIPLIERS = [1.35, 1.82, 2.45, 3.30, 4.45, 6.00, 8.10, 10.93];
+
+        const gridEl = document.getElementById('grid');
+        const actionBtn = document.getElementById('actionBtn');
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const infoBalance = document.getElementById('infoBalance');
+        const infoBet = document.getElementById('infoBet');
+        const betBtns = document.querySelectorAll('.bet-btn');
+
+        updateBalanceUI();
+        drawInitialGrid();
+
+        function goBack() { window.location.href = 'index.html'; }
+
+        function updateBalanceUI() {
+            balanceDisplay.textContent = balance;
+            infoBalance.textContent = balance;
+            localStorage.setItem('vetruch_balance', balance);
+        }
+
+        function setBet(amount, btn) {
+            if(state === 'playing') return;
+            bet = amount;
+            infoBet.textContent = bet;
+            betBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function drawInitialGrid() {
+            gridEl.innerHTML = '';
+            for(let r = 0; r < ROW_COUNT; r++) {
+                let rowDiv = document.createElement('div');
+                rowDiv.className = 'tower-row';
+                rowDiv.id = `row-${r}`;
+                
+                let multBadge = document.createElement('div');
+                multBadge.className = 'tower-mult-badge';
+                multBadge.textContent = 'x' + MULTIPLIERS[r].toFixed(2);
+                rowDiv.appendChild(multBadge);
+
+                let cellsDiv = document.createElement('div');
+                cellsDiv.className = 'tower-cells';
+
+                for(let c = 0; c < COLS_PER_ROW; c++) {
+                    let cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${r}-${c}`;
+                    // Клик привязан только к состоянию активного ряда
+                    cell.onclick = () => clickCell(r, c);
+                    cellsDiv.appendChild(cell);
+                }
+                rowDiv.appendChild(cellsDiv);
+                gridEl.appendChild(rowDiv);
+            }
+        }
+
+        function handleAction() {
+            if (state === 'idle' || state === 'finished') {
+                startGame();
+            } else if (state === 'playing' && currentRow > 0) {
+                cashout();
+            }
+        }
+
+        function startGame() {
+            if (balance < bet) { tg.showAlert("Недостаточно монет!"); return; }
+
+            balance -= bet;
+            updateBalanceUI();
+            
+            state = 'playing';
+            currentRow = 0;
+            currentWin = 0;
+            bombPositions = [];
+
+            betBtns.forEach(b => b.disabled = true);
+            actionBtn.classList.remove('cashout', 'bust');
+            actionBtn.style.background = '#2a2d35';
+            actionBtn.style.color = '#888';
+            actionBtn.innerHTML = 'ВЫБЕРИТЕ БЛОК';
+            actionBtn.disabled = true;
+
+            // Генерируем бомбы: для каждого из 8 рядов выбираем 1 мину из 3 ячеек
+            for(let r = 0; r < ROW_COUNT; r++) {
+                bombPositions.push(Math.floor(Math.random() * COLS_PER_ROW));
+            }
+
+            // Очищаем сетку визуально
+            for(let r = 0; r < ROW_COUNT; r++) {
+                let rowEl = document.getElementById(`row-${r}`);
+                rowEl.className = 'tower-row';
+                for(let c = 0; c < COLS_PER_ROW; c++) {
+                    let cellEl = document.getElementById(`cell-${r}-${c}`);
+                    cellEl.className = 'cell';
+                    cellEl.innerHTML = '';
+                }
+            }
+
+            // Активируем нулевой ряд
+            document.getElementById(`row-0`).classList.add('active');
+        }
+
+        function clickCell(r, c) {
+            if (state !== 'playing' || r !== currentRow) return;
+
+            let isBomb = (bombPositions[r] === c);
+            let clickedCell = document.getElementById(`cell-${r}-${c}`);
+
+            if (isBomb) {
+                clickedCell.classList.add('mine');
+                clickedCell.innerHTML = '💣';
+                loseGame();
+            } else {
+                clickedCell.classList.add('safe');
+                clickedCell.innerHTML = '💎';
+                
+                document.getElementById(`row-${r}`).classList.remove('active');
+                document.getElementById(`row-${r}`).classList.add('completed');
+                
+                currentWin = Math.floor(bet * MULTIPLIERS[r]);
+                currentRow++;
+
+                if (currentRow >= ROW_COUNT) {
+                    cashout(); // Прошел всю башню
+                } else {
+                    document.getElementById(`row-${currentRow}`).classList.add('active');
+                    
+                    actionBtn.disabled = false;
+                    actionBtn.className = 'action-btn cashout';
+                    actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
+                    actionBtn.style.background = ''; // сброс кастомного
+                    actionBtn.style.color = '';
+                }
+            }
+        }
+
+        function cashout() {
+            if (currentRow === 0 || state !== 'playing') return;
+            
+            balance += currentWin;
+            updateBalanceUI();
+            
+            actionBtn.className = 'action-btn cashout';
+            actionBtn.innerHTML = `ВЫИГРЫШ ${currentWin}! ИГРАТЬ СНОВА`;
+            actionBtn.style.background = '';
+            
+            revealBombs();
+            state = 'finished';
+            betBtns.forEach(b => b.disabled = false);
+            
+            if (currentRow < ROW_COUNT) {
+                document.getElementById(`row-${currentRow}`).classList.remove('active');
+            }
+        }
+
+        function loseGame() {
+            actionBtn.className = 'action-btn bust';
+            actionBtn.innerHTML = 'ПРОИГРЫШ! ИГРАТЬ СНОВА';
+            actionBtn.style.background = '';
+            actionBtn.disabled = false;
+            
+            document.getElementById(`row-${currentRow}`).classList.remove('active');
+            revealBombs();
+            
+            state = 'finished';
+            betBtns.forEach(b => b.disabled = false);
+        }
+
+        function revealBombs() {
+            // Показываем бомбы в рядах, которые игрок не прошел или на которых проиграл
+            for(let r = currentRow; r < ROW_COUNT; r++) {
+                let bombCol = bombPositions[r];
+                let cell = document.getElementById(`cell-${r}-${bombCol}`);
+                if (!cell.classList.contains('mine')) {
+                    cell.innerHTML = '💣';
+                    cell.style.opacity = '0.5'; // Тусклая бомба
+                }
+            }
+        }
+
+        // ================= Анимация звезд =================
+        const canvas = document.getElementById("stars");
+        const ctx = canvas.getContext("2d");
+        let stars = []; let w = 0; let h = 0;
+
+        function resizeCanvas() {
+            w = window.innerWidth; h = window.innerHeight;
+            canvas.width = w; canvas.height = h;
+            createStars();
+        }
+        function createStars() {
+            stars = [];
+            for (let i = 0; i < 70; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, s: Math.random() * 0.1 + 0.02, o: Math.random() * 0.5 + 0.2 });
+        }
+        function drawStars() {
+            ctx.clearRect(0, 0, w, h);
+            for (const star of stars) {
+                ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 217, 255, ${star.o})`; ctx.fill();
+                star.y += star.s;
+                if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
+            }
+            requestAnimationFrame(drawStars);
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas(); drawStars();
+    </script>
+</body>
+</html>
