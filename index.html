@@ -3613,6 +3613,192 @@
             transition: width 0.4s ease, background 0.3s ease;
             background: linear-gradient(90deg, #0088ff, #00e1ff);
         }
+
+        /* ================= ТАБЛИЧКА ЭФИРА KICK В ПРОФИЛЕ ================= */
+        .kick-stream-card {
+            width: 100%;
+            margin-top: 6px;
+            margin-bottom: 12px;
+            padding: 16px;
+            border-radius: 18px;
+            text-align: left;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Состояние ОНЛАЙН (горит зелёным) */
+        .kick-stream-card.is-online {
+            background:
+                radial-gradient(120% 140% at 0% 0%, rgba(83, 252, 24, 0.22) 0%, rgba(0, 230, 118, 0.08) 55%, rgba(11, 18, 14, 0.96) 100%);
+            border: 1.5px solid rgba(83, 252, 24, 0.65);
+            box-shadow:
+                0 10px 28px rgba(0, 0, 0, 0.7),
+                0 0 24px rgba(83, 252, 24, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+
+        /* Состояние ОФФЛАЙН (затемняется и становится серой) */
+        .kick-stream-card.is-offline {
+            background: linear-gradient(180deg, rgba(22, 24, 29, 0.72) 0%, rgba(12, 13, 17, 0.88) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+            opacity: 0.82;
+        }
+
+        .kick-stream-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 13px;
+        }
+
+        .kick-stream-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kick-logo-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            font-weight: 900;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .kick-stream-card.is-online .kick-logo-box {
+            background: rgba(83, 252, 24, 0.18);
+            border: 1px solid rgba(83, 252, 24, 0.55);
+            color: #53fc18;
+            box-shadow: 0 0 16px rgba(83, 252, 24, 0.35);
+            text-shadow: 0 0 8px rgba(83, 252, 24, 0.6);
+        }
+
+        .kick-stream-card.is-offline .kick-logo-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #6b7280;
+        }
+
+        .kick-stream-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .kick-stream-card.is-offline .kick-stream-title {
+            color: #9ca3af;
+        }
+
+        .kick-stream-sub {
+            font-size: 11.5px;
+            margin-top: 3px;
+            font-weight: 600;
+        }
+
+        .kick-stream-card.is-online .kick-stream-sub {
+            color: #a7f3d0;
+        }
+
+        .kick-stream-card.is-offline .kick-stream-sub {
+            color: #6b7280;
+        }
+
+        .kick-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .kick-stream-card.is-online .kick-status-badge {
+            background: rgba(83, 252, 24, 0.16);
+            border: 1px solid rgba(83, 252, 24, 0.5);
+            color: #53fc18;
+            box-shadow: 0 0 12px rgba(83, 252, 24, 0.25);
+        }
+
+        .kick-stream-card.is-offline .kick-status-badge {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #8c97a7;
+        }
+
+        .kick-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .kick-stream-card.is-online .kick-status-dot {
+            background: #53fc18;
+            box-shadow: 0 0 8px #53fc18;
+            animation: kickDotPulse 1.4s ease-in-out infinite;
+        }
+
+        .kick-stream-card.is-offline .kick-status-dot {
+            background: #6b7280;
+        }
+
+        @keyframes kickDotPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.35);
+                opacity: 0.55;
+            }
+        }
+
+        .kick-go-btn {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: transform 0.2s ease, all 0.3s ease;
+        }
+
+        .kick-go-btn:active {
+            transform: scale(0.96);
+        }
+
+        .kick-stream-card.is-online .kick-go-btn {
+            background: linear-gradient(90deg, #53fc18 0%, #00e676 100%);
+            border: none;
+            color: #051408;
+            box-shadow: 0 4px 16px rgba(83, 252, 24, 0.35);
+        }
+
+        .kick-stream-card.is-offline .kick-go-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #9ca3af;
+            box-shadow: none;
+        }
     </style>
 
     <!-- МОДАЛЬНОЕ ОКНО ПОКУПКИ В МАГАЗИНЕ -->
@@ -3654,6 +3840,22 @@
         <div id="adminCloudStatus" class="cloud-status-bar anim-item" style="animation-delay: 0.08s;">
             <span>☁️ Синхронизация...</span>
             <button type="button" onclick="syncFromCloud(true)" style="background: transparent; border: none; color: #00d9ff; font-weight: 800; cursor: pointer; font-size: 11.5px;">🔄 Обновить</button>
+        </div>
+
+        <!-- УПРАВЛЕНИЕ ЭФИРОМ НА KICK ПРЯМО В АДМИНКЕ -->
+        <div class="admin-box anim-item" style="animation-delay: 0.09s; clear: both;">
+            <div class="admin-box-title">
+                <span>🎥 Статус стрима на Kick</span>
+                <span id="adminStreamStatusBadge" class="admin-badge-count">ОФФЛАЙН</span>
+            </div>
+            <div class="admin-req-actions">
+                <button type="button" class="admin-btn-approve" onclick="setKickStreamStatus(true)">
+                    🟢 Включить ОНЛАЙН
+                </button>
+                <button type="button" class="admin-btn-reject" onclick="setKickStreamStatus(false)">
+                    ⚫ Включить ОФФЛАЙН
+                </button>
+            </div>
         </div>
 
         <!-- Переключатель 3 разделов: Задания / Магазин / Накрутка по ID -->
@@ -3771,9 +3973,87 @@
         // =========================================================================
         const FIREBASE_DB_URL = "https://vetruchbot-default-rtdb.firebaseio.com";
         const BOT_USERNAME = "VetruchFarm_bot";
+        const KICK_CHANNEL_URL = "https://kick.com/vetruch";
 
         function getCleanDbUrl() {
             return FIREBASE_DB_URL ? FIREBASE_DB_URL.trim().replace(/\/+$/, '') : '';
+        }
+
+        // ================= СОЗДАНИЕ И ОБНОВЛЕНИЕ ТАБЛИЧКИ KICK В НИЗУ ПРОФИЛЯ =================
+        function ensureKickCardInProfile() {
+            const profilePage = document.getElementById('profile');
+            if (!profilePage) return;
+            if (document.getElementById('kickStreamStatusCard')) return;
+
+            const card = document.createElement('div');
+            card.id = 'kickStreamStatusCard';
+            card.className = 'kick-stream-card is-offline anim-item';
+            card.style.animationDelay = '0.38s';
+            card.innerHTML = `
+                <div class="kick-stream-top">
+                    <div class="kick-stream-left">
+                        <div class="kick-logo-box">K</div>
+                        <div>
+                            <div class="kick-stream-title">Эфир на Kick · Vetruch</div>
+                            <div class="kick-stream-sub" id="kickStreamSubtitle">Сейчас стрим не идёт</div>
+                        </div>
+                    </div>
+                    <div class="kick-status-badge">
+                        <span class="kick-status-dot"></span>
+                        <span id="kickStreamBadgeText">ОФФЛАЙН</span>
+                    </div>
+                </div>
+                <button type="button" class="kick-go-btn" id="kickStreamGoBtn" onclick="tg.openLink('${KICK_CHANNEL_URL}')">
+                    ПЕРЕЙТИ НА KICK ➔
+                </button>
+            `;
+            profilePage.appendChild(card);
+        }
+        ensureKickCardInProfile();
+
+        function updateKickStreamUI(isLive) {
+            ensureKickCardInProfile();
+            const card = document.getElementById('kickStreamStatusCard');
+            const badgeText = document.getElementById('kickStreamBadgeText');
+            const subText = document.getElementById('kickStreamSubtitle');
+            const goBtn = document.getElementById('kickStreamGoBtn');
+            const adminBadge = document.getElementById('adminStreamStatusBadge');
+
+            if (card && badgeText && subText && goBtn) {
+                if (isLive) {
+                    card.classList.remove('is-offline');
+                    card.classList.add('is-online');
+                    badgeText.textContent = 'ОНЛАЙН';
+                    subText.textContent = 'Стрим идёт прямо сейчас! Залетай в эфир 🔥';
+                    goBtn.textContent = 'СМОТРЕТЬ СТРИМ НА KICK ➔';
+                } else {
+                    card.classList.remove('is-online');
+                    card.classList.add('is-offline');
+                    badgeText.textContent = 'ОФФЛАЙН';
+                    subText.textContent = 'Сейчас стрим не идёт · Канал @vetruch';
+                    goBtn.textContent = 'ПЕРЕЙТИ НА KICK ➔';
+                }
+            }
+
+            if (adminBadge) {
+                if (isLive) {
+                    adminBadge.textContent = '🟢 ОНЛАЙН';
+                    adminBadge.style.background = 'rgba(0, 230, 118, 0.2)';
+                    adminBadge.style.borderColor = 'rgba(0, 230, 118, 0.5)';
+                    adminBadge.style.color = '#00e676';
+                } else {
+                    adminBadge.textContent = '⚫ ОФФЛАЙН';
+                    adminBadge.style.background = 'rgba(255, 255, 255, 0.08)';
+                    adminBadge.style.borderColor = 'rgba(255, 255, 255, 0.18)';
+                    adminBadge.style.color = '#9ca3af';
+                }
+            }
+        }
+
+        async function setKickStreamStatus(isLive) {
+            localStorage.setItem('vetruch_stream_live', isLive ? 'true' : 'false');
+            updateKickStreamUI(isLive);
+            await cloudPut('vetruch_app/stream_live', Boolean(isLive));
         }
 
         // ================= ЭКОНОМИКА МАГАЗИНА И НАГРАДЫ ЗАДАНИЙ =================
@@ -3902,13 +4182,11 @@
             const inviterId = getStartParamReferrer();
             if (!inviterId || inviterId === myId || inviterId === '0') return;
 
-            // Проверяем, не был ли этот игрок уже засчитан раньше
             const alreadyReferred = await cloudGet(`vetruch_app/referred_by/${myId}`);
             if (alreadyReferred) return;
 
             await cloudPut(`vetruch_app/referred_by/${myId}`, inviterId);
 
-            // Добавляем игрока в список рефералов пригласившего
             let inviterRefs = (await cloudGet(`vetruch_app/referrals/${inviterId}`)) || [];
             if (!Array.isArray(inviterRefs)) inviterRefs = [];
 
@@ -3917,7 +4195,6 @@
                 await cloudPut(`vetruch_app/referrals/${inviterId}`, inviterRefs);
             }
 
-            // Если у пригласившего набралось 3 реферала — автоматически выдаём ему +500 монет!
             if (inviterRefs.length >= 3) {
                 const alreadyRewarded = await cloudGet(`vetruch_app/ref_reward_done/${inviterId}`);
                 if (!alreadyRewarded) {
@@ -3936,7 +4213,6 @@
         function updateReferralsAndTasksUI(refCount, tasksDoneCount) {
             localStorage.setItem('vetruch_my_ref_count', refCount);
 
-            // 1. Обновляем карточку "Пригласи 3 друзей" во вкладке Задания
             const countSpan = document.querySelector('#tasks .invite-progress-count');
             const fillBar = document.querySelector('#tasks .invite-progress-fill');
             if (countSpan) {
@@ -3956,7 +4232,6 @@
                 }
             }
 
-            // 2. Обновляем счётчики "Приглашено друзей" и "Заданий выполнено" в Профиле
             document.querySelectorAll('#profile .profile-bento-item').forEach(item => {
                 const lbl = item.querySelector('.profile-bento-label');
                 const val = item.querySelector('.profile-bento-val');
@@ -3991,6 +4266,7 @@
 
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
             renderProfilePurchases();
+            updateKickStreamUI(localStorage.getItem('vetruch_stream_live') === 'true');
         }
 
         async function syncFromCloud(refreshAdmin) {
@@ -4011,18 +4287,20 @@
             let allReferrals = (cloudState && cloudState.referrals) ? cloudState.referrals : {};
             let refRewardDoneMap = (cloudState && cloudState.ref_reward_done) ? cloudState.ref_reward_done : {};
             let tasksDoneMap = (cloudState && cloudState.tasks_done) ? cloudState.tasks_done : {};
+            const isStreamLive = Boolean(cloudState && cloudState.stream_live);
+
+            localStorage.setItem('vetruch_stream_live', isStreamLive ? 'true' : 'false');
+            updateKickStreamUI(isStreamLive);
 
             const myRefs = Array.isArray(allReferrals[myId]) ? allReferrals[myId] : [];
             const myRefCount = myRefs.length;
             let myTasksDone = Number(tasksDoneMap[myId] || 0);
 
-            // Умное слияние баланса
             let finalMyBal = localBal;
             if (balancesMap[myId] !== undefined) {
                 finalMyBal = Math.max(0, Number(balancesMap[myId]) + gameDelta);
             }
 
-            // Авто-награда +500 монет, если набрано 3 реферала и ещё не выдано
             if (myRefCount >= 3 && !refRewardDoneMap[myId]) {
                 finalMyBal += 500;
                 myTasksDone += 1;
