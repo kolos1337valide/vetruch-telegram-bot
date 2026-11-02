@@ -5343,22 +5343,15 @@ function filterShop(category, btnElement) {
 
         if (shouldShow) {
             card.style.display = 'flex';
-            
-            // МАГИЯ: Принудительный reflow. Заставляет браузер "забыть", 
-            // что карточка уже была анимирована, и проиграть всё заново.
             void card.offsetWidth; 
-            
-            // Вешаем класс анимации обратно
             card.classList.add('filter-anim');
             
-            // Задаем новую задержку, чтобы они появлялись по очереди (по 0.05 сек)
-            card.style.animationDelay = `${0.05 + (visibleIndex * 0.05)}s`;
+            // Вернули оригинальный старт задержки с 0.1s
+            card.style.animationDelay = `${0.1 + (visibleIndex * 0.05)}s`;
             visibleIndex++;
         } else {
             card.style.display = 'none';
         }
-    });
-}
         
     </script>
 
