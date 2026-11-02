@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Башни - Vetruch</title>
+    <title>Стройка Башни - Vetruch</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -12,13 +12,13 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
         :root {
             --bg: #000000; --text: #ffffff;
-            --blue-main: #00d9ff; --blue-glow: rgba(0, 217, 255, 0.5);
-            --cell-bg: #1a1d24; --cell-safe: rgba(0, 217, 255, 0.15); --cell-mine: rgba(255, 51, 102, 0.2);
+            --blue-main: #00d9ff; --blue-glow: rgba(0, 217, 255, 0.6);
         }
         
         body { 
             margin: 0; background: var(--bg); color: var(--text); 
-            min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
+            min-height: 100vh; overflow-x: hidden; overflow-y: hidden; /* Запрещаем скролл для аркады */
+            display: flex; flex-direction: column;
         }
 
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
@@ -26,11 +26,11 @@
 
         .game-container { 
             position: relative; z-index: 2; display: flex; flex-direction: column; 
-            min-height: 100vh; padding: 15px 16px 40px 16px; 
+            height: 100vh; padding: 15px 16px 20px 16px; justify-content: space-between;
         }
 
         /* Верхняя панель */
-        .top-section { display: flex; flex-direction: column; gap: 10px; width: 100%; z-index: 10; margin-bottom: 20px; }
+        .top-section { display: flex; flex-direction: column; gap: 10px; width: 100%; z-index: 10; flex-shrink: 0; }
         .header { display: flex; justify-content: space-between; align-items: center; }
         .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; height: 40px; padding: 0 14px; border-radius: 12px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
@@ -45,127 +45,159 @@
         .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
         .info-val { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
 
-        /* Игровое поле БАШНИ */
-        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; flex: 1; }
-        
-        .towers-grid { 
-            display: flex; 
-            flex-direction: column-reverse; /* Ряд 0 будет внизу */
-            gap: 8px; 
-            width: 100%; 
-            max-width: 380px; 
-            margin: 0 auto; 
-        }
-
-        .tower-row {
+        /* ИГРОВАЯ СЦЕНА (Кран и лесенка) */
+        .arcade-stage {
             display: flex;
-            gap: 8px;
-            align-items: center;
-            opacity: 0.4; /* Изначально ряды тусклые */
-            transition: opacity 0.3s ease;
-            pointer-events: none; /* Блокируем клики по умолчанию */
+            flex: 1;
+            margin: 10px 0;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 136, 255, 0.05) 0%, rgba(0,0,0,0) 80%);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            overflow: hidden;
         }
 
-        .tower-row.active {
-            opacity: 1;
-            pointer-events: auto; /* Разрешаем клик только на активном ряду */
-        }
-        
-        .tower-row.completed {
-            opacity: 0.9;
+        /* Зона стройки (Слева) */
+        .build-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
         }
 
-        .tower-mult-badge {
-            width: 52px;
-            height: 42px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
+        /* Контейнер башни (двигается вниз при постройке) */
+        .tower-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            width: 100%;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Дизайн неонового блока */
+        .building-block {
+            position: absolute;
+            width: 100px;
+            height: 35px;
+            background: rgba(0, 30, 60, 0.8);
+            border: 2px solid var(--blue-main);
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--blue-glow), inset 0 0 8px rgba(0, 217, 255, 0.3);
+            margin-left: -50px; /* Центрирование от left: 50% */
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 800;
-            color: #8c97a7;
-            flex-shrink: 0;
-            transition: all 0.3s;
+            justify-content: space-evenly;
         }
-
-        .tower-row.active .tower-mult-badge {
+        /* Окошки в блоке */
+        .building-block::before, .building-block::after {
+            content: '';
+            width: 25px; height: 15px;
             background: rgba(0, 217, 255, 0.15);
-            border-color: var(--blue-main);
-            color: #fff;
-            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
-            transform: scale(1.05);
+            border: 1px solid rgba(0, 217, 255, 0.4);
+            border-radius: 2px;
         }
 
-        .tower-row.completed .tower-mult-badge {
-            color: #00cc66;
-            border-color: rgba(0, 204, 102, 0.3);
+        .base-block {
+            bottom: 0;
+            left: 50%;
+            background: rgba(0, 100, 255, 0.2);
+            border-color: rgba(0, 136, 255, 0.6);
+            width: 120px;
+            margin-left: -60px;
         }
 
-        .tower-cells {
+        /* Кран с блоком */
+        .crane-system {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            height: 100px;
+            width: 100px;
+            margin-left: -50px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            will-change: transform;
+        }
+
+        .crane-wire {
+            width: 2px;
+            height: 40px;
+            background: #fff;
+            box-shadow: 0 0 5px #fff;
+        }
+
+        .crane-hook {
+            width: 12px; height: 12px;
+            background: #ffcc00;
+            border-radius: 50%;
+            margin-bottom: 2px;
+        }
+
+        /* Анимация ошибки */
+        @keyframes blockFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(150px) rotate(25deg); opacity: 0; }
+        }
+        .falling-block {
+            animation: blockFall 0.5s ease-in forwards;
+        }
+
+        /* Шкала множителей (Справа) */
+        .multiplier-ladder {
+            width: 75px;
+            background: rgba(10, 12, 16, 0.8);
+            border-left: 1px solid rgba(255,255,255,0.1);
             display: flex;
-            gap: 8px;
-            flex: 1;
+            flex-direction: column-reverse; /* 1.00x внизу */
+            align-items: flex-end;
+            padding: 10px;
+            gap: 12px;
+            overflow-y: hidden;
+            position: relative;
         }
 
-        .cell { 
-            background: var(--cell-bg); 
-            border-radius: 10px; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 22px; 
-            cursor: pointer; 
-            border: 1px solid rgba(255,255,255,0.08); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            transition: all 0.2s ease;
-            flex: 1;
-            height: 42px;
+        .mult-step {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 700;
+            transition: all 0.3s;
+            position: relative;
         }
+
+        .mult-step.active {
+            font-size: 19px;
+            color: #ffb800; /* Золотой/Оранжевый как на скрине */
+            text-shadow: 0 0 10px rgba(255, 184, 0, 0.6);
+            transform: scale(1.1);
+        }
+
+        /* Управление ставкой и кнопки */
+        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; backdrop-filter: blur(10px); flex-shrink: 0; }
         
-        .tower-row.active .cell:active { transform: scale(0.92); }
-
-        .cell.safe { 
-            background: var(--cell-safe); border: 1px solid var(--blue-main); 
-            box-shadow: inset 0 0 15px rgba(0,217,255,0.3); 
-            animation: pop 0.4s ease forwards; 
-        }
-        .cell.mine { 
-            background: var(--cell-mine); border: 1px solid #ff3366; 
-            box-shadow: inset 0 0 15px rgba(255,51,102,0.4); 
-            animation: shake 0.4s ease forwards; 
-        }
-
-        @keyframes pop { 
-            0% { transform: scale(0.8); opacity: 0; } 
-            50% { transform: scale(1.1); } 
-            100% { transform: scale(1); opacity: 1; } 
-        }
-        @keyframes shake { 
-            0%, 100% { transform: translateX(0); } 
-            25% { transform: translateX(-4px); } 
-            75% { transform: translateX(4px); } 
-        }
-
-        /* Управление ставкой */
-        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
-        
-        .bet-options { display: flex; gap: 8px; margin-bottom: 15px; }
-        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; font-size: 15px;}
+        .bet-options { display: flex; gap: 8px; margin-bottom: 12px; }
+        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; font-size: 14px;}
         .bet-btn.active { background: rgba(0, 217, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
         .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
 
-        .action-btn { 
-            width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; 
-            color: #111; background: linear-gradient(90deg, #00ffff, #0088ff); cursor: pointer; 
-            box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+        .actions-grid {
+            display: flex;
+            gap: 10px;
         }
-        .action-btn:active { transform: scale(0.97); }
+
+        .action-btn { 
+            flex: 1; padding: 15px; border-radius: 14px; border: none; font-size: 15px; font-weight: 800; 
+            color: #111; background: linear-gradient(90deg, #00ffff, #0088ff); cursor: pointer; 
+            box-shadow: 0 0 15px var(--blue-glow); transition: 0.1s; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+            touch-action: manipulation; -webkit-user-select: none;
+        }
+        .action-btn:active { transform: scale(0.95); }
         
         .action-btn.cashout { background: #00cc66; color: #fff; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
         .action-btn.bust { background: #ff3366; color: #fff; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); pointer-events: none;}
         .action-btn:disabled { background: #2a2d35; color: #555; box-shadow: none; pointer-events: none; }
+
+        .sub-text { font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -193,10 +225,25 @@
             </div>
         </div>
 
-        <!-- Сетка Башни -->
-        <div class="grid-wrapper">
-            <div class="towers-grid" id="grid">
-                <!-- Ряды генерируются через JS -->
+        <!-- Игровая сцена -->
+        <div class="arcade-stage" id="gameArea">
+            <div class="build-area">
+                <div class="tower-container" id="towerWrap">
+                    <!-- Базовый блок -->
+                    <div class="building-block base-block"></div>
+                </div>
+                
+                <!-- Кран, который ездит туда-сюда -->
+                <div class="crane-system" id="craneSystem">
+                    <div class="crane-wire"></div>
+                    <div class="crane-hook"></div>
+                    <div class="building-block" id="craneBlock" style="position: relative; margin: 0; bottom: 0; left: 0;"></div>
+                </div>
+            </div>
+
+            <!-- Шкала множителей -->
+            <div class="multiplier-ladder" id="multLadder">
+                <!-- Генерируется JS -->
             </div>
         </div>
 
@@ -209,7 +256,15 @@
                 <button class="bet-btn" onclick="setBet(200, this)">200</button>
             </div>
 
-            <button class="action-btn" id="actionBtn" onclick="handleAction()">НАЧАТЬ ИГРУ</button>
+            <div class="actions-grid">
+                <button class="action-btn" id="mainActionBtn" onclick="handleAction()">
+                    <span id="mainBtnText">НАЧАТЬ ИГРУ</span>
+                    <span class="sub-text" id="mainBtnSub">Множитель 1.00x</span>
+                </button>
+                <button class="action-btn cashout" id="cashoutBtn" style="display: none;" onclick="cashout()">
+                    ЗАБРАТЬ
+                </button>
+            </div>
         </div>
     </div>
 
@@ -217,28 +272,40 @@
         const tg = window.Telegram.WebApp;
         tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
 
+        // Математика лестницы (как на скрине + продолжение)
+        const MULTIPLIERS = [1.00, 1.12, 1.28, 1.46, 1.67, 1.91, 2.18, 2.50, 2.85, 3.25, 3.80, 4.50, 5.50];
+        
         let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
         let bet = 20;
         
-        let state = 'idle'; // idle, playing, finished
-        let currentRow = 0;
+        let state = 'idle'; // idle, playing, dropping, finished
+        let currentLevel = 0;
         let currentWin = 0;
-        let bombPositions = []; // массив позиций бомб для каждого ряда (0, 1 или 2)
+        
+        // Переменные анимации крана
+        let animFrame;
+        let craneX = 0;
+        let craneDirection = 1;
+        let craneSpeed = 3; // Базовая скорость (растет с уровнем)
+        let blockHeight = 35; // Высота блока (для сдвига камеры)
+        let lastPlacedX = 0;
 
-        // Настройки 8 рядов. Множители настроены так, чтобы держать баланс.
-        const ROW_COUNT = 8;
-        const COLS_PER_ROW = 3;
-        const MULTIPLIERS = [1.35, 1.82, 2.45, 3.30, 4.45, 6.00, 8.10, 10.93];
-
-        const gridEl = document.getElementById('grid');
-        const actionBtn = document.getElementById('actionBtn');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const infoBalance = document.getElementById('infoBalance');
         const infoBet = document.getElementById('infoBet');
         const betBtns = document.querySelectorAll('.bet-btn');
+        
+        const towerWrap = document.getElementById('towerWrap');
+        const craneSystem = document.getElementById('craneSystem');
+        const multLadder = document.getElementById('multLadder');
+        
+        const mainActionBtn = document.getElementById('mainActionBtn');
+        const mainBtnText = document.getElementById('mainBtnText');
+        const mainBtnSub = document.getElementById('mainBtnSub');
+        const cashoutBtn = document.getElementById('cashoutBtn');
 
         updateBalanceUI();
-        drawInitialGrid();
+        initLadder();
 
         function goBack() { window.location.href = 'index.html'; }
 
@@ -249,46 +316,45 @@
         }
 
         function setBet(amount, btn) {
-            if(state === 'playing') return;
+            if(state === 'playing' || state === 'dropping') return;
             bet = amount;
             infoBet.textContent = bet;
             betBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
-        function drawInitialGrid() {
-            gridEl.innerHTML = '';
-            for(let r = 0; r < ROW_COUNT; r++) {
-                let rowDiv = document.createElement('div');
-                rowDiv.className = 'tower-row';
-                rowDiv.id = `row-${r}`;
-                
-                let multBadge = document.createElement('div');
-                multBadge.className = 'tower-mult-badge';
-                multBadge.textContent = 'x' + MULTIPLIERS[r].toFixed(2);
-                rowDiv.appendChild(multBadge);
+        function initLadder() {
+            multLadder.innerHTML = '';
+            for(let i = 0; i < MULTIPLIERS.length; i++) {
+                let step = document.createElement('div');
+                step.className = 'mult-step';
+                step.id = `mult-${i}`;
+                step.textContent = MULTIPLIERS[i].toFixed(2) + 'x';
+                multLadder.appendChild(step);
+            }
+            updateLadderUI();
+        }
 
-                let cellsDiv = document.createElement('div');
-                cellsDiv.className = 'tower-cells';
-
-                for(let c = 0; c < COLS_PER_ROW; c++) {
-                    let cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.id = `cell-${r}-${c}`;
-                    // Клик привязан только к состоянию активного ряда
-                    cell.onclick = () => clickCell(r, c);
-                    cellsDiv.appendChild(cell);
+        function updateLadderUI() {
+            for(let i = 0; i < MULTIPLIERS.length; i++) {
+                let step = document.getElementById(`mult-${i}`);
+                if (step) {
+                    if (i === currentLevel) {
+                        step.classList.add('active');
+                        // Скроллим лестницу, чтобы активный множитель был виден
+                        multLadder.scrollTop = step.offsetTop - (multLadder.clientHeight / 2);
+                    } else {
+                        step.classList.remove('active');
+                    }
                 }
-                rowDiv.appendChild(cellsDiv);
-                gridEl.appendChild(rowDiv);
             }
         }
 
         function handleAction() {
             if (state === 'idle' || state === 'finished') {
                 startGame();
-            } else if (state === 'playing' && currentRow > 0) {
-                cashout();
+            } else if (state === 'playing') {
+                dropBlock();
             }
         }
 
@@ -299,116 +365,152 @@
             updateBalanceUI();
             
             state = 'playing';
-            currentRow = 0;
+            currentLevel = 0;
             currentWin = 0;
-            bombPositions = [];
+            craneSpeed = 2.5; // Сброс скорости
+            lastPlacedX = 0;
 
             betBtns.forEach(b => b.disabled = true);
-            actionBtn.classList.remove('cashout', 'bust');
-            actionBtn.style.background = '#2a2d35';
-            actionBtn.style.color = '#888';
-            actionBtn.innerHTML = 'ВЫБЕРИТЕ БЛОК';
-            actionBtn.disabled = true;
+            
+            // Сброс интерфейса башни
+            towerWrap.innerHTML = '<div class="building-block base-block"></div>';
+            towerWrap.style.transform = `translateY(0px)`;
+            craneSystem.style.display = 'flex';
+            craneX = 0;
+            
+            updateLadderUI();
 
-            // Генерируем бомбы: для каждого из 8 рядов выбираем 1 мину из 3 ячеек
-            for(let r = 0; r < ROW_COUNT; r++) {
-                bombPositions.push(Math.floor(Math.random() * COLS_PER_ROW));
-            }
+            // Кнопки
+            mainActionBtn.className = 'action-btn';
+            mainActionBtn.style.background = '';
+            mainBtnText.textContent = 'СБРОСИТЬ БЛОК';
+            mainBtnSub.textContent = `СЛЕДУЮЩИЙ: ${MULTIPLIERS[1].toFixed(2)}x`;
+            cashoutBtn.style.display = 'none';
 
-            // Очищаем сетку визуально
-            for(let r = 0; r < ROW_COUNT; r++) {
-                let rowEl = document.getElementById(`row-${r}`);
-                rowEl.className = 'tower-row';
-                for(let c = 0; c < COLS_PER_ROW; c++) {
-                    let cellEl = document.getElementById(`cell-${r}-${c}`);
-                    cellEl.className = 'cell';
-                    cellEl.innerHTML = '';
-                }
-            }
-
-            // Активируем нулевой ряд
-            document.getElementById(`row-0`).classList.add('active');
+            animateCrane();
         }
 
-        function clickCell(r, c) {
-            if (state !== 'playing' || r !== currentRow) return;
-
-            let isBomb = (bombPositions[r] === c);
-            let clickedCell = document.getElementById(`cell-${r}-${c}`);
-
-            if (isBomb) {
-                clickedCell.classList.add('mine');
-                clickedCell.innerHTML = '💣';
-                loseGame();
-            } else {
-                clickedCell.classList.add('safe');
-                clickedCell.innerHTML = '💎';
-                
-                document.getElementById(`row-${r}`).classList.remove('active');
-                document.getElementById(`row-${r}`).classList.add('completed');
-                
-                currentWin = Math.floor(bet * MULTIPLIERS[r]);
-                currentRow++;
-
-                if (currentRow >= ROW_COUNT) {
-                    cashout(); // Прошел всю башню
-                } else {
-                    document.getElementById(`row-${currentRow}`).classList.add('active');
-                    
-                    actionBtn.disabled = false;
-                    actionBtn.className = 'action-btn cashout';
-                    actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
-                    actionBtn.style.background = ''; // сброс кастомного
-                    actionBtn.style.color = '';
-                }
+        function animateCrane() {
+            if (state !== 'playing') return;
+            
+            // Максимальный размах зависит от ширины экрана, 80px - безопасно
+            let maxSwing = 80; 
+            
+            craneX += craneSpeed * craneDirection;
+            if (craneX > maxSwing) {
+                craneX = maxSwing;
+                craneDirection = -1;
+            } else if (craneX < -maxSwing) {
+                craneX = -maxSwing;
+                craneDirection = 1;
             }
+
+            craneSystem.style.transform = `translateX(${craneX}px)`;
+            animFrame = requestAnimationFrame(animateCrane);
+        }
+
+        function dropBlock() {
+            state = 'dropping';
+            cancelAnimationFrame(animFrame);
+            
+            mainActionBtn.disabled = true;
+            mainBtnText.textContent = 'ПАДАЕТ...';
+
+            let dropX = craneX;
+            let targetX = lastPlacedX;
+            let offset = Math.abs(dropX - targetX);
+            
+            // Погрешность (чем выше уровень, тем строже)
+            let tolerance = 45; // Допустимое смещение от центра
+            
+            setTimeout(() => {
+                if (offset < tolerance) {
+                    // УСПЕШНАЯ ПОСТАНОВКА
+                    successDrop(dropX);
+                } else {
+                    // ПРОМАХ
+                    failDrop(dropX);
+                }
+            }, 300); // Имитация времени падения
+        }
+
+        function successDrop(dropX) {
+            currentLevel++;
+            currentWin = Math.floor(bet * MULTIPLIERS[currentLevel]);
+            lastPlacedX = dropX;
+            
+            // Добавляем блок в башню
+            let newBlock = document.createElement('div');
+            newBlock.className = 'building-block';
+            newBlock.style.bottom = `${currentLevel * blockHeight}px`;
+            newBlock.style.transform = `translateX(${dropX}px)`;
+            towerWrap.appendChild(newBlock);
+
+            // Опускаем камеру
+            towerWrap.style.transform = `translateY(${currentLevel * blockHeight}px)`;
+
+            updateLadderUI();
+
+            if (currentLevel >= MULTIPLIERS.length - 1) {
+                // Максимальный уровень
+                cashout();
+            } else {
+                state = 'playing';
+                craneSpeed += 0.5; // Увеличиваем скорость для сложности (снижает RTP)
+                
+                mainActionBtn.disabled = false;
+                mainBtnText.textContent = 'СБРОСИТЬ БЛОК';
+                mainBtnSub.textContent = `СЛЕДУЮЩИЙ: ${MULTIPLIERS[currentLevel+1].toFixed(2)}x`;
+                
+                cashoutBtn.style.display = 'flex';
+                cashoutBtn.innerHTML = `ЗАБРАТЬ<br><span style="font-size:12px">${currentWin} <img src="coins.png" class="coin-icon-sm"></span>`;
+                
+                animateCrane();
+            }
+        }
+
+        function failDrop(dropX) {
+            // Анимация падения мимо
+            let fallingBlock = document.createElement('div');
+            fallingBlock.className = 'building-block falling-block';
+            fallingBlock.style.bottom = `${currentLevel * blockHeight}px`;
+            fallingBlock.style.transform = `translateX(${dropX}px)`;
+            fallingBlock.style.borderColor = '#ff3366';
+            fallingBlock.style.boxShadow = '0 0 10px #ff3366';
+            towerWrap.appendChild(fallingBlock);
+
+            craneSystem.style.display = 'none';
+
+            mainActionBtn.disabled = false;
+            mainActionBtn.className = 'action-btn bust';
+            mainBtnText.textContent = 'БАШНЯ УПАЛА 💥';
+            mainBtnSub.textContent = 'ИГРАТЬ СНОВА';
+            cashoutBtn.style.display = 'none';
+
+            state = 'finished';
+            betBtns.forEach(b => b.disabled = false);
         }
 
         function cashout() {
-            if (currentRow === 0 || state !== 'playing') return;
+            if (currentLevel === 0 || (state !== 'playing' && state !== 'dropping')) return;
+            
+            cancelAnimationFrame(animFrame);
             
             balance += currentWin;
             updateBalanceUI();
             
-            actionBtn.className = 'action-btn cashout';
-            actionBtn.innerHTML = `ВЫИГРЫШ ${currentWin}! ИГРАТЬ СНОВА`;
-            actionBtn.style.background = '';
-            
-            revealBombs();
-            state = 'finished';
-            betBtns.forEach(b => b.disabled = false);
-            
-            if (currentRow < ROW_COUNT) {
-                document.getElementById(`row-${currentRow}`).classList.remove('active');
-            }
-        }
+            craneSystem.style.display = 'none';
 
-        function loseGame() {
-            actionBtn.className = 'action-btn bust';
-            actionBtn.innerHTML = 'ПРОИГРЫШ! ИГРАТЬ СНОВА';
-            actionBtn.style.background = '';
-            actionBtn.disabled = false;
-            
-            document.getElementById(`row-${currentRow}`).classList.remove('active');
-            revealBombs();
-            
+            mainActionBtn.className = 'action-btn cashout';
+            mainBtnText.textContent = 'ВЫИГРЫШ ЗАБРАН 💰';
+            mainBtnSub.textContent = `ВЫ ПОЛУЧИЛИ ${currentWin} МОНЕТ`;
+            cashoutBtn.style.display = 'none';
+
             state = 'finished';
             betBtns.forEach(b => b.disabled = false);
         }
 
-        function revealBombs() {
-            // Показываем бомбы в рядах, которые игрок не прошел или на которых проиграл
-            for(let r = currentRow; r < ROW_COUNT; r++) {
-                let bombCol = bombPositions[r];
-                let cell = document.getElementById(`cell-${r}-${bombCol}`);
-                if (!cell.classList.contains('mine')) {
-                    cell.innerHTML = '💣';
-                    cell.style.opacity = '0.5'; // Тусклая бомба
-                }
-            }
-        }
-
-        // ================= Анимация звезд =================
+        // ================= Анимация звезд на фоне =================
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let w = 0; let h = 0;
