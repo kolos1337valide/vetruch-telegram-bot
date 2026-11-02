@@ -3614,10 +3614,10 @@
             background: linear-gradient(90deg, #0088ff, #00e1ff);
         }
 
-        /* ================= ТАБЛИЧКА ЭФИРА KICK В ПРОФИЛЕ ================= */
+        /* ================= ТАБЛИЧКА ЭФИРА KICK НА ГЛАВНОЙ ================= */
         .kick-stream-card {
             width: 100%;
-            margin-top: 6px;
+            margin-top: 15px;
             margin-bottom: 12px;
             padding: 16px;
             border-radius: 18px;
@@ -3799,7 +3799,143 @@
             color: #9ca3af;
             box-shadow: none;
         }
+
+        /* ================= ВЕРХНЯЯ МИНИ-ТАБЛИЧКА ПРИ ЗАХОДЕ В БОТА ================= */
+        .kick-top-mini-popup {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            z-index: 9500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 16px;
+            background: rgba(10, 18, 13, 0.96);
+            border: 1.5px solid rgba(83, 252, 24, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.85),
+                0 0 22px rgba(83, 252, 24, 0.28);
+            transform: translateY(-150%);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+        }
+
+        .kick-top-mini-popup.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .kick-mini-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .kick-mini-ico {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(83, 252, 24, 0.18);
+            border: 1px solid rgba(83, 252, 24, 0.55);
+            color: #53fc18;
+            font-size: 16px;
+            font-weight: 900;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(83, 252, 24, 0.3);
+        }
+
+        .kick-mini-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .kick-mini-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #53fc18;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kick-mini-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .kick-mini-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .kick-mini-watch-btn {
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(90deg, #53fc18 0%, #00e676 100%);
+            color: #051408;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(83, 252, 24, 0.35);
+        }
+
+        .kick-mini-watch-btn:active {
+            transform: scale(0.94);
+        }
+
+        .kick-mini-close-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #9ca3af;
+            font-size: 12px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
     </style>
+
+    <!-- ВЫЕЗЖАЮЩАЯ СВЕРХУ МИНИ-ТАБЛИЧКА СТРИМА (ТОЛЬКО 1 РАЗ ПРИ ВХОДЕ) -->
+    <div id="kickTopMiniPopup" class="kick-top-mini-popup">
+        <div class="kick-mini-left">
+            <div class="kick-mini-ico">K</div>
+            <div class="kick-mini-info">
+                <div class="kick-mini-badge">
+                    <span class="kick-status-dot" style="background: #53fc18; box-shadow: 0 0 8px #53fc18;"></span>
+                    СТРИМ ОНЛАЙН
+                </div>
+                <div class="kick-mini-title">Vetruch сейчас в эфире! 🔥</div>
+            </div>
+        </div>
+        <div class="kick-mini-actions">
+            <button type="button" class="kick-mini-watch-btn" onclick="openKickFromMiniPopup()">СМОТРЕТЬ</button>
+            <button type="button" class="kick-mini-close-btn" onclick="hideKickTopMiniPopup()">✖</button>
+        </div>
+    </div>
 
     <!-- МОДАЛЬНОЕ ОКНО ПОКУПКИ В МАГАЗИНЕ -->
     <div id="shopBuyModal" class="modal-overlay" onclick="if(event.target === this) closeShopBuyModal()">
@@ -3979,16 +4115,18 @@
             return FIREBASE_DB_URL ? FIREBASE_DB_URL.trim().replace(/\/+$/, '') : '';
         }
 
-        // ================= СОЗДАНИЕ И ОБНОВЛЕНИЕ ТАБЛИЧКИ KICK В НИЗУ ПРОФИЛЯ =================
-        function ensureKickCardInProfile() {
-            const profilePage = document.getElementById('profile');
-            if (!profilePage) return;
+        // ================= ТАБЛИЧКА KICK НА ГЛАВНОЙ + ВЕРХНЕЕ МИНИ-УВЕДОМЛЕНИЕ =================
+        let kickMiniPopupTimer = null;
+
+        function ensureKickCardOnHome() {
+            const homePage = document.getElementById('home');
+            if (!homePage) return;
             if (document.getElementById('kickStreamStatusCard')) return;
 
             const card = document.createElement('div');
             card.id = 'kickStreamStatusCard';
             card.className = 'kick-stream-card is-offline anim-item';
-            card.style.animationDelay = '0.38s';
+            card.style.animationDelay = '0.25s';
             card.innerHTML = `
                 <div class="kick-stream-top">
                     <div class="kick-stream-left">
@@ -4007,12 +4145,49 @@
                     ПЕРЕЙТИ НА KICK ➔
                 </button>
             `;
-            profilePage.appendChild(card);
+            homePage.appendChild(card);
         }
-        ensureKickCardInProfile();
+        ensureKickCardOnHome();
+
+        function hideKickTopMiniPopup() {
+            const popup = document.getElementById('kickTopMiniPopup');
+            if (popup) {
+                popup.classList.remove('show');
+            }
+            if (kickMiniPopupTimer) {
+                clearTimeout(kickMiniPopupTimer);
+                kickMiniPopupTimer = null;
+            }
+        }
+
+        function openKickFromMiniPopup() {
+            hideKickTopMiniPopup();
+            tg.openLink(KICK_CHANNEL_URL);
+        }
+
+        function triggerKickTopMiniPopupOnce() {
+            if (sessionStorage.getItem('vetruch_stream_popup_shown') === 'true') {
+                return;
+            }
+            sessionStorage.setItem('vetruch_stream_popup_shown', 'true');
+
+            // Ждём завершения загрузочного экрана, чтобы плашка красиво выехала на готовом экране
+            const delayMs = document.body.classList.contains('is-loading') ? 1900 : 350;
+            setTimeout(() => {
+                if (localStorage.getItem('vetruch_stream_live') !== 'true') return;
+                const popup = document.getElementById('kickTopMiniPopup');
+                if (!popup) return;
+                popup.classList.add('show');
+
+                // Автоматически скрываем через 2 минуты (120 000 мс)
+                kickMiniPopupTimer = setTimeout(() => {
+                    hideKickTopMiniPopup();
+                }, 120000);
+            }, delayMs);
+        }
 
         function updateKickStreamUI(isLive) {
-            ensureKickCardInProfile();
+            ensureKickCardOnHome();
             const card = document.getElementById('kickStreamStatusCard');
             const badgeText = document.getElementById('kickStreamBadgeText');
             const subText = document.getElementById('kickStreamSubtitle');
@@ -4048,10 +4223,20 @@
                     adminBadge.style.color = '#9ca3af';
                 }
             }
+
+            if (isLive) {
+                triggerKickTopMiniPopupOnce();
+            } else {
+                hideKickTopMiniPopup();
+            }
         }
 
         async function setKickStreamStatus(isLive) {
             localStorage.setItem('vetruch_stream_live', isLive ? 'true' : 'false');
+            if (isLive) {
+                // Сбрасываем флаг для админа при ручном включении, чтобы сразу увидеть мини-табличку
+                sessionStorage.removeItem('vetruch_stream_popup_shown');
+            }
             updateKickStreamUI(isLive);
             await cloudPut('vetruch_app/stream_live', Boolean(isLive));
         }
