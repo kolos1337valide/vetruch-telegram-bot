@@ -5297,6 +5297,38 @@
             task.classList.toggle('is-collapsed');
         }
     }
+
+// ================= ФИЛЬТР МАГАЗИНА =================
+        const shopCategories = {
+            'Прочее': ['VPN 1 месяц', 'Бонуска за 10 000₽', '5000 рублей', '2500 рублей', '1000 рублей', 'Выбрать слот для стрима'],
+            'Стрим': ['VIP либо OG в чате'],
+            'Телеграм': ['Telegram Premium 3 месяца', 'Telegram Premium 6 месяцев', 'Telegram Premium на 1 год'],
+            'Техника': ['iPhone 18 PRO MAX', 'iPhone DUO', 'AirPods PRO 3']
+        };
+
+        function filterShop(category, btnElement) {
+            // Переключаем активную кнопку
+            const tabs = document.querySelectorAll('.shop-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Фильтруем карточки
+            const cards = document.querySelectorAll('#shop .shop-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.shop-card-title').textContent.trim();
+                
+                if (category === 'Все') {
+                    card.style.display = 'flex'; // Твой CSS использует display: flex для карточек
+                } else {
+                    if (shopCategories[category] && shopCategories[category].includes(title)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
     </script>
 
 </body>
