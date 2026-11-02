@@ -13,6 +13,46 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
+
+/* ================= КАТЕГОРИИ МАГАЗИНА ================= */
+.shop-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-bottom: 5px;
+    scrollbar-width: none; /* Скрываем скроллбар в Firefox */
+    -ms-overflow-style: none; /* Скрываем скроллбар в IE/Edge */
+    width: 100%;
+}
+
+.shop-tabs::-webkit-scrollbar {
+    display: none; /* Скрываем скроллбар в Chrome/Safari/Webkit */
+}
+
+.shop-tab {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--secondary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.shop-tab:active {
+    transform: scale(0.95);
+}
+
+.shop-tab.active {
+    background: rgba(0, 136, 255, 0.15); /* Синий фон под стиль твоего бота */
+    border-color: var(--blue-main);
+    color: #fff;
+}
+        
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
