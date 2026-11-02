@@ -14,6 +14,98 @@
 
     <style>
 
+/* ================= ПРОГНОЗ ================= */
+.prediction-card {
+    background: rgba(12, 14, 20, 0.85); /* Темный аккуратный фон */
+    border: 2px solid #003388; /* Темно-синие края */
+    border-radius: 18px;
+    padding: 16px;
+    margin-top: 20px;
+    margin-bottom: 24px;
+    clear: both;
+}
+
+.prediction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.prediction-badge {
+    background: rgba(0, 136, 255, 0.12);
+    color: #0088ff; /* Слово прогноз в темно-голубом цвете */
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.prediction-status {
+    color: var(--secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.prediction-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.prediction-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.prediction-yes { color: #00e676; display: flex; align-items: center; gap: 5px; }
+.prediction-no { color: #ff3366; display: flex; align-items: center; gap: 5px; }
+
+.prediction-bar {
+    display: flex;
+    height: 6px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #2a2d35;
+}
+
+.prediction-bar-yes { background: #00e676; width: 15%; }
+.prediction-bar-no { background: #ff3366; width: 85%; }
+
+.prediction-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.prediction-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: center;
+}
+
+.prediction-btn.btn-yes {
+    color: #00994d;
+    border: 1px solid rgba(0, 230, 118, 0.2);
+    background: rgba(0, 230, 118, 0.05);
+}
+
+.prediction-btn.btn-no {
+    color: #cc2952;
+    border: 1px solid rgba(255, 51, 102, 0.2);
+    background: rgba(255, 51, 102, 0.05);
+}
+
+        
 /* ================= ШИРОКАЯ КАРТОЧКА ИГРЫ (БАШНИ) ================= */
 .game-card.wide-card {
     grid-column: span 2;
