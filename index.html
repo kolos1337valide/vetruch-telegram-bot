@@ -5319,42 +5319,36 @@ const shopCategories = {
 };
 
 function filterShop(category, btnElement) {
-    // 1. Переключаем активную кнопку
     const tabs = document.querySelectorAll('.shop-tab');
     tabs.forEach(tab => tab.classList.remove('active'));
     btnElement.classList.add('active');
 
-    // 2. Логика фильтрации и перезапуска анимации
     const cards = document.querySelectorAll('#shop .shop-card');
-    let visibleIndex = 0; // Счетчик для задержки анимации "лесенкой"
+    let visibleIndex = 0;
 
     cards.forEach(card => {
-        // Снимаем класс анимации, чтобы сбросить её состояние
         card.classList.remove('filter-anim');
         
         const title = card.querySelector('.shop-card-title').textContent.trim();
         let shouldShow = false;
 
-        // Проверяем, должна ли карточка показываться
         if (category === 'Все') {
             shouldShow = true;
-        } else {
-            if (shopCategories[category] && shopCategories[category].includes(title)) {
-                shouldShow = true;
-            }
+        } else if (shopCategories[category] && shopCategories[category].includes(title)) {
+            shouldShow = true;
         }
 
         if (shouldShow) {
             card.style.display = 'flex';
-            void card.offsetWidth; 
+            void card.offsetWidth; // Сброс для анимации
             card.classList.add('filter-anim');
-            
-            // Вернули оригинальный старт задержки с 0.1s
-            card.style.animationDelay = `${0.1 + (visibleIndex * 0.05)}s`;
+            card.style.animationDelay = (0.1 + (visibleIndex * 0.05)) + 's';
             visibleIndex++;
         } else {
             card.style.display = 'none';
         }
+    });
+}
         
     </script>
 
