@@ -48,30 +48,31 @@
 
 .tower-preview {
     position: relative;
-    width: 55px;
-    height: 55px;
+    width: 65px; /* Сделал чуть больше, как на скрине */
+    height: 60px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 0;
 }
 
 .tower-bar {
-    width: 14px;
-    background: linear-gradient(180deg, #00ffff, #0088ff);
-    border-radius: 4px 4px 0 0;
-    box-shadow: 0 0 12px rgba(0, 217, 255, 0.6);
-    animation: towerPulse 1.5s infinite alternate ease-in-out;
+    width: 16px;
+    /* Тот самый неоновый голубой цвет с градиентом */
+    background: linear-gradient(180deg, #00ffff 0%, #0088ff 100%);
+    border-radius: 6px 6px 0 0; /* Закругленные верхушки */
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.8), 0 0 30px rgba(0, 136, 255, 0.5); /* Сильное свечение */
+    animation: towerPulse 2s infinite alternate ease-in-out;
 }
 
-.tower-bar:nth-child(1) { height: 25px; animation-delay: 0s; }
-.tower-bar:nth-child(2) { height: 40px; animation-delay: 0.3s; }
-.tower-bar:nth-child(3) { height: 55px; animation-delay: 0.6s; }
+.tower-bar:nth-child(1) { height: 28px; animation-delay: 0s; }
+.tower-bar:nth-child(2) { height: 46px; animation-delay: 0.4s; }
+.tower-bar:nth-child(3) { height: 64px; animation-delay: 0.8s; }
 
 @keyframes towerPulse {
-    0% { filter: brightness(1); transform: scaleY(1); }
-    100% { filter: brightness(1.4); transform: scaleY(1.08); }
+    0% { filter: brightness(0.9) drop-shadow(0 0 5px rgba(0,217,255,0.5)); transform: scaleY(1); }
+    100% { filter: brightness(1.3) drop-shadow(0 0 15px rgba(0,217,255,0.9)); transform: scaleY(1.05); }
 }
         
 /* Анимация для фильтра магазина */
