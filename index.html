@@ -14,6 +14,67 @@
 
     <style>
 
+/* ================= ШИРОКАЯ КАРТОЧКА ИГРЫ (БАШНИ) ================= */
+.game-card.wide-card {
+    grid-column: span 2; /* Растягивает на 2 колонки */
+    flex-direction: row;
+    text-align: left;
+    padding: 20px;
+    justify-content: flex-start;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(20, 22, 28, 0.9) 0%, rgba(10, 12, 16, 0.95) 100%);
+    border: 2px solid rgba(0, 217, 255, 0.35);
+}
+
+.game-card.wide-card:active {
+    border-color: rgba(0, 217, 255, 0.8);
+    box-shadow: inset 0 0 20px rgba(0, 217, 255, 0.15), 0 0 15px rgba(0, 217, 255, 0.3);
+}
+
+.wide-card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.wide-card .game-title {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.wide-card .game-subtitle {
+    margin-bottom: 8px;
+}
+
+.tower-preview {
+    position: relative;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 0;
+}
+
+.tower-bar {
+    width: 14px;
+    background: linear-gradient(180deg, #00ffff, #0088ff);
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.6);
+    animation: towerPulse 1.5s infinite alternate ease-in-out;
+}
+
+.tower-bar:nth-child(1) { height: 25px; animation-delay: 0s; }
+.tower-bar:nth-child(2) { height: 40px; animation-delay: 0.3s; }
+.tower-bar:nth-child(3) { height: 55px; animation-delay: 0.6s; }
+
+@keyframes towerPulse {
+    0% { filter: brightness(1); transform: scaleY(1); }
+    100% { filter: brightness(1.4); transform: scaleY(1.08); }
+}
+        
 /* Анимация для фильтра магазина */
 @keyframes filterCardPop {
     0% { opacity: 0; transform: translateY(30px) scale(0.85); }
