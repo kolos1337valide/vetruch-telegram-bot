@@ -16,14 +16,13 @@
 
 /* ================= ШИРОКАЯ КАРТОЧКА ИГРЫ (БАШНИ) ================= */
 .game-card.wide-card {
-    grid-column: span 2; /* Растягивает на 2 колонки */
+    grid-column: span 2;
     flex-direction: row;
     text-align: left;
-    padding: 20px;
+    padding: 24px 20px; /* Увеличил паддинг для баланса */
     justify-content: flex-start;
-    gap: 20px;
-    background: linear-gradient(135deg, rgba(20, 22, 28, 0.9) 0%, rgba(10, 12, 16, 0.95) 100%);
-    border: 2px solid rgba(0, 217, 255, 0.35);
+    gap: 24px;
+    /* Убираем кастомный фон и рамку, оставляем те, что прописаны в .game-card */
 }
 
 .game-card.wide-card:active {
