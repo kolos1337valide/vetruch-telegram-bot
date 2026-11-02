@@ -14,6 +14,15 @@
 
     <style>
 
+/* Анимация для фильтра магазина */
+@keyframes filterCardPop {
+    0% { opacity: 0; transform: translateY(30px) scale(0.85); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.shop-card.filter-anim {
+    animation: filterCardPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards !important;
+}
+        
 /* ================= КАТЕГОРИИ МАГАЗИНА ================= */
 .shop-tabs {
     display: flex;
