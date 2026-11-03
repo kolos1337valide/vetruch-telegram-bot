@@ -167,24 +167,15 @@
 }
         
 /* Анимация переключения категорий магазина */
-@keyframes shopFilterPop {
+@keyframes cardFilterIn {
     0% {
         opacity: 0;
-        transform: translateY(12px) scale(0.985);
+        transform: translateY(22px) scale(0.9);
     }
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
-}
-
-.shop-grid.is-filtering {
-    animation: shopFilterPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-    will-change: opacity, transform;
-}
-
-.shop-grid.is-filtering .shop-card {
-    animation: none !important;
 }
         
 /* ================= КАТЕГОРИИ МАГАЗИНА ================= */
@@ -1106,8 +1097,7 @@
             gap: 12px;
             margin-top: 10px;
             clear: both;
-            align-items: stretch;
-            min-height: 380px;
+            align-items: start;
         }
 
         .shop-card {
@@ -1119,15 +1109,13 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 100%;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
-            transition: border-color 0.2s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .shop-card:active { 
             transform: scale(0.96); 
             border-color: rgba(0, 136, 255, 0.5); 
-            transition: transform 0.1s ease;
         }
 
         .shop-card-img-wrap {
@@ -1136,7 +1124,6 @@
             aspect-ratio: 1 / 1.08;
             overflow: hidden;
             background: #08090d;
-            flex-grow: 1;
         }
 
         /* Мягкое затемнение низа картинки под текст и переход в плашку кнопки */
@@ -5267,7 +5254,9 @@
             if (pageId === 'shop') {
                 const shopGrid = document.querySelector('.shop-grid');
                 if (shopGrid) {
-                    shopGrid.classList.remove('is-filtering');
+                    shopGrid.querySelectorAll('.shop-card').forEach(c => {
+                        c.style.animation = '';
+                    });
                 }
             }
             
@@ -5552,28 +5541,39 @@ function filterShop(category, btnElement) {
 
     const shopGrid = document.querySelector('.shop-grid');
     if (!shopGrid) return;
-    const cards = shopGrid.querySelectorAll('.shop-card');
+    const cards = Array.from(shopGrid.querySelectorAll('.shop-card'));
 
+    // Шаг 1: Сбрасываем текущие анимации у ВСЕХ карточек
+    cards.forEach(card => {
+        card.style.animation = 'none';
+    });
+
+    // Шаг 2: Принудительный reflow для гарантированного сброса анимации
+    void shopGrid.offsetWidth;
+
+    // Шаг 3: Фильтруем и запускаем анимацию на каждой видимой карточке
+    let visibleIndex = 0;
     cards.forEach(card => {
         const titleEl = card.querySelector('.shop-card-title');
         const title = titleEl ? titleEl.textContent.trim() : '';
         let shouldShow = false;
 
-        // Проверяем, должна ли карточка показываться
+        // Проверяем категорию
         if (category === 'Все') {
             shouldShow = true;
         } else if (shopCategories[category] && shopCategories[category].includes(title)) {
             shouldShow = true;
         }
 
-        card.style.display = shouldShow ? 'flex' : 'none';
-        card.style.animationDelay = '';
+        if (shouldShow) {
+            card.style.display = 'flex';
+            const delay = (visibleIndex * 0.04).toFixed(2);
+            card.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+            visibleIndex++;
+        } else {
+            card.style.display = 'none';
+        }
     });
-
-    // Мягкий и стабильный перезапуск анимации для всей сетки
-    shopGrid.classList.remove('is-filtering');
-    void shopGrid.offsetWidth;
-    shopGrid.classList.add('is-filtering');
 }
 
 // ================= ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ ВКЛАДОК НА ПК =================
