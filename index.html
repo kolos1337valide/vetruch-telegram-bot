@@ -188,6 +188,13 @@
     position: relative;
     z-index: 9999;
     clear: both;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.shop-tabs.is-dragging {
+    cursor: grabbing;
 }
 
 .shop-tabs::-webkit-scrollbar {
@@ -205,6 +212,8 @@
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .shop-tab:active {
@@ -5557,6 +5566,71 @@ function filterShop(category, btnElement) {
             card.style.display = 'none';
         }
     });
+}
+
+// ================= ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ ВКЛАДОК НА ПК =================
+function initShopTabsScroll() {
+    const shopTabs = document.querySelector('.shop-tabs');
+    if (!shopTabs) return;
+
+    // 1. Прокрутка колесиком мыши (вертикальное колесо -> горизонтальный скролл)
+    shopTabs.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            shopTabs.scrollLeft += e.deltaY;
+        }
+    }, { passive: false });
+
+    // 2. Перетаскивание мышкой (Drag-to-scroll) как на телефоне
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let isDragging = false;
+
+    shopTabs.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return; // Только левая кнопка мыши
+        isDown = true;
+        isDragging = false;
+        startX = e.pageX - shopTabs.offsetLeft;
+        scrollLeft = shopTabs.scrollLeft;
+        shopTabs.classList.add('is-dragging');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        const x = e.pageX - shopTabs.offsetLeft;
+        const walk = x - startX;
+        if (Math.abs(walk) > 4) {
+            isDragging = true;
+        }
+        if (isDragging) {
+            e.preventDefault();
+            shopTabs.scrollLeft = scrollLeft - walk;
+        }
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (!isDown) return;
+        isDown = false;
+        shopTabs.classList.remove('is-dragging');
+        setTimeout(() => {
+            isDragging = false;
+        }, 50);
+    });
+
+    // Блокируем клик по вкладке, если пользователь перетаскивал список
+    shopTabs.addEventListener('click', (e) => {
+        if (isDragging) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        }
+    }, true);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShopTabsScroll);
+} else {
+    initShopTabsScroll();
 }
         
     </script>
