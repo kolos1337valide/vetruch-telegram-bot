@@ -167,12 +167,19 @@
 }
         
 /* Анимация для фильтра магазина */
-@keyframes filterCardPop {
-    0% { opacity: 0; transform: translateY(30px) scale(0.85); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes shopCardPop {
+    0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.93);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
-.shop-card.filter-anim {
-    animation: gameCardPop 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards !important;
+
+.shop-card.pop-in {
+    animation: shopCardPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
         
 /* ================= КАТЕГОРИИ МАГАЗИНА ================= */
@@ -5249,6 +5256,15 @@
             if (activeButton) activeButton.classList.add("active");
             
             window.scrollTo(0, 0);
+
+            if (pageId === 'shop') {
+                document.querySelectorAll('.shop-grid .shop-card').forEach((card, index) => {
+                    card.classList.remove('pop-in');
+                    if (card.style.display !== 'none') {
+                        card.style.animationDelay = (0.1 + (index * 0.04)) + 's';
+                    }
+                });
+            }
             
             if (pageId !== 'admin') {
                 sessionStorage.setItem('vetruch_active_tab', pageId);
@@ -5529,12 +5545,12 @@ function filterShop(category, btnElement) {
     tabs.forEach(tab => tab.classList.remove('active'));
     btnElement.classList.add('active');
 
-    const shopGrid = document.querySelector('.shop-grid');
-    const cards = Array.from(shopGrid.querySelectorAll('.shop-card'));
+    const cards = document.querySelectorAll('.shop-grid .shop-card');
     let visibleIndex = 0;
 
     cards.forEach(card => {
-        const title = card.querySelector('.shop-card-title').textContent.trim();
+        const titleEl = card.querySelector('.shop-card-title');
+        const title = titleEl ? titleEl.textContent.trim() : '';
         let shouldShow = false;
 
         // Проверяем, должна ли карточка показываться
@@ -5544,23 +5560,18 @@ function filterShop(category, btnElement) {
             shouldShow = true;
         }
 
-        if (shouldShow) {
-            // Клонируем ноду, чтобы гарантированно сбросить состояние CSS-анимации
-            const newCard = card.cloneNode(true);
-            
-            // Восстанавливаем обработчик события onclick на кнопке внутри клона
-            const buyBtn = newCard.querySelector('.shop-btn');
-            if (buyBtn) {
-                // Извлекаем название предмета для передачи в buyItem
-                buyBtn.onclick = function() { buyItem(title); };
-            }
+        // Сбрасываем предыдущую анимацию
+        card.classList.remove('pop-in');
+        card.style.animationDelay = '';
 
-            newCard.style.display = 'flex';
-            newCard.classList.add('filter-anim');
-            newCard.style.animationDelay = (0.1 + (visibleIndex * 0.12)) + 's';
+        if (shouldShow) {
+            card.style.display = 'flex';
+            // Небольшая задержка каскада
+            card.style.animationDelay = (visibleIndex * 0.04) + 's';
             
-            // Заменяем старую карточку на новую
-            shopGrid.replaceChild(newCard, card);
+            // Перезапуск анимации через reflow
+            void card.offsetWidth;
+            card.classList.add('pop-in');
             visibleIndex++;
         } else {
             card.style.display = 'none';
