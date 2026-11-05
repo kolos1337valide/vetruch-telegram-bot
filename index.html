@@ -91,18 +91,96 @@
     font-weight: 800;
     cursor: pointer;
     text-align: center;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
+.prediction-btn:active {
+    transform: scale(0.97);
+}
+
+/* Режим 1: ДА / НЕТ (Зелёный и Красный) */
 .prediction-btn.btn-yes {
-    color: #00994d;
-    border: 1px solid rgba(0, 230, 118, 0.2);
-    background: rgba(0, 230, 118, 0.05);
+    color: #00e676;
+    border: 1.5px solid rgba(0, 230, 118, 0.4);
+    background: rgba(0, 230, 118, 0.08);
+    box-shadow: 0 2px 10px rgba(0, 230, 118, 0.1);
+}
+
+.prediction-btn.btn-yes:active {
+    background: rgba(0, 230, 118, 0.2);
 }
 
 .prediction-btn.btn-no {
-    color: #cc2952;
-    border: 1px solid rgba(255, 51, 102, 0.2);
-    background: rgba(255, 51, 102, 0.05);
+    color: #ff3366;
+    border: 1.5px solid rgba(255, 51, 102, 0.4);
+    background: rgba(255, 51, 102, 0.08);
+    box-shadow: 0 2px 10px rgba(255, 51, 102, 0.1);
+}
+
+.prediction-btn.btn-no:active {
+    background: rgba(255, 51, 102, 0.2);
+}
+
+.prediction-btn.my-voted {
+    outline: 2px solid currentColor !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 16px currentColor !important;
+    font-weight: 900 !important;
+}
+
+/* Режим 2: БАТЛЫ (Золото и Серебро) */
+.prediction-card.mode-battle {
+    border: 2px solid rgba(255, 215, 0, 0.5) !important;
+    background: linear-gradient(180deg, rgba(22, 18, 12, 0.92) 0%, rgba(12, 14, 20, 0.9) 100%) !important;
+    box-shadow: 0 0 28px rgba(255, 215, 0, 0.12) !important;
+}
+
+.prediction-card.mode-battle .prediction-badge {
+    background: rgba(255, 215, 0, 0.18) !important;
+    color: #ffd700 !important;
+    border: 1px solid rgba(255, 215, 0, 0.4) !important;
+}
+
+.prediction-card.mode-battle .prediction-yes {
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+}
+
+.prediction-card.mode-battle .prediction-no {
+    color: #e2e8f0 !important;
+    text-shadow: 0 0 10px rgba(226, 232, 240, 0.35);
+}
+
+.prediction-card.mode-battle .prediction-bar-yes {
+    background: linear-gradient(90deg, #f59e0b, #ffd700) !important;
+}
+
+.prediction-card.mode-battle .prediction-bar-no {
+    background: linear-gradient(90deg, #94a3b8, #e2e8f0) !important;
+}
+
+.prediction-card.mode-battle .prediction-btn.btn-yes {
+    color: #ffd700 !important;
+    border: 1.5px solid rgba(255, 215, 0, 0.55) !important;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.16) 0%, rgba(245, 158, 11, 0.06) 100%) !important;
+    box-shadow: 0 2px 14px rgba(255, 215, 0, 0.2) !important;
+}
+
+.prediction-card.mode-battle .prediction-btn.btn-yes:active {
+    background: rgba(255, 215, 0, 0.28) !important;
+}
+
+.prediction-card.mode-battle .prediction-btn.btn-no {
+    color: #f8fafc !important;
+    border: 1.5px solid rgba(226, 232, 240, 0.55) !important;
+    background: linear-gradient(180deg, rgba(226, 232, 240, 0.16) 0%, rgba(148, 163, 184, 0.06) 100%) !important;
+    box-shadow: 0 2px 14px rgba(226, 232, 240, 0.2) !important;
+}
+
+.prediction-card.mode-battle .prediction-btn.btn-no:active {
+    background: rgba(226, 232, 240, 0.28) !important;
 }
 
         
@@ -2687,13 +2765,8 @@
         .admin-tabs {
             clear: both;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .admin-tabs {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
             margin-bottom: 18px;
             background: rgba(15, 18, 25, 0.9);
             padding: 6px;
@@ -2702,17 +2775,18 @@
         }
 
         .admin-tab-btn {
-            padding: 10px 6px;
+            padding: 9px 3px;
             border-radius: 12px;
             border: none;
             background: transparent;
             color: var(--secondary);
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: center;
+            white-space: nowrap;
         }
 
         .admin-tab-btn.active {
@@ -3070,31 +3144,31 @@
         </div>
 
 <!-- БЛОК ПРОГНОЗА -->
-        <div class="prediction-card anim-item" style="animation-delay: 0.45s;">
+        <div class="prediction-card anim-item" id="mainPredictionCard" style="animation-delay: 0.45s;">
             <div class="prediction-header">
-                <span class="prediction-badge">ПРОГНОЗ</span>
-                <span class="prediction-status">Ставки закрыты</span>
+                <span class="prediction-badge" id="predBadge">ПРОГНОЗ</span>
+                <span class="prediction-status" id="predStatus" style="color: #00e676;">Ставки открыты</span>
             </div>
             
-            <div class="prediction-title">Колос уебан??</div>
+            <div class="prediction-title" id="predTitle">Будет ли вывод 30 000?</div>
             
             <div class="prediction-stats">
-                <div class="prediction-yes">
-                    ДА 15% · <img src="coins.png" class="coin-icon-sm"> 6 649
+                <div class="prediction-yes" id="predStatsLeft">
+                    <span id="predTextLeft">Да 50%</span> · <img src="coins.png" class="coin-icon-sm"> <span id="predCoinsLeft">15 000</span>
                 </div>
-                <div class="prediction-no">
-                    <img src="coins.png" class="coin-icon-sm"> 37 573 · 85% НЕТ
+                <div class="prediction-no" id="predStatsRight">
+                    <img src="coins.png" class="coin-icon-sm"> <span id="predCoinsRight">15 000</span> · <span id="predTextRight">50% Нет</span>
                 </div>
             </div>
             
             <div class="prediction-bar">
-                <div class="prediction-bar-yes"></div>
-                <div class="prediction-bar-no"></div>
+                <div class="prediction-bar-yes" id="predBarLeft" style="width: 50%;"></div>
+                <div class="prediction-bar-no" id="predBarRight" style="width: 50%;"></div>
             </div>
             
             <div class="prediction-actions">
-                <div class="prediction-btn btn-yes">Ставлю ДА</div>
-                <div class="prediction-btn btn-no">Ставлю ДА</div>
+                <button type="button" class="prediction-btn btn-yes" id="predBtnLeft" onclick="onPredictionVote('left')">Да</button>
+                <button type="button" class="prediction-btn btn-no" id="predBtnRight" onclick="onPredictionVote('right')">Нет</button>
             </div>
         </div>
         
@@ -3731,7 +3805,7 @@
                         Панель администратора
                         <span class="admin-root-tag">ROOT</span>
                     </div>
-                    <div class="admin-panel-sub">Задания, магазин и накрутка по ID</div>
+                    <div class="admin-panel-sub">Задания, магазин, прогнозы и накрутка</div>
                 </div>
             </div>
             <div class="admin-panel-arrow">➔</div>
@@ -4261,13 +4335,16 @@
             </div>
         </div>
 
-        <!-- Переключатель 3 разделов: Задания / Магазин / Накрутка по ID -->
+        <!-- Переключатель 4 разделов: Задания / Магазин / Прогнозы / Накрутка по ID -->
         <div class="admin-tabs anim-item" style="animation-delay: 0.1s;">
             <button type="button" class="admin-tab-btn active" data-adm="adm-tasks" onclick="switchAdminTab('adm-tasks', this)">
                 📋 Задания
             </button>
             <button type="button" class="admin-tab-btn" data-adm="adm-shop" onclick="switchAdminTab('adm-shop', this)">
                 🛒 Магазин
+            </button>
+            <button type="button" class="admin-tab-btn" data-adm="adm-prediction" onclick="switchAdminTab('adm-prediction', this)">
+                🎯 Прогноз
             </button>
             <button type="button" class="admin-tab-btn" data-adm="adm-users" onclick="switchAdminTab('adm-users', this)">
                 💎 По ID
@@ -4296,7 +4373,87 @@
             </div>
         </div>
 
-        <!-- ГРАФА 3: НАКРУТКА МОНЕТ ПО ID ЧЕЛОВЕКА -->
+        <!-- ГРАФА 3: УПРАВЛЕНИЕ ПЛАШКОЙ ПРОГНОЗА -->
+        <div id="adm-prediction" class="admin-section">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>🎯 Настройка плашки прогноза</span>
+                </div>
+
+                <!-- Режимы оформления плашки -->
+                <label class="admin-field-label">Стиль и режим кнопок:</label>
+                <div class="admin-req-actions" style="margin-bottom: 15px; gap: 8px;">
+                    <button type="button" id="adminPredStyleClassicBtn" class="admin-btn-approve" onclick="selectAdminPredMode('classic', true)" style="padding: 10px 8px; font-size: 11.5px; flex: 1;">
+                        🟢🔴 ДА / НЕТ (Зелёный/Красный)
+                    </button>
+                    <button type="button" id="adminPredStyleBattleBtn" class="admin-btn-reject" onclick="selectAdminPredMode('battle', true)" style="padding: 10px 8px; font-size: 11.5px; flex: 1; border-color: rgba(255, 215, 0, 0.6); color: #ffd700; background: rgba(255, 215, 0, 0.1);">
+                        👑⚔️ БАТЛЫ (Золото/Серебро)
+                    </button>
+                </div>
+
+                <!-- Быстрые готовые шаблоны -->
+                <label class="admin-field-label">Быстрые готовые шаблоны:</label>
+                <div style="display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;">
+                    <button type="button" class="admin-chip" onclick="applyPredPreset('withdraw')" style="margin: 0; padding: 6px 10px; font-size: 11px;">💰 Вывод 30к (Да/Нет)</button>
+                    <button type="button" class="admin-chip" onclick="applyPredPreset('battle')" style="margin: 0; padding: 6px 10px; font-size: 11px;">⚔️ Баттл бонусок (Игрок 1 vs 2)</button>
+                    <button type="button" class="admin-chip" onclick="applyPredPreset('profit')" style="margin: 0; padding: 6px 10px; font-size: 11px;">🎰 Окуп бонуски (Да/Нет)</button>
+                </div>
+
+                <label class="admin-field-label">Тема / Вопрос прогноза:</label>
+                <input type="text" id="adminPredTitleInput" class="task-input" placeholder="Например: Будет ли вывод 30 000?">
+
+                <label class="admin-field-label">Надпись бейджа (слева сверху):</label>
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <input type="text" id="adminPredBadgeInput" class="task-input" placeholder="ПРОГНОЗ или ⚔️ БАТЛ" style="margin-bottom: 0; flex: 1;">
+                    <button type="button" class="admin-chip" onclick="document.getElementById('adminPredBadgeInput').value='ПРОГНОЗ'" style="margin: 0; padding: 0 10px;">ПРОГНОЗ</button>
+                    <button type="button" class="admin-chip" onclick="document.getElementById('adminPredBadgeInput').value='⚔️ БАТЛ'" style="margin: 0; padding: 0 10px;">⚔️ БАТЛ</button>
+                </div>
+
+                <label class="admin-field-label">Статус ставок (справа сверху):</label>
+                <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                    <input type="text" id="adminPredStatusInput" class="task-input" placeholder="Ставки открыты" style="margin-bottom: 0; flex: 1;">
+                    <button type="button" class="admin-btn-approve" onclick="document.getElementById('adminPredStatusInput').value='Ставки открыты'" style="padding: 0 10px; font-size: 11px;">🟢 Открыты</button>
+                    <button type="button" class="admin-btn-reject" onclick="document.getElementById('adminPredStatusInput').value='Ставки закрыты'" style="padding: 0 10px; font-size: 11px;">🔴 Закрыты</button>
+                </div>
+
+                <!-- Настройки левой и правой кнопок -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px;">
+                    <!-- Левая сторона -->
+                    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #00e676; display: block; margin-bottom: 8px;" id="adminLeftOptionLabel">🟢 ЛЕВАЯ КНОПКА (ДА):</span>
+                        
+                        <label class="admin-field-label" style="font-size: 10.5px;">Текст кнопки:</label>
+                        <input type="text" id="adminPredBtnLeftInput" class="task-input" placeholder="Да" style="font-size: 12px; padding: 9px; margin-bottom: 8px;">
+
+                        <label class="admin-field-label" style="font-size: 10.5px;">Процент (в статистику):</label>
+                        <input type="text" id="adminPredPercentLeftInput" class="task-input" placeholder="50%" oninput="onPredPercentLeftChange(this.value)" style="font-size: 12px; padding: 9px; margin-bottom: 8px;">
+
+                        <label class="admin-field-label" style="font-size: 10.5px;">Банк монет:</label>
+                        <input type="text" id="adminPredCoinsLeftInput" class="task-input" placeholder="15 000" style="font-size: 12px; padding: 9px; margin-bottom: 0;">
+                    </div>
+
+                    <!-- Правая сторона -->
+                    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #ff3366; display: block; margin-bottom: 8px;" id="adminRightOptionLabel">🔴 ПРАВАЯ КНОПКА (НЕТ):</span>
+                        
+                        <label class="admin-field-label" style="font-size: 10.5px;">Текст кнопки:</label>
+                        <input type="text" id="adminPredBtnRightInput" class="task-input" placeholder="Нет" style="font-size: 12px; padding: 9px; margin-bottom: 8px;">
+
+                        <label class="admin-field-label" style="font-size: 10.5px;">Процент (в статистику):</label>
+                        <input type="text" id="adminPredPercentRightInput" class="task-input" placeholder="50%" oninput="onPredPercentRightChange(this.value)" style="font-size: 12px; padding: 9px; margin-bottom: 8px;">
+
+                        <label class="admin-field-label" style="font-size: 10.5px;">Банк монет:</label>
+                        <input type="text" id="adminPredCoinsRightInput" class="task-input" placeholder="15 000" style="font-size: 12px; padding: 9px; margin-bottom: 0;">
+                    </div>
+                </div>
+
+                <button type="button" class="admin-submit-btn" style="margin-top: 16px; background: linear-gradient(135deg, #00d9ff 0%, #0088ff 100%);" onclick="saveAdminPrediction()">
+                    💾 СОХРАНИТЬ И ОПУБЛИКОВАТЬ
+                </button>
+            </div>
+        </div>
+
+        <!-- ГРАФА 4: НАКРУТКА МОНЕТ ПО ID ЧЕЛОВЕКА -->
         <div id="adm-users" class="admin-section">
             <div class="admin-box">
                 <div class="admin-box-title">
@@ -4506,6 +4663,321 @@
             }
             updateKickStreamUI(isLive);
             await cloudPut('vetruch_app/stream_live', Boolean(isLive));
+        }
+
+        // ================= УПРАВЛЕНИЕ ПЛАШКОЙ ПРОГНОЗОВ =================
+        const DEFAULT_PREDICTION = {
+            mode: 'classic', // 'classic' (Да/Нет) или 'battle' (Батлы)
+            badge: 'ПРОГНОЗ',
+            status: 'Ставки открыты',
+            title: 'Будет ли вывод 30 000?',
+            btnLeft: 'Да',
+            btnRight: 'Нет',
+            percentLeft: '50%',
+            coinsLeft: '15 000',
+            percentRight: '50%',
+            coinsRight: '15 000'
+        };
+
+        function getPredictionData() {
+            try {
+                const raw = localStorage.getItem('vetruch_prediction_data');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && typeof parsed === 'object') {
+                        return { ...DEFAULT_PREDICTION, ...parsed };
+                    }
+                }
+            } catch (e) {}
+            return { ...DEFAULT_PREDICTION };
+        }
+
+        function renderPredictionCard(data) {
+            const p = data || getPredictionData();
+            const card = document.getElementById('mainPredictionCard');
+            if (!card) return;
+
+            const isBattle = (p.mode === 'battle');
+            // Переключение стиля (Батлы или Да/Нет)
+            card.classList.toggle('mode-battle', isBattle);
+
+            const badge = document.getElementById('predBadge');
+            if (badge) badge.textContent = p.badge || (isBattle ? '⚔️ БАТЛ' : 'ПРОГНОЗ');
+
+            const status = document.getElementById('predStatus');
+            if (status) {
+                status.textContent = p.status || 'Ставки открыты';
+                if (p.status && p.status.toLowerCase().includes('открыт')) {
+                    status.style.color = '#00e676';
+                } else if (p.status && p.status.toLowerCase().includes('закрыт')) {
+                    status.style.color = '#ff3366';
+                } else {
+                    status.style.color = 'var(--secondary)';
+                }
+            }
+
+            const title = document.getElementById('predTitle');
+            if (title) title.textContent = p.title || 'Будет ли вывод 30 000?';
+
+            const btnLeft = document.getElementById('predBtnLeft');
+            const labelLeft = p.btnLeft || (isBattle ? 'Игрок 1' : 'Да');
+            if (btnLeft) btnLeft.textContent = labelLeft;
+
+            const btnRight = document.getElementById('predBtnRight');
+            const labelRight = p.btnRight || (isBattle ? 'Игрок 2' : 'Нет');
+            if (btnRight) btnRight.textContent = labelRight;
+
+            const numLeft = parseInt(p.percentLeft, 10) || 50;
+            const numRight = parseInt(p.percentRight, 10) || (100 - numLeft);
+            const total = numLeft + numRight;
+            const pctLeft = total > 0 ? Math.round((numLeft / total) * 100) : 50;
+            const pctRight = 100 - pctLeft;
+
+            const textLeft = document.getElementById('predTextLeft');
+            if (textLeft) textLeft.textContent = `${labelLeft} ${pctLeft}%`;
+
+            const coinsLeft = document.getElementById('predCoinsLeft');
+            if (coinsLeft) coinsLeft.textContent = p.coinsLeft || '15 000';
+
+            const textRight = document.getElementById('predTextRight');
+            if (textRight) textRight.textContent = `${pctRight}% ${labelRight}`;
+
+            const coinsRight = document.getElementById('predCoinsRight');
+            if (coinsRight) coinsRight.textContent = p.coinsRight || '15 000';
+
+            const barLeft = document.getElementById('predBarLeft');
+            if (barLeft) barLeft.style.width = pctLeft + '%';
+
+            const barRight = document.getElementById('predBarRight');
+            if (barRight) barRight.style.width = pctRight + '%';
+
+            const myVote = localStorage.getItem('vetruch_my_pred_vote_' + (p.title || 'default'));
+            if (btnLeft) {
+                btnLeft.classList.toggle('my-voted', myVote === 'left');
+            }
+            if (btnRight) {
+                btnRight.classList.toggle('my-voted', myVote === 'right');
+            }
+        }
+
+        function onPredictionVote(side) {
+            const data = getPredictionData();
+            if (data.status && data.status.toLowerCase().includes('закрыт')) {
+                tg.showAlert('⚠️ Ставки на этот прогноз сейчас закрыты!');
+                return;
+            }
+            const isBattle = (data.mode === 'battle');
+            const chosen = (side === 'left') ? (data.btnLeft || (isBattle ? 'Игрок 1' : 'Да')) : (data.btnRight || (isBattle ? 'Игрок 2' : 'Нет'));
+            localStorage.setItem('vetruch_my_pred_vote_' + (data.title || 'default'), side);
+            renderPredictionCard(data);
+            tg.showAlert(`✅ Ваш голос за «${chosen}» принят! 🎯`);
+        }
+
+        function onPredPercentLeftChange(val) {
+            const num = parseInt(val, 10);
+            if (!isNaN(num) && num >= 0 && num <= 100) {
+                const r = document.getElementById('adminPredPercentRightInput');
+                if (r) r.value = (100 - num) + '%';
+            }
+        }
+
+        function onPredPercentRightChange(val) {
+            const num = parseInt(val, 10);
+            if (!isNaN(num) && num >= 0 && num <= 100) {
+                const l = document.getElementById('adminPredPercentLeftInput');
+                if (l) l.value = (100 - num) + '%';
+            }
+        }
+
+        function applyPredPreset(presetKey) {
+            if (presetKey === 'withdraw') {
+                selectAdminPredMode('classic', false);
+                const title = document.getElementById('adminPredTitleInput');
+                const badge = document.getElementById('adminPredBadgeInput');
+                const left = document.getElementById('adminPredBtnLeftInput');
+                const right = document.getElementById('adminPredBtnRightInput');
+                if (title) title.value = 'Будет ли вывод 30 000?';
+                if (badge) badge.value = 'ПРОГНОЗ';
+                if (left) left.value = 'Да';
+                if (right) right.value = 'Нет';
+            } else if (presetKey === 'battle') {
+                selectAdminPredMode('battle', false);
+                const title = document.getElementById('adminPredTitleInput');
+                const badge = document.getElementById('adminPredBadgeInput');
+                const left = document.getElementById('adminPredBtnLeftInput');
+                const right = document.getElementById('adminPredBtnRightInput');
+                if (title) title.value = 'Кому больше насыпет бонуска?';
+                if (badge) badge.value = '⚔️ БАТЛ';
+                if (left) left.value = 'Игрок 1';
+                if (right) right.value = 'Игрок 2';
+            } else if (presetKey === 'profit') {
+                selectAdminPredMode('classic', false);
+                const title = document.getElementById('adminPredTitleInput');
+                const badge = document.getElementById('adminPredBadgeInput');
+                const left = document.getElementById('adminPredBtnLeftInput');
+                const right = document.getElementById('adminPredBtnRightInput');
+                if (title) title.value = 'Окупится ли следующая бонуска?';
+                if (badge) badge.value = 'ПРОГНОЗ';
+                if (left) left.value = 'Окупит';
+                if (right) right.value = 'Не окупит';
+            }
+        }
+
+        let currentAdminPredMode = 'classic';
+
+        function selectAdminPredMode(mode, fillDefaults) {
+            currentAdminPredMode = mode;
+            const classicBtn = document.getElementById('adminPredStyleClassicBtn');
+            const battleBtn = document.getElementById('adminPredStyleBattleBtn');
+            const badgeInp = document.getElementById('adminPredBadgeInput');
+            const titleInp = document.getElementById('adminPredTitleInput');
+            const leftLabel = document.getElementById('adminLeftOptionLabel');
+            const rightLabel = document.getElementById('adminRightOptionLabel');
+            const btnLeftInp = document.getElementById('adminPredBtnLeftInput');
+            const btnRightInp = document.getElementById('adminPredBtnRightInput');
+
+            if (mode === 'battle') {
+                if (classicBtn) {
+                    classicBtn.style.opacity = '0.5';
+                    classicBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    classicBtn.style.boxShadow = 'none';
+                }
+                if (battleBtn) {
+                    battleBtn.style.opacity = '1';
+                    battleBtn.style.borderColor = '#ffd700';
+                    battleBtn.style.boxShadow = '0 0 16px rgba(255, 215, 0, 0.4)';
+                }
+                if (badgeInp && (!badgeInp.value || badgeInp.value === 'ПРОГНОЗ')) {
+                    badgeInp.value = '⚔️ БАТЛ';
+                }
+                if (leftLabel) {
+                    leftLabel.textContent = '👑 ЗОЛОТАЯ КНОПКА (Участник 1):';
+                    leftLabel.style.color = '#ffd700';
+                }
+                if (rightLabel) {
+                    rightLabel.textContent = '🥈 СЕРЕБРЯНАЯ КНОПКА (Участник 2):';
+                    rightLabel.style.color = '#e2e8f0';
+                }
+
+                if (fillDefaults) {
+                    if (titleInp && (!titleInp.value || titleInp.value.includes('Будет ли вывод'))) {
+                        titleInp.value = 'Кому больше насыпет бонуска?';
+                    }
+                    if (btnLeftInp && (!btnLeftInp.value || btnLeftInp.value === 'Да' || btnLeftInp.value === 'Ставлю ДА')) {
+                        btnLeftInp.value = 'Игрок 1';
+                    }
+                    if (btnRightInp && (!btnRightInp.value || btnRightInp.value === 'Нет' || btnRightInp.value === 'Ставлю НЕТ')) {
+                        btnRightInp.value = 'Игрок 2';
+                    }
+                }
+            } else {
+                if (classicBtn) {
+                    classicBtn.style.opacity = '1';
+                    classicBtn.style.borderColor = '#00e676';
+                    classicBtn.style.boxShadow = '0 0 16px rgba(0, 230, 118, 0.4)';
+                }
+                if (battleBtn) {
+                    battleBtn.style.opacity = '0.5';
+                    battleBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    battleBtn.style.boxShadow = 'none';
+                }
+                if (badgeInp && (!badgeInp.value || badgeInp.value === '⚔️ БАТЛ')) {
+                    badgeInp.value = 'ПРОГНОЗ';
+                }
+                if (leftLabel) {
+                    leftLabel.textContent = '🟢 ЛЕВАЯ КНОПКА (ДА):';
+                    leftLabel.style.color = '#00e676';
+                }
+                if (rightLabel) {
+                    rightLabel.textContent = '🔴 ПРАВАЯ КНОПКА (НЕТ):';
+                    rightLabel.style.color = '#ff3366';
+                }
+
+                if (fillDefaults) {
+                    if (titleInp && (!titleInp.value || titleInp.value.includes('Кому больше насыпет'))) {
+                        titleInp.value = 'Будет ли вывод 30 000?';
+                    }
+                    if (btnLeftInp && (!btnLeftInp.value || btnLeftInp.value === 'Игрок 1')) {
+                        btnLeftInp.value = 'Да';
+                    }
+                    if (btnRightInp && (!btnRightInp.value || btnRightInp.value === 'Игрок 2')) {
+                        btnRightInp.value = 'Нет';
+                    }
+                }
+            }
+        }
+
+        function populateAdminPredictionForm() {
+            const data = getPredictionData();
+            currentAdminPredMode = data.mode || 'classic';
+            selectAdminPredMode(currentAdminPredMode, false);
+
+            const badgeInp = document.getElementById('adminPredBadgeInput');
+            if (badgeInp) badgeInp.value = data.badge || (data.mode === 'battle' ? '⚔️ БАТЛ' : 'ПРОГНОЗ');
+
+            const titleInp = document.getElementById('adminPredTitleInput');
+            if (titleInp) titleInp.value = data.title || '';
+
+            const statusInp = document.getElementById('adminPredStatusInput');
+            if (statusInp) statusInp.value = data.status || 'Ставки открыты';
+
+            const btnLeftInp = document.getElementById('adminPredBtnLeftInput');
+            if (btnLeftInp) btnLeftInp.value = data.btnLeft || (data.mode === 'battle' ? 'Игрок 1' : 'Да');
+
+            const pctLeftInp = document.getElementById('adminPredPercentLeftInput');
+            if (pctLeftInp) pctLeftInp.value = data.percentLeft || '50%';
+
+            const coinsLeftInp = document.getElementById('adminPredCoinsLeftInput');
+            if (coinsLeftInp) coinsLeftInp.value = data.coinsLeft || '15 000';
+
+            const btnRightInp = document.getElementById('adminPredBtnRightInput');
+            if (btnRightInp) btnRightInp.value = data.btnRight || (data.mode === 'battle' ? 'Игрок 2' : 'Нет');
+
+            const pctRightInp = document.getElementById('adminPredPercentRightInput');
+            if (pctRightInp) pctRightInp.value = data.percentRight || '50%';
+
+            const coinsRightInp = document.getElementById('adminPredCoinsRightInput');
+            if (coinsRightInp) coinsRightInp.value = data.coinsRight || '15 000';
+        }
+
+        async function saveAdminPrediction() {
+            const title = (document.getElementById('adminPredTitleInput')?.value || '').trim();
+            if (!title) {
+                showAdminToast('⚠️ Введите тему или вопрос прогноза!', true);
+                return;
+            }
+
+            const btnLeft = (document.getElementById('adminPredBtnLeftInput')?.value || (currentAdminPredMode === 'battle' ? 'Игрок 1' : 'Да')).trim();
+            const btnRight = (document.getElementById('adminPredBtnRightInput')?.value || (currentAdminPredMode === 'battle' ? 'Игрок 2' : 'Нет')).trim();
+            const badge = (document.getElementById('adminPredBadgeInput')?.value || (currentAdminPredMode === 'battle' ? '⚔️ БАТЛ' : 'ПРОГНОЗ')).trim();
+            const status = (document.getElementById('adminPredStatusInput')?.value || 'Ставки открыты').trim();
+            const percentLeft = (document.getElementById('adminPredPercentLeftInput')?.value || '50%').trim();
+            const coinsLeft = (document.getElementById('adminPredCoinsLeftInput')?.value || '15 000').trim();
+            const percentRight = (document.getElementById('adminPredPercentRightInput')?.value || '50%').trim();
+            const coinsRight = (document.getElementById('adminPredCoinsRightInput')?.value || '15 000').trim();
+
+            const updatedData = {
+                mode: currentAdminPredMode,
+                badge,
+                status,
+                title,
+                btnLeft,
+                percentLeft,
+                coinsLeft,
+                btnRight,
+                percentRight,
+                coinsRight
+            };
+
+            localStorage.setItem('vetruch_prediction_data', JSON.stringify(updatedData));
+            renderPredictionCard(updatedData);
+
+            const ok = await cloudPut('vetruch_app/prediction', updatedData);
+            if (ok) {
+                showAdminToast('✅ Прогноз сохранён и синхронизирован со всеми игроками! 🎯', false);
+            } else {
+                showAdminToast('✅ Прогноз сохранён локально! 🎯', false);
+            }
         }
 
         // ================= ЭКОНОМИКА МАГАЗИНА И НАГРАДЫ ЗАДАНИЙ =================
@@ -4740,6 +5212,13 @@
             let refRewardDoneMap = (cloudState && cloudState.ref_reward_done) ? cloudState.ref_reward_done : {};
             let tasksDoneMap = (cloudState && cloudState.tasks_done) ? cloudState.tasks_done : {};
             const isStreamLive = Boolean(cloudState && cloudState.stream_live);
+            let cloudPred = (cloudState && cloudState.prediction) ? cloudState.prediction : null;
+            if (cloudPred) {
+                localStorage.setItem('vetruch_prediction_data', JSON.stringify(cloudPred));
+                renderPredictionCard(cloudPred);
+            } else {
+                renderPredictionCard(getPredictionData());
+            }
 
             localStorage.setItem('vetruch_stream_live', isStreamLive ? 'true' : 'false');
             updateKickStreamUI(isStreamLive);
@@ -4784,6 +5263,7 @@
             if (refreshAdmin) {
                 renderAdminLists();
                 renderAdminBalancesTable();
+                populateAdminPredictionForm();
             }
         }
 
@@ -4927,6 +5407,7 @@
         }
 
         initBalance();
+        renderPredictionCard(getPredictionData());
         processReferralOnStart().then(() => {
             syncFromCloud(false);
         });
@@ -4988,6 +5469,7 @@
             openPage('admin');
             renderAdminLists();
             renderAdminBalancesTable();
+            populateAdminPredictionForm();
             await syncFromCloud(true);
         }
 
@@ -4996,6 +5478,9 @@
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             btnEl.classList.add('active');
+            if (tabId === 'adm-prediction') {
+                populateAdminPredictionForm();
+            }
             syncFromCloud(true);
         }
 
