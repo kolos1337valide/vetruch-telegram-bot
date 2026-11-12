@@ -7179,6 +7179,15 @@ async function renderHomePodium() {
     const podium = document.querySelector('.podium');
     if (!podium || !data.length) return;
     
+    // Считаем реальных людей и монеты из облака
+    const allBalances = await cloudGet('vetruch_app/balances') || {};
+    const totalUsers = Object.keys(allBalances).length;
+    const totalCoins = Object.values(allBalances).reduce((acc, val) => acc + (Number(val) || 0), 0);
+
+    const uEl = document.querySelector('.global-stats .stat-item:nth-child(1) .stat-val');
+    const cEl = document.querySelector('.global-stats .stat-item:nth-child(2) .stat-val');
+    if (uEl) uEl.textContent = `👥 ${totalUsers}`;
+    if (cEl) cEl.innerHTML = `${formatCoins(totalCoins)} <img src="coins.png" alt="coins" class="coin-icon">`;
     // Твоя текущая разметка podium: first, second, third
     const places = ['second', 'first', 'third']; // 2-й слева, 1-й центр, 3-й справа
     const top3 = [data[1], data[0], data[2]].filter(Boolean);
