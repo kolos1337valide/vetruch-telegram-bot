@@ -3397,7 +3397,244 @@
             gap: 8px;
             margin-top: 6px;
         }
-    </style>
+    
+        /* ================= КНОПКА ВРЕМЯ МЕЧТАТЬ В ПРОФИЛЕ ================= */
+        .dream-entry-card {
+            width: 100%;
+            margin: 10px 0 14px 0;
+            padding: 12px 16px;
+            background: rgba(10, 16, 28, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 136, 255, 0.28);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 136, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+        .dream-entry-card:active {
+            transform: scale(0.98);
+            background: rgba(14, 24, 42, 0.6);
+            border-color: rgba(0, 180, 255, 0.5);
+        }
+        .dream-entry-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+        }
+        .dream-entry-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: #0d1527;
+            border: 1px solid rgba(0, 136, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 14px rgba(0, 136, 255, 0.25);
+            flex-shrink: 0;
+        }
+        .dream-entry-icon svg {
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0 0 4px rgba(0, 180, 255, 0.6));
+        }
+        .dream-entry-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.2px;
+        }
+        .dream-entry-sub {
+            font-size: 11px;
+            color: #8c97a7;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+        .dream-entry-arrow {
+            color: #00d9ff;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* ================= СТРАНИЦА МЕЧТЫ (КАК НА 4 СКРИНЕ) ================= */
+        #dream-page {
+            padding-bottom: 90px;
+            background: radial-gradient(circle at 50% 18%, rgba(20, 26, 42, 0.8) 0%, rgba(5, 7, 12, 0.98) 75%);
+            min-height: 100vh;
+        }
+        .dream-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+        .dream-back-btn {
+            background: rgba(0, 136, 255, 0.12);
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .dream-back-btn:active {
+            transform: scale(0.94);
+            background: rgba(0, 136, 255, 0.25);
+        }
+        .dream-header-center {
+            text-align: center;
+            flex: 1;
+        }
+        .dream-header-center h4 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .dream-header-center span {
+            font-size: 11px;
+            color: #8c97a7;
+        }
+
+        .dream-hero-brand {
+            text-align: center;
+            margin: 18px 0 28px 0;
+        }
+        .dream-crown-svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 0 16px rgba(230, 175, 46, 0.65));
+        }
+        .dream-title-gold {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            margin: 4px 0 0 0;
+            line-height: 1.1;
+            background: linear-gradient(180deg, #fff2b2 0%, #e5b342 50%, #9e721d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(229, 179, 66, 0.35);
+        }
+        .dream-sub-gold {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 3.5px;
+            color: #c99e42;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        .dream-form-wrap {
+            text-align: left;
+            margin-bottom: 22px;
+        }
+        .dream-label-main {
+            font-size: 18px;
+            font-weight: 800;
+            color: #e5b342;
+            margin-bottom: 4px;
+        }
+        .dream-desc-sub {
+            font-size: 12.5px;
+            color: #8c97a7;
+            margin-bottom: 14px;
+        }
+        .dream-field-tag {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #e5b342;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dream-field-tag svg {
+            width: 14px;
+            height: 14px;
+            fill: #e5b342;
+        }
+        .dream-text-area {
+            width: 100%;
+            height: 135px;
+            background: rgba(10, 14, 24, 0.85);
+            border: 1.5px solid rgba(229, 179, 66, 0.28);
+            border-radius: 18px;
+            padding: 14px 16px;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        .dream-text-area:focus {
+            border-color: #e5b342;
+            box-shadow: 0 0 20px rgba(229, 179, 66, 0.25);
+            background: rgba(14, 18, 30, 0.95);
+        }
+        .dream-char-count {
+            text-align: right;
+            font-size: 11px;
+            color: #8c97a7;
+            margin-top: 6px;
+        }
+
+        .dream-gold-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, #fce07a 0%, #e5b342 50%, #b8861d 100%);
+            border: none;
+            color: #120e04;
+            font-size: 15.5px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(229, 179, 66, 0.4);
+            transition: all 0.2s;
+            margin-bottom: 24px;
+        }
+        .dream-gold-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(229, 179, 66, 0.3);
+        }
+
+        .dream-instruction-card {
+            background: rgba(10, 14, 24, 0.6);
+            border: 1px solid rgba(229, 179, 66, 0.18);
+            border-radius: 18px;
+            padding: 16px;
+            text-align: left;
+        }
+        .dream-instruction-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #e5b342;
+            margin-bottom: 10px;
+        }
+        .dream-instruction-card ol {
+            margin: 0;
+            padding-left: 18px;
+            color: #8c97a7;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .dream-instruction-card li {
+            margin-bottom: 5px;
+        }
+
+</style>
 </head>
 
 <body class="is-loading">
@@ -4109,6 +4346,23 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        
+        <!-- КНОПКА МЕЧТЫ -->
+        <div class="dream-entry-card anim-item" style="animation-delay: 0.12s;" onclick="openPage('dream-page')">
+            <div class="dream-entry-left">
+                <div class="dream-entry-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#38bdf8" d="M12 2l2.4 5.6L20 10l-4.4 4 1.4 6L12 17l-5 3 1.4-6L4 10l5.6-2.4L12 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="dream-entry-title">Время мечтать</div>
+                    <div class="dream-entry-sub">Напиши свою мечту и отправь заявку</div>
+                </div>
+            </div>
+            <div class="dream-entry-arrow">➔</div>
         </div>
 
         <!-- 2. BENTO-СЕТКА СТАТИСТИКИ 2x2 -->
@@ -4871,6 +5125,65 @@
         </div>
     </div>
 
+    
+    <!-- СТРАНИЦА ВРЕМЯ МЕЧТАТЬ (VETRUCH) -->
+    <div class="page" id="dream-page">
+        <!-- Верхняя панель -->
+        <div class="dream-top-bar">
+            <button type="button" class="dream-back-btn" onclick="openPage('profile')">Закрыть</button>
+            <div class="dream-header-center">
+                <h4>Время мечтать</h4>
+                
+            </div>
+            <div style="width: 70px;"></div>
+        </div>
+
+        <!-- Логотип и Бренд как на 4-м скрине -->
+        <div class="dream-hero-brand">
+            <!-- Корона -->
+            <svg class="dream-crown-svg" viewBox="0 0 100 70" style="width: 58px; height: 42px; margin-bottom: 8px; filter: drop-shadow(0 0 18px rgba(229,179,66,0.55));">
+                <defs>
+                    <linearGradient id="goldCrownGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#fae492" />
+                        <stop offset="45%" stop-color="#e2ad3b" />
+                        <stop offset="100%" stop-color="#9a7019" />
+                    </linearGradient>
+                </defs>
+                <!-- Верхняя зубчатая часть -->
+                <path fill="url(#goldCrownGrad)" d="M15 16 L28 54 L72 54 L85 16 L62 38 L50 10 L38 38 Z"/>
+                <!-- Нижняя отдельная планка с закруглением -->
+                <rect x="25" y="59" width="50" height="8.5" rx="3.5" fill="url(#goldCrownGrad)"/>
+            </svg>
+            <h1 class="dream-title-gold">VETRUCH</h1>
+            
+        </div>
+
+        <!-- Форма -->
+        <div class="dream-form-wrap">
+            <div class="dream-label-main">Мечта</div>
+            <div class="dream-desc-sub">Напишите свою мечту — до 248 символов.</div>
+
+            <div class="dream-field-tag">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2l2.4 5.6L20 10l-4.4 4 1.4 6L12 17l-5 3 1.4-6L4 10l5.6-2.4L12 2z"/>
+                </svg>
+                <span>Ваша мечта</span>
+            </div>
+            <textarea id="dreamPageTextInput" class="dream-text-area" maxlength="248" placeholder="Опишите свою мечту..." oninput="updateDreamPageCharCount()"></textarea>
+            <div class="dream-char-count" id="dreamPageCharCount">0/248</div>
+        </div>
+
+        <button type="button" class="dream-gold-btn" onclick="submitDreamFromPage()">Отправить</button>
+
+        <div class="dream-instruction-card">
+            <div class="dream-instruction-title">Как это работает</div>
+            <ol>
+                <li>Напишите свою мечту в поле выше</li>
+                <li>Нажмите «Отправить» для отправки заявки</li>
+            </ol>
+        </div>
+    </div>
+
     <!-- ЛИДЕРБОРД -->
     <div class="page" id="leaderboard">
         <!-- Шапка -->
@@ -5183,68 +5496,6 @@
     </nav>
     
     <script>
-
-// ===== ПЛАВНАЯ АНИМАЦИЯ ЧИСЕЛ =====
-function animateCount(el, targetNum, duration, onUpdate) {
-    if (!el) return;
-    targetNum = Number(targetNum) || 0;
-    duration = duration || 1500;
-    var start = performance.now();
-    function ease(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
-    function frame(now) {
-        var progress = Math.min((now - start) / duration, 1);
-        var current = Math.round(targetNum * ease(progress));
-        if (typeof onUpdate === 'function') {
-            onUpdate(el, current);
-        } else {
-            el.textContent = current.toLocaleString('ru-RU');
-        }
-        if (progress < 1) {
-            requestAnimationFrame(frame);
-        } else {
-            if (typeof onUpdate === 'function') {
-                onUpdate(el, targetNum);
-            } else {
-                el.textContent = targetNum.toLocaleString('ru-RU');
-            }
-        }
-    }
-    requestAnimationFrame(frame);
-}
-
-var globalStatsAnimated = false;
-function animateGlobalStats(totalUsers, totalCoins) {
-    var payEl = document.querySelector('.stats-main-sum');
-    var uEl = document.querySelector('.global-stats .stat-item:nth-child(1) .stat-val');
-    var cEl = document.querySelector('.global-stats .stat-item:nth-child(2) .stat-val');
-    var targetPay = 24714120;
-    var targetUsers = Number(totalUsers) || 4;
-    var targetCoins = Number(totalCoins) || 138181;
-    if (!globalStatsAnimated) {
-        globalStatsAnimated = true;
-        if (payEl) {
-            animateCount(payEl, targetPay, 1800, function(el, n) {
-                el.textContent = n.toLocaleString('ru-RU') + ' ₽';
-            });
-        }
-        if (uEl) {
-            animateCount(uEl, targetUsers, 1400, function(el, n) {
-                el.textContent = '👥 ' + n.toLocaleString('ru-RU');
-            });
-        }
-        if (cEl) {
-            animateCount(cEl, targetCoins, 1800, function(el, n) {
-                el.innerHTML = formatCoins(n) + ' <img src="coins.png" alt="coins" class="coin-icon">';
-            });
-        }
-    } else {
-        if (payEl) payEl.textContent = targetPay.toLocaleString('ru-RU') + ' ₽';
-        if (uEl) uEl.textContent = '👥 ' + targetUsers.toLocaleString('ru-RU');
-        if (cEl) cEl.innerHTML = formatCoins(targetCoins) + ' <img src="coins.png" alt="coins" class="coin-icon">';
-    }
-}
-// ===================================
-
         const tg = window.Telegram.WebApp;
         tg.ready(); tg.expand();
         tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
@@ -6531,7 +6782,7 @@ function animateGlobalStats(totalUsers, totalCoins) {
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
             localStorage.setItem('vetruch_last_user_id', myId);
 
-            document.querySelectorAll('.app-balance').forEach(el => animateCount(el, bal, 1200));
+            document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
             renderProfilePurchases();
             updateKickStreamUI(localStorage.getItem('vetruch_stream_live') === 'true');
         }
@@ -7570,7 +7821,10 @@ async function renderHomePodium() {
     const totalUsers = Object.keys(allBalances).length;
     const totalCoins = Object.values(allBalances).reduce((acc, val) => acc + (Number(val) || 0), 0);
 
-    animateGlobalStats(totalUsers, totalCoins);
+    const uEl = document.querySelector('.global-stats .stat-item:nth-child(1) .stat-val');
+    const cEl = document.querySelector('.global-stats .stat-item:nth-child(2) .stat-val');
+    if (uEl) uEl.textContent = `👥 ${totalUsers}`;
+    if (cEl) cEl.innerHTML = `${formatCoins(totalCoins)} <img src="coins.png" alt="coins" class="coin-icon">`;
     // Твоя текущая разметка podium: first, second, third
     const places = ['second', 'first', 'third']; // 2-й слева, 1-й центр, 3-й справа
     const top3 = [data[1], data[0], data[2]].filter(Boolean);
@@ -7683,7 +7937,62 @@ async function renderLeaderboardPage() {
     `).join('');
 }
         
-    </script>
+    
+        // ================= ЛОГИКА СТРАНИЦЫ МЕЧТЫ =================
+        function updateDreamPageCharCount() {
+            const input = document.getElementById('dreamPageTextInput');
+            const counter = document.getElementById('dreamPageCharCount');
+            if (input && counter) {
+                counter.textContent = input.value.length + '/248';
+            }
+        }
+
+        async function submitDreamFromPage() {
+            const input = document.getElementById('dreamPageTextInput');
+            if (!input) return;
+            const text = input.value.trim();
+
+            if (!text) {
+                if (window.tg && tg.showAlert) {
+                    tg.showAlert('⚠️ Пожалуйста, напишите свою мечту!');
+                } else {
+                    alert('⚠️ Пожалуйста, напишите свою мечту!');
+                }
+                return;
+            }
+
+            const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'user';
+            const username = (typeof getDefaultUsername === 'function') ? getDefaultUsername() : '@vetruch_player';
+
+            try {
+                if (typeof cloudGet === 'function' && typeof cloudPut === 'function') {
+                    let dreams = (await cloudGet('vetruch_app/dreams')) || [];
+                    if (!Array.isArray(dreams)) dreams = [];
+                    dreams.unshift({
+                        id: Date.now(),
+                        userId: myId,
+                        username: username,
+                        text: text,
+                        date: new Date().toISOString()
+                    });
+                    await cloudPut('vetruch_app/dreams', dreams);
+                }
+            } catch (e) {
+                console.error('Error saving dream:', e);
+            }
+
+            if (window.tg && tg.showAlert) {
+                tg.showAlert('✨ Ваша мечта успешно отправлена Vetruch! Удачи!');
+            } else {
+                alert('✨ Ваша мечта успешно отправлена Vetruch! Удачи!');
+            }
+
+            input.value = '';
+            updateDreamPageCharCount();
+            openPage('profile');
+        }
+
+</script>
 
 </body>
 </html>
