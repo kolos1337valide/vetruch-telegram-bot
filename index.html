@@ -5183,6 +5183,7 @@
     </nav>
     
     <script>
+
 // ===== ПЛАВНАЯ АНИМАЦИЯ ЧИСЕЛ =====
 function animateCount(el, targetNum, duration, onUpdate) {
     if (!el) return;
@@ -5211,16 +5212,14 @@ function animateCount(el, targetNum, duration, onUpdate) {
     requestAnimationFrame(frame);
 }
 
-let globalStatsAnimated = false;
+var globalStatsAnimated = false;
 function animateGlobalStats(totalUsers, totalCoins) {
-    const payEl = document.querySelector('.stats-main-sum');
-    animateGlobalStats(totalUsers, totalCoins);
-
-
-
-    const targetUsers = Number(totalUsers) || 4;
-    const targetCoins = Number(totalCoins) || 138181;
-
+    var payEl = document.querySelector('.stats-main-sum');
+    var uEl = document.querySelector('.global-stats .stat-item:nth-child(1) .stat-val');
+    var cEl = document.querySelector('.global-stats .stat-item:nth-child(2) .stat-val');
+    var targetPay = 24714120;
+    var targetUsers = Number(totalUsers) || 4;
+    var targetCoins = Number(totalCoins) || 138181;
     if (!globalStatsAnimated) {
         globalStatsAnimated = true;
         if (payEl) {
@@ -5235,17 +5234,22 @@ function animateGlobalStats(totalUsers, totalCoins) {
         }
         if (cEl) {
             animateCount(cEl, targetCoins, 1800, function(el, n) {
-                el.innerHTML = formatCoins(n) + ' <img src=\"coins.png\" alt=\"coins\" class=\"coin-icon\">';
+                el.innerHTML = formatCoins(n) + ' <img src="coins.png" alt="coins" class="coin-icon">';
             });
         }
     } else {
         if (payEl) payEl.textContent = targetPay.toLocaleString('ru-RU') + ' ₽';
         if (uEl) uEl.textContent = '👥 ' + targetUsers.toLocaleString('ru-RU');
-        if (cEl) cEl.innerHTML = formatCoins(targetCoins) + ' <img src=\"coins.png\" alt=\"coins\" class=\"coin-icon\">';
+        if (cEl) cEl.innerHTML = formatCoins(targetCoins) + ' <img src="coins.png" alt="coins" class="coin-icon">';
     }
 }
+// ===================================
 
-============================================
+        const tg = window.Telegram.WebApp;
+        tg.ready(); tg.expand();
+        tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+
+        // =========================================================================
         // ПОДКЛЮЧЕННАЯ ОБЛАЧНАЯ БАЗА FIREBASE
         // =========================================================================
         const FIREBASE_DB_URL = "https://vetruchbot-default-rtdb.firebaseio.com";
@@ -7485,8 +7489,6 @@ if (document.readyState === 'loading') {
 // ================= СИСТЕМА ПРОФИЛЕЙ И ЛИДЕРБОРД =================
 
 // При входе сохраняем профиль юзера в облако
-
-
 async function syncUserProfile() {
     const user = tg.initDataUnsafe?.user;
     if (!user) return;
@@ -7568,10 +7570,7 @@ async function renderHomePodium() {
     const totalUsers = Object.keys(allBalances).length;
     const totalCoins = Object.values(allBalances).reduce((acc, val) => acc + (Number(val) || 0), 0);
 
-    const uEl = document.querySelector('.global-stats .stat-item:nth-child(1) .stat-val');
-    const cEl = document.querySelector('.global-stats .stat-item:nth-child(2) .stat-val');
-    if (uEl) uEl.textContent = `👥 ${totalUsers}`;
-    if (cEl) cEl.innerHTML = `${formatCoins(totalCoins)} <img src="coins.png" alt="coins" class="coin-icon">`;
+    animateGlobalStats(totalUsers, totalCoins);
     // Твоя текущая разметка podium: first, second, third
     const places = ['second', 'first', 'third']; // 2-й слева, 1-й центр, 3-й справа
     const top3 = [data[1], data[0], data[2]].filter(Boolean);
@@ -7633,8 +7632,8 @@ async function renderLeaderboardPage() {
     const totalCoins = Object.values(balances).reduce((a, b) => a + (Number(b) || 0), 0);
     const statUsersEl = document.getElementById('lbStatUsers');
     const statCoinsEl = document.getElementById('lbStatCoins');
-    if (statUsersEl) animateCount(statUsersEl, totalUsers, 1000);
-    if (statCoinsEl) animateCount(statCoinsEl, totalCoins, 1500, function(el, n) { el.textContent = formatCoins(n); });
+    if (statUsersEl) statUsersEl.textContent = totalUsers;
+    if (statCoinsEl) statCoinsEl.textContent = formatCoins(totalCoins);
 
     if (!data.length) {
         listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--secondary);">Пока нет игроков</div>';
