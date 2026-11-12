@@ -7538,6 +7538,75 @@ function showLeaderboard() {
     openPage('leaderboard');
     renderLeaderboardPage();
 }
+
+async function renderLeaderboardPage() {
+    const listEl = document.getElementById('leaderboardList');
+    const podiumEl = document.getElementById('lbPodium');
+    if (!listEl || !podiumEl) return;
+
+    listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--secondary);">Загрузка топа…</div>';
+    podiumEl.innerHTML = '';
+
+    const [data, balances] = await Promise.all([
+        getLeaderboard(),
+        cloudGet('vetruch_app/balances') || {}
+    ]);
+
+    // Обновляем плашку со статистикой
+    const totalUsers = Object.keys(balances).length;
+    const totalCoins = Object.values(balances).reduce((a, b) => a + (Number(b) || 0), 0);
+    const statUsersEl = document.getElementById('lbStatUsers');
+    const statCoinsEl = document.getElementById('lbStatCoins');
+    if (statUsersEl) statUsersEl.textContent = totalUsers;
+    if (statCoinsEl) statCoinsEl.textContent = formatCoins(totalCoins);
+
+    if (!data.length) {
+        listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--secondary);">Пока нет игроков</div>';
+        return;
+    }
+
+    // Топ-3 для подиума (1 место по центру, 2 слева, 3 справа)
+    const top3 = [
+        data[0] ? { ...data[0], place: 1 } : null,
+        data[1] ? { ...data[1], place: 2 } : null,
+        data[2] ? { ...data[2], place: 3 } : null
+    ].filter(Boolean);
+
+    podiumEl.innerHTML = top3.map(u => `
+        <div class="lb-podium-card place-${u.place}">
+            <div class="lb-place-badge">
+                ${u.place === 1 ? '🏆 1' : u.place}
+            </div>
+            <div class="lb-avatar-wrap">
+                ${u.avatar 
+                    ? `<img src="${u.avatar}" onerror="this.parentElement.textContent='${u.name[0]}'"/>` 
+                    : u.name[0].toUpperCase()}
+            </div>
+            <div class="lb-card-name">${u.name}${u.isMe ? ' (Вы)' : ''}</div>
+            <div class="lb-card-coins">
+                <img src="coins.png" class="coin-icon-sm"> ${formatCoins(u.balance)}
+            </div>
+            <div class="lb-card-sub">монет</div>
+        </div>
+    `).join('');
+
+    // С 4 по 10 место в список
+    const rest = data.slice(3);
+    listEl.innerHTML = rest.map((u, i) => `
+        <div class="lb-row ${u.isMe ? 'is-me' : ''}">
+            <div class="lb-rank">${i + 4}</div>
+            <div class="lb-row-avatar">
+                ${u.avatar 
+                    ? `<img src="${u.avatar}" onerror="this.parentElement.textContent='${u.name[0]}'"/>` 
+                    : u.name[0].toUpperCase()}
+            </div>
+            <div class="lb-row-name">${u.name}${u.isMe ? ' (Вы)' : ''}</div>
+            <div class="lb-row-coins">
+                <img src="coins.png" class="coin-icon-sm"> ${formatCoins(u.balance)}
+            </div>
+        </div>
+    `).join('');
+}
         
     </script>
 
