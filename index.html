@@ -14,6 +14,32 @@
 
     <style>
 
+        .lb-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.lb-back-btn {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(0,136,255,0.15); border: 1px solid rgba(0,136,255,0.3);
+    color: #fff; font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+.lb-title { font-size: 20px; font-weight: 800; }
+.lb-list { display: flex; flex-direction: column; gap: 10px; }
+.lb-row {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 12px 14px;
+}
+.lb-row.top1 { border-color: rgba(255,215,0,0.5); background: linear-gradient(90deg, rgba(255,215,0,0.08), var(--card-bg)); }
+.lb-row.top2 { border-color: rgba(192,192,192,0.4); }
+.lb-row.top3 { border-color: rgba(205,127,50,0.4); }
+.lb-rank { font-size: 16px; font-weight: 800; width: 32px; text-align: center; color: var(--secondary); }
+.lb-row.top1 .lb-rank { color: #ffd700; }
+.lb-row.top2 .lb-rank { color: #c0c0c0; }
+.lb-row.top3 .lb-rank { color: #cd7f32; }
+.lb-avatar { width: 40px; height: 40px; border-radius: 10px; background: #2a2d35; display: flex; align-items: center; justify-content: center; font-weight: 700; overflow: hidden; flex-shrink: 0; }
+.lb-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.lb-name { flex: 1; font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-bal { font-weight: 800; color: #00e676; display: flex; align-items: center; gap: 4px; font-size: 14px; }
+
 /* ================= ПРОГНОЗ ================= */
 .prediction-card {
     background: rgba(12, 14, 20, 0.85); /* Темный аккуратный фон */
