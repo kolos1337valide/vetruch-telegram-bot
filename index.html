@@ -5183,11 +5183,11 @@
     </nav>
     
     <script>
-// ===== АНИМАЦИЯ СЧЁТЧИКА =====
+// ===== ПЛАВНАЯ АНИМАЦИЯ ЧИСЕЛ =====
 function animateCount(el, targetNum, duration, onUpdate) {
     if (!el) return;
     targetNum = Number(targetNum) || 0;
-    duration = duration || 1200;
+    duration = duration || 1500;
     var start = performance.now();
     function ease(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
     function frame(now) {
@@ -5211,11 +5211,41 @@ function animateCount(el, targetNum, duration, onUpdate) {
     requestAnimationFrame(frame);
 }
 
-        const tg = window.Telegram.WebApp;
-        tg.ready(); tg.expand();
-        tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+let globalStatsAnimated = false;
+function animateGlobalStats(totalUsers, totalCoins) {
+    const payEl = document.querySelector('.stats-main-sum');
+    animateGlobalStats(totalUsers, totalCoins);
 
-        // =========================================================================
+
+
+    const targetUsers = Number(totalUsers) || 4;
+    const targetCoins = Number(totalCoins) || 138181;
+
+    if (!globalStatsAnimated) {
+        globalStatsAnimated = true;
+        if (payEl) {
+            animateCount(payEl, targetPay, 1800, function(el, n) {
+                el.textContent = n.toLocaleString('ru-RU') + ' ₽';
+            });
+        }
+        if (uEl) {
+            animateCount(uEl, targetUsers, 1400, function(el, n) {
+                el.textContent = '👥 ' + n.toLocaleString('ru-RU');
+            });
+        }
+        if (cEl) {
+            animateCount(cEl, targetCoins, 1800, function(el, n) {
+                el.innerHTML = formatCoins(n) + ' <img src=\"coins.png\" alt=\"coins\" class=\"coin-icon\">';
+            });
+        }
+    } else {
+        if (payEl) payEl.textContent = targetPay.toLocaleString('ru-RU') + ' ₽';
+        if (uEl) uEl.textContent = '👥 ' + targetUsers.toLocaleString('ru-RU');
+        if (cEl) cEl.innerHTML = formatCoins(targetCoins) + ' <img src=\"coins.png\" alt=\"coins\" class=\"coin-icon\">';
+    }
+}
+
+============================================
         // ПОДКЛЮЧЕННАЯ ОБЛАЧНАЯ БАЗА FIREBASE
         // =========================================================================
         const FIREBASE_DB_URL = "https://vetruchbot-default-rtdb.firebaseio.com";
