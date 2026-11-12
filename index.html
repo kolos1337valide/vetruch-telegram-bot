@@ -4865,23 +4865,44 @@
     </div>
 
     <!-- ЛИДЕРБОРД -->
-<div class="page" id="leaderboard">
-    <div class="lb-header">
-        <button class="lb-back-btn" onclick="openPage('home')">←</button>
-        <div class="lb-title">🏆 Топ 10 игроков</div>
-    </div>
-    <div class="lb-list" id="leaderboardList"></div>
-</div>
-
-    <!-- 6. СКРЫТАЯ ВКЛАДКА: АДМИН-ПАНЕЛЬ (НЕТ В НИЖНЕМ МЕНЮ) -->
-    <main id="admin" class="page">
-        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
-            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+    <div class="page" id="leaderboard">
+        <!-- Шапка -->
+        <div class="lb-top-bar">
+            <button type="button" class="lb-back-btn" onclick="openPage('home')">←</button>
+            <div class="lb-title-wrap">
+                <h1 class="lb-main-title">Топ-10 Фармеров</h1>
+                <div class="lb-subtitle">Рейтинг игроков по балансу монет</div>
+            </div>
+            <div class="lb-trophy-box">🏆</div>
         </div>
 
-        <div class="admin-top-bar anim-item" style="animation-delay: 0.05s;">
-            <button type="button" class="admin-back-btn" onclick="openPage('profile')">
-                ← Назад
+        <!-- Карточка со статистикой -->
+        <div class="lb-stats-box">
+            <div class="lb-stats-pill">Общая статистика</div>
+            <div class="lb-stats-grid">
+                <div>
+                    <span class="lb-stat-lbl">Новых игроков</span>
+                    <span class="lb-stat-val" id="lbStatUsers">0</span>
+                </div>
+                <div>
+                    <span class="lb-stat-lbl">Монет заработано</span>
+                    <span class="lb-stat-val" id="lbStatCoins" style="color: #00d9ff;">0</span>
+                </div>
+                <div>
+                    <span class="lb-stat-lbl">В топе</span>
+                    <span class="lb-stat-val">Топ-10</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lb-section-label">Лидеры по балансу</div>
+
+        <!-- Подиум 1, 2, 3 место -->
+        <div class="lb-podium" id="lbPodium"></div>
+
+        <!-- Список 4 - 10 место -->
+        <div class="lb-list" id="leaderboardList"></div>
+    </div>
             </button>
             <h2 class="games-heading">Админ-панель</h2>
         </div>
