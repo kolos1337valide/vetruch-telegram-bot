@@ -7201,6 +7201,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Обновляем каждые 10 секунд
     setInterval(renderHomePodium, 10000);
 });
+
+document.querySelector('.leaderboard-link')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openPage('leaderboard');
+    renderLeaderboardPage();
+});
         
     </script>
 
