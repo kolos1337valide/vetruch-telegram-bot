@@ -5183,6 +5183,34 @@
     </nav>
     
     <script>
+// ===== АНИМАЦИЯ СЧЁТЧИКА =====
+function animateCount(el, targetNum, duration, onUpdate) {
+    if (!el) return;
+    targetNum = Number(targetNum) || 0;
+    duration = duration || 1200;
+    var start = performance.now();
+    function ease(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
+    function frame(now) {
+        var progress = Math.min((now - start) / duration, 1);
+        var current = Math.round(targetNum * ease(progress));
+        if (typeof onUpdate === 'function') {
+            onUpdate(el, current);
+        } else {
+            el.textContent = current.toLocaleString('ru-RU');
+        }
+        if (progress < 1) {
+            requestAnimationFrame(frame);
+        } else {
+            if (typeof onUpdate === 'function') {
+                onUpdate(el, targetNum);
+            } else {
+                el.textContent = targetNum.toLocaleString('ru-RU');
+            }
+        }
+    }
+    requestAnimationFrame(frame);
+}
+
         const tg = window.Telegram.WebApp;
         tg.ready(); tg.expand();
         tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
@@ -7428,21 +7456,6 @@ if (document.readyState === 'loading') {
 
 // При входе сохраняем профиль юзера в облако
 
-// ===== АНИМАЦИЯ СЧЁТЧИКА =====
-function animateCount(el, targetNum, duration, onUpdate) {
-    duration = duration || 1500;
-    var start = Date.now();
-    function ease(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
-    function update() {
-        var progress = Math.min((Date.now() - start) / duration, 1);
-        var current = Math.round(targetNum * ease(progress));
-        if (onUpdate) { onUpdate(el, current); }
-        else { el.textContent = current.toLocaleString('ru-RU'); }
-        if (progress < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-}
-// =============================
 
 async function syncUserProfile() {
     const user = tg.initDataUnsafe?.user;
