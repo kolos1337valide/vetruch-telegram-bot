@@ -6469,7 +6469,7 @@
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
             localStorage.setItem('vetruch_last_user_id', myId);
 
-            document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
+            document.querySelectorAll('.app-balance').forEach(el => animateCount(el, bal, 1200));
             renderProfilePurchases();
             updateKickStreamUI(localStorage.getItem('vetruch_stream_live') === 'true');
         }
@@ -7427,6 +7427,23 @@ if (document.readyState === 'loading') {
 // ================= СИСТЕМА ПРОФИЛЕЙ И ЛИДЕРБОРД =================
 
 // При входе сохраняем профиль юзера в облако
+
+// ===== АНИМАЦИЯ СЧЁТЧИКА =====
+function animateCount(el, targetNum, duration, onUpdate) {
+    duration = duration || 1500;
+    var start = Date.now();
+    function ease(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
+    function update() {
+        var progress = Math.min((Date.now() - start) / duration, 1);
+        var current = Math.round(targetNum * ease(progress));
+        if (onUpdate) { onUpdate(el, current); }
+        else { el.textContent = current.toLocaleString('ru-RU'); }
+        if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+}
+// =============================
+
 async function syncUserProfile() {
     const user = tg.initDataUnsafe?.user;
     if (!user) return;
@@ -7573,8 +7590,8 @@ async function renderLeaderboardPage() {
     const totalCoins = Object.values(balances).reduce((a, b) => a + (Number(b) || 0), 0);
     const statUsersEl = document.getElementById('lbStatUsers');
     const statCoinsEl = document.getElementById('lbStatCoins');
-    if (statUsersEl) statUsersEl.textContent = totalUsers;
-    if (statCoinsEl) statCoinsEl.textContent = formatCoins(totalCoins);
+    if (statUsersEl) animateCount(statUsersEl, totalUsers, 1000);
+    if (statCoinsEl) animateCount(statCoinsEl, totalCoins, 1500, function(el, n) { el.textContent = formatCoins(n); });
 
     if (!data.length) {
         listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--secondary);">Пока нет игроков</div>';
@@ -7628,3 +7645,4 @@ async function renderLeaderboardPage() {
 
 </body>
 </html>
+
