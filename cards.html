@@ -8,11 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Карты - Vetruch</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         :root {
             --bg: #000000; --text: #ffffff;
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
@@ -269,10 +271,10 @@
             if (window.VETRUCH_ECONOMY) {
                 var check = VETRUCH_ECONOMY.checkAndUseAttempt('cards');
                 if (!check.ok) {
-                    VETRUCH_ECONOMY.showNoAttemptsOverlay();
+                    VETRUCH_ECONOMY.showNoAttemptsOverlay('cards');
                     return;
                 }
-                VETRUCH_ECONOMY.updateBadgeUI();
+                VETRUCH_ECONOMY.updateBadgeUI('cards');
             }
 
             balance -= bet;
@@ -304,6 +306,15 @@
 
         // ШАГ 1
         function guessColor(color) {
+            // Контроль RTP 60%: при верном выборе с шансом 40% (house edge) подменяем масть на противоположный цвет
+            if (targetCard.suit.color === color && Math.random() > 0.60) {
+                targetCard.suit = (color === 'red') ? suits.find(s => s.color === 'black') : suits.find(s => s.color === 'red');
+                document.getElementById('c-suit-top').textContent = targetCard.suit.symbol;
+                document.getElementById('c-suit-bottom').textContent = targetCard.suit.symbol;
+                document.getElementById('c-suit-center').textContent = targetCard.suit.symbol;
+                cardBackFace.className = (targetCard.suit.color === 'red') ? 'card-back card-red' : 'card-back card-black';
+            }
+
             if (targetCard.suit.color === color) {
                 currentWin = Math.floor(bet * 1.74);
                 
@@ -334,6 +345,14 @@
 
         // ШАГ 2
         function guessSuit(suitId) {
+            // Контроль RTP 60%: при верном выборе масти с шансом 40% меняем на соседнюю масть того же цвета
+            if (targetCard.suit.id === suitId && Math.random() > 0.60) {
+                targetCard.suit = suits.find(s => s.color === targetCard.suit.color && s.id !== suitId) || targetCard.suit;
+                document.getElementById('c-suit-top').textContent = targetCard.suit.symbol;
+                document.getElementById('c-suit-bottom').textContent = targetCard.suit.symbol;
+                document.getElementById('c-suit-center').textContent = targetCard.suit.symbol;
+            }
+
             if (targetCard.suit.id === suitId) {
                 currentWin = Math.floor(bet * 3.48);
                 
@@ -352,6 +371,13 @@
 
         // ШАГ 3
         function guessValue(val) {
+            // Контроль RTP 60%: при верном угадывании карты с шансом 40% подменяем на другое значение
+            if (targetCard.value === val && Math.random() > 0.60) {
+                targetCard.value = values.find(v => v !== val) || targetCard.value;
+                document.getElementById('c-val-top').textContent = targetCard.value;
+                document.getElementById('c-val-bottom').textContent = targetCard.value;
+            }
+
             if (targetCard.value === val) {
                 currentWin = Math.floor(bet * 10);
                 

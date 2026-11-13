@@ -8,11 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Кости - Vetruch</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         :root {
             --bg: #000000; --text: #ffffff;
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.6);
@@ -149,11 +151,7 @@
         .action-btn:disabled { opacity: 0.8; cursor: not-allowed; }
     </style>
 </head>
-<body class="is-loading">
-
-    <div id="loading-screen">
-        <!-- Пустой черный экран, чтобы не мигало белым при загрузке. Уберем его сразу через JS -->
-    </div>
+<body>
 
     <canvas id="stars"></canvas>
     <div class="dark-overlay"></div>
@@ -233,10 +231,6 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
-
-        // Моментально убираем загрузочный экран для игры
-        document.getElementById('loading-screen').style.display = 'none';
-        document.body.classList.remove('is-loading');
 
         // Логика ставок и РТП
         let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
@@ -361,10 +355,10 @@
             if (window.VETRUCH_ECONOMY) {
                 var check = VETRUCH_ECONOMY.checkAndUseAttempt('dice');
                 if (!check.ok) {
-                    VETRUCH_ECONOMY.showNoAttemptsOverlay();
+                    VETRUCH_ECONOMY.showNoAttemptsOverlay('dice');
                     return;
                 }
-                VETRUCH_ECONOMY.updateBadgeUI();
+                VETRUCH_ECONOMY.updateBadgeUI('dice');
             }
 
             isRolling = true;
@@ -380,6 +374,31 @@
             let r1 = Math.floor(Math.random() * 6) + 1;
             let r2 = Math.floor(Math.random() * 6) + 1;
             let sum = r1 + r2;
+
+            // Проверяем, победный ли это бросок
+            let wouldWin = false;
+            if (mode === 'exact' && sum === targetNum) wouldWin = true;
+            else if (mode === 'under' && sum < targetNum) wouldWin = true;
+            else if (mode === 'over' && sum > targetNum) wouldWin = true;
+
+            // RTP 60% контроль: если бросок победный, но выпал 40% house edge (RTP 60%),
+            // подбираем гарантированно проигрышную комбинацию кубиков
+            if (wouldWin && Math.random() > 0.60) {
+                for (let try1 = 1; try1 <= 6; try1++) {
+                    for (let try2 = 1; try2 <= 6; try2++) {
+                        let s = try1 + try2;
+                        let w = (mode === 'exact' && s === targetNum) || (mode === 'under' && s < targetNum) || (mode === 'over' && s > targetNum);
+                        if (!w) {
+                            r1 = try1;
+                            r2 = try2;
+                            sum = s;
+                            break;
+                        }
+                    }
+                    let wNow = (mode === 'exact' && sum === targetNum) || (mode === 'under' && sum < targetNum) || (mode === 'over' && sum > targetNum);
+                    if (!wNow) break;
+                }
+            }
 
             let spinX1 = 360 * 3 + diceRotations[r1].x;
             let spinY1 = 360 * 3 + diceRotations[r1].y;

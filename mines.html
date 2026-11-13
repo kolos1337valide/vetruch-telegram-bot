@@ -8,11 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Мины - Vetruch</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         :root {
             --bg: #000000; --text: #ffffff;
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
@@ -232,7 +234,8 @@
             for(let i=0; i<clicksCount; i++) {
                 prob *= (safeCells - i) / (25 - i);
             }
-            return (0.95 / prob); 
+            // RTP 60% формула множителей (минимум 1.15x)
+            return Math.max(1.15, (0.60 / prob)); 
         }
 
         function handleAction() {
@@ -252,10 +255,10 @@
             if (window.VETRUCH_ECONOMY) {
                 var check = VETRUCH_ECONOMY.checkAndUseAttempt('mines');
                 if (!check.ok) {
-                    VETRUCH_ECONOMY.showNoAttemptsOverlay();
+                    VETRUCH_ECONOMY.showNoAttemptsOverlay('mines');
                     return;
                 }
-                VETRUCH_ECONOMY.updateBadgeUI();
+                VETRUCH_ECONOMY.updateBadgeUI('mines');
             }
 
             balance -= bet;
@@ -308,6 +311,12 @@
 
             let cellData = gridData[index];
             cellData.revealed = true;
+
+            // Контроль RTP 60%: если ячейка была без мины, с шансом 40% (house edge)
+            // при клике может превратиться в мину (начиная со второго клика)
+            if (!cellData.isMine && clicks >= 1 && Math.random() > 0.60) {
+                cellData.isMine = true;
+            }
 
             if (cellData.isMine) {
                 cellData.el.classList.add('mine');

@@ -8,11 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Шарик - Vetruch</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         :root {
             --bg: #000000; --text: #ffffff;
             --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.6);
@@ -279,14 +281,16 @@
             btn.classList.add('active');
         }
 
-        // Рандом краш поинта
+        // Рандом краш поинта (RTP 60%)
         function generateCrashPoint() {
             let r = Math.random();
-            if (r < 0.05) return 1.00 + Math.random() * 0.15; 
-            else if (r < 0.20) return 1.15 + Math.random() * 0.35; 
-            else if (r < 0.70) return 1.50 + Math.random() * 2.00; 
-            else if (r < 0.90) return 3.50 + Math.random() * 6.50; 
-            else return 10.00 + Math.random() * 40.00; 
+            // 40% house edge: мгновенный или ранний краш (1.00 - 1.12x)
+            if (r < 0.40) {
+                return parseFloat((1.00 + Math.random() * 0.12).toFixed(2));
+            }
+            // Формула точного RTP 60%: P(Crash >= x) = 0.60 / x
+            let mult = 0.60 / (1 - r);
+            return Math.max(1.10, Math.min(35.00, parseFloat(mult.toFixed(2))));
         }
 
         // ================= УПРАВЛЕНИЕ КНОПКОЙ =================
@@ -308,10 +312,10 @@
             if (window.VETRUCH_ECONOMY) {
                 var check = VETRUCH_ECONOMY.checkAndUseAttempt('balloon');
                 if (!check.ok) {
-                    VETRUCH_ECONOMY.showNoAttemptsOverlay();
+                    VETRUCH_ECONOMY.showNoAttemptsOverlay('balloon');
                     return;
                 }
-                VETRUCH_ECONOMY.updateBadgeUI();
+                VETRUCH_ECONOMY.updateBadgeUI('balloon');
             }
 
             // === УМНЫЙ ОГРАНИЧИТЕЛЬ РАЗМЕРА ===
