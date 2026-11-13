@@ -1095,24 +1095,33 @@
         }
         .banner-carousel {
             width: 100%;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 2 / 1;
             border-radius: 16px;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
             border: 1px solid rgba(0, 136, 255, 0.28);
             display: flex;
             position: relative;
             background: #000;
             box-shadow: 0 4px 22px rgba(0, 0, 0, 0.55);
-            touch-action: pan-y;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
             user-select: none;
             -webkit-user-select: none;
         }
+        .banner-carousel::-webkit-scrollbar {
+            display: none;
+        }
         .banner-slide {
-            min-width: 100%;
+            flex: 0 0 100%;
+            width: 100%;
             height: 100%;
             position: relative;
             cursor: pointer;
-            transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
             overflow: hidden;
         }
         .banner-slide img, .banner-slide video {
@@ -1120,6 +1129,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            pointer-events: none;
         }
         .banner-dots {
             display: flex;
@@ -1139,12 +1149,12 @@
         .banner-dot.active {
             width: 22px;
             border-radius: 10px;
-            background: #00d9ff;
-            box-shadow: 0 0 10px rgba(0, 217, 255, 0.7);
-        }
-        .banner-dot:nth-child(2).active {
             background: #53fc18;
             box-shadow: 0 0 10px rgba(83, 252, 24, 0.7);
+        }
+        .banner-dot:nth-child(2).active {
+            background: #00d9ff;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.7);
         }
 
         .global-stats {
@@ -4163,15 +4173,13 @@
         <!-- ================= КАРУСЕЛЬ БАННЕРОВ ================= -->
         <div class="banner-carousel-wrap anim-item" style="clear: both; animation-delay: 0.1s;">
             <div class="banner-carousel" id="bannerCarousel">
-                <!-- Слайд 1: Поездка мечты -->
-                <div class="banner-slide" onclick="openGwTripModal()">
-                    <video autoplay muted loop playsinline poster="giveaway_trip.jpg">
-                        <source src="./banner3.mp4" type="video/mp4">
-                    </video>
+                <!-- Слайд 1: Kick Стримы (первый при заходе) -->
+                <div class="banner-slide" onclick="handleBannerSlideClick(0)">
+                    <img src="banner_kick.jpg?v=3" alt="Смотри стримы получай монеты">
                 </div>
-                <!-- Слайд 2: Kick Стримы -->
-                <div class="banner-slide" onclick="openKickStreamLink()">
-                    <img src="banner_kick.jpg?v=2" alt="Смотри стримы получай монеты">
+                <!-- Слайд 2: Поездка мечты (второй) -->
+                <div class="banner-slide" onclick="handleBannerSlideClick(1)">
+                    <img src="giveaway_trip.jpg?v=3" alt="Поездка мечты">
                 </div>
             </div>
             <!-- Индикаторы (точки) -->
@@ -8564,47 +8572,82 @@ async function renderLeaderboardPage() {
         }
 
 
-        // ================= КАРУСЕЛЬ БАННЕРОВ (АВТОПЕРЕЛИСТЫВАНИЕ 5 СЕК) =================
-        let currentBannerIndex = 0;
+        // ================= КАРУСЕЛЬ БАННЕРОВ (СВАЙП + АВТО 5 СЕК) =================
         let bannerTimer = null;
-        let bannerStartX = 0;
+        let isDraggingBanner = false;
+        let bannerTouchStartX = 0;
+        let bannerTouchStartY = 0;
 
-        function updateBannerCarousel() {
+        function onBannerScroll() {
             const carousel = document.getElementById('bannerCarousel');
-            if (!carousel) return;
-
-            const slides = carousel.querySelectorAll('.banner-slide');
             const dots = document.querySelectorAll('.banner-dot');
-            const total = slides.length;
-            if (total === 0) return;
+            if (!carousel || dots.length === 0) return;
 
-            slides.forEach(slide => {
-                slide.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
-            });
+            const scrollLeft = carousel.scrollLeft;
+            const width = carousel.offsetWidth || 1;
+            const activeIdx = Math.round(scrollLeft / width);
 
             dots.forEach((dot, idx) => {
-                dot.classList.toggle('active', idx === currentBannerIndex);
+                dot.classList.toggle('active', idx === activeIdx);
             });
+        }
+
+        function goToBannerSlide(idx) {
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+            const width = carousel.offsetWidth;
+            carousel.scrollTo({
+                left: idx * width,
+                behavior: 'smooth'
+            });
+            restartBannerTimer();
         }
 
         function nextBannerSlide() {
             const carousel = document.getElementById('bannerCarousel');
             if (!carousel) return;
+            const width = carousel.offsetWidth;
             const total = carousel.querySelectorAll('.banner-slide').length;
             if (total <= 1) return;
-            currentBannerIndex = (currentBannerIndex + 1) % total;
-            updateBannerCarousel();
-        }
-
-        function goToBannerSlide(idx) {
-            currentBannerIndex = idx;
-            updateBannerCarousel();
-            restartBannerTimer();
+            let currentIdx = Math.round(carousel.scrollLeft / width);
+            let nextIdx = (currentIdx + 1) % total;
+            carousel.scrollTo({
+                left: nextIdx * width,
+                behavior: 'smooth'
+            });
         }
 
         function restartBannerTimer() {
             if (bannerTimer) clearInterval(bannerTimer);
             bannerTimer = setInterval(nextBannerSlide, 5000);
+        }
+
+        function pauseBannerTimer() {
+            if (bannerTimer) clearInterval(bannerTimer);
+        }
+
+        function handleBannerPointerDown(e) {
+            isDraggingBanner = false;
+            bannerTouchStartX = e.touches ? e.touches[0].clientX : e.clientX;
+            bannerTouchStartY = e.touches ? e.touches[0].clientY : e.clientY;
+            pauseBannerTimer();
+        }
+
+        function handleBannerPointerMove(e) {
+            const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+            const currentY = e.touches ? e.touches[0].clientY : e.clientY;
+            if (Math.abs(currentX - bannerTouchStartX) > 8 || Math.abs(currentY - bannerTouchStartY) > 8) {
+                isDraggingBanner = true;
+            }
+        }
+
+        function handleBannerSlideClick(slideIndex) {
+            if (isDraggingBanner) return;
+            if (slideIndex === 0) {
+                openKickStreamLink();
+            } else {
+                openGwTripModal();
+            }
         }
 
         function openKickStreamLink() {
@@ -8616,38 +8659,30 @@ async function renderLeaderboardPage() {
             }
         }
 
-        function initBannerSwipe() {
+        function initBannerCarousel() {
             const carousel = document.getElementById('bannerCarousel');
             if (!carousel) return;
 
-            carousel.addEventListener('touchstart', (e) => {
-                bannerStartX = e.touches[0].clientX;
-            }, { passive: true });
+            carousel.addEventListener('scroll', onBannerScroll, { passive: true });
+            
+            // Touch listeners
+            carousel.addEventListener('touchstart', handleBannerPointerDown, { passive: true });
+            carousel.addEventListener('touchmove', handleBannerPointerMove, { passive: true });
+            carousel.addEventListener('touchend', restartBannerTimer, { passive: true });
 
-            carousel.addEventListener('touchend', (e) => {
-                const bannerEndX = e.changedTouches[0].clientX;
-                const diff = bannerStartX - bannerEndX;
-                if (Math.abs(diff) > 40) {
-                    const total = carousel.querySelectorAll('.banner-slide').length;
-                    if (diff > 0) {
-                        currentBannerIndex = (currentBannerIndex + 1) % total;
-                    } else {
-                        currentBannerIndex = (currentBannerIndex - 1 + total) % total;
-                    }
-                    updateBannerCarousel();
-                    restartBannerTimer();
-                }
-            }, { passive: true });
+            // Mouse listeners for desktop testing
+            carousel.addEventListener('mousedown', handleBannerPointerDown);
+            carousel.addEventListener('mousemove', handleBannerPointerMove);
+            carousel.addEventListener('mouseup', restartBannerTimer);
 
             restartBannerTimer();
         }
 
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initBannerSwipe);
+            document.addEventListener('DOMContentLoaded', initBannerCarousel);
         } else {
-            initBannerSwipe();
+            initBannerCarousel();
         }
-
 </script>
 
 </body>
