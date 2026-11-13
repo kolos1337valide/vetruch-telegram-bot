@@ -14,17 +14,7 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <script>
-window.addEventListener('error', function (e) {
-  var d = document.getElementById('js-error-box') || document.createElement('div');
-  d.id = 'js-error-box';
-  d.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:999999;background:rgba(40,0,0,.95);color:#ff6677;font:12px monospace;padding:10px;white-space:pre-wrap;max-height:45vh;overflow:auto;';
-  d.textContent += (e.message + '  @  ' + (e.filename || '').split('/').pop() + ':' + e.lineno) + '\n';
-  document.body.appendChild(d);
-  var ls = document.getElementById('loading-screen');
-  if (ls) ls.style.display = 'none';
-});
-</script>
+    <script src="vetruch-economy.js"></script>
 
     <style>
 
@@ -4059,6 +4049,85 @@ window.addEventListener('error', function (e) {
         .gw-modal-action-btn:active {
             transform: scale(0.98);
         }
+
+        /* ================= ВИДЖЕТ ЭНЕРГИИ (ЭКОНОМИКА SUBO) ================= */
+        .games-energy-card {
+            background: linear-gradient(180deg, rgba(16, 24, 40, 0.85) 0%, rgba(10, 15, 26, 0.95) 100%);
+            border: 1px solid rgba(0, 136, 255, 0.28);
+            border-radius: 18px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            box-sizing: border-box;
+            clear: both;
+        }
+        .energy-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .energy-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .energy-badge {
+            font-size: 13px;
+            font-weight: 800;
+            color: #00d9ff;
+            letter-spacing: 0.5px;
+        }
+        .energy-sub {
+            font-size: 11px;
+            color: #8c97a7;
+        }
+        .energy-counter {
+            display: flex;
+            align-items: baseline;
+            gap: 3px;
+            font-family: 'Inter', sans-serif;
+        }
+        .energy-val {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+        }
+        .energy-max {
+            font-size: 13px;
+            color: #8c97a7;
+            font-weight: 600;
+        }
+        .energy-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .energy-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0088ff 0%, #00d9ff 100%);
+            border-radius: 6px;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
+        }
+        .energy-bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #8c97a7;
+        }
+        .energy-reset-txt b {
+            color: #fff;
+        }
+        .energy-rule-txt {
+            color: #8acaff;
+            font-weight: 600;
+        }
 </style>
 </head>
 
@@ -4314,6 +4383,26 @@ window.addEventListener('error', function (e) {
         </div>
 
         <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Игры</h2>
+        <!-- ВИДЖЕТ ЭНЕРГИИ (ЭКОНОМИКА SUBO: 20 ИГР В ДЕНЬ) -->
+        <div class="games-energy-card anim-item" style="animation-delay: 0.08s;">
+            <div class="energy-top-row">
+                <div class="energy-info">
+                    <span class="energy-badge">⚡ ЭНЕРГИЯ</span>
+                    <span class="energy-sub">Дневной лимит игр</span>
+                </div>
+                <div class="energy-counter">
+                    <span id="mainEnergyVal" class="energy-val">20</span>
+                    <span class="energy-max">/ 20</span>
+                </div>
+            </div>
+            <div class="energy-bar-wrap">
+                <div id="mainEnergyFill" class="energy-bar-fill" style="width: 100%;"></div>
+            </div>
+            <div class="energy-bottom-row">
+                <span class="energy-reset-txt">⏳ Сброс через <b id="mainEnergyResetTime">--:--</b></span>
+                <span class="energy-rule-txt">1 игра = 1 ⚡</span>
+            </div>
+        </div>
         
         <div class="games-grid" style="clear: both;">
             <!-- Новая игра: БАШНИ (Широкая кнопка) -->
@@ -5827,6 +5916,9 @@ window.addEventListener('error', function (e) {
             <button type="button" class="admin-tab-btn" data-adm="adm-prediction" onclick="switchAdminTab('adm-prediction', this)">
                 🎯 Прогноз
             </button>
+            <button type="button" class="admin-tab-btn" data-adm="adm-economy" onclick="switchAdminTab('adm-economy', this)">
+                📊 Экономика
+            </button>
             <button type="button" class="admin-tab-btn" data-adm="adm-users" onclick="switchAdminTab('adm-users', this)">
                 💎 По ID
             </button>
@@ -6033,7 +6125,99 @@ window.addEventListener('error', function (e) {
                 <div id="adminBalancesTable" class="admin-balances-list"></div>
             </div>
         </div>
-    </main>
+            <!-- ГРАФА 5: ЭКОНОМИКА (МОДЕЛЬ SUBO) -->
+        <div id="adm-economy" class="admin-section">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>📊 Модуль «Экономика» (SUBO Model)</span>
+                    <span class="admin-badge-count" style="background: rgba(0, 217, 255, 0.2); color: #00d9ff; border-color: rgba(0, 217, 255, 0.4);">LIVE</span>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 136, 255, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 12px; color: var(--secondary);">Честный курс монеты:</span>
+                        <span style="font-size: 15px; font-weight: 800; color: #00e676;">1 000 🪙 ≈ <span id="adminRateVal">33</span> ₽</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 12px; color: var(--secondary);">Дневной лимит игр на игрока:</span>
+                        <span style="font-size: 14px; font-weight: 800; color: #00d9ff;"><span id="adminLimitGamesVal">20</span> игр / день</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 12px; color: var(--secondary);">Сброс энергии:</span>
+                        <span style="font-size: 13px; font-weight: 700; color: #fff;">Каждые сутки в 00:00 МСК</span>
+                    </div>
+                </div>
+
+                <label class="admin-field-label">Месячный бюджет стримера на призы (₽):</label>
+                <input type="number" id="adminEconBudgetInput" class="task-input" value="50000" oninput="recalculateEconRate()" placeholder="50000">
+
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminEconBudgetInput').value='30000'; recalculateEconRate();">30 000 ₽</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconBudgetInput').value='50000'; recalculateEconRate();">50 000 ₽</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconBudgetInput').value='100000'; recalculateEconRate();">100 000 ₽</span>
+                </div>
+
+                <label class="admin-field-label">Лимит игр в день (энергия ⚡):</label>
+                <input type="number" id="adminEconGamesLimitInput" class="task-input" value="20" placeholder="20">
+
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='10'">10 игр</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='15'">15 игр</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='20'">20 игр</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='30'">30 игр</span>
+                </div>
+
+                <button type="button" class="submit-task-btn" style="margin-top: 14px; padding: 13px; background: linear-gradient(135deg, #0070f3 0%, #00d9ff 100%);" onclick="saveAdminEconomySettings()">
+                    💾 Сохранить настройки экономики
+                </button>
+            </div>
+
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>📦 4 Контура распределения бюджета</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🛒 Магазин (60%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Физические товары и стоки</span>
+                        </div>
+                        <span id="circuitShopRub" style="font-size: 14px; font-weight: 800; color: #8acaff;">30 000 ₽</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🎁 Розыгрыши (20%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Билеты и пулы призов</span>
+                        </div>
+                        <span id="circuitGwRub" style="font-size: 14px; font-weight: 800; color: #00d9ff;">10 000 ₽</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🎲 Игры / Кейсы (10%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Вероятностные дропы</span>
+                        </div>
+                        <span id="circuitGamesRub" style="font-size: 14px; font-weight: 800; color: #ffd700;">5 000 ₽</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🛡️ Резерв стрима (10%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Ручные конкурсы на Kick</span>
+                        </div>
+                        <span id="circuitReserveRub" style="font-size: 14px; font-weight: 800; color: #ff3366;">5 000 ₽</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>⚡ Управление энергией</span>
+                </div>
+                <button type="button" class="admin-btn-approve" style="width: 100%; padding: 12px; font-size: 13px;" onclick="adminResetAllAttempts()">
+                    🔄 Сбросить энергию себе (восстановить 20/20)
+                </button>
+            </div>
+        </div>
+</main>
     
     <!-- НИЖНЕЕ МЕНЮ -->
     <nav class="bottom-nav">
@@ -7906,6 +8090,7 @@ window.addEventListener('error', function (e) {
             
             window.scrollTo(0, 0);
 
+            if (pageId === 'games') { updateGamesEnergyUI(); }
             if (pageId === 'shop') {
                 const shopGrid = document.querySelector('.shop-grid');
                 if (shopGrid) {
@@ -8725,6 +8910,111 @@ async function renderLeaderboardPage() {
         } else {
             initBannerCarousel();
         }
+
+        // ================= ЛОГИКА ЭКОНОМИКИ SUBO =================
+        function updateGamesEnergyUI() {
+            if (!window.VETRUCH_ECONOMY) return;
+            const left = VETRUCH_ECONOMY.getAttemptsLeft();
+            const max = VETRUCH_ECONOMY.getMaxAttempts();
+            const timer = VETRUCH_ECONOMY.getTimeUntilReset();
+
+            const valEl = document.getElementById('mainEnergyVal');
+            const fillEl = document.getElementById('mainEnergyFill');
+            const timerEl = document.getElementById('mainEnergyResetTime');
+
+            if (valEl) {
+                valEl.textContent = left;
+                valEl.style.color = (left > 0 ? '#00d9ff' : '#ff3366');
+            }
+            if (fillEl) {
+                const pct = Math.max(0, Math.min(100, (left / max) * 100));
+                fillEl.style.width = pct + '%';
+                if (left <= 3) {
+                    fillEl.style.background = 'linear-gradient(90deg, #ff3366 0%, #ff5277 100%)';
+                    fillEl.style.boxShadow = '0 0 10px rgba(255, 51, 102, 0.6)';
+                } else {
+                    fillEl.style.background = 'linear-gradient(90deg, #0088ff 0%, #00d9ff 100%)';
+                    fillEl.style.boxShadow = '0 0 10px rgba(0, 217, 255, 0.6)';
+                }
+            }
+            if (timerEl) {
+                timerEl.textContent = `${timer.hours}ч ${timer.minutes}м`;
+            }
+        }
+
+        function recalculateEconRate() {
+            const input = document.getElementById('adminEconBudgetInput');
+            const budget = input ? (parseFloat(input.value) || 50000) : 50000;
+            const rate = Math.round((budget / 1500000) * 1000 * 10) / 10;
+            const rateEl = document.getElementById('adminRateVal');
+            if (rateEl) rateEl.textContent = rate;
+
+            const shopEl = document.getElementById('circuitShopRub');
+            const gwEl = document.getElementById('circuitGwRub');
+            const gamesEl = document.getElementById('circuitGamesRub');
+            const resEl = document.getElementById('circuitReserveRub');
+
+            if (shopEl) shopEl.textContent = Math.round(budget * 0.6).toLocaleString('ru-RU') + ' ₽';
+            if (gwEl) gwEl.textContent = Math.round(budget * 0.2).toLocaleString('ru-RU') + ' ₽';
+            if (gamesEl) gamesEl.textContent = Math.round(budget * 0.1).toLocaleString('ru-RU') + ' ₽';
+            if (resEl) resEl.textContent = Math.round(budget * 0.1).toLocaleString('ru-RU') + ' ₽';
+        }
+
+        function saveAdminEconomySettings() {
+            const budgetInput = document.getElementById('adminEconBudgetInput');
+            const limitInput = document.getElementById('adminEconGamesLimitInput');
+            const budget = budgetInput ? (parseFloat(budgetInput.value) || 50000) : 50000;
+            const limit = limitInput ? (parseInt(limitInput.value) || 20) : 20;
+
+            localStorage.setItem('vetruch_econ_budget', budget);
+            localStorage.setItem('vetruch_econ_games_limit', limit);
+
+            if (window.VETRUCH_ECONOMY && VETRUCH_ECONOMY.config) {
+                VETRUCH_ECONOMY.config.attemptsPerDay = limit;
+                VETRUCH_ECONOMY.config.budgetRubMonth = budget;
+            }
+
+            try {
+                if (typeof cloudPut === 'function') {
+                    cloudPut('vetruch_app/economy_settings', {
+                        budgetRubMonth: budget,
+                        attemptsPerDay: limit,
+                        updatedAt: Date.now()
+                    });
+                }
+            } catch(e) {}
+
+            recalculateEconRate();
+            updateGamesEnergyUI();
+
+            if (window.tg && tg.showAlert) {
+                tg.showAlert('✅ Настройки экономики сохранены!');
+            } else {
+                alert('✅ Настройки экономики сохранены!');
+            }
+        }
+
+        function adminResetAllAttempts() {
+            try {
+                localStorage.removeItem('vetruch_daily_attempts');
+                localStorage.removeItem('vetruch_attempts_left');
+                if (window.VETRUCH_ECONOMY) {
+                    VETRUCH_ECONOMY.getAttemptsLeft();
+                }
+                updateGamesEnergyUI();
+            } catch(e) {}
+
+            if (window.tg && tg.showAlert) {
+                tg.showAlert('⚡ Энергия сброшена: доступно 20/20 игр!');
+            } else {
+                alert('⚡ Энергия сброшена: доступно 20/20 игр!');
+            }
+        }
+
+        // Авто-обновление таймера и энергии при переключении страниц
+        setInterval(updateGamesEnergyUI, 30000);
+        document.addEventListener('DOMContentLoaded', updateGamesEnergyUI);
+
 </script>
 
 </body>
