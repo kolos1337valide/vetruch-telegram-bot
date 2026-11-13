@@ -3635,7 +3635,7 @@
         }
 
 
-                /* ================= СЕКЦИЯ РОЗЫГРЫШИ (VETRUCH BLUE) ================= */
+                        /* ================= СЕКЦИЯ РОЗЫГРЫШИ (VETRUCH BLUE) ================= */
         .giveaways-section {
             margin: 18px 0;
             width: 100%;
@@ -3722,6 +3722,111 @@
             flex-shrink: 0;
         }
 
+        /* Сетка карточек розыгрышей */
+        .gw-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .gw-card {
+            background: linear-gradient(180deg, rgba(16, 24, 40, 0.85) 0%, rgba(10, 15, 26, 0.95) 100%);
+            border: 1px solid rgba(0, 136, 255, 0.25);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .gw-card:active {
+            transform: scale(0.97);
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.35);
+        }
+        .gw-card-thumb {
+            width: 100%;
+            height: 96px;
+            position: relative;
+            overflow: hidden;
+            background: #0d1322;
+        }
+        .gw-card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gw-card-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            color: #00d9ff;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .gw-dot-pulse {
+            width: 6px;
+            height: 6px;
+            background: #00e676;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00e676;
+            display: inline-block;
+        }
+        .gw-card-body {
+            padding: 10px 10px 8px 10px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+        .gw-card-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.35;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+        .gw-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .gw-card-status {
+            color: #00d9ff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .gw-card-users {
+            color: #8c97a7;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
         /* Карточка пустого состояния */
         .giveaways-empty-card {
             background: linear-gradient(180deg, rgba(16, 24, 40, 0.75) 0%, rgba(10, 15, 26, 0.85) 100%);
@@ -3765,12 +3870,172 @@
             color: #8c97a7;
             margin-top: 6px;
         }
+
+        /* Модалка поездки мечты */
+        .gw-modal-content {
+            padding: 0 !important;
+            overflow: hidden;
+            max-width: 360px;
+            border: 1.5px solid #0088ff !important;
+        }
+        .gw-modal-banner {
+            width: 100%;
+            height: 155px;
+            position: relative;
+            background: #000;
+        }
+        .gw-modal-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gw-modal-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(0, 217, 255, 0.4);
+            color: #00d9ff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 7px;
+            letter-spacing: 0.5px;
+        }
+        .gw-modal-body {
+            padding: 16px 16px 18px 16px;
+            text-align: left;
+        }
+        .gw-modal-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+            text-align: center;
+        }
+        .gw-modal-pills {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        .gw-pill {
+            background: rgba(0, 136, 255, 0.12);
+            border: 1px solid rgba(0, 136, 255, 0.28);
+            color: #8acaff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+        .gw-modal-perks {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+        .gw-perk-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #d1d9e6;
+        }
+        .gw-perk-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .gw-modal-notice {
+            font-size: 11px;
+            color: #8c97a7;
+            background: rgba(0, 217, 255, 0.05);
+            border: 1px dashed rgba(0, 217, 255, 0.25);
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin-bottom: 14px;
+            line-height: 1.35;
+        }
+        .gw-modal-notice b {
+            color: #00d9ff;
+        }
+        .gw-modal-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0070f3 0%, #00d9ff 100%);
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 18px rgba(0, 136, 255, 0.45);
+            letter-spacing: 0.3px;
+            box-sizing: border-box;
+            transition: transform 0.2s;
+        }
+        .gw-modal-action-btn:active {
+            transform: scale(0.98);
+        }
 </style>
 </head>
 
 <body class="is-loading">
 
     <!-- ПРЕМИАЛЬНОЕ Модальное окно (Меню заданий) -->
+        <!-- МОДАЛЬНОЕ ОКНО РОЗЫГРЫША "ПОЕЗДКА МЕЧТЫ" -->
+    <div id="gwTripModal" class="modal-overlay" onclick="if(event.target === this) closeGwTripModal()">
+        <div class="modal-content gw-modal-content">
+            <button class="modal-close" onclick="closeGwTripModal()">✖</button>
+            <div class="gw-modal-banner">
+                <img src="giveaway_trip.jpg" alt="Поездка мечты">
+                <div class="gw-modal-badge">🔥 РОЗЫГРЫШ</div>
+            </div>
+            <div class="gw-modal-body">
+                <h3 class="gw-modal-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</h3>
+                <div class="gw-modal-pills">
+                    <span class="gw-pill">🟢 Активен</span>
+                    <span class="gw-pill">👥 128 участников</span>
+                    <span class="gw-pill">🎟️ 500 ₽ = 1 билет</span>
+                </div>
+                
+                <div class="gw-modal-perks">
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">✈️</span>
+                        <span>Дорога и отдых полностью оплачены</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🏝️</span>
+                        <span>Город на ваш выбор</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🎥</span>
+                        <span>Совместный стрим со стримером</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🎁</span>
+                        <span>Подарки и развлечения от стримера</span>
+                    </div>
+                </div>
+
+                <div class="gw-modal-notice">
+                    ⚠️ Новые билеты начисляются за депозиты на <b>UP-X</b> или <b>Ton Play</b>. Количество билетов не ограничено!
+                </div>
+
+                <a href="https://up-click-me.top/feygr5tv" target="_blank" class="gw-modal-action-btn">
+                    УЧАСТВОВАТЬ В РОЗЫГРЫШЕ ➔
+                </a>
+            </div>
+        </div>
+    </div>
     <div id="taskModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="closeTaskModal()">✖</button>
@@ -3899,18 +4164,46 @@
                 </button>
             </div>
 
-            <div class="giveaways-empty-card">
-                <div class="giveaways-empty-icon-wrap">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#00d9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 12 20 22 4 22 4 12"></polyline>
-                        <rect x="2" y="7" width="20" height="5" rx="1"></rect>
-                        <line x1="12" y1="22" x2="12" y2="7"></line>
-                        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-                        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
-                    </svg>
+            <!-- Контейнер активных розыгрышей -->
+            <div id="gwActiveContainer">
+                <div class="gw-grid">
+                    <div class="gw-card" onclick="openGwTripModal()">
+                        <div class="gw-card-thumb">
+                            <img src="giveaway_trip.jpg" alt="Поездка мечты">
+                            <div class="gw-card-badge">
+                                <span class="gw-dot-pulse"></span>
+                                <span>Активен</span>
+                            </div>
+                        </div>
+                        <div class="gw-card-body">
+                            <div class="gw-card-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</div>
+                            <div class="gw-card-footer">
+                                <span class="gw-card-status">🔥 Идёт</span>
+                                <span class="gw-card-users">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <span>128</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="giveaways-empty-title" id="gwEmptyTitle">Сейчас розыгрышей нет</div>
-                <div class="giveaways-empty-sub" id="gwEmptySub">Новые розыгрыши появятся совсем скоро 🔥</div>
+            </div>
+
+            <!-- Контейнер завершённых розыгрышей -->
+            <div id="gwClosedContainer" style="display: none;">
+                <div class="giveaways-empty-card">
+                    <div class="giveaways-empty-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00d9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                            <path d="M4 22h16"></path>
+                            <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1h10v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"></path>
+                            <path d="M6 4h12a2 2 0 0 1 2 2v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V6a2 2 0 0 1 2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="giveaways-empty-title">Завершённых розыгрышей пока нет</div>
+                    <div class="giveaways-empty-sub">Все предыдущие результаты будут сохраняться здесь</div>
+                </div>
             </div>
         </div>
         <div class="card anim-item" style="animation-delay: 0.2s;">
@@ -8176,20 +8469,30 @@ async function renderLeaderboardPage() {
         function switchGwTab(tab) {
             const btnActive = document.getElementById('gwTabActive');
             const btnClosed = document.getElementById('gwTabClosed');
-            const title = document.getElementById('gwEmptyTitle');
-            const sub = document.getElementById('gwEmptySub');
+            const activeCont = document.getElementById('gwActiveContainer');
+            const closedCont = document.getElementById('gwClosedContainer');
 
             if (tab === 'active') {
                 if (btnActive) btnActive.classList.add('active');
                 if (btnClosed) btnClosed.classList.remove('active');
-                if (title) title.textContent = 'Сейчас розыгрышей нет';
-                if (sub) sub.textContent = 'Новые розыгрыши появятся совсем скоро 🔥';
+                if (activeCont) activeCont.style.display = 'block';
+                if (closedCont) closedCont.style.display = 'none';
             } else {
                 if (btnActive) btnActive.classList.remove('active');
                 if (btnClosed) btnClosed.classList.add('active');
-                if (title) title.textContent = 'Завершённых розыгрышей пока нет';
-                if (sub) sub.textContent = 'Все предыдущие результаты будут сохраняться здесь';
+                if (activeCont) activeCont.style.display = 'none';
+                if (closedCont) closedCont.style.display = 'block';
             }
+        }
+
+        function openGwTripModal() {
+            const m = document.getElementById('gwTripModal');
+            if (m) m.classList.add('active');
+        }
+
+        function closeGwTripModal() {
+            const m = document.getElementById('gwTripModal');
+            if (m) m.classList.remove('active');
         }
 
         function openGiveawaysAll() {
