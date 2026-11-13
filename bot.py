@@ -1,4 +1,4 @@
-import os
+﻿import os
 import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
@@ -8,7 +8,7 @@ from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 BOT_TOKEN = os.getenv("BOT_TOKEN", "СЮДА_ВСТАВЬ_ТОКЕН_ОТ_BOTFATHER")
 
 # Ссылка на твой хостинг с Mini App (index.html)
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://kolos1337valide.github.io/vetruch-telegram-bot/")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://kolos1337valide.github.io/vetruch-telegram-bot/?v=1794599457")
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
