@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -3632,6 +3632,132 @@
         }
         .dream-instruction-card li {
             margin-bottom: 5px;
+        }
+
+
+        /* ================= СЕКЦИЯ РОЗЫГРЫШИ (VETRUCH BLUE) ================= */
+        .giveaways-section {
+            margin: 16px 0 16px 0;
+            width: 100%;
+        }
+        .giveaways-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .giveaways-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .giveaways-title-bar {
+            width: 4px;
+            height: 18px;
+            background: #00d9ff;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #00d9ff;
+        }
+        .giveaways-main-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            margin: 0;
+        }
+        .giveaways-all-link {
+            font-size: 13px;
+            color: #8c97a7;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .giveaways-all-link:hover {
+            color: #00d9ff;
+        }
+
+        /* Переключатель Активные / Завершённые */
+        .giveaways-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .giveaways-tab-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 136, 255, 0.25);
+            background: rgba(13, 20, 36, 0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #8c97a7;
+            font-size: 13.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .giveaways-tab-btn:active {
+            transform: scale(0.97);
+        }
+        .giveaways-tab-btn.active {
+            background: linear-gradient(135deg, #0066ff 0%, #00b4d8 100%);
+            border-color: #00d9ff;
+            color: #ffffff;
+            box-shadow: 0 4px 18px rgba(0, 150, 255, 0.45);
+        }
+        .giveaways-tab-btn svg {
+            width: 17px;
+            height: 17px;
+            fill: currentColor;
+        }
+
+        /* Карточка состояния (пусто) */
+        .giveaways-empty-card {
+            background: linear-gradient(180deg, rgba(16, 24, 42, 0.75) 0%, rgba(10, 14, 24, 0.85) 100%);
+            border: 1.5px solid rgba(0, 136, 255, 0.28);
+            border-radius: 22px;
+            padding: 34px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 136, 255, 0.05);
+        }
+        .giveaways-empty-icon-wrap {
+            width: 76px;
+            height: 76px;
+            border-radius: 22px;
+            background: radial-gradient(circle at 50% 40%, rgba(0, 217, 255, 0.25) 0%, rgba(0, 102, 255, 0.12) 70%, transparent 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            box-shadow: 0 0 22px rgba(0, 150, 255, 0.3);
+        }
+        .giveaways-empty-icon-wrap svg {
+            width: 36px;
+            height: 36px;
+            fill: #00d9ff;
+            filter: drop-shadow(0 0 8px rgba(0, 217, 255, 0.6));
+        }
+        .giveaways-empty-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.3px;
+        }
+        .giveaways-empty-sub {
+            font-size: 12px;
+            color: #8c97a7;
+            margin-top: 6px;
         }
 
 </style>
@@ -7990,6 +8116,35 @@ async function renderLeaderboardPage() {
             input.value = '';
             updateDreamPageCharCount();
             openPage('profile');
+        }
+
+
+        // ================= ЛОГИКА РОЗЫГРЫШЕЙ =================
+        function switchGwTab(tab) {
+            const btnActive = document.getElementById('gwTabActive');
+            const btnClosed = document.getElementById('gwTabClosed');
+            const title = document.getElementById('gwEmptyTitle');
+            const sub = document.getElementById('gwEmptySub');
+
+            if (tab === 'active') {
+                if (btnActive) btnActive.classList.add('active');
+                if (btnClosed) btnClosed.classList.remove('active');
+                if (title) title.textContent = 'Сейчас активных розыгрышей нет';
+                if (sub) sub.textContent = 'Новые розыгрыши появятся совсем скоро 🔥';
+            } else {
+                if (btnActive) btnActive.classList.remove('active');
+                if (btnClosed) btnClosed.classList.add('active');
+                if (title) title.textContent = 'Завершённых розыгрышей пока нет';
+                if (sub) sub.textContent = 'Все предыдущие результаты будут сохраняться здесь';
+            }
+        }
+
+        function openGiveawaysAll() {
+            if (window.tg && tg.showAlert) {
+                tg.showAlert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
+            } else {
+                alert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
+            }
         }
 
 </script>
