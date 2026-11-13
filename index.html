@@ -12,6 +12,18 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+    <script>
+window.addEventListener('error', function (e) {
+  var d = document.getElementById('js-error-box') || document.createElement('div');
+  d.id = 'js-error-box';
+  d.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:999999;background:rgba(40,0,0,.95);color:#ff6677;font:12px monospace;padding:10px;white-space:pre-wrap;max-height:45vh;overflow:auto;';
+  d.textContent += (e.message + '  @  ' + (e.filename || '').split('/').pop() + ':' + e.lineno) + '\n';
+  document.body.appendChild(d);
+  var ls = document.getElementById('loading-screen');
+  if (ls) ls.style.display = 'none';
+});
+</script>
+
     <style>
 
         #admin {
