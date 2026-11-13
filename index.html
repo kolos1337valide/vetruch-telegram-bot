@@ -1086,20 +1086,65 @@
             margin-left: 2px; 
         }
 
-        .promo-banner {
+        /* ================= КАРУСЕЛЬ БАННЕРОВ ================= */
+        .banner-carousel-wrap {
             width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
             margin-bottom: 20px;
-            aspect-ratio: 16 / 9; 
-            border: 1px solid var(--card-border);
+            position: relative;
+            box-sizing: border-box;
         }
-       
-        .promo-banner video {
+        .banner-carousel {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 136, 255, 0.28);
+            display: flex;
+            position: relative;
+            background: #000;
+            box-shadow: 0 4px 22px rgba(0, 0, 0, 0.55);
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .banner-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
+        }
+        .banner-slide img, .banner-slide video {
             width: 100%;
             height: 100%;
+            object-fit: cover;
             display: block;
-            object-fit: contain;
+        }
+        .banner-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 10px;
+        }
+        .banner-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .banner-dot.active {
+            width: 22px;
+            border-radius: 10px;
+            background: #00d9ff;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.7);
+        }
+        .banner-dot:nth-child(2).active {
+            background: #53fc18;
+            box-shadow: 0 0 10px rgba(83, 252, 24, 0.7);
         }
 
         .global-stats {
@@ -4115,10 +4160,25 @@
             </div>
         </div>
 
-        <div class="promo-banner anim-item" style="clear: both; animation-delay: 0.1s;">
-            <video autoplay muted loop playsinline>
-                <source src="./banner3.mp4" type="video/mp4">
-            </video>
+        <!-- ================= КАРУСЕЛЬ БАННЕРОВ ================= -->
+        <div class="banner-carousel-wrap anim-item" style="clear: both; animation-delay: 0.1s;">
+            <div class="banner-carousel" id="bannerCarousel">
+                <!-- Слайд 1: Поездка мечты -->
+                <div class="banner-slide" onclick="openGwTripModal()">
+                    <video autoplay muted loop playsinline poster="giveaway_trip.jpg">
+                        <source src="./banner3.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <!-- Слайд 2: Kick Стримы -->
+                <div class="banner-slide" onclick="openKickStreamLink()">
+                    <img src="banner_kick.jpg" alt="Смотри стримы получай монеты">
+                </div>
+            </div>
+            <!-- Индикаторы (точки) -->
+            <div class="banner-dots" id="bannerDots">
+                <span class="banner-dot active" onclick="goToBannerSlide(0)"></span>
+                <span class="banner-dot" onclick="goToBannerSlide(1)"></span>
+            </div>
         </div>
 
         <div class="card global-stats anim-item" style="animation-delay: 0.15s;">
@@ -8501,6 +8561,91 @@ async function renderLeaderboardPage() {
             } else {
                 alert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
             }
+        }
+
+
+        // ================= КАРУСЕЛЬ БАННЕРОВ (АВТОПЕРЕЛИСТЫВАНИЕ 5 СЕК) =================
+        let currentBannerIndex = 0;
+        let bannerTimer = null;
+        let bannerStartX = 0;
+
+        function updateBannerCarousel() {
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+
+            const slides = carousel.querySelectorAll('.banner-slide');
+            const dots = document.querySelectorAll('.banner-dot');
+            const total = slides.length;
+            if (total === 0) return;
+
+            slides.forEach(slide => {
+                slide.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+            });
+
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentBannerIndex);
+            });
+        }
+
+        function nextBannerSlide() {
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+            const total = carousel.querySelectorAll('.banner-slide').length;
+            if (total <= 1) return;
+            currentBannerIndex = (currentBannerIndex + 1) % total;
+            updateBannerCarousel();
+        }
+
+        function goToBannerSlide(idx) {
+            currentBannerIndex = idx;
+            updateBannerCarousel();
+            restartBannerTimer();
+        }
+
+        function restartBannerTimer() {
+            if (bannerTimer) clearInterval(bannerTimer);
+            bannerTimer = setInterval(nextBannerSlide, 5000);
+        }
+
+        function openKickStreamLink() {
+            const kickUrl = 'https://kick.com/vetruch';
+            if (window.tg && tg.openLink) {
+                tg.openLink(kickUrl);
+            } else {
+                window.open(kickUrl, '_blank');
+            }
+        }
+
+        function initBannerSwipe() {
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+
+            carousel.addEventListener('touchstart', (e) => {
+                bannerStartX = e.touches[0].clientX;
+            }, { passive: true });
+
+            carousel.addEventListener('touchend', (e) => {
+                const bannerEndX = e.changedTouches[0].clientX;
+                const diff = bannerStartX - bannerEndX;
+                if (Math.abs(diff) > 40) {
+                    const total = carousel.querySelectorAll('.banner-slide').length;
+                    if (diff > 0) {
+                        currentBannerIndex = (currentBannerIndex + 1) % total;
+                    } else {
+                        currentBannerIndex = (currentBannerIndex - 1 + total) % total;
+                    }
+                    updateBannerCarousel();
+                    restartBannerTimer();
+                }
+            }, { passive: true });
+
+            restartBannerTimer();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initBannerSwipe);
+        } else {
+            initBannerSwipe();
         }
 
 </script>
