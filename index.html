@@ -8564,6 +8564,7 @@ if (cloudState && typeof saveArkadaProgressLocal === 'function') {
                         </div>
                         <div class="admin-req-title">${t.title} (+${formatCoins(t.reward)} монет)</div>
                         ${t.arkadaId ? `<div style="font-size: 12px; color: #00d9ff; margin-bottom: 8px; font-weight: 700;">ARKADA ID: ${t.arkadaId}</div>` : ''}
+                        ${t.partnerId ? `<div style="font-size: 12px; color: #ff66b2; margin-bottom: 8px; font-weight: 700;">${t.partnerName || 'ID'}: ${t.partnerId}</div>` : ''}
                         ${t.screenshot ? `<img src="${t.screenshot}" alt="Скриншот" class="admin-req-img">` : ''}
                         <div class="admin-req-actions">
                             <button type="button" class="admin-btn-approve" onclick="handleTaskRequest(${t.id}, true)">✓ Принять (+${t.reward})</button>
