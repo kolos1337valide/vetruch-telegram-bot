@@ -4056,21 +4056,6 @@
             transform: scale(0.98);
         }
 
-        /* ================= БЕЙДЖИ ЭНЕРГИИ ДЛЯ КАЖДОЙ ИГРЫ (20 ИГР В ДЕНЬ) ================= */
-        .game-energy-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-            font-weight: 700;
-            color: #00d9ff;
-            background: rgba(0, 217, 255, 0.12);
-            padding: 1px 7px;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 217, 255, 0.28);
-            font-size: 11px;
-            margin-left: 4px;
-            vertical-align: middle;
-        }
         .game-card:active {
             transform: scale(0.96) !important;
             transition: transform 0.08s ease;
@@ -4333,7 +4318,7 @@
         
         <div class="games-grid" style="clear: both;">
             <!-- Новая игра: БАШНИ (Широкая кнопка) -->
-            <div class="game-card wide-card anim-item" style="animation-delay: 0.05s;" onpointerdown="fetch('towers.html').catch(()=>{})" onclick="openGame('towers.html')">
+            <div class="game-card wide-card anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html')" onclick="openGame('towers.html')">
                 <div class="game-icon tower-preview">
                     <div class="tower-bar"></div>
                     <div class="tower-bar"></div>
@@ -4341,23 +4326,23 @@
                 </div>
                 <div class="wide-card-info">
                     <div class="game-title">БАШНИ</div>
-                    <div class="game-subtitle">аркада · от 20 <img src="coins.png" class="coin-icon-sm"> · <span id="game-energy-towers" class="game-energy-pill">⚡ 20/20</span></div>
+                    <div class="game-subtitle">аркада · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                     <div class="game-extra">Играть ➔</div>
                 </div>
             </div>
             
-            <div class="game-card" style="animation-delay: 0.1s;" onpointerdown="fetch('mines.html').catch(()=>{})" onclick="openGame('mines.html')">
+            <div class="game-card" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html')" onclick="openGame('mines.html')">
                 <div class="game-icon bomb-preview">
                     <span class="bomb-fuse"></span>
                     <span class="bomb-spark">✦</span>
                     <span class="bomb-body"></span>
                 </div>
                 <div class="game-title">Мины</div>
-                <div class="game-subtitle">мины · от 20 <img src="coins.png" class="coin-icon-sm"> · <span id="game-energy-mines" class="game-energy-pill">⚡ 20/20</span></div>
+                <div class="game-subtitle">мины · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
 
-            <div class="game-card" style="animation-delay: 0.15s;" onpointerdown="fetch('cards.html').catch(()=>{})" onclick="openGame('cards.html')">
+            <div class="game-card" style="animation-delay: 0.15s;" onpointerdown="preloadGame('cards.html')" onclick="openGame('cards.html')">
                 <div class="game-icon cards-preview">
                     <span class="mini-card card-diamond"><b>A</b><i>♦</i></span>
                     <span class="mini-card card-heart"><b>A</b><i>♥</i></span>
@@ -4365,21 +4350,21 @@
                     <span class="mini-card card-club"><b>A</b><i>♣</i></span>
                 </div>
                 <div class="game-title">Карты</div>
-                <div class="game-subtitle">карты · от 20 <img src="coins.png" class="coin-icon-sm"> · <span id="game-energy-cards" class="game-energy-pill">⚡ 20/20</span></div>
+                <div class="game-subtitle">карты · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
 
-            <div class="game-card" style="animation-delay: 0.2s;" onpointerdown="fetch('balloon.html').catch(()=>{})" onclick="openGame('balloon.html')">
+            <div class="game-card" style="animation-delay: 0.2s;" onpointerdown="preloadGame('balloon.html')" onclick="openGame('balloon.html')">
                 <div class="game-icon balloon-preview">
                     <span class="balloon-shape"></span>
                     <svg class="balloon-string" viewBox="0 0 12 30" aria-hidden="true"><path d="M6 0 C6 7 1 8 6 14 C11 20 6 23 4 30" /></svg>
                 </div>
                 <div class="game-title">Шарик</div>
-                <div class="game-subtitle">краш · от 20 <img src="coins.png" class="coin-icon-sm"> · <span id="game-energy-balloon" class="game-energy-pill">⚡ 20/20</span></div>
+                <div class="game-subtitle">краш · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
 
-            <div class="game-card" style="animation-delay: 0.25s;" onpointerdown="fetch('dice.html').catch(()=>{})" onclick="openGame('dice.html')">
+            <div class="game-card" style="animation-delay: 0.25s;" onpointerdown="preloadGame('dice.html')" onclick="openGame('dice.html')">
                <div class="game-icon dice-preview">
                     <div class="preview-die" id="previewDie">
                         <div class="die-face die-front"><span class="die-pips" data-value="1"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
@@ -4391,7 +4376,7 @@
                     </div>
                 </div>
                 <div class="game-title">Кости</div>
-                <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"> · <span id="game-energy-dice" class="game-energy-pill">⚡ 20/20</span></div>
+                <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-extra">Играть</div>
             </div>
         </div>
@@ -8016,7 +8001,7 @@
             
             window.scrollTo(0, 0);
 
-            if (pageId === 'games') { updateGamesEnergyUI(); }
+            // games opened
             if (pageId === 'shop') {
                 const shopGrid = document.querySelector('.shop-grid');
                 if (shopGrid) {
@@ -8206,7 +8191,7 @@
             loadingScreen.style.display = 'none';
             document.body.classList.remove('is-loading');
             document.body.classList.add('is-ready');
-            openPage(savedTab);
+            try { openPage(savedTab); } catch(e) {}
         } else {
             sessionStorage.setItem('vetruch_loaded', 'true');
             
@@ -8837,48 +8822,49 @@ async function renderLeaderboardPage() {
             initBannerCarousel();
         }
 
-        // ================= МГНОВЕННЫЙ ПЕРЕХОД В ИГРЫ И ПРЕДЗАГРУЗКА =================
+        // ================= МГНОВЕННОЕ ОТКРЫТИЕ ИГР ЧЕРЕЗ IFRAME МОДАЛЬ (0 МС) =================
+        function preloadGame(url) {
+            try { fetch(url, { priority: 'high' }).catch(function() {}); } catch(e) {}
+        }
+
         function openGame(url) {
             if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
-                try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch (e) {}
+                try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch(e) {}
             }
-            window.location.assign(url);
-        }
-
-        function preloadAllGames() {
-            var games = ['towers.html', 'mines.html', 'cards.html', 'balloon.html', 'dice.html'];
-            for (var i = 0; i < games.length; i++) {
-                fetch(games[i], { priority: 'low' }).catch(function () {});
-            }
-        }
-        if (window.requestIdleCallback) {
-            requestIdleCallback(preloadAllGames);
-        } else {
-            setTimeout(preloadAllGames, 600);
-        }
-
-        // ================= ЛОГИКА ЭКОНОМИКИ SUBO (20 ИГР НА КАЖДУЮ ИГРУ) =================
-        function updateGamesEnergyUI() {
-            if (!window.VETRUCH_ECONOMY) return;
-            var games = ['towers', 'mines', 'cards', 'balloon', 'dice'];
-            for (var i = 0; i < games.length; i++) {
-                var g = games[i];
-                var el = document.getElementById('game-energy-' + g);
-                if (el) {
-                    var left = VETRUCH_ECONOMY.getAttemptsLeft(g);
-                    var max = VETRUCH_ECONOMY.getMaxAttempts(g);
-                    el.textContent = '⚡ ' + left + '/' + max;
-                    if (left <= 0) {
-                        el.style.color = '#ff3366';
-                        el.style.borderColor = 'rgba(255, 51, 102, 0.4)';
-                        el.style.background = 'rgba(255, 51, 102, 0.15)';
-                    } else {
-                        el.style.color = '#00d9ff';
-                        el.style.borderColor = 'rgba(0, 217, 255, 0.28)';
-                        el.style.background = 'rgba(0, 217, 255, 0.12)';
-                    }
+            var modal = document.getElementById('gameModal');
+            var frame = document.getElementById('gameModalFrame');
+            if (modal && frame) {
+                frame.src = url;
+                modal.style.display = 'block';
+                if (window.Telegram && Telegram.WebApp && Telegram.WebApp.BackButton) {
+                    try {
+                        Telegram.WebApp.BackButton.show();
+                        Telegram.WebApp.BackButton.onClick(closeGameModal);
+                    } catch(e) {}
                 }
+            } else {
+                window.location.href = url;
             }
+        }
+
+        function closeGameModal() {
+            var modal = document.getElementById('gameModal');
+            var frame = document.getElementById('gameModalFrame');
+            if (modal) modal.style.display = 'none';
+            if (frame) frame.src = 'about:blank';
+            if (window.Telegram && Telegram.WebApp && Telegram.WebApp.BackButton) {
+                try {
+                    Telegram.WebApp.BackButton.hide();
+                } catch(e) {}
+            }
+            if (typeof initBalance === 'function') {
+                try { initBalance(); } catch(e) {}
+            }
+        }
+        window.closeGameModal = closeGameModal;
+
+        function updateGamesEnergyUI() {
+            // Без визуальных плашек
         }
 
         function recalculateEconRate() {
@@ -8957,6 +8943,10 @@ async function renderLeaderboardPage() {
 
 </script>
 
+    <!-- МГНОВЕННЫЙ КОНТЕЙНЕР ДЛЯ ИГР (БЕЗ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ И БЕЗ ЗАДЕРЖЕК) -->
+    <div id="gameModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: #000000; width: 100%; height: 100%; overflow: hidden;">
+        <iframe id="gameModalFrame" src="about:blank" style="width: 100%; height: 100%; border: none; display: block;" allow="autoplay"></iframe>
+    </div>
 </body>
 </html>
 
