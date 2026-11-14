@@ -9488,6 +9488,311 @@ async function renderLeaderboardPage() {
         setInterval(updateGamesEnergyUI, 30000);
         document.addEventListener('DOMContentLoaded', updateGamesEnergyUI);
 
+// ================= ПАРТНЁРСКАЯ СИСТЕМА ARKADA =================
+const ARKADA_URL = "https://lustrous-way.com/sexzaccif";
+// ВСТАВЬ СЮДА ПРЯМУЮ ССЫЛКУ НА КАРТИНКУ (i.ibb.co/...) ИЛИ ЛОКАЛЬНЫЙ ФАЙЛ (например: "arkada_girl.png")
+const ARKADA_IMG_URL = "arkada_girl.png";
+
+const ARKADA_DEPOSITS = [
+    { id: 'dep_100',       rub: '100 ₽',       reward: 4000,    hot: true },
+    { id: 'dep_1000',      rub: '1 000 ₽',     reward: 3000 },
+    { id: 'dep_2500',      rub: '2 500 ₽',     reward: 5000 },
+    { id: 'dep_5000',      rub: '5 000 ₽',     reward: 10000 },
+    { id: 'dep_10000',     rub: '10 000 ₽',    reward: 20000 },
+    { id: 'dep_20000',     rub: '20 000 ₽',    reward: 40000 },
+    { id: 'dep_35000',     rub: '35 000 ₽',    reward: 70000 },
+    { id: 'dep_50000',     rub: '50 000 ₽',    reward: 100000 },
+    { id: 'dep_100000',    rub: '100 000 ₽',   reward: 200000 },
+    { id: 'dep_250000',    rub: '250 000 ₽',   reward: 500000 },
+    { id: 'dep_500000',    rub: '500 000 ₽',   reward: 1000000 },
+    { id: 'dep_750000',    rub: '750 000 ₽',   reward: 1500000 },
+    { id: 'dep_1000000',   rub: '1 000 000 ₽', reward: 2000000 },
+    { id: 'dep_1500000',   rub: '1 500 000 ₽', reward: 3000000 },
+    { id: 'dep_2000000',   rub: '2 000 000 ₽', reward: 4000000 }
+];
+
+let arkadaScreenshots = {};
+
+function getArkadaProgress() {
+    try {
+        const raw = localStorage.getItem('vetruch_arkada_progress');
+        if (raw) {
+            const p = JSON.parse(raw);
+            return { bind: p.bind || null, arkadaId: p.arkadaId || '', deposits: p.deposits || {} };
+        }
+    } catch (e) {}
+    return { bind: null, arkadaId: '', deposits: {} };
+}
+
+function saveArkadaProgressLocal(prog) {
+    localStorage.setItem('vetruch_arkada_progress', JSON.stringify(prog));
+}
+
+function initArkadaImages() {
+    const img1 = document.getElementById('arkadaCardImg');
+    const img2 = document.getElementById('arkadaModalAvatar');
+    if (img1) img1.src = ARKADA_IMG_URL;
+    if (img2) img2.src = ARKADA_IMG_URL;
+}
+
+function openArkadaSite() {
+    if (window.tg && tg.openLink) tg.openLink(ARKADA_URL);
+    else window.open(ARKADA_URL, '_blank');
+}
+
+function renderArkadaUI() {
+    const prog = getArkadaProgress();
+
+    // 1. Точки на карточке (16 шагов: 1 привязка + 15 депозитов)
+    const dotsEl = document.getElementById('arkadaCardDots');
+    if (dotsEl) {
+        const states = [prog.bind, ...ARKADA_DEPOSITS.map(d => prog.deposits[d.id] || null)];
+        dotsEl.innerHTML = states.map(st => {
+            const cls = st === 'done' ? 'done' : (st === 'pending' ? 'pending' : '');
+            return `<span class="arkada-dot ${cls}"></span>`;
+        }).join('');
+    }
+
+    // 2. Шаг 1 в модалке
+    const bindCard = document.getElementById('arkadaBindCard');
+    const stepNum = document.getElementById('arkadaBindStepNum');
+    const toggleBtn = document.getElementById('arkadaToggleBindBtn');
+    const isBound = prog.bind === 'done';
+
+    if (bindCard && stepNum && toggleBtn) {
+        bindCard.classList.toggle('is-done', isBound);
+        if (isBound) {
+            stepNum.textContent = '✓';
+            stepNum.style.color = '#00e676';
+            stepNum.style.borderColor = '#00e676';
+            toggleBtn.textContent = `Привязано (ID: ${prog.arkadaId || 'OK'})`;
+            toggleBtn.style.color = '#00e676';
+        } else if (prog.bind === 'pending') {
+            stepNum.textContent = '⏳';
+            toggleBtn.textContent = 'На проверке ⏳';
+            toggleBtn.style.color = '#fbbf24';
+        } else {
+            stepNum.textContent = '1';
+            stepNum.style.color = '#00d9ff';
+            stepNum.style.borderColor = 'rgba(0, 217, 255, 0.5)';
+            toggleBtn.textContent = 'Прислать ID';
+            toggleBtn.style.color = '#ffffff';
+        }
+    }
+
+    // 3. Список 15 депозитов
+    const listEl = document.getElementById('arkadaDepositsList');
+    if (!listEl) return;
+
+    listEl.innerHTML = ARKADA_DEPOSITS.map(dep => {
+        const st = prog.deposits[dep.id] || null;
+        let statusHtml = '<span class="arkada-dep-status">После привязки ❯</span>';
+        let itemClass = 'arkada-dep-item';
+
+        if (st === 'done') {
+            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+        } else if (st === 'pending') {
+            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+        } else if (isBound) {
+            itemClass += ' unlocked';
+            statusHtml = '<span class="arkada-dep-status ready">Выполнить ❯</span>';
+        }
+
+        const canSubmit = isBound && !st;
+
+        return `
+            <div class="${itemClass}" onclick="${canSubmit ? `toggleArkadaDepForm('${dep.id}')` : (!isBound ? `alertArkadaBindFirst()` : '')}">
+                <div class="arkada-dep-row">
+                    <div class="arkada-dep-left">
+                        <span class="arkada-dep-rub">${dep.rub}</span>
+                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        <span class="arkada-dep-reward">
+                            <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
+                        </span>
+                    </div>
+                    ${statusHtml}
+                </div>
+
+                ${canSubmit ? `
+                <div class="arkada-inline-form" id="arkadaForm_${dep.id}" onclick="event.stopPropagation()">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:12px; color:#9ba8ba;">Сделай депозит ${dep.rub} на ARKADA и прикрепи скриншот:</span>
+                        <button type="button" class="arkada-link-btn" onclick="openArkadaSite()">Открыть ❯</button>
+                    </div>
+                    <input type="text" class="task-input" id="arkadaDepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
+                    <label class="file-upload-lbl" style="margin-bottom:12px;">
+                        <input type="file" accept="image/*" onchange="handleArkadaDepFile(this, '${dep.id}')">
+                        <span id="arkadaDepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                    </label>
+                    <button type="button" class="submit-task-btn" onclick="submitArkadaDeposit('${dep.id}')">Отправить на проверку</button>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function openArkadaModal() {
+    const userInp = document.getElementById('arkadaBindUserInput');
+    if (userInp && !userInp.value) userInp.value = getDefaultUsername();
+    renderArkadaUI();
+
+    const modal = document.getElementById('arkadaModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeArkadaModal() {
+    const modal = document.getElementById('arkadaModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function alertArkadaBindFirst() {
+    const msg = '⚠️ Сначала привяжите аккаунт ARKADA (Шаг 1) и дождитесь подтверждения!';
+    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+}
+
+function toggleArkadaBindForm() {
+    const prog = getArkadaProgress();
+    if (prog.bind === 'done' || prog.bind === 'pending') return;
+    const form = document.getElementById('arkadaBindForm');
+    if (form) form.classList.toggle('open');
+}
+
+function toggleArkadaDepForm(depId) {
+    document.querySelectorAll('.arkada-dep-list .arkada-inline-form').forEach(el => {
+        if (el.id !== 'arkadaForm_' + depId) el.classList.remove('open');
+    });
+    const form = document.getElementById('arkadaForm_' + depId);
+    if (form) form.classList.toggle('open');
+}
+
+function handleArkadaDepFile(input, depId) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const lbl = document.getElementById('arkadaDepFileName_' + depId);
+    if (lbl) {
+        lbl.textContent = '✅ ' + file.name;
+        lbl.style.color = '#00e676';
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, 480 / img.width);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            arkadaScreenshots[depId] = canvas.toDataURL('image/jpeg', 0.65);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+async function submitArkadaBind() {
+    const arkId = (document.getElementById('arkadaBindIdInput')?.value || '').trim();
+    let username = (document.getElementById('arkadaBindUserInput')?.value || '').trim();
+
+    if (!arkId) {
+        const msg = '⚠️ Введите ваш ID профиля на ARKADA!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username в Telegram!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `Привязка ARKADA (ID: ${arkId})`,
+        reward: 1000,
+        taskKey: 'arkada_bind',
+        arkadaId: arkId,
+        screenshot: ''
+    });
+
+    const prog = getArkadaProgress();
+    prog.bind = 'pending';
+    prog.arkadaId = arkId;
+    saveArkadaProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/arkada_progress/${myId}`, prog);
+
+    document.getElementById('arkadaBindForm')?.classList.remove('open');
+    renderArkadaUI();
+
+    const okMsg = '🚀 ID отправлен администратору на проверку!';
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+async function submitArkadaDeposit(depId) {
+    const dep = ARKADA_DEPOSITS.find(d => d.id === depId);
+    if (!dep) return;
+
+    let username = (document.getElementById('arkadaDepUser_' + depId)?.value || '').trim();
+    const shot = arkadaScreenshots[depId] || '';
+
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!shot) {
+        const msg = '⚠️ Загрузите скриншот депозита!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    const prog = getArkadaProgress();
+
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `ARKADA депозит ${dep.rub}`,
+        reward: dep.reward,
+        taskKey: 'arkada_dep_' + depId,
+        tierId: depId,
+        arkadaId: prog.arkadaId || '',
+        screenshot: shot
+    });
+
+    prog.deposits[depId] = 'pending';
+    saveArkadaProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/arkada_progress/${myId}`, prog);
+
+    delete arkadaScreenshots[depId];
+    renderArkadaUI();
+
+    const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+initArkadaImages();
+renderArkadaUI();
+        
 </script>
 
     <!-- МГНОВЕННЫЙ КОНТЕЙНЕР ДЛЯ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) -->
