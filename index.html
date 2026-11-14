@@ -9989,6 +9989,321 @@ async function submitArkadaDeposit(depId) {
 
 initArkadaImages();
 renderArkadaUI();
+
+// ================= ПАРТНЁРСКАЯ СИСТЕМА #2 =================
+const P2_NAME = "НАЗВАНИЕ"; // <-- ВПИШИ НАЗВАНИЕ ПРОЕКТА
+const P2_URL = "https://lunar-haze.com/?serial=61374260&creative_id=9330";
+const P2_IMG_URL = "partner2-girl.png"; // <-- ИМЯ ФАЙЛА КАРТИНКИ НА GITHUB
+
+const P2_DEPOSITS = [
+    { id: 'dep_100',     rub: '100 ₽',       reward: 4000,    hot: true },
+    { id: 'dep_1000',    rub: '1 000 ₽',     reward: 3000 },
+    { id: 'dep_2500',    rub: '2 500 ₽',     reward: 5000 },
+    { id: 'dep_5000',    rub: '5 000 ₽',     reward: 10000 },
+    { id: 'dep_10000',   rub: '10 000 ₽',    reward: 20000 },
+    { id: 'dep_20000',   rub: '20 000 ₽',    reward: 40000 },
+    { id: 'dep_35000',   rub: '35 000 ₽',    reward: 70000 },
+    { id: 'dep_50000',   rub: '50 000 ₽',    reward: 100000 },
+    { id: 'dep_100000',  rub: '100 000 ₽',   reward: 200000 },
+    { id: 'dep_250000',  rub: '250 000 ₽',   reward: 500000 },
+    { id: 'dep_500000',  rub: '500 000 ₽',   reward: 1000000 },
+    { id: 'dep_750000',  rub: '750 000 ₽',   reward: 1500000 },
+    { id: 'dep_1000000', rub: '1 000 000 ₽', reward: 2000000 },
+    { id: 'dep_1500000', rub: '1 500 000 ₽', reward: 3000000 },
+    { id: 'dep_2000000', rub: '2 000 000 ₽', reward: 4000000 }
+];
+
+let p2Screenshots = {};
+
+function getP2Progress() {
+    try {
+        const raw = localStorage.getItem('vetruch_p2_progress');
+        if (raw) {
+            const p = JSON.parse(raw);
+            return { bind: p.bind || null, partnerId: p.partnerId || '', deposits: p.deposits || {} };
+        }
+    } catch (e) {}
+    return { bind: null, partnerId: '', deposits: {} };
+}
+
+function saveP2ProgressLocal(prog) {
+    localStorage.setItem('vetruch_p2_progress', JSON.stringify(prog));
+}
+
+function initP2Config() {
+    const t1 = document.getElementById('p2CardTitle');
+    const t2 = document.getElementById('p2ModalTitle');
+    const t3 = document.getElementById('p2BindTitle');
+    const btn = document.getElementById('p2OpenSiteBtn');
+    const inp = document.getElementById('p2BindIdInput');
+    const img1 = document.getElementById('p2CardImg');
+    const img2 = document.getElementById('p2ModalAvatar');
+
+    if (t1) t1.textContent = P2_NAME;
+    if (t2) t2.textContent = P2_NAME;
+    if (t3) t3.textContent = `Привяжи аккаунт ${P2_NAME}`;
+    if (btn) btn.textContent = `Открыть ${P2_NAME} ❯`;
+    if (inp) inp.placeholder = `Ваш ID профиля на ${P2_NAME}`;
+    if (img1) img1.src = P2_IMG_URL;
+    if (img2) img2.src = P2_IMG_URL;
+}
+
+function openP2Site() {
+    if (window.tg && tg.openLink) tg.openLink(P2_URL);
+    else window.open(P2_URL, '_blank');
+}
+
+function renderP2UI() {
+    const prog = getP2Progress();
+
+    const dotsEl = document.getElementById('p2CardDots');
+    if (dotsEl) {
+        const states = [prog.bind, ...P2_DEPOSITS.map(d => prog.deposits[d.id] || null)];
+        dotsEl.innerHTML = states.map(st => {
+            const cls = st === 'done' ? 'done' : (st === 'pending' ? 'pending' : '');
+            return `<span class="p2-dot ${cls}"></span>`;
+        }).join('');
+    }
+
+    const bindCard = document.getElementById('p2BindCard');
+    const stepNum = document.getElementById('p2BindStepNum');
+    const toggleBtn = document.getElementById('p2ToggleBindBtn');
+    const isBound = prog.bind === 'done';
+
+    if (bindCard && stepNum && toggleBtn) {
+        bindCard.classList.toggle('is-done', isBound);
+        if (isBound) {
+            stepNum.textContent = '✓';
+            stepNum.style.color = '#00e676';
+            stepNum.style.borderColor = '#00e676';
+            toggleBtn.textContent = `Привязано (ID: ${prog.partnerId || 'OK'})`;
+            toggleBtn.style.color = '#00e676';
+        } else if (prog.bind === 'pending') {
+            stepNum.textContent = '⏳';
+            toggleBtn.textContent = 'На проверке ⏳';
+            toggleBtn.style.color = '#fbbf24';
+        } else {
+            stepNum.textContent = '1';
+            stepNum.style.color = '#ff66b2';
+            stepNum.style.borderColor = 'rgba(255, 46, 147, 0.55)';
+            toggleBtn.textContent = 'Прислать ID';
+            toggleBtn.style.color = '#ffffff';
+        }
+    }
+
+    const listEl = document.getElementById('p2DepositsList');
+    if (!listEl) return;
+
+    listEl.innerHTML = P2_DEPOSITS.map(dep => {
+        const st = prog.deposits[dep.id] || null;
+        let statusHtml = '<span class="arkada-dep-status">После привязки ❯</span>';
+        let itemClass = 'p2-dep-item';
+
+        if (st === 'done') {
+            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+        } else if (st === 'pending') {
+            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+        } else if (isBound) {
+            itemClass += ' unlocked';
+            statusHtml = '<span class="arkada-dep-status p2-dep-status-ready">Выполнить ❯</span>';
+        }
+
+        const canSubmit = isBound && !st;
+
+        return `
+            <div class="${itemClass}" onclick="${canSubmit ? `toggleP2DepForm('${dep.id}')` : (!isBound ? `alertP2BindFirst()` : '')}">
+                <div class="arkada-dep-row">
+                    <div class="arkada-dep-left">
+                        <span class="arkada-dep-rub">${dep.rub}</span>
+                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        <span class="arkada-dep-reward">
+                            <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
+                        </span>
+                    </div>
+                    ${statusHtml}
+                </div>
+
+                ${canSubmit ? `
+                <div class="arkada-inline-form" id="p2Form_${dep.id}" style="border-top-color: rgba(255, 46, 147, 0.35);" onclick="event.stopPropagation()">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:12px; color:#9ba8ba;">Сделай депозит ${dep.rub} на ${P2_NAME} и прикрепи скриншот:</span>
+                        <button type="button" class="p2-link-btn" onclick="openP2Site()">Открыть ❯</button>
+                    </div>
+                    <input type="text" class="task-input" id="p2DepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
+                    <label class="file-upload-lbl" style="margin-bottom:12px; color:#ff66b2;">
+                        <input type="file" accept="image/*" onchange="handleP2DepFile(this, '${dep.id}')">
+                        <span id="p2DepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                    </label>
+                    <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #ff2e93, #a855f7); box-shadow: 0 0 20px rgba(255, 46, 147, 0.4);" onclick="submitP2Deposit('${dep.id}')">Отправить на проверку</button>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function openP2Modal() {
+    const userInp = document.getElementById('p2BindUserInput');
+    if (userInp && !userInp.value) userInp.value = getDefaultUsername();
+    renderP2UI();
+
+    const modal = document.getElementById('p2Modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeP2Modal() {
+    const modal = document.getElementById('p2Modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function alertP2BindFirst() {
+    const msg = `⚠️ Сначала привяжите аккаунт ${P2_NAME} (Шаг 1) и дождитесь подтверждения!`;
+    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+}
+
+function toggleP2BindForm() {
+    const prog = getP2Progress();
+    if (prog.bind === 'done' || prog.bind === 'pending') return;
+    const form = document.getElementById('p2BindForm');
+    if (form) form.classList.toggle('open');
+}
+
+function toggleP2DepForm(depId) {
+    document.querySelectorAll('#p2DepositsList .arkada-inline-form').forEach(el => {
+        if (el.id !== 'p2Form_' + depId) el.classList.remove('open');
+    });
+    const form = document.getElementById('p2Form_' + depId);
+    if (form) form.classList.toggle('open');
+}
+
+function handleP2DepFile(input, depId) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const lbl = document.getElementById('p2DepFileName_' + depId);
+    if (lbl) {
+        lbl.textContent = '✅ ' + file.name;
+        lbl.style.color = '#00e676';
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, 480 / img.width);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            p2Screenshots[depId] = canvas.toDataURL('image/jpeg', 0.65);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+async function submitP2Bind() {
+    const partnerId = (document.getElementById('p2BindIdInput')?.value || '').trim();
+    let username = (document.getElementById('p2BindUserInput')?.value || '').trim();
+
+    if (!partnerId) {
+        const msg = `⚠️ Введите ваш ID профиля на ${P2_NAME}!`;
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username в Telegram!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `Привязка ${P2_NAME} (ID: ${partnerId})`,
+        reward: 1000,
+        p2Key: 'p2_bind',
+        partnerId: partnerId,
+        partnerName: P2_NAME,
+        screenshot: ''
+    });
+
+    const prog = getP2Progress();
+    prog.bind = 'pending';
+    prog.partnerId = partnerId;
+    saveP2ProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/partner2_progress/${myId}`, prog);
+
+    document.getElementById('p2BindForm')?.classList.remove('open');
+    renderP2UI();
+
+    const okMsg = '🚀 ID отправлен администратору на проверку!';
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+async function submitP2Deposit(depId) {
+    const dep = P2_DEPOSITS.find(d => d.id === depId);
+    if (!dep) return;
+
+    let username = (document.getElementById('p2DepUser_' + depId)?.value || '').trim();
+    const shot = p2Screenshots[depId] || '';
+
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!shot) {
+        const msg = '⚠️ Загрузите скриншот депозита!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    const prog = getP2Progress();
+
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `${P2_NAME} депозит ${dep.rub}`,
+        reward: dep.reward,
+        p2Key: 'p2_dep_' + depId,
+        tierId: depId,
+        partnerId: prog.partnerId || '',
+        partnerName: P2_NAME,
+        screenshot: shot
+    });
+
+    prog.deposits[depId] = 'pending';
+    saveP2ProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/partner2_progress/${myId}`, prog);
+
+    delete p2Screenshots[depId];
+    renderP2UI();
+
+    const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+initP2Config();
+renderP2UI();
         
 </script>
 
