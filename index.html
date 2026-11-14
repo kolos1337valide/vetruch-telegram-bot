@@ -8640,6 +8640,27 @@ if (cloudState && typeof saveArkadaProgressLocal === 'function') {
                     renderArkadaUI();
                 }
             }
+            if (target && target.p2Key) {
+                let p2Prog = (await cloudGet(`vetruch_app/partner2_progress/${target.userId}`)) || { bind: null, partnerId: '', deposits: {} };
+                if (!p2Prog.deposits) p2Prog.deposits = {};
+
+                if (target.p2Key === 'p2_bind') {
+                    p2Prog.bind = isApproved ? 'done' : null;
+                    if (isApproved && target.partnerId) p2Prog.partnerId = target.partnerId;
+                } else if (target.p2Key.startsWith('p2_dep_') && target.tierId) {
+                    if (isApproved) {
+                        p2Prog.deposits[target.tierId] = 'done';
+                    } else {
+                        delete p2Prog.deposits[target.tierId];
+                    }
+                }
+
+                await cloudPut(`vetruch_app/partner2_progress/${target.userId}`, p2Prog);
+                if (String(target.userId) === getCurrentTgId()) {
+                    saveP2ProgressLocal(p2Prog);
+                    renderP2UI();
+                }
+            }
             renderAdminLists();
             renderAdminBalancesTable();
         }
