@@ -8389,6 +8389,27 @@
                     initBalance();
                 }
             }
+            if (target && target.taskKey) {
+                let arkProg = (await cloudGet(`vetruch_app/arkada_progress/${target.userId}`)) || { bind: null, arkadaId: '', deposits: {} };
+                if (!arkProg.deposits) arkProg.deposits = {};
+
+                if (target.taskKey === 'arkada_bind') {
+                    arkProg.bind = isApproved ? 'done' : null;
+                    if (isApproved && target.arkadaId) arkProg.arkadaId = target.arkadaId;
+                } else if (target.taskKey.startsWith('arkada_dep_') && target.tierId) {
+                    if (isApproved) {
+                        arkProg.deposits[target.tierId] = 'done';
+                    } else {
+                        delete arkProg.deposits[target.tierId];
+                    }
+                }
+
+                await cloudPut(`vetruch_app/arkada_progress/${target.userId}`, arkProg);
+                if (String(target.userId) === getCurrentTgId()) {
+                    saveArkadaProgressLocal(arkProg);
+                    renderArkadaUI();
+                }
+            }
             renderAdminLists();
             renderAdminBalancesTable();
         }
