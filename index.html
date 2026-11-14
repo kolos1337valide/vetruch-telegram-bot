@@ -8054,6 +8054,14 @@
             renderProfilePurchases();
             updateReferralsAndTasksUI(myRefCount, myTasksDone);
 
+if (cloudState && typeof saveArkadaProgressLocal === 'function') {
+                const cloudArk = (cloudState.arkada_progress && cloudState.arkada_progress[myId])
+                    ? cloudState.arkada_progress[myId]
+                    : { bind: null, arkadaId: '', deposits: {} };
+                saveArkadaProgressLocal(cloudArk);
+                renderArkadaUI();
+            }
+            
             if (refreshAdmin) {
                 renderAdminLists();
                 renderAdminBalancesTable();
