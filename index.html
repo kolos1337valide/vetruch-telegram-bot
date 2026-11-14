@@ -4724,6 +4724,60 @@
         </div>
     </div>
 
+<!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА #2 -->
+    <div id="p2Modal" class="arkada-modal-overlay" onclick="if(event.target === this) closeP2Modal()">
+        <div class="p2-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title" id="p2ModalTitle">ПАРТНЁР</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeP2Modal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <div class="arkada-intro-box">
+                    <img id="p2ModalAvatar" class="p2-intro-avatar" src="" alt="">
+                    <div class="arkada-intro-text">
+                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
+                    </div>
+                </div>
+
+                <!-- Шаг 1: Привязка аккаунта -->
+                <div class="p2-bind-card" id="p2BindCard">
+                    <div class="arkada-bind-top">
+                        <div class="p2-step-num" id="p2BindStepNum">1</div>
+                        <div style="flex: 1;">
+                            <div class="arkada-bind-title" id="p2BindTitle">Привяжи аккаунт</div>
+                            <div class="arkada-bind-desc">
+                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
+                            </div>
+                            <div class="arkada-bind-actions">
+                                <span class="arkada-bind-reward">
+                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
+                                </span>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button type="button" class="p2-link-btn" id="p2OpenSiteBtn" onclick="openP2Site()">Открыть ❯</button>
+                                    <button type="button" class="p2-link-btn" id="p2ToggleBindBtn" style="color: #fff;" onclick="toggleP2BindForm()">Прислать ID</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arkada-inline-form" id="p2BindForm" style="border-top-color: rgba(255, 46, 147, 0.35);">
+                        <input type="text" class="task-input" id="p2BindIdInput" placeholder="Ваш ID профиля">
+                        <input type="text" class="task-input" id="p2BindUserInput" placeholder="Ваш @username в Telegram">
+                        <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #ff2e93, #a855f7); box-shadow: 0 0 20px rgba(255, 46, 147, 0.4);" onclick="submitP2Bind()">Отправить ID на проверку</button>
+                    </div>
+                </div>
+
+                <div class="arkada-dep-header">
+                    <span class="arkada-dep-header-title">Депозиты</span>
+                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
+                </div>
+
+                <div class="arkada-dep-list" id="p2DepositsList"></div>
+            </div>
+        </div>
+    </div>
+    
 <!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА ARKADA -->
     <div id="arkadaModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeArkadaModal()">
         <div class="arkada-modal-sheet">
