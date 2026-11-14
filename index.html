@@ -4579,6 +4579,63 @@
         </div>
     </div>
 
+<!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА ARKADA -->
+    <div id="arkadaModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeArkadaModal()">
+        <div class="arkada-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title">ARKADA</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeArkadaModal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <!-- Интро с девушкой -->
+                <div class="arkada-intro-box">
+                    <img id="arkadaModalAvatar" class="arkada-intro-avatar" src="" alt="ARKADA">
+                    <div class="arkada-intro-text">
+                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
+                    </div>
+                </div>
+
+                <!-- Шаг 1: Привязка аккаунта -->
+                <div class="arkada-bind-card" id="arkadaBindCard">
+                    <div class="arkada-bind-top">
+                        <div class="arkada-step-num" id="arkadaBindStepNum">1</div>
+                        <div style="flex: 1;">
+                            <div class="arkada-bind-title">Привяжи аккаунт ARKADA</div>
+                            <div class="arkada-bind-desc">
+                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
+                            </div>
+                            <div class="arkada-bind-actions">
+                                <span class="arkada-bind-reward">
+                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
+                                </span>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button type="button" class="arkada-link-btn" onclick="openArkadaSite()">Открыть ARKADA ❯</button>
+                                    <button type="button" class="arkada-link-btn" id="arkadaToggleBindBtn" style="color: #fff;" onclick="toggleArkadaBindForm()">Прислать ID</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Форма отправки ID привязки -->
+                    <div class="arkada-inline-form" id="arkadaBindForm">
+                        <input type="text" class="task-input" id="arkadaBindIdInput" placeholder="Ваш ID профиля на ARKADA">
+                        <input type="text" class="task-input" id="arkadaBindUserInput" placeholder="Ваш @username в Telegram">
+                        <button type="button" class="submit-task-btn" onclick="submitArkadaBind()">Отправить ID на проверку</button>
+                    </div>
+                </div>
+
+                <!-- Секция депозитов -->
+                <div class="arkada-dep-header">
+                    <span class="arkada-dep-header-title">Депозиты</span>
+                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
+                </div>
+
+                <div class="arkada-dep-list" id="arkadaDepositsList"></div>
+            </div>
+        </div>
+    </div>
+    
     <!-- ТАБЛИЧКА "АДМИН-ПАНЕЛЬ В РАЗРАБОТКЕ" -->
     <div id="adminDevModal" class="modal-overlay" onclick="if(event.target === this) closeAdminDevModal()">
         <div class="modal-content" style="border-color: #a855f7; box-shadow: 0 0 40px rgba(168, 85, 247, 0.35);">
