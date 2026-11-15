@@ -5966,6 +5966,113 @@
             </div>
         </div>
     </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО АНИМИРОВАННОЙ ЁЛКИ -->
+    <div id="xmasTreeModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeXmasTreeModal()">
+        <div class="xmas-modal-sheet">
+            <div class="arkada-modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h3 class="arkada-modal-title">🎄 Новогодняя ёлка</h3>
+                    <div class="balance-pill" style="padding: 4px 10px; font-size: 13px;">
+                        <span class="app-balance">500</span> <img src="coins.png" alt="" class="coin-icon" style="width: 14px; height: 14px;">
+                    </div>
+                </div>
+                <button type="button" class="arkada-modal-close" onclick="closeXmasTreeModal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <div class="xmas-stage" id="xmasModalStage">
+                    <div class="xmas-snow-bg" id="xmasSnowBg"></div>
+                    <div class="xmas-ground"></div>
+
+                    <!-- Детализированная анимированная ёлка -->
+                    <div class="xmas-tree-actor" id="xmasTreeActor" onclick="shakeXmasTreeOnce()">
+                        <svg class="xmas-tree-svg-lg" viewBox="0 0 200 240" fill="none" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="xTreeGradDark" x1="100" y1="30" x2="100" y2="210" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#10b981"/>
+                                    <stop offset="60%" stop-color="#059669"/>
+                                    <stop offset="100%" stop-color="#064e3b"/>
+                                </linearGradient>
+                                <linearGradient id="xTreeGradLight" x1="100" y1="25" x2="100" y2="180" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#6ee7b7"/>
+                                    <stop offset="100%" stop-color="#059669"/>
+                                </linearGradient>
+                                <linearGradient id="xStarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fef9c3"/>
+                                    <stop offset="50%" stop-color="#fde047"/>
+                                    <stop offset="100%" stop-color="#f59e0b"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Ствол и тень -->
+                            <ellipse cx="100" cy="224" rx="46" ry="7" fill="rgba(0,0,0,0.45)"/>
+                            <rect x="88" y="196" width="24" height="28" rx="5" fill="#5c3a21" stroke="#3f2715" stroke-width="1.5"/>
+
+                            <!-- Ярус 4 (нижний пушистый) -->
+                            <path d="M100 112 L176 196 Q152 204 134 195 Q118 206 100 198 Q82 206 66 195 Q48 204 24 196 Z"
+                                  fill="url(#xTreeGradDark)" stroke="#10b981" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M36 184 Q48 192 64 185 M136 185 Q152 192 164 184" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+
+                            <!-- Ярус 3 -->
+                            <path d="M100 80 L158 152 Q138 160 122 152 Q110 162 100 155 Q90 162 78 152 Q62 160 42 152 Z"
+                                  fill="url(#xTreeGradDark)" stroke="#34d399" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M52 142 Q64 149 77 143 M123 143 Q136 149 148 142" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+
+                            <!-- Ярус 2 -->
+                            <path d="M100 52 L142 112 Q125 119 112 112 Q100 120 88 112 Q75 119 58 112 Z"
+                                  fill="url(#xTreeGradLight)" stroke="#6ee7b7" stroke-width="1.8" stroke-linejoin="round"/>
+
+                            <!-- Ярус 1 (верхушка) -->
+                            <path d="M100 28 L126 74 Q112 80 100 75 Q88 80 74 74 Z"
+                                  fill="url(#xTreeGradLight)" stroke="#a7f3d0" stroke-width="1.8" stroke-linejoin="round"/>
+
+                            <!-- Неоновые гирлянды -->
+                            <path d="M78 70 Q100 84 122 70" stroke="#00d9ff" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
+                            <path d="M62 108 Q100 126 138 108" stroke="#38bdf8" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/>
+                            <path d="M48 148 Q100 168 152 148" stroke="#00d9ff" stroke-width="2.6" stroke-linecap="round" opacity="0.9"/>
+                            <path d="M32 188 Q100 212 168 188" stroke="#38bdf8" stroke-width="2.6" stroke-linecap="round" opacity="0.85"/>
+
+                            <!-- Сияющая звезда -->
+                            <g class="xmas-star-glow">
+                                <circle cx="100" cy="20" r="15" fill="rgba(253, 224, 71, 0.22)"/>
+                                <path d="M100 4 L104.8 14.2 L116 15.6 L107.6 23.2 L109.8 34.2 L100 28.8 L90.2 34.2 L92.4 23.2 L84 15.6 L95.2 14.2 Z"
+                                      fill="url(#xStarGrad)" stroke="#fef9c3" stroke-width="1.2" stroke-linejoin="round"/>
+                            </g>
+
+                            <!-- Мигающие огоньки и шары -->
+                            <circle class="xmas-light-a" cx="90" cy="60" r="4.5" fill="#00d9ff"/>
+                            <circle class="xmas-light-b" cx="112" cy="66" r="4" fill="#ffd700"/>
+                            <circle class="xmas-light-c" cx="76" cy="96" r="5" fill="#ff3366"/>
+                            <circle class="xmas-light-a" cx="100" cy="94" r="5.5" fill="#ffd700"/>
+                            <circle class="xmas-light-b" cx="124" cy="100" r="4.5" fill="#00d9ff"/>
+                            <circle class="xmas-light-c" cx="62" cy="136" r="5.5" fill="#00d9ff"/>
+                            <circle class="xmas-light-a" cx="88" cy="132" r="5" fill="#ff3366"/>
+                            <circle class="xmas-light-b" cx="116" cy="138" r="5.5" fill="#ffd700"/>
+                            <circle class="xmas-light-c" cx="138" cy="134" r="4.5" fill="#34d399"/>
+                            <circle class="xmas-light-a" cx="48" cy="176" r="6" fill="#ffd700"/>
+                            <circle class="xmas-light-b" cx="82" cy="178" r="5.5" fill="#00d9ff"/>
+                            <circle class="xmas-light-c" cx="118" cy="174" r="6" fill="#ff3366"/>
+                            <circle class="xmas-light-a" cx="150" cy="180" r="5.5" fill="#ffd700"/>
+                        </svg>
+                    </div>
+
+                    <div id="xmasSingleGiftSlot"></div>
+                </div>
+
+                <div class="xmas-reward-result" id="xmasRewardResult">
+                    <div style="font-size: 11px; color: #9ba8ba; font-weight: 700; text-transform: uppercase;">Подарок с ёлки за сегодня</div>
+                    <div style="font-size: 22px; font-weight: 900; color: #ffd700; margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        +<span id="xmasRewardAmountText">0</span> <img src="coins.png" style="width: 20px; height: 20px;">
+                    </div>
+                </div>
+
+                <button type="button" class="xmas-action-btn" id="xmasModalActionBtn" onclick="shakeXmasTreeOnce()">
+                    🎄 ПОТРЯСТИ ЁЛКУ
+                </button>
+            </div>
+        </div>
+    </div>
     
 <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА АВАТАРКИ -->
     <div id="avatarModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeAvatarModal()">
