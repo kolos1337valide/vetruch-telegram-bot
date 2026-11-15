@@ -5083,10 +5083,42 @@
     z-index: 2;
 }
 
-.advent-gift-ico {
-    font-size: 26px;
+.advent-gift-badge {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(145deg, rgba(0, 185, 255, 0.30), rgba(7, 19, 38, 0.96));
+    border: 1.5px solid rgba(0, 217, 255, 0.65);
+    box-shadow: 0 0 18px rgba(0, 217, 255, 0.45), inset 0 0 12px rgba(0, 217, 255, 0.22);
+    display: grid;
+    place-items: center;
+    transform: rotate(-8deg);
+    animation: adventGiftFloat 2.6s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+.advent-gift-badge svg {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0 0 6px rgba(0, 217, 255, 0.85));
+}
+
+.advent-sparkle {
+    position: absolute;
+    color: #b8f5ff;
+    font-size: 9px;
     line-height: 1;
-    filter: drop-shadow(0 0 12px rgba(0, 217, 255, 0.6));
+    text-shadow: 0 0 6px #00d9ff;
+    pointer-events: none;
+}
+
+.advent-sparkle.s1 { top: -4px; right: -4px; }
+.advent-sparkle.s2 { bottom: -3px; left: -4px; font-size: 7px; opacity: 0.85; }
+
+@keyframes adventGiftFloat {
+    0%, 100% { transform: rotate(-8deg) translateY(0); }
+    50% { transform: rotate(-4deg) translateY(-2.5px); }
 }
 
 .advent-arrow-btn {
