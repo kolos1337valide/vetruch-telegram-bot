@@ -7478,6 +7478,18 @@
             </div>
         </div>
 
+        <!-- ПЛАШКА АКТИВАЦИИ ПРОМОКОДА -->
+        <div class="promo-entry-card anim-item" style="animation-delay: 0.11s;">
+            <div class="promo-entry-head">
+                <span class="promo-entry-title">🎟️ Промокод</span>
+                <span class="promo-entry-sub">Введи код на монеты</span>
+            </div>
+            <div class="promo-input-row">
+                <input type="text" id="promoCodeInput" class="promo-input" placeholder="Введите промокод..." autocomplete="off">
+                <button type="button" id="promoActivateBtn" class="promo-activate-btn" onclick="activateUserPromo()">Активировать</button>
+            </div>
+            <div id="promoFeedback" class="promo-feedback"></div>
+        </div>
         
         <!-- КНОПКА МЕЧТЫ -->
         <div class="dream-entry-card anim-item" style="animation-delay: 0.12s;" onclick="openPage('dream-page')">
