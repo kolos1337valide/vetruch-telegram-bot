@@ -11091,6 +11091,16 @@ async function renderLeaderboardPage() {
             if (m) m.classList.remove('active');
         }
 
+        function openGwPs5Modal() {
+            const m = document.getElementById('gwPs5Modal');
+            if (m) m.classList.add('active');
+        }
+
+        function closeGwPs5Modal() {
+            const m = document.getElementById('gwPs5Modal');
+            if (m) m.classList.remove('active');
+        }
+
         function openGiveawaysAll() {
             if (window.tg && tg.showAlert) {
                 tg.showAlert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
