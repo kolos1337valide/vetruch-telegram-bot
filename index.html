@@ -12897,6 +12897,14 @@ setInterval(() => {
         renderXmasTreeV2UI();
     }
 }, 1000);
+
+document.addEventListener('visibilitychange', () => {
+    const v = document.getElementById('bannerKickVideo');
+    if (v && !document.hidden) {
+        v.muted = true;
+        v.play().catch(() => {});
+    }
+});
         
 </script>
 
