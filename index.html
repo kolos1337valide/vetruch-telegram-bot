@@ -6593,6 +6593,30 @@
         </div>
     </div>
 
+    <script>
+// === АВАРИЙНОЕ СКРЫТИЕ ЗАГРУЗКИ: не зависит от остального кода ===
+(function () {
+    function hideLoader() {
+        var ls = document.getElementById('loading-screen');
+        if (!ls || ls.dataset.done) return;
+        ls.dataset.done = '1';
+        ls.style.transition = 'opacity .3s ease';
+        ls.style.opacity = '0';
+        ls.style.visibility = 'hidden';
+        setTimeout(function () { ls.style.display = 'none'; }, 350);
+        document.body.classList.remove('is-loading');
+        document.body.classList.add('is-ready');
+        try { if (typeof openPage === 'function') openPage('home'); } catch (e) {}
+    }
+    // жёсткий таймаут: скрыть через 2.5 сек в любом случае
+    setTimeout(hideLoader, 2500);
+    // если где-то в JS упала ошибка — тоже скрываем
+    window.addEventListener('error', function () {
+        setTimeout(hideLoader, 100);
+    });
+})();
+</script>
+
     <canvas id="stars"></canvas>
     <div class="dark-overlay"></div>
 
