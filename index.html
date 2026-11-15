@@ -9710,7 +9710,7 @@ async function syncUserProfile() {
     
     users[myId] = {
         name: user.username ? '@' + user.username : (user.first_name || 'Аноним'),
-        avatar: user.photo_url || null,
+        avatar: (typeof getEffectiveAvatarUrl === 'function') ? getEffectiveAvatarUrl() : (user.photo_url || null),
         updated: Date.now()
     };
     
