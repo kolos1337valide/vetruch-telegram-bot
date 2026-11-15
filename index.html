@@ -9453,6 +9453,13 @@ if (cloudState && cloudState.advent_2026 && Array.isArray(cloudState.advent_2026
                 updateAdventTimers();
                 renderAdventGrid();
             }
+
+if (cloudState && cloudState.tree_daily && cloudState.tree_daily[myId] && typeof saveXmasTreeStateLocal === 'function') {
+                if (cloudState.tree_daily[myId].date === getMskTodayStr()) {
+                    saveXmasTreeStateLocal(cloudState.tree_daily[myId]);
+                    renderXmasTreeUI();
+                }
+            }
             
             if (refreshAdmin) {
                 renderAdminLists();
