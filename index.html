@@ -10224,8 +10224,10 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                 renderAdminLists();
                 renderAdminBalancesTable();
                 populateAdminPredictionForm();
+                if (typeof renderAdminPromosList === 'function') {
+                    renderAdminPromosList(cloudState ? cloudState.promocodes : {});
+                }
             }
-        }
 
         // ================= ПОКУПКА В МАГАЗИНЕ И ИНВЕНТАРЬ ПРОФИЛЯ =================
         let selectedShopItem = '';
