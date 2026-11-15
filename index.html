@@ -12299,6 +12299,224 @@ async function onAdventDayClick(day) {
 
 updateAdventTimers();
 setInterval(updateAdventTimers, 1000);
+
+// ================= ИНТЕРАКТИВНАЯ НОВОГОДНЯЯ ЁЛКА =================
+// Пул наград за каждый из 3 упавших подарков (можно менять цифры)
+const TREE_REWARD_POOL = [50, 75, 100, 100, 125, 150, 200, 250, 500, 1000];
+const TREE_TOTAL_SHAKES = 5;
+const TREE_DROP_AT = [2, 4, 5]; // На каких ударах падают 3 подарка
+const TREE_DROP_POSITIONS = [22, 50, 78]; // Позиции % слева направо под ёлкой
+
+function getMskTodayStr() {
+    const msk = new Date(Date.now() + 3 * 3600000);
+    const y = msk.getUTCFullYear();
+    const m = pad2(msk.getUTCMonth() + 1);
+    const d = pad2(msk.getUTCDate());
+    return `${y}-${m}-${d}`;
+}
+
+function getTimeLeftUntilMskMidnightStr() {
+    const msk = new Date(Date.now() + 3 * 3600000);
+    const secsPassed = msk.getUTCHours() * 3600 + msk.getUTCMinutes() * 60 + msk.getUTCSeconds();
+    const left = Math.max(0, 86400 - secsPassed);
+    const h = Math.floor(left / 3600);
+    const m = Math.floor((left % 3600) / 60);
+    const s = left % 60;
+    return `${pad2(h)}ч ${pad2(m)}м ${pad2(s)}с`;
+}
+
+function pickTreeReward() {
+    return TREE_REWARD_POOL[Math.floor(Math.random() * TREE_REWARD_POOL.length)];
+}
+
+function getXmasTreeState() {
+    const today = getMskTodayStr();
+    try {
+        const raw = localStorage.getItem('vetruch_tree_state_2026');
+        if (raw) {
+            const p = JSON.parse(raw);
+            if (p && p.date === today) {
+                return {
+                    date: today,
+                    shakes: Number(p.shakes || 0),
+                    gifts: Array.isArray(p.gifts) ? p.gifts : []
+                };
+            }
+        }
+    } catch (e) {}
+    return { date: today, shakes: 0, gifts: [] };
+}
+
+function saveXmasTreeStateLocal(st) {
+    localStorage.setItem('vetruch_tree_state_2026', JSON.stringify(st));
+}
+
+function buildGiftSvg(theme) {
+    const c1 = theme === 'gold' ? '#fde047' : (theme === 'emerald' ? '#6ee7b7' : '#80ebff');
+    const c2 = theme === 'gold' ? '#f59e0b' : (theme === 'emerald' ? '#10b981' : '#0088ff');
+    return `
+        <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="8" width="18" height="4" rx="1.2" fill="${c2}" fill-opacity="0.35" stroke="${c1}" stroke-width="1.6"/>
+            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" fill="${c2}" fill-opacity="0.2" stroke="${c1}" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M12 8v13" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
+            <path d="M12 8H8.3a2.1 2.1 0 1 1 0-4.2C10.8 3.8 12 8 12 8Z" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M12 8h3.7a2.1 2.1 0 1 0 0-4.2C13.2 3.8 12 8 12 8Z" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+    `;
+}
+
+function renderXmasTreeUI() {
+    const st = getXmasTreeState();
+    const pill = document.getElementById('xmasTreePill');
+    const sub = document.getElementById('xmasTreeSub');
+    const btn = document.getElementById('xmasShakeBtn');
+    const layer = document.getElementById('xmasGiftsLayer');
+    if (!pill || !sub || !btn || !layer) return;
+
+    const unclaimed = st.gifts.filter(g => !g.claimed);
+    const claimedCount = st.gifts.filter(g => g.claimed).length;
+    const allFinished = st.shakes >= TREE_TOTAL_SHAKES && unclaimed.length === 0;
+
+    // Подарки на снегу
+    const themes = ['', 'gold', 'emerald'];
+    layer.innerHTML = unclaimed.map((g) => {
+        const theme = themes[(g.idx || 0) % themes.length];
+        return `
+            <div class="xmas-gift-drop ${theme}" style="left: ${g.xPct}%;" onclick="claimXmasGift(${g.idx})">
+                ${buildGiftSvg(theme)}
+                <span class="xmas-gift-tap">ЗАБРАТЬ</span>
+            </div>
+        `;
+    }).join('');
+
+    if (allFinished) {
+        const leftTime = getTimeLeftUntilMskMidnightStr();
+        pill.textContent = '3 / 3 собрано ✓';
+        pill.classList.add('is-done');
+        sub.textContent = `Все подарки за сегодня собраны!`;
+        btn.className = 'xmas-shake-btn is-cooldown';
+        btn.textContent = `⏳ Новые подарки через ${leftTime}`;
+    } else if (st.shakes >= TREE_TOTAL_SHAKES && unclaimed.length > 0) {
+        pill.textContent = `Осталось открыть: ${unclaimed.length}`;
+        pill.classList.remove('is-done');
+        sub.textContent = 'Нажми на упавшие подарки под ёлкой!';
+        btn.className = 'xmas-shake-btn is-collect';
+        btn.textContent = `🎁 НАЖМИ НА ПОДАРКИ (${unclaimed.length})`;
+    } else {
+        const shakesLeft = TREE_TOTAL_SHAKES - st.shakes;
+        pill.textContent = `Собрано: ${claimedCount} / 3`;
+        pill.classList.remove('is-done');
+        sub.textContent = unclaimed.length > 0
+            ? 'Можно забрать упавшие подарки или трясти дальше!'
+            : 'Нажми на ёлку или кнопку, чтобы сбить подарки!';
+        btn.className = 'xmas-shake-btn';
+        btn.textContent = `🎄 ПОТРЯСТИ ЁЛКУ (осталось ${shakesLeft})`;
+    }
+}
+
+function spawnTreeSnowflakes() {
+    const stage = document.getElementById('xmasTreeStage');
+    if (!stage) return;
+    for (let i = 0; i < 12; i++) {
+        const flake = document.createElement('span');
+        flake.className = 'xmas-flake';
+        flake.style.left = (25 + Math.random() * 50) + '%';
+        flake.style.top = (20 + Math.random() * 60) + 'px';
+        flake.style.setProperty('--dx', ((Math.random() - 0.5) * 70).toFixed(0) + 'px');
+        stage.appendChild(flake);
+        setTimeout(() => flake.remove(), 950);
+    }
+}
+
+async function shakeXmasTree() {
+    const st = getXmasTreeState();
+    const wrap = document.getElementById('xmasTreeWrap');
+
+    if (st.shakes >= TREE_TOTAL_SHAKES) {
+        if (st.gifts.some(g => !g.claimed)) {
+            const msg = '🎁 Все 3 подарка уже упали! Нажми на коробки под ёлкой, чтобы забрать монеты.';
+            if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        }
+        return;
+    }
+
+    // Анимация тряски + вибрация + снежинки
+    if (wrap) {
+        wrap.classList.remove('is-shaking');
+        void wrap.offsetWidth;
+        wrap.classList.add('is-shaking');
+    }
+    if (window.tg && tg.HapticFeedback) {
+        try { tg.HapticFeedback.impactOccurred('medium'); } catch (e) {}
+    }
+    spawnTreeSnowflakes();
+
+    st.shakes += 1;
+
+    // Проверяем, должен ли упасть подарок на этом ударе
+    const dropIndex = TREE_DROP_AT.indexOf(st.shakes);
+    if (dropIndex !== -1 && !st.gifts.some(g => g.idx === dropIndex)) {
+        st.gifts.push({
+            idx: dropIndex,
+            reward: pickTreeReward(),
+            claimed: false,
+            xPct: TREE_DROP_POSITIONS[dropIndex]
+        });
+    }
+
+    saveXmasTreeStateLocal(st);
+    renderXmasTreeUI();
+
+    const myId = getCurrentTgId();
+    await cloudPut(`vetruch_app/tree_daily/${myId}`, st);
+}
+
+async function claimXmasGift(idx) {
+    const st = getXmasTreeState();
+    const gift = st.gifts.find(g => g.idx === idx);
+    if (!gift || gift.claimed) return;
+
+    gift.claimed = true;
+    saveXmasTreeStateLocal(st);
+
+    const myId = getCurrentTgId();
+    let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+    curBal += Number(gift.reward);
+    localStorage.setItem('vetruch_balance', curBal);
+    localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+    let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    balancesMap[myId] = curBal;
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+    initBalance();
+    renderXmasTreeUI();
+
+    if (window.tg && tg.HapticFeedback) {
+        try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+    }
+
+    // Вылетающая надпись выигрыша прямо над коробкой
+    const stage = document.getElementById('xmasTreeStage');
+    if (stage) {
+        const floatEl = document.createElement('div');
+        floatEl.className = 'xmas-float-win';
+        floatEl.style.left = gift.xPct + '%';
+        floatEl.innerHTML = `+${formatCoins(gift.reward)} <img src="coins.png" class="coin-icon-sm">`;
+        stage.appendChild(floatEl);
+        setTimeout(() => floatEl.remove(), 1200);
+    }
+
+    await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+    await cloudPut(`vetruch_app/tree_daily/${myId}`, st);
+}
+
+renderXmasTreeUI();
+setInterval(() => {
+    const st = getXmasTreeState();
+    if (st.shakes >= TREE_TOTAL_SHAKES && st.gifts.every(g => g.claimed)) {
+        renderXmasTreeUI();
+    }
+}, 1000);
         
 </script>
 
