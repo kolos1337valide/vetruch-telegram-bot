@@ -8511,6 +8511,13 @@ if (cloudState && typeof saveArkadaProgressLocal === 'function') {
                 saveP2ProgressLocal(cloudP2);
                 renderP2UI();
             }
+            if (cloudState && typeof saveP3ProgressLocal === 'function') {
+                const cloudP3 = (cloudState.partner3_progress && cloudState.partner3_progress[myId])
+                    ? cloudState.partner3_progress[myId]
+                    : { bind: null, partnerId: '', deposits: {} };
+                saveP3ProgressLocal(cloudP3);
+                renderP3UI();
+            }
             if (refreshAdmin) {
                 renderAdminLists();
                 renderAdminBalancesTable();
