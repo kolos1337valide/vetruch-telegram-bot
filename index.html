@@ -13111,6 +13111,15 @@ document.addEventListener('visibilitychange', () => {
     v.addEventListener('canplay', tryPlay, { once: true });
     document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
 })();
+
+function openSupportChat() {
+    const url = 'https://t.me/managerrtut';
+    if (window.tg && tg.openTelegramLink) {
+        tg.openTelegramLink(url);
+    } else {
+        window.open(url, '_blank');
+    }
+}
         
 </script>
 
