@@ -4995,6 +4995,254 @@
     place-items: center;
     box-shadow: 0 2px 8px rgba(0, 217, 255, 0.6);
 }
+
+/* ================= УЗКАЯ ПЛАШКА НОВОГОДНЕГО КАЛЕНДАРЯ НА ГЛАВНОЙ ================= */
+.advent-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    background:
+        radial-gradient(90% 140% at 88% 50%, rgba(0, 217, 255, 0.22) 0%, rgba(0, 102, 255, 0.08) 55%, rgba(10, 15, 26, 0.94) 100%),
+        linear-gradient(135deg, rgba(13, 21, 36, 0.95), rgba(8, 12, 22, 0.98));
+    border: 1px solid rgba(0, 217, 255, 0.35);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), 0 0 18px rgba(0, 136, 255, 0.12);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.2s ease;
+}
+
+.advent-banner:active {
+    transform: scale(0.97);
+    border-color: #00d9ff;
+}
+
+.advent-left {
+    display: flex;
+    align-items: stretch;
+    gap: 11px;
+    min-width: 0;
+    flex: 1;
+    z-index: 2;
+}
+
+.advent-bar {
+    width: 3px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #38bdf8, #00d9ff);
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.85);
+    flex-shrink: 0;
+}
+
+.advent-texts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    text-align: left;
+}
+
+.advent-eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    color: #38bdf8;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.advent-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.advent-sub {
+    font-size: 11px;
+    color: #8c97a7;
+    font-weight: 500;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.advent-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.advent-gift-ico {
+    font-size: 26px;
+    line-height: 1;
+    filter: drop-shadow(0 0 12px rgba(0, 217, 255, 0.6));
+}
+
+.advent-arrow-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0088ff 0%, #00d9ff 100%);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 900;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 14px rgba(0, 170, 255, 0.45);
+}
+
+/* ================= МОДАЛКА НОВОГОДНЕГО КАЛЕНДАРЯ ================= */
+.advent-modal-sheet {
+    width: 100%;
+    max-width: 460px;
+    max-height: 88vh;
+    background: linear-gradient(180deg, #101b2c 0%, #080d16 100%);
+    border-top: 1.5px solid rgba(0, 217, 255, 0.5);
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(35px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.85);
+}
+
+.arkada-modal-overlay.active .advent-modal-sheet {
+    transform: translateY(0);
+}
+
+.advent-timer-banner {
+    background: linear-gradient(135deg, rgba(0, 136, 255, 0.16), rgba(0, 217, 255, 0.06));
+    border: 1px solid rgba(0, 217, 255, 0.38);
+    border-radius: 16px;
+    padding: 12px 14px;
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.advent-timer-lbl {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8acaff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.advent-timer-val {
+    font-size: 19px;
+    font-weight: 900;
+    color: #ffffff;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 12px rgba(0, 217, 255, 0.45);
+}
+
+.advent-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.advent-day {
+    position: relative;
+    border-radius: 14px;
+    padding: 9px 4px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-align: center;
+    transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.advent-day.is-available {
+    background: linear-gradient(180deg, rgba(0, 170, 255, 0.2), rgba(0, 110, 230, 0.1));
+    border-color: #00d9ff;
+    box-shadow: 0 0 14px rgba(0, 217, 255, 0.25);
+    cursor: pointer;
+}
+
+.advent-day.is-available:active {
+    transform: scale(0.94);
+}
+
+.advent-day.is-today {
+    border-color: #ffd700;
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.3);
+}
+
+.advent-day.is-claimed {
+    background: rgba(0, 230, 118, 0.08);
+    border-color: rgba(0, 230, 118, 0.4);
+}
+
+.advent-day.is-locked {
+    opacity: 0.65;
+    cursor: pointer;
+}
+
+.advent-day-31 {
+    grid-column: span 2;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.14), rgba(0, 136, 255, 0.14));
+    border-color: rgba(255, 215, 0, 0.45);
+}
+
+.advent-day-num {
+    font-size: 11px;
+    font-weight: 800;
+    color: #9ba8ba;
+}
+
+.advent-day.is-available .advent-day-num {
+    color: #ffffff;
+}
+
+.advent-day.is-claimed .advent-day-num {
+    color: #00e676;
+}
+
+.advent-day-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.advent-day-reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #ffd700;
+}
+
+.advent-day-status {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #8c97a7;
+}
+
+.advent-day.is-available .advent-day-status {
+    color: #00d9ff;
+}
+
+.advent-day.is-claimed .advent-day-status {
+    color: #00e676;
+}
         
 </style>
     
