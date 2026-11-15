@@ -6052,6 +6052,73 @@
                 </div>
             </div>
         </div>
+
+<!-- ================= ИНТЕРАКТИВНАЯ НОВОГОДНЯЯ ЁЛКА ================= -->
+        <div class="xmas-tree-card anim-item" style="animation-delay: 0.19s;">
+            <div class="xmas-tree-header">
+                <div>
+                    <div class="xmas-tree-title">🎄 Новогодняя ёлка</div>
+                    <div class="xmas-tree-sub" id="xmasTreeSub">Тряси ёлку, чтобы сбить 3 подарка!</div>
+                </div>
+                <span class="xmas-tree-pill" id="xmasTreePill">3 подарка</span>
+            </div>
+
+            <div class="xmas-tree-stage" id="xmasTreeStage">
+                <div class="xmas-snow-ground"></div>
+
+                <div class="xmas-tree-btn-wrap" id="xmasTreeWrap" onclick="shakeXmasTree()">
+                    <svg class="xmas-tree-svg" viewBox="0 0 140 170" fill="none" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="treeBody1" x1="70" y1="22" x2="70" y2="145" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#34d399"/>
+                                <stop offset="55%" stop-color="#059669"/>
+                                <stop offset="100%" stop-color="#064e3b"/>
+                            </linearGradient>
+                            <linearGradient id="treeGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fef08a"/>
+                                <stop offset="100%" stop-color="#f59e0b"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Ствол -->
+                        <rect x="61" y="138" width="18" height="24" rx="4" fill="#5c3a21"/>
+
+                        <!-- Нижний ярус -->
+                        <path d="M70 68 L126 140 Q70 148 14 140 Z" fill="url(#treeBody1)" stroke="#10b981" stroke-width="1.5" stroke-linejoin="round"/>
+                        <!-- Средний ярус -->
+                        <path d="M70 42 L114 104 Q70 112 26 104 Z" fill="url(#treeBody1)" stroke="#34d399" stroke-width="1.5" stroke-linejoin="round"/>
+                        <!-- Верхний ярус -->
+                        <path d="M70 20 L100 68 Q70 75 40 68 Z" fill="url(#treeBody1)" stroke="#6ee7b7" stroke-width="1.5" stroke-linejoin="round"/>
+
+                        <!-- Светящиеся гирлянды -->
+                        <path d="M46 65 Q70 77 94 65" stroke="#00d9ff" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+                        <path d="M32 100 Q70 115 108 100" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+                        <path d="M22 134 Q70 148 118 134" stroke="#00d9ff" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+
+                        <!-- Звезда на макушке -->
+                        <path d="M70 4 L73.8 12.2 L82.8 13.2 L76.1 19.4 L77.9 28.2 L70 23.8 L62.1 28.2 L63.9 19.4 L57.2 13.2 L66.2 12.2 Z" fill="url(#treeGold)" stroke="#fef9c3" stroke-width="1"/>
+
+                        <!-- Мигающие шарики -->
+                        <circle class="xmas-bulb-1" cx="62" cy="54" r="4.5" fill="#00d9ff"/>
+                        <circle class="xmas-bulb-2" cx="80" cy="60" r="4" fill="#ffd700"/>
+                        <circle class="xmas-bulb-3" cx="50" cy="90" r="5" fill="#ff3366"/>
+                        <circle class="xmas-bulb-1" cx="72" cy="88" r="4.5" fill="#ffd700"/>
+                        <circle class="xmas-bulb-2" cx="92" cy="95" r="4.5" fill="#00d9ff"/>
+                        <circle class="xmas-bulb-3" cx="40" cy="126" r="5" fill="#00d9ff"/>
+                        <circle class="xmas-bulb-1" cx="64" cy="124" r="5.5" fill="#ff3366"/>
+                        <circle class="xmas-bulb-2" cx="88" cy="128" r="5" fill="#ffd700"/>
+                        <circle class="xmas-bulb-3" cx="105" cy="130" r="4" fill="#00e676"/>
+                    </svg>
+                </div>
+
+                <div class="xmas-gifts-layer" id="xmasGiftsLayer"></div>
+            </div>
+
+            <button type="button" class="xmas-shake-btn" id="xmasShakeBtn" onclick="shakeXmasTree()">
+                🎄 ПОТРЯСТИ ЁЛКУ
+            </button>
+        </div>
+        
         <div class="card anim-item" style="animation-delay: 0.2s;">
             <div class="leaderboard-header">
                 <div class="leaderboard-title">Рейтинг</div>
