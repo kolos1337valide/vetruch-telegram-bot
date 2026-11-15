@@ -13278,6 +13278,192 @@ function openSupportChat() {
         window.open(url, '_blank');
     }
 }
+
+// ================= СИСТЕМА ПРОМОКОДОВ (ПРОФИЛЬ + АДМИНКА) =================
+let promoFeedbackTimer = null;
+let adminPromoToastTimer = null;
+
+function normalizePromoCode(raw) {
+    return String(raw || '').trim().toUpperCase().replace(/[.#$\[\]\/\s]/g, '');
+}
+
+function showPromoFeedback(msg, isError) {
+    const el = document.getElementById('promoFeedback');
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.background = isError ? 'rgba(255, 51, 102, 0.15)' : 'rgba(0, 230, 118, 0.15)';
+    el.style.border = isError ? '1px solid rgba(255, 51, 102, 0.45)' : '1px solid rgba(0, 230, 118, 0.45)';
+    el.style.color = isError ? '#ff5277' : '#00e676';
+    el.textContent = msg;
+
+    if (promoFeedbackTimer) clearTimeout(promoFeedbackTimer);
+    promoFeedbackTimer = setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+function showAdminPromoToast(msg, isError) {
+    const el = document.getElementById('adminPromoToast');
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.background = isError ? 'rgba(255, 51, 102, 0.15)' : 'rgba(0, 230, 118, 0.15)';
+    el.style.borderColor = isError ? 'rgba(255, 51, 102, 0.45)' : 'rgba(0, 230, 118, 0.45)';
+    el.style.color = isError ? '#ff3366' : '#00e676';
+    el.textContent = msg;
+
+    if (adminPromoToastTimer) clearTimeout(adminPromoToastTimer);
+    adminPromoToastTimer = setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+function generateRandomPromoCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = 'VET-';
+    for (let i = 0; i < 5; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const inp = document.getElementById('adminPromoCodeInput');
+    if (inp) inp.value = code;
+}
+
+async function activateUserPromo() {
+    const inp = document.getElementById('promoCodeInput');
+    const btn = document.getElementById('promoActivateBtn');
+    const code = normalizePromoCode(inp ? inp.value : '');
+
+    if (!code) {
+        showPromoFeedback('⚠️ Введите промокод!', true);
+        return;
+    }
+
+    if (btn) { btn.disabled = true; btn.textContent = '...'; }
+
+    try {
+        const promo = await cloudGet(`vetruch_app/promocodes/${code}`);
+        if (!promo || !promo.reward) {
+            showPromoFeedback('❌ Промокод не найден или удалён', true);
+            return;
+        }
+
+        const myId = getCurrentTgId();
+        const usedBy = (promo.usedBy && typeof promo.usedBy === 'object') ? promo.usedBy : {};
+        const usedCount = Object.keys(usedBy).length;
+        const localUsed = JSON.parse(localStorage.getItem('vetruch_used_promos') || '[]');
+
+        if (usedBy[myId] || localUsed.includes(code)) {
+            showPromoFeedback('⚠️ Вы уже активировали этот промокод!', true);
+            return;
+        }
+
+        if (promo.maxUses > 0 && usedCount >= Number(promo.maxUses)) {
+            showPromoFeedback('😔 Лимит активаций этого промокода исчерпан!', true);
+            return;
+        }
+
+        const reward = Number(promo.reward);
+        let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+        curBal += reward;
+
+        localStorage.setItem('vetruch_balance', curBal);
+        localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+        let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+        balancesMap[myId] = curBal;
+        localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+        if (!localUsed.includes(code)) {
+            localUsed.push(code);
+            localStorage.setItem('vetruch_used_promos', JSON.stringify(localUsed));
+        }
+
+        await cloudPut(`vetruch_app/promocodes/${code}/usedBy/${myId}`, Date.now());
+        await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+
+        initBalance();
+        if (inp) inp.value = '';
+        if (window.tg && tg.HapticFeedback) {
+            try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+        }
+
+        showPromoFeedback(`✅ Промокод ${code} активирован! +${formatCoins(reward)} монет`, false);
+    } catch (e) {
+        showPromoFeedback('❌ Ошибка соединения, попробуйте снова', true);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Активировать'; }
+    }
+}
+
+async function adminCreatePromoCode() {
+    const codeInp = document.getElementById('adminPromoCodeInput');
+    const rewardInp = document.getElementById('adminPromoRewardInput');
+    const usesInp = document.getElementById('adminPromoUsesInput');
+
+    const code = normalizePromoCode(codeInp ? codeInp.value : '');
+    const reward = parseInt(rewardInp ? rewardInp.value : '0', 10);
+    const maxUses = parseInt(usesInp ? usesInp.value : '0', 10);
+
+    if (!code || code.length < 2) {
+        showAdminPromoToast('⚠️ Введите код промокода (минимум 2 символа)!', true);
+        return;
+    }
+    if (isNaN(reward) || reward <= 0) {
+        showAdminPromoToast('⚠️ Укажите награду больше 0 монет!', true);
+        return;
+    }
+
+    const promoObj = {
+        code: code,
+        reward: reward,
+        maxUses: (!isNaN(maxUses) && maxUses > 0) ? maxUses : 0,
+        createdAt: Date.now(),
+        usedBy: {}
+    };
+
+    const ok = await cloudPut(`vetruch_app/promocodes/${code}`, promoObj);
+    if (!ok) {
+        showAdminPromoToast('❌ Ошибка сохранения в Firebase!', true);
+        return;
+    }
+
+    if (codeInp) codeInp.value = '';
+    showAdminPromoToast(`✅ Промокод ${code} (+${formatCoins(reward)} монет) создан!`, false);
+    await renderAdminPromosList();
+}
+
+async function adminDeletePromoCode(code) {
+    await cloudPut(`vetruch_app/promocodes/${code}`, null);
+    showAdminPromoToast(`🗑 Промокод ${code} удалён`, false);
+    await renderAdminPromosList();
+}
+
+async function renderAdminPromosList(preloadedMap) {
+    const listEl = document.getElementById('adminPromosList');
+    const countEl = document.getElementById('adminPromosCount');
+    if (!listEl) return;
+
+    const promosMap = preloadedMap !== undefined ? preloadedMap : await cloudGet('vetruch_app/promocodes');
+    const promos = promosMap && typeof promosMap === 'object' ? Object.values(promosMap).filter(Boolean) : [];
+    promos.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    if (countEl) countEl.textContent = promos.length;
+
+    if (promos.length === 0) {
+        listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center; padding: 12px 0;">Активных промокодов пока нет</div>';
+        return;
+    }
+
+    listEl.innerHTML = promos.map(p => {
+        const usedCount = (p.usedBy && typeof p.usedBy === 'object') ? Object.keys(p.usedBy).length : 0;
+        const limitText = p.maxUses > 0 ? `${usedCount} / ${p.maxUses}` : `${usedCount} / ∞`;
+        return `
+            <div class="admin-promo-item">
+                <div>
+                    <div class="admin-promo-code">${p.code}</div>
+                    <div class="admin-promo-meta">
+                        Награда: <b style="color: #00e676;">+${formatCoins(p.reward)} 🪙</b> · Активаций: <b>${limitText}</b>
+                    </div>
+                </div>
+                <button type="button" class="admin-promo-del" onclick="adminDeletePromoCode('${p.code}')">Удалить</button>
+            </div>
+        `;
+    }).join('');
+}
         
 </script>
 
