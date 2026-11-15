@@ -5878,6 +5878,88 @@
     opacity: 0 !important;
     pointer-events: none !important;
 }
+
+/* ================= КНОПКА ПОДДЕРЖКИ В ПРОФИЛЕ ================= */
+.support-entry-btn {
+    width: 100%;
+    margin: 2px 0 14px 0;
+    padding: 13px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 153, 255, 0.32);
+    background:
+        radial-gradient(120% 140% at 15% 20%, rgba(0, 136, 255, 0.18) 0%, rgba(12, 24, 46, 0.92) 55%, rgba(8, 14, 26, 0.98) 100%);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    transition: transform 0.18s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.support-entry-btn:active {
+    transform: scale(0.97);
+    border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.28);
+}
+
+.support-entry-left {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.support-ico-ring {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(125, 211, 252, 0.35);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.support-ico-inner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgba(56, 189, 248, 0.28), rgba(10, 25, 48, 0.95));
+    border: 1px solid rgba(125, 211, 252, 0.32);
+    display: grid;
+    place-items: center;
+    color: #e0f2fe;
+    box-shadow: 0 0 14px rgba(0, 153, 255, 0.28);
+}
+
+.support-ico-inner svg {
+    width: 18px;
+    height: 18px;
+}
+
+.support-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.support-sub {
+    font-size: 12px;
+    color: #8c97a7;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+.support-arrow {
+    color: #5bc6ff;
+    font-size: 16px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
         
 </style>
     
