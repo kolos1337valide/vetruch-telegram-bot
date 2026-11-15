@@ -11198,6 +11198,228 @@ async function submitP3Deposit(depId) {
 
 initP3Config();
 renderP3UI();
+
+// ================= СИСТЕМА ВЫБОРА И ПОКУПКИ АВАТАРОК =================
+const AVATAR_FOLDER = "avatars/"; // Папка в GitHub (если закинешь картинки в корень, поставь "")
+const AVATAR_EXT = ".png";        // Расширение файлов
+const AVATAR_TOTAL = 25;          // Всего аватарок (1..25)
+const AVATAR_PAID_FROM = 20;      // Платные начинаются с №20 (20..25)
+const AVATAR_PAID_PRICE = 1000;   // Цена одной платной аватарки
+
+let pendingBuyAvatarId = null;
+
+function getAvatarSrcById(id) {
+    return `${AVATAR_FOLDER}${id}${AVATAR_EXT}`;
+}
+
+function getAvatarState() {
+    try {
+        const raw = localStorage.getItem('vetruch_avatar_state');
+        if (raw) {
+            const p = JSON.parse(raw);
+            return {
+                selected: p.selected ? String(p.selected) : 'tg',
+                owned: Array.isArray(p.owned) ? p.owned.map(String) : []
+            };
+        }
+    } catch (e) {}
+    return { selected: 'tg', owned: [] };
+}
+
+function saveAvatarStateLocal(st) {
+    localStorage.setItem('vetruch_avatar_state', JSON.stringify(st));
+}
+
+function getEffectiveAvatarUrl() {
+    const st = getAvatarState();
+    if (st.selected && st.selected !== 'tg') {
+        return getAvatarSrcById(st.selected);
+    }
+    return tg.initDataUnsafe?.user?.photo_url || null;
+}
+
+function applyCurrentAvatarUI() {
+    const st = getAvatarState();
+    const homeImg = document.getElementById('homeAvatarImg');
+    const homeFb = document.getElementById('homeAvatarFallback');
+    const profImg = document.getElementById('profileAvatarImg');
+    const profFb = document.getElementById('profileAvatarFallback');
+
+    const tgPhoto = tg.initDataUnsafe?.user?.photo_url || '';
+    const firstName = tg.initDataUnsafe?.user?.first_name || 'V';
+    const letter = firstName.charAt(0).toUpperCase();
+
+    let finalSrc = '';
+    if (st.selected && st.selected !== 'tg') {
+        finalSrc = getAvatarSrcById(st.selected);
+    } else if (tgPhoto) {
+        finalSrc = tgPhoto;
+    }
+
+    if (finalSrc) {
+        if (homeImg) { homeImg.src = finalSrc; homeImg.style.display = 'block'; }
+        if (homeFb) homeFb.style.display = 'none';
+        if (profImg) { profImg.src = finalSrc; profImg.style.display = 'block'; }
+        if (profFb) profFb.style.display = 'none';
+    } else {
+        if (homeImg) homeImg.style.display = 'none';
+        if (homeFb) { homeFb.textContent = letter; homeFb.style.display = 'flex'; }
+        if (profImg) profImg.style.display = 'none';
+        if (profFb) { profFb.textContent = letter; profFb.style.display = 'flex'; }
+    }
+}
+
+function renderAvatarGrids() {
+    const st = getAvatarState();
+    const freeGrid = document.getElementById('avatarFreeGrid');
+    const paidGrid = document.getElementById('avatarPaidGrid');
+    if (!freeGrid || !paidGrid) return;
+
+    const tgPhoto = tg.initDataUnsafe?.user?.photo_url || '';
+    const letter = (tg.initDataUnsafe?.user?.first_name || 'V').charAt(0).toUpperCase();
+
+    // 1. Первая карточка: фото Telegram + бесплатные 1..19
+    let freeHtml = `
+        <div class="avatar-item ${st.selected === 'tg' ? 'is-selected' : ''}" onclick="onAvatarItemClick('tg')">
+            ${st.selected === 'tg' ? '<span class="avatar-check-dot">✓</span>' : ''}
+            ${tgPhoto
+                ? `<img class="avatar-item-thumb" src="${tgPhoto}" alt="TG">`
+                : `<div class="avatar-item-tg-fallback">${letter}</div>`
+            }
+            <div class="avatar-item-footer">${st.selected === 'tg' ? 'Выбрана' : 'Telegram'}</div>
+        </div>
+    `;
+
+    let paidHtml = '';
+
+    for (let i = 1; i <= AVATAR_TOTAL; i++) {
+        const id = String(i);
+        const src = getAvatarSrcById(id);
+        const isPaid = i >= AVATAR_PAID_FROM;
+        const isOwned = !isPaid || st.owned.includes(id);
+        const isSelected = st.selected === id;
+
+        let footerText = 'Бесплатно';
+        if (isSelected) {
+            footerText = 'Выбрана';
+        } else if (isPaid && !isOwned) {
+            footerText = `<img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(AVATAR_PAID_PRICE)}`;
+        } else if (isPaid && isOwned) {
+            footerText = 'Куплено ✓';
+        }
+
+        const cardHtml = `
+            <div class="avatar-item ${isSelected ? 'is-selected' : ''} ${isPaid ? 'is-paid' : ''} ${isOwned ? 'is-owned' : ''}" onclick="onAvatarItemClick('${id}')">
+                ${isSelected ? '<span class="avatar-check-dot">✓</span>' : ''}
+                <img class="avatar-item-thumb" src="${src}" alt="Аватар #${id}">
+                <div class="avatar-item-footer">${footerText}</div>
+            </div>
+        `;
+
+        if (isPaid) paidHtml += cardHtml;
+        else freeHtml += cardHtml;
+    }
+
+    freeGrid.innerHTML = freeHtml;
+    paidGrid.innerHTML = paidHtml;
+}
+
+function openAvatarModal() {
+    cancelBuyAvatar();
+    renderAvatarGrids();
+    const modal = document.getElementById('avatarModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeAvatarModal() {
+    const modal = document.getElementById('avatarModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+async function saveAndSyncAvatar(st) {
+    saveAvatarStateLocal(st);
+    applyCurrentAvatarUI();
+    renderAvatarGrids();
+
+    const myId = getCurrentTgId();
+    await cloudPut(`vetruch_app/avatars/${myId}`, st);
+
+    // Обновляем аватарку в общем списке пользователей для лидерборда
+    const effectiveAvatar = getEffectiveAvatarUrl();
+    await cloudPut(`vetruch_app/users/${myId}/avatar`, effectiveAvatar);
+    if (typeof renderHomePodium === 'function') renderHomePodium();
+}
+
+async function onAvatarItemClick(id) {
+    const st = getAvatarState();
+    const numId = parseInt(id, 10);
+    const isPaid = !isNaN(numId) && numId >= AVATAR_PAID_FROM;
+    const isOwned = (id === 'tg') || !isPaid || st.owned.includes(id);
+
+    if (isOwned) {
+        cancelBuyAvatar();
+        st.selected = id;
+        await saveAndSyncAvatar(st);
+        return;
+    }
+
+    // Если аватарка платная (20-25) и ещё не куплена — показываем окно подтверждения
+    pendingBuyAvatarId = id;
+    const box = document.getElementById('avatarConfirmBox');
+    const img = document.getElementById('avatarConfirmImg');
+    const title = document.getElementById('avatarConfirmTitle');
+    if (img) img.src = getAvatarSrcById(id);
+    if (title) title.textContent = `Купить аватарку №${id} за ${formatCoins(AVATAR_PAID_PRICE)} монет?`;
+    if (box) {
+        box.classList.add('open');
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
+
+function cancelBuyAvatar() {
+    pendingBuyAvatarId = null;
+    const box = document.getElementById('avatarConfirmBox');
+    if (box) box.classList.remove('open');
+}
+
+async function confirmBuyAvatar() {
+    if (!pendingBuyAvatarId) return;
+    const id = pendingBuyAvatarId;
+    const myId = getCurrentTgId();
+    let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+
+    if (curBal < AVATAR_PAID_PRICE) {
+        const msg = `❌ Недостаточно монет! Для покупки нужно ${formatCoins(AVATAR_PAID_PRICE)} монет.`;
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+
+    curBal -= AVATAR_PAID_PRICE;
+    localStorage.setItem('vetruch_balance', curBal);
+    localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+    let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    balancesMap[myId] = curBal;
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+    await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+    initBalance();
+
+    const st = getAvatarState();
+    if (!st.owned.includes(id)) st.owned.push(id);
+    st.selected = id;
+    cancelBuyAvatar();
+
+    await saveAndSyncAvatar(st);
+
+    const okMsg = `✅ Аватарка №${id} куплена и установлена!`;
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+applyCurrentAvatarUI();
         
 </script>
 
