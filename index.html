@@ -12928,6 +12928,20 @@ document.addEventListener('visibilitychange', () => {
         v.play().catch(() => {});
     }
 });
+
+(function initBannerVideo() {
+    const v = document.getElementById('bannerKickVideo');
+    if (!v) return;
+    const tryPlay = () => {
+        v.muted = true;
+        v.defaultMuted = true;
+        v.playsInline = true;
+        v.play().catch(() => {});
+    };
+    tryPlay();
+    v.addEventListener('canplay', tryPlay, { once: true });
+    document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+})();
         
 </script>
 
