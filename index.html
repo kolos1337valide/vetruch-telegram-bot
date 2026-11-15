@@ -11714,6 +11714,197 @@ async function confirmBuyAvatar() {
 }
 
 applyCurrentAvatarUI();
+
+// ================= НОВОГОДНИЙ АДВЕНТ-КАЛЕНДАРЬ (1–31 ДЕКАБРЯ) =================
+const ADVENT_START_MS = Date.parse('2026-12-01T00:00:00+03:00');
+
+// Награды за каждый день (с 1 по 31 декабря) — можно менять любые суммы
+const ADVENT_REWARDS = [
+    100, 120, 150, 150, 200, 200, 500,   // 1–7 декабря
+    250, 250, 300, 300, 350, 400, 750,   // 8–14 декабря
+    400, 450, 450, 500, 500, 600, 1000,  // 15–21 декабря
+    600, 650, 700, 1250, 750, 800, 900,  // 22–28 декабря
+    1000, 1500, 3100                     // 29–31 декабря
+];
+
+function pad2(n) {
+    return n < 10 ? '0' + n : String(n);
+}
+
+function getMskCalendarInfo() {
+    const nowMs = Date.now();
+    const diffMs = ADVENT_START_MS - nowMs;
+
+    if (diffMs > 0) {
+        const d = Math.floor(diffMs / 86400000);
+        const h = Math.floor((diffMs % 86400000) / 3600000);
+        const m = Math.floor((diffMs % 3600000) / 60000);
+        const s = Math.floor((diffMs % 60000) / 1000);
+        return { opened: false, currentDay: 0, d, h, m, s };
+    }
+
+    const msk = new Date(nowMs + 3 * 3600000);
+    const year = msk.getUTCFullYear();
+    const month = msk.getUTCMonth(); // 11 = декабрь
+    const date = msk.getUTCDate();
+
+    let currentDay = 31;
+    if (year === 2026 && month === 11) {
+        currentDay = Math.min(31, date);
+    } else if (year < 2026 || (year === 2026 && month < 11)) {
+        currentDay = 0;
+    }
+
+    return { opened: true, currentDay, d: 0, h: 0, m: 0, s: 0 };
+}
+
+function getAdventClaimed() {
+    try {
+        const raw = localStorage.getItem('vetruch_advent_claimed_2026');
+        if (raw) {
+            const arr = JSON.parse(raw);
+            return Array.isArray(arr) ? arr.map(Number) : [];
+        }
+    } catch (e) {}
+    return [];
+}
+
+function saveAdventClaimedLocal(arr) {
+    localStorage.setItem('vetruch_advent_claimed_2026', JSON.stringify(arr));
+}
+
+function updateAdventTimers() {
+    const info = getMskCalendarInfo();
+    const claimed = getAdventClaimed();
+
+    const bannerTitle = document.getElementById('adventBannerTitle');
+    const bannerSub = document.getElementById('adventBannerSub');
+    const modalLbl = document.getElementById('adventModalTimerLbl');
+    const modalVal = document.getElementById('adventModalTimerVal');
+
+    if (!info.opened) {
+        const shortTimer = `${info.d}д ${pad2(info.h)}ч ${pad2(info.m)}м ${pad2(info.s)}с`;
+        if (bannerTitle) bannerTitle.textContent = `Откроется через ${shortTimer}`;
+        if (bannerSub) bannerSub.textContent = `Старт 1 декабря · подарки каждый день до 31.12`;
+        if (modalLbl) modalLbl.textContent = `⏳ Открытие 1 декабря в 00:00 МСК`;
+        if (modalVal) modalVal.textContent = `${info.d} дн · ${pad2(info.h)}:${pad2(info.m)}:${pad2(info.s)}`;
+    } else {
+        if (bannerTitle) bannerTitle.textContent = `День ${info.currentDay} из 31 · Забирай подарки!`;
+        if (bannerSub) bannerSub.textContent = `Собрано наград: ${claimed.length} / 31`;
+        if (modalLbl) modalLbl.textContent = `🎄 Новогодний календарь открыт!`;
+        if (modalVal) modalVal.textContent = `День ${info.currentDay} · Собрано ${claimed.length} / 31`;
+    }
+}
+
+function renderAdventGrid() {
+    const grid = document.getElementById('adventGrid');
+    if (!grid) return;
+
+    const info = getMskCalendarInfo();
+    const claimed = getAdventClaimed();
+
+    grid.innerHTML = ADVENT_REWARDS.map((reward, idx) => {
+        const day = idx + 1;
+        const isClaimed = claimed.includes(day);
+        const isAvailable = info.opened && day <= info.currentDay && !isClaimed;
+        const isToday = info.opened && day === info.currentDay;
+
+        let cls = 'advent-day';
+        if (day === 31) cls += ' advent-day-31';
+        if (isClaimed) cls += ' is-claimed';
+        else if (isAvailable) cls += ' is-available';
+        else cls += ' is-locked';
+        if (isToday && !isClaimed) cls += ' is-today';
+
+        let icon = '🔒';
+        let status = `${day} дек`;
+
+        if (isClaimed) {
+            icon = '✅';
+            status = 'Забрано';
+        } else if (isAvailable) {
+            icon = day === 31 ? '🎄' : '🎁';
+            status = isToday ? 'Сегодня!' : 'Забрать';
+        } else if (day === 31) {
+            icon = '🎄';
+        }
+
+        return `
+            <div class="${cls}" onclick="onAdventDayClick(${day})">
+                <div class="advent-day-num">${day === 31 ? '31 ДЕКАБРЯ' : `День ${day}`}</div>
+                <div class="advent-day-icon">${icon}</div>
+                <div class="advent-day-reward">
+                    <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(reward)}
+                </div>
+                <div class="advent-day-status">${status}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function openAdventModal() {
+    updateAdventTimers();
+    renderAdventGrid();
+    const modal = document.getElementById('adventModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeAdventModal() {
+    const modal = document.getElementById('adventModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+async function onAdventDayClick(day) {
+    const info = getMskCalendarInfo();
+    const claimed = getAdventClaimed();
+
+    if (!info.opened) {
+        const msg = `❄️ Календарь откроется 1 декабря в 00:00 МСК! Осталось ${info.d} дн. ${pad2(info.h)} ч.`;
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+
+    if (day > info.currentDay) {
+        const msg = `🔒 Подарок за ${day} декабря откроется ${day} декабря в 00:00 МСК!`;
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+
+    if (claimed.includes(day)) {
+        return;
+    }
+
+    const reward = ADVENT_REWARDS[day - 1] || 100;
+    const myId = getCurrentTgId();
+
+    claimed.push(day);
+    saveAdventClaimedLocal(claimed);
+
+    let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+    curBal += reward;
+    localStorage.setItem('vetruch_balance', curBal);
+    localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+    let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    balancesMap[myId] = curBal;
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+    initBalance();
+    updateAdventTimers();
+    renderAdventGrid();
+
+    await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+    await cloudPut(`vetruch_app/advent_2026/${myId}`, claimed);
+
+    const okMsg = `🎁 Поздравляем! Ты забрал подарок за ${day} декабря: +${formatCoins(reward)} монет!`;
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+updateAdventTimers();
+setInterval(updateAdventTimers, 1000);
         
 </script>
 
