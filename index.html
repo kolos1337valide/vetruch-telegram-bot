@@ -5960,6 +5960,149 @@
     font-weight: 800;
     flex-shrink: 0;
 }
+
+/* ================= ПЛАШКА ПРОМОКОДОВ В ПРОФИЛЕ И АДМИНКЕ ================= */
+.promo-entry-card {
+    width: 100%;
+    margin: 0 0 12px 0;
+    padding: 14px 15px;
+    background: linear-gradient(180deg, rgba(16, 22, 34, 0.88) 0%, rgba(10, 13, 22, 0.96) 100%);
+    border: 1px solid rgba(0, 153, 255, 0.32);
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    text-align: left;
+}
+
+.promo-entry-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.promo-entry-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.promo-entry-sub {
+    font-size: 11px;
+    color: #8c97a7;
+    font-weight: 600;
+}
+
+.promo-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.promo-input {
+    flex: 1;
+    min-width: 0;
+    background: rgba(6, 9, 15, 0.9);
+    border: 1.5px solid rgba(0, 136, 255, 0.3);
+    border-radius: 12px;
+    padding: 11px 12px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.promo-input::placeholder {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.promo-input:focus {
+    border-color: #00d9ff;
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.25);
+}
+
+.promo-activate-btn {
+    padding: 0 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0088ff 0%, #00d9ff 100%);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(0, 136, 255, 0.38);
+    transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.promo-activate-btn:active {
+    transform: scale(0.95);
+}
+
+.promo-feedback {
+    display: none;
+    margin-top: 9px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.admin-promo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 13px;
+    padding: 11px 12px;
+    margin-bottom: 8px;
+}
+
+.admin-promo-code {
+    font-size: 14px;
+    font-weight: 800;
+    color: #00d9ff;
+    letter-spacing: 0.6px;
+}
+
+.admin-promo-meta {
+    font-size: 11.5px;
+    color: #9ba8ba;
+    margin-top: 3px;
+    font-weight: 600;
+}
+
+.admin-promo-del {
+    padding: 7px 11px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 51, 102, 0.4);
+    background: rgba(255, 51, 102, 0.15);
+    color: #ff3366;
+    font-size: 11.5px;
+    font-weight: 800;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.admin-promo-del:active {
+    transform: scale(0.94);
+}
         
 </style>
     
