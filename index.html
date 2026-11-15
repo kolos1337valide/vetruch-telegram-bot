@@ -8734,6 +8734,55 @@
                 </button>
             </div>
         </div>
+
+<!-- ГРАФА 6: ПРОМОКОДЫ -->
+        <div id="adm-promo" class="admin-section">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>🎟️ Создать промокод</span>
+                </div>
+
+                <label class="admin-field-label">Код промокода (латиница / цифры):</label>
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <input type="text" id="adminPromoCodeInput" class="task-input" placeholder="Например: VETRUCH500" style="margin-bottom: 0; flex: 1; text-transform: uppercase;">
+                    <button type="button" class="admin-chip" onclick="generateRandomPromoCode()" style="margin: 0; padding: 0 12px;">🎲 Код</button>
+                </div>
+
+                <label class="admin-field-label">Награда (сколько монет даст):</label>
+                <input type="number" id="adminPromoRewardInput" class="task-input" placeholder="Например: 500" value="500">
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='100'">100</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='250'">250</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='500'">500</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='1000'">1 000</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='5000'">5 000</span>
+                </div>
+
+                <label class="admin-field-label">Максимум активаций (0 = безлимит):</label>
+                <input type="number" id="adminPromoUsesInput" class="task-input" placeholder="Например: 50" value="50">
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='1'">1 раз</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='10'">10 чел</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='50'">50 чел</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='100'">100 чел</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='0'">∞ Безлимит</span>
+                </div>
+
+                <button type="button" class="submit-task-btn" style="padding: 14px;" onclick="adminCreatePromoCode()">
+                    ➕ СОЗДАТЬ ПРОМОКОД
+                </button>
+                <div id="adminPromoToast" class="admin-status-toast"></div>
+            </div>
+
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>Активные промокоды</span>
+                    <span class="admin-badge-count" id="adminPromosCount">0</span>
+                </div>
+                <div id="adminPromosList"></div>
+            </div>
+        </div>
+        
 </main>
     
     <!-- НИЖНЕЕ МЕНЮ -->
