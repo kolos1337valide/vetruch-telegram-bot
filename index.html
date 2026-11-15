@@ -5319,6 +5319,30 @@
         </div>
     </div>
 
+<!-- МОДАЛЬНОЕ ОКНО НОВОГОДНЕГО КАЛЕНДАРЯ (1–31 ДЕКАБРЯ) -->
+    <div id="adventModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeAdventModal()">
+        <div class="advent-modal-sheet">
+            <div class="arkada-modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h3 class="arkada-modal-title">🎄 Календарь</h3>
+                    <div class="balance-pill" style="padding: 4px 10px; font-size: 13px;">
+                        <span class="app-balance">500</span> <img src="coins.png" alt="" class="coin-icon" style="width: 14px; height: 14px;">
+                    </div>
+                </div>
+                <button type="button" class="arkada-modal-close" onclick="closeAdventModal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <div class="advent-timer-banner" id="adventModalBanner">
+                    <div class="advent-timer-lbl" id="adventModalTimerLbl">До открытия (1 декабря 00:00 МСК)</div>
+                    <div class="advent-timer-val" id="adventModalTimerVal">--д : --ч : --м : --с</div>
+                </div>
+
+                <div class="advent-grid" id="adventGrid"></div>
+            </div>
+        </div>
+    </div>
+    
 <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА АВАТАРКИ -->
     <div id="avatarModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeAvatarModal()">
         <div class="avatar-modal-sheet">
