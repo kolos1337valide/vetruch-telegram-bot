@@ -8766,6 +8766,12 @@ if (cloudState && typeof saveArkadaProgressLocal === 'function') {
                 saveP3ProgressLocal(cloudP3);
                 renderP3UI();
             }
+
+if (cloudState && cloudState.avatars && cloudState.avatars[myId] && typeof saveAvatarStateLocal === 'function') {
+                saveAvatarStateLocal(cloudState.avatars[myId]);
+                applyCurrentAvatarUI();
+            }
+            
             if (refreshAdmin) {
                 renderAdminLists();
                 renderAdminBalancesTable();
