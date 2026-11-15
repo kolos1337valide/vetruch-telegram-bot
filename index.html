@@ -10607,6 +10607,321 @@ async function submitP2Deposit(depId) {
 
 initP2Config();
 renderP2UI();
+
+// ================= ПАРТНЁРСКАЯ СИСТЕМА #3 (TON PLAY) =================
+const P3_NAME = "Ton Play"; // <-- Если нужно другое название, поменяй здесь
+const P3_URL = "https://tonplay.fo/hUWciACSJfrvtQ?click_id=%7Bclick_id%7D";
+const P3_IMG_URL = "partner3-duck.png";
+
+const P3_DEPOSITS = [
+    { id: 'dep_100',     rub: '100 ₽',       reward: 4000,    hot: true },
+    { id: 'dep_1000',    rub: '1 000 ₽',     reward: 3000 },
+    { id: 'dep_2500',    rub: '2 500 ₽',     reward: 5000 },
+    { id: 'dep_5000',    rub: '5 000 ₽',     reward: 10000 },
+    { id: 'dep_10000',   rub: '10 000 ₽',    reward: 20000 },
+    { id: 'dep_20000',   rub: '20 000 ₽',    reward: 40000 },
+    { id: 'dep_35000',   rub: '35 000 ₽',    reward: 70000 },
+    { id: 'dep_50000',   rub: '50 000 ₽',    reward: 100000 },
+    { id: 'dep_100000',  rub: '100 000 ₽',   reward: 200000 },
+    { id: 'dep_250000',  rub: '250 000 ₽',   reward: 500000 },
+    { id: 'dep_500000',  rub: '500 000 ₽',   reward: 1000000 },
+    { id: 'dep_750000',  rub: '750 000 ₽',   reward: 1500000 },
+    { id: 'dep_1000000', rub: '1 000 000 ₽', reward: 2000000 },
+    { id: 'dep_1500000', rub: '1 500 000 ₽', reward: 3000000 },
+    { id: 'dep_2000000', rub: '2 000 000 ₽', reward: 4000000 }
+];
+
+let p3Screenshots = {};
+
+function getP3Progress() {
+    try {
+        const raw = localStorage.getItem('vetruch_p3_progress');
+        if (raw) {
+            const p = JSON.parse(raw);
+            return { bind: p.bind || null, partnerId: p.partnerId || '', deposits: p.deposits || {} };
+        }
+    } catch (e) {}
+    return { bind: null, partnerId: '', deposits: {} };
+}
+
+function saveP3ProgressLocal(prog) {
+    localStorage.setItem('vetruch_p3_progress', JSON.stringify(prog));
+}
+
+function initP3Config() {
+    const t1 = document.getElementById('p3CardTitle');
+    const t2 = document.getElementById('p3ModalTitle');
+    const t3 = document.getElementById('p3BindTitle');
+    const btn = document.getElementById('p3OpenSiteBtn');
+    const inp = document.getElementById('p3BindIdInput');
+    const img1 = document.getElementById('p3CardImg');
+    const img2 = document.getElementById('p3ModalAvatar');
+
+    if (t1) t1.textContent = P3_NAME;
+    if (t2) t2.textContent = P3_NAME;
+    if (t3) t3.textContent = `Привяжи аккаунт ${P3_NAME}`;
+    if (btn) btn.textContent = `Открыть ${P3_NAME} ❯`;
+    if (inp) inp.placeholder = `Ваш ID профиля на ${P3_NAME}`;
+    if (img1) img1.src = P3_IMG_URL;
+    if (img2) img2.src = P3_IMG_URL;
+}
+
+function openP3Site() {
+    if (window.tg && tg.openLink) tg.openLink(P3_URL);
+    else window.open(P3_URL, '_blank');
+}
+
+function renderP3UI() {
+    const prog = getP3Progress();
+
+    const dotsEl = document.getElementById('p3CardDots');
+    if (dotsEl) {
+        const states = [prog.bind, ...P3_DEPOSITS.map(d => prog.deposits[d.id] || null)];
+        dotsEl.innerHTML = states.map(st => {
+            const cls = st === 'done' ? 'done' : (st === 'pending' ? 'pending' : '');
+            return `<span class="p3-dot ${cls}"></span>`;
+        }).join('');
+    }
+
+    const bindCard = document.getElementById('p3BindCard');
+    const stepNum = document.getElementById('p3BindStepNum');
+    const toggleBtn = document.getElementById('p3ToggleBindBtn');
+    const isBound = prog.bind === 'done';
+
+    if (bindCard && stepNum && toggleBtn) {
+        bindCard.classList.toggle('is-done', isBound);
+        if (isBound) {
+            stepNum.textContent = '✓';
+            stepNum.style.color = '#00e676';
+            stepNum.style.borderColor = '#00e676';
+            toggleBtn.textContent = `Привязано (ID: ${prog.partnerId || 'OK'})`;
+            toggleBtn.style.color = '#00e676';
+        } else if (prog.bind === 'pending') {
+            stepNum.textContent = '⏳';
+            toggleBtn.textContent = 'На проверке ⏳';
+            toggleBtn.style.color = '#fbbf24';
+        } else {
+            stepNum.textContent = '1';
+            stepNum.style.color = '#fbbf24';
+            stepNum.style.borderColor = 'rgba(251, 191, 36, 0.55)';
+            toggleBtn.textContent = 'Прислать ID';
+            toggleBtn.style.color = '#ffffff';
+        }
+    }
+
+    const listEl = document.getElementById('p3DepositsList');
+    if (!listEl) return;
+
+    listEl.innerHTML = P3_DEPOSITS.map(dep => {
+        const st = prog.deposits[dep.id] || null;
+        let statusHtml = '<span class="arkada-dep-status">После привязки ❯</span>';
+        let itemClass = 'p3-dep-item';
+
+        if (st === 'done') {
+            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+        } else if (st === 'pending') {
+            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+        } else if (isBound) {
+            itemClass += ' unlocked';
+            statusHtml = '<span class="arkada-dep-status p3-dep-status-ready">Выполнить ❯</span>';
+        }
+
+        const canSubmit = isBound && !st;
+
+        return `
+            <div class="${itemClass}" onclick="${canSubmit ? `toggleP3DepForm('${dep.id}')` : (!isBound ? `alertP3BindFirst()` : '')}">
+                <div class="arkada-dep-row">
+                    <div class="arkada-dep-left">
+                        <span class="arkada-dep-rub">${dep.rub}</span>
+                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        <span class="arkada-dep-reward">
+                            <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
+                        </span>
+                    </div>
+                    ${statusHtml}
+                </div>
+
+                ${canSubmit ? `
+                <div class="arkada-inline-form" id="p3Form_${dep.id}" style="border-top-color: rgba(251, 191, 36, 0.35);" onclick="event.stopPropagation()">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:12px; color:#9ba8ba;">Сделай депозит ${dep.rub} на ${P3_NAME} и прикрепи скриншот:</span>
+                        <button type="button" class="p3-link-btn" onclick="openP3Site()">Открыть ❯</button>
+                    </div>
+                    <input type="text" class="task-input" id="p3DepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
+                    <label class="file-upload-lbl" style="margin-bottom:12px; color:#fbbf24;">
+                        <input type="file" accept="image/*" onchange="handleP3DepFile(this, '${dep.id}')">
+                        <span id="p3DepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                    </label>
+                    <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #f59e0b, #0088ff); box-shadow: 0 0 20px rgba(251, 191, 36, 0.35);" onclick="submitP3Deposit('${dep.id}')">Отправить на проверку</button>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function openP3Modal() {
+    const userInp = document.getElementById('p3BindUserInput');
+    if (userInp && !userInp.value) userInp.value = getDefaultUsername();
+    renderP3UI();
+
+    const modal = document.getElementById('p3Modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeP3Modal() {
+    const modal = document.getElementById('p3Modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function alertP3BindFirst() {
+    const msg = `⚠️ Сначала привяжите аккаунт ${P3_NAME} (Шаг 1) и дождитесь подтверждения!`;
+    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+}
+
+function toggleP3BindForm() {
+    const prog = getP3Progress();
+    if (prog.bind === 'done' || prog.bind === 'pending') return;
+    const form = document.getElementById('p3BindForm');
+    if (form) form.classList.toggle('open');
+}
+
+function toggleP3DepForm(depId) {
+    document.querySelectorAll('#p3DepositsList .arkada-inline-form').forEach(el => {
+        if (el.id !== 'p3Form_' + depId) el.classList.remove('open');
+    });
+    const form = document.getElementById('p3Form_' + depId);
+    if (form) form.classList.toggle('open');
+}
+
+function handleP3DepFile(input, depId) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const lbl = document.getElementById('p3DepFileName_' + depId);
+    if (lbl) {
+        lbl.textContent = '✅ ' + file.name;
+        lbl.style.color = '#00e676';
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, 480 / img.width);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            p3Screenshots[depId] = canvas.toDataURL('image/jpeg', 0.65);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+async function submitP3Bind() {
+    const partnerId = (document.getElementById('p3BindIdInput')?.value || '').trim();
+    let username = (document.getElementById('p3BindUserInput')?.value || '').trim();
+
+    if (!partnerId) {
+        const msg = `⚠️ Введите ваш ID профиля на ${P3_NAME}!`;
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username в Telegram!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `Привязка ${P3_NAME} (ID: ${partnerId})`,
+        reward: 1000,
+        p3Key: 'p3_bind',
+        partnerId: partnerId,
+        partnerName: P3_NAME,
+        screenshot: ''
+    });
+
+    const prog = getP3Progress();
+    prog.bind = 'pending';
+    prog.partnerId = partnerId;
+    saveP3ProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/partner3_progress/${myId}`, prog);
+
+    document.getElementById('p3BindForm')?.classList.remove('open');
+    renderP3UI();
+
+    const okMsg = '🚀 ID отправлен администратору на проверку!';
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+async function submitP3Deposit(depId) {
+    const dep = P3_DEPOSITS.find(d => d.id === depId);
+    if (!dep) return;
+
+    let username = (document.getElementById('p3DepUser_' + depId)?.value || '').trim();
+    const shot = p3Screenshots[depId] || '';
+
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!shot) {
+        const msg = '⚠️ Загрузите скриншот депозита!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    const prog = getP3Progress();
+
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `${P3_NAME} депозит ${dep.rub}`,
+        reward: dep.reward,
+        p3Key: 'p3_dep_' + depId,
+        tierId: depId,
+        partnerId: prog.partnerId || '',
+        partnerName: P3_NAME,
+        screenshot: shot
+    });
+
+    prog.deposits[depId] = 'pending';
+    saveP3ProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/partner3_progress/${myId}`, prog);
+
+    delete p3Screenshots[depId];
+    renderP3UI();
+
+    const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+initP3Config();
+renderP3UI();
         
 </script>
 
