@@ -4870,6 +4870,60 @@
         </div>
     </div>
 
+<!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА #3 -->
+    <div id="p3Modal" class="arkada-modal-overlay" onclick="if(event.target === this) closeP3Modal()">
+        <div class="p3-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title" id="p3ModalTitle">Ton Play</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeP3Modal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <div class="arkada-intro-box">
+                    <img id="p3ModalAvatar" class="p3-intro-avatar" src="partner3-duck.png" alt="">
+                    <div class="arkada-intro-text">
+                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
+                    </div>
+                </div>
+
+                <!-- Шаг 1: Привязка аккаунта -->
+                <div class="p3-bind-card" id="p3BindCard">
+                    <div class="arkada-bind-top">
+                        <div class="p3-step-num" id="p3BindStepNum">1</div>
+                        <div style="flex: 1;">
+                            <div class="arkada-bind-title" id="p3BindTitle">Привяжи аккаунт Ton Play</div>
+                            <div class="arkada-bind-desc">
+                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
+                            </div>
+                            <div class="arkada-bind-actions">
+                                <span class="arkada-bind-reward">
+                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
+                                </span>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button type="button" class="p3-link-btn" id="p3OpenSiteBtn" onclick="openP3Site()">Открыть Ton Play ❯</button>
+                                    <button type="button" class="p3-link-btn" id="p3ToggleBindBtn" style="color: #fff;" onclick="toggleP3BindForm()">Прислать ID</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arkada-inline-form" id="p3BindForm" style="border-top-color: rgba(251, 191, 36, 0.35);">
+                        <input type="text" class="task-input" id="p3BindIdInput" placeholder="Ваш ID профиля на Ton Play">
+                        <input type="text" class="task-input" id="p3BindUserInput" placeholder="Ваш @username в Telegram">
+                        <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #f59e0b, #0088ff); box-shadow: 0 0 20px rgba(251, 191, 36, 0.35);" onclick="submitP3Bind()">Отправить ID на проверку</button>
+                    </div>
+                </div>
+
+                <div class="arkada-dep-header">
+                    <span class="arkada-dep-header-title">Депозиты</span>
+                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
+                </div>
+
+                <div class="arkada-dep-list" id="p3DepositsList"></div>
+            </div>
+        </div>
+    </div>
+    
 <!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА #2 -->
     <div id="p2Modal" class="arkada-modal-overlay" onclick="if(event.target === this) closeP2Modal()">
         <div class="p2-modal-sheet">
@@ -4962,59 +5016,7 @@
                         </div>
                     </div>
 
-                    <!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА #3 -->
-    <div id="p3Modal" class="arkada-modal-overlay" onclick="if(event.target === this) closeP3Modal()">
-        <div class="p3-modal-sheet">
-            <div class="arkada-modal-header">
-                <h3 class="arkada-modal-title" id="p3ModalTitle">Ton Play</h3>
-                <button type="button" class="arkada-modal-close" onclick="closeP3Modal()">✕</button>
-            </div>
-
-            <div class="arkada-modal-body">
-                <div class="arkada-intro-box">
-                    <img id="p3ModalAvatar" class="p3-intro-avatar" src="partner3-duck.png" alt="">
-                    <div class="arkada-intro-text">
-                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
-                    </div>
-                </div>
-
-                <!-- Шаг 1: Привязка аккаунта -->
-                <div class="p3-bind-card" id="p3BindCard">
-                    <div class="arkada-bind-top">
-                        <div class="p3-step-num" id="p3BindStepNum">1</div>
-                        <div style="flex: 1;">
-                            <div class="arkada-bind-title" id="p3BindTitle">Привяжи аккаунт Ton Play</div>
-                            <div class="arkada-bind-desc">
-                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
-                            </div>
-                            <div class="arkada-bind-actions">
-                                <span class="arkada-bind-reward">
-                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
-                                </span>
-                                <div style="display: flex; gap: 12px; align-items: center;">
-                                    <button type="button" class="p3-link-btn" id="p3OpenSiteBtn" onclick="openP3Site()">Открыть Ton Play ❯</button>
-                                    <button type="button" class="p3-link-btn" id="p3ToggleBindBtn" style="color: #fff;" onclick="toggleP3BindForm()">Прислать ID</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="arkada-inline-form" id="p3BindForm" style="border-top-color: rgba(251, 191, 36, 0.35);">
-                        <input type="text" class="task-input" id="p3BindIdInput" placeholder="Ваш ID профиля на Ton Play">
-                        <input type="text" class="task-input" id="p3BindUserInput" placeholder="Ваш @username в Telegram">
-                        <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #f59e0b, #0088ff); box-shadow: 0 0 20px rgba(251, 191, 36, 0.35);" onclick="submitP3Bind()">Отправить ID на проверку</button>
-                    </div>
-                </div>
-
-                <div class="arkada-dep-header">
-                    <span class="arkada-dep-header-title">Депозиты</span>
-                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
-                </div>
-
-                <div class="arkada-dep-list" id="p3DepositsList"></div>
-            </div>
-        </div>
-    </div>
+                    
 
                     <!-- Форма отправки ID привязки -->
                     <div class="arkada-inline-form" id="arkadaBindForm">
