@@ -9823,10 +9823,10 @@ if (cloudState && cloudState.advent_2026 && Array.isArray(cloudState.advent_2026
                 renderAdventGrid();
             }
 
-if (cloudState && cloudState.tree_daily && cloudState.tree_daily[myId] && typeof saveXmasTreeStateLocal === 'function') {
-                if (cloudState.tree_daily[myId].date === getMskTodayStr()) {
-                    saveXmasTreeStateLocal(cloudState.tree_daily[myId]);
-                    renderXmasTreeUI();
+if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveXmasTreeV2Local === 'function') {
+                if (cloudState.tree_v2[myId].date === getMskTodayStr()) {
+                    saveXmasTreeV2Local(cloudState.tree_v2[myId]);
+                    renderXmasTreeV2UI();
                 }
             }
             
