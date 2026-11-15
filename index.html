@@ -9059,6 +9059,12 @@ if (cloudState && cloudState.avatars && cloudState.avatars[myId] && typeof saveA
                 saveAvatarStateLocal(cloudState.avatars[myId]);
                 applyCurrentAvatarUI();
             }
+
+if (cloudState && cloudState.advent_2026 && Array.isArray(cloudState.advent_2026[myId]) && typeof saveAdventClaimedLocal === 'function') {
+                saveAdventClaimedLocal(cloudState.advent_2026[myId]);
+                updateAdventTimers();
+                renderAdventGrid();
+            }
             
             if (refreshAdmin) {
                 renderAdminLists();
