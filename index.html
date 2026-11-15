@@ -5071,6 +5071,51 @@
         </div>
     </div>
 
+<!-- МОДАЛЬНОЕ ОКНО ВЫБОРА АВАТАРКИ -->
+    <div id="avatarModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeAvatarModal()">
+        <div class="avatar-modal-sheet">
+            <div class="arkada-modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h3 class="arkada-modal-title">Аватарки</h3>
+                    <div class="balance-pill" style="padding: 4px 10px; font-size: 13px;">
+                        <span class="app-balance">500</span> <img src="coins.png" alt="" class="coin-icon" style="width: 14px; height: 14px;">
+                    </div>
+                </div>
+                <button type="button" class="arkada-modal-close" onclick="closeAvatarModal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <!-- Подтверждение покупки платной аватарки -->
+                <div id="avatarConfirmBox" class="avatar-confirm-box">
+                    <img id="avatarConfirmImg" class="avatar-confirm-preview" src="" alt="">
+                    <div style="flex: 1; min-width: 0;">
+                        <div id="avatarConfirmTitle" style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 6px;">
+                            Купить аватарку за 1 000 монет?
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" class="admin-btn-approve" style="flex: 1; padding: 8px; font-size: 12px;" onclick="confirmBuyAvatar()">Купить</button>
+                            <button type="button" class="admin-btn-reject" style="flex: 0.7; padding: 8px; font-size: 12px;" onclick="cancelBuyAvatar()">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Секция бесплатных -->
+                <div class="avatar-section-title">
+                    <span>Обычные</span>
+                    <span class="avatar-section-tag free">БЕСПЛАТНО</span>
+                </div>
+                <div class="avatar-grid" id="avatarFreeGrid"></div>
+
+                <!-- Секция платных (20-25) -->
+                <div class="avatar-section-title">
+                    <span>Эксклюзив (№20–25)</span>
+                    <span class="avatar-section-tag paid">👑 1 000 МОНЕТ</span>
+                </div>
+                <div class="avatar-grid" id="avatarPaidGrid"></div>
+            </div>
+        </div>
+    </div>
+    
 <!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА #3 -->
     <div id="p3Modal" class="arkada-modal-overlay" onclick="if(event.target === this) closeP3Modal()">
         <div class="p3-modal-sheet">
