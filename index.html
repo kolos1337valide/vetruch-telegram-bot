@@ -10849,6 +10849,40 @@ const shopCategories = {
     'Техника': ['iPhone 18 PRO MAX', 'iPhone DUO', 'AirPods PRO 3']
 };
 
+// ================= ФИЛЬТР ЗАДАНИЙ =================
+function filterTasks(category, btnElement) {
+    const tabsContainer = document.getElementById('tasksFilterTabs');
+    if (tabsContainer) {
+        tabsContainer.querySelectorAll('.shop-tab').forEach(tab => tab.classList.remove('active'));
+    }
+    if (btnElement) btnElement.classList.add('active');
+
+    const tasksPage = document.getElementById('tasks');
+    if (!tasksPage) return;
+
+    const items = Array.from(tasksPage.querySelectorAll('[data-task-cat]'));
+
+    items.forEach(item => {
+        item.style.animation = 'none';
+    });
+    void tasksPage.offsetWidth;
+
+    let visibleIndex = 0;
+    items.forEach(item => {
+        const itemCat = item.getAttribute('data-task-cat');
+        const shouldShow = (category === 'all') || (itemCat === category);
+
+        if (shouldShow) {
+            item.style.display = '';
+            const delay = (visibleIndex * 0.04).toFixed(2);
+            item.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+            visibleIndex++;
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+        
 function filterShop(category, btnElement) {
     // 1. Переключаем активную кнопку
     const tabs = document.querySelectorAll('.shop-tab');
