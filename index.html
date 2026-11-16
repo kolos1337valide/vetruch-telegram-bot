@@ -6799,22 +6799,30 @@
 
     </main>
 
-    <!-- 3. ЗАДАНИЯ -->
+   <!-- 3. ЗАДАНИЯ -->
     <main id="tasks" class="page">
         <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
         <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
         </div>
 
-        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Задания</h2>
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 16px !important; display: inline-block; animation-delay: 0.05s;">Задания</h2>
 
-<!-- ПАРТНЁРСКИЙ БЛОК: ARKADA -->
-        <div class="partner-section-head anim-item" style="animation-delay: 0.07s;">
+        <!-- Плашки категорий заданий -->
+        <div class="shop-tabs anim-item" id="tasksFilterTabs" style="animation-delay: 0.06s; margin-bottom: 14px;">
+            <button type="button" class="shop-tab active" onclick="filterTasks('all', this)">Все</button>
+            <button type="button" class="shop-tab" onclick="filterTasks('projects', this)">Проекты</button>
+            <button type="button" class="shop-tab" onclick="filterTasks('social', this)">Соцсети</button>
+            <button type="button" class="shop-tab" onclick="filterTasks('other', this)">Другое</button>
+        </div>
+
+        <!-- ПАРТНЁРСКИЙ БЛОК: ARKADA -->
+        <div class="partner-section-head anim-item" data-task-cat="projects" style="animation-delay: 0.07s;">
             <span class="partner-section-pill">ПАРТНЁРЫ</span>
             <span class="partner-section-sub">самые крупные награды</span>
         </div>
 
-        <div class="arkada-partner-card anim-item" style="animation-delay: 0.09s;" onclick="openArkadaModal()">
+        <div class="arkada-partner-card anim-item" data-task-cat="projects" style="animation-delay: 0.09s;" onclick="openArkadaModal()">
             <div class="arkada-card-top">
                 <div>
                     <div class="arkada-card-title">ARKADA</div>
@@ -6836,7 +6844,7 @@
         </div>
 
         <!-- ПАРТНЁРСКИЙ БЛОК #2 -->
-        <div class="p2-partner-card anim-item" style="animation-delay: 0.1s;" onclick="openP2Modal()">
+        <div class="p2-partner-card anim-item" data-task-cat="projects" style="animation-delay: 0.1s;" onclick="openP2Modal()">
             <div class="arkada-card-top">
                 <div>
                     <div class="arkada-card-title" id="p2CardTitle">ПАРТНЁР</div>
@@ -6857,8 +6865,8 @@
             <img id="p2CardImg" class="p2-card-girl" src="" alt="">
         </div>
 
-<!-- ПАРТНЁРСКИЙ БЛОК #3 -->
-        <div class="p3-partner-card anim-item" style="animation-delay: 0.11s;" onclick="openP3Modal()">
+        <!-- ПАРТНЁРСКИЙ БЛОК #3 -->
+        <div class="p3-partner-card anim-item" data-task-cat="projects" style="animation-delay: 0.11s;" onclick="openP3Modal()">
             <div class="arkada-card-top">
                 <div>
                     <div class="arkada-card-title" id="p3CardTitle">Ton Play</div>
@@ -6880,7 +6888,7 @@
         </div>
         
         <!-- 1. Задание: Подписка ТГ -->
-        <div class="task-card featured-task anim-item" style="clear: both; animation-delay: 0.1s;" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="clear: both; animation-delay: 0.1s;" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 3 14.5 21l-3.8-7.7L3 9.5 21 3Z"></path>
@@ -6902,7 +6910,7 @@
         </div>
 
         <!-- 2. Задание: Подписка YT -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.15s;" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="animation-delay: 0.15s;" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="3" y="6" width="18" height="13" rx="2"></rect>
@@ -6924,7 +6932,7 @@
         </div>
 
         <!-- 3. Задание: Подписка Kick -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.2s;" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="animation-delay: 0.2s;" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"></path>
@@ -6944,7 +6952,7 @@
         </div>
 
         <!-- 4. Задание: UP-X (Привязка 5 шагов) -->
-        <div class="task-card upx-task anim-item" style="animation-delay: 0.25s;">
+        <div class="task-card upx-task anim-item" data-task-cat="all-only" style="animation-delay: 0.25s;">
             <div class="upx-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
@@ -6996,7 +7004,7 @@
         </div>
 
         <!-- 5. Задание: JetTon (Привязка 5 шагов) -->
-        <div class="task-card upx-task anim-item" style="animation-delay: 0.3s;">
+        <div class="task-card upx-task anim-item" data-task-cat="all-only" style="animation-delay: 0.3s;">
             <div class="upx-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
@@ -7048,7 +7056,7 @@
         </div>
 
         <!-- 6. Задание: 3 сообщения на стриме -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.35s;" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="other" style="animation-delay: 0.35s;" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -7067,7 +7075,7 @@
         </div>
 
         <!-- 7. Задание: Ник на Kick -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.4s;" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="other" style="animation-delay: 0.4s;" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -7087,7 +7095,7 @@
         </div>
 
         <!-- 8. Задание: Пригласить друзей -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.45s;" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
+        <div class="task-card featured-task anim-item" data-task-cat="other" style="animation-delay: 0.45s;" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -7111,9 +7119,7 @@
                 </div>
             </div>
         </div>
-
     </main>
-
     <!-- 4. МАГАЗИН (КАРТИНКА В САМЫЙ НИЗ, В СЕРОЙ ЧАСТИ ЧИСТО КНОПКА) -->
     <main id="shop" class="page">
         <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
