@@ -6295,62 +6295,69 @@
 .case-drops-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 16px;
 }
 .case-drop-card {
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    padding: 10px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 16px 10px 14px 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    text-align: left;
+    justify-content: center;
+    text-align: center;
+}
+.case-drop-card.bg-legendary {
+    background: linear-gradient(180deg, rgba(251, 191, 36, 0.11) 0%, rgba(20, 17, 12, 0.95) 100%);
+    border-color: rgba(251, 191, 36, 0.35);
+}
+.case-drop-card.bg-epic {
+    background: linear-gradient(180deg, rgba(168, 85, 247, 0.12) 0%, rgba(18, 14, 26, 0.95) 100%);
+    border-color: rgba(168, 85, 247, 0.35);
+}
+.case-drop-card.bg-rare {
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.10) 0%, rgba(12, 17, 26, 0.95) 100%);
+    border-color: rgba(56, 189, 248, 0.3);
 }
 .case-drop-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 68px;
+    height: 68px;
+    border-radius: 14px;
     object-fit: cover;
     background: rgba(0, 0, 0, 0.35);
+    margin-bottom: 10px;
     flex-shrink: 0;
 }
+.case-drop-img.is-coin {
+    object-fit: contain;
+    padding: 12px;
+}
 .case-drop-info {
+    width: 100%;
     min-width: 0;
-    flex: 1;
 }
 .case-drop-name {
-    font-size: 12px;
+    font-size: 13.5px;
     font-weight: 800;
     color: #ffffff;
-    line-height: 1.2;
-    margin-bottom: 2px;
+    line-height: 1.25;
+    margin-bottom: 4px;
 }
 .case-drop-rarity {
-    font-size: 10.5px;
+    font-size: 11.5px;
     font-weight: 700;
-    margin-bottom: 3px;
+    margin-bottom: 8px;
 }
 .rarity-common { color: #94a3b8; }
 .rarity-rare { color: #38bdf8; }
 .rarity-epic { color: #c084fc; }
 .rarity-legendary { color: #fbbf24; }
 .case-drop-chance {
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 800;
     color: #ffffff;
-}
-.case-roulette-box {
-    display: none;
-    position: relative;
-    overflow: hidden;
-    height: 92px;
-    border-radius: 16px;
-    background: rgba(6, 10, 18, 0.95);
-    border: 1.5px solid rgba(0, 170, 255, 0.45);
-    margin-bottom: 14px;
-    box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.8);
 }
 .case-roulette-box.open {
     display: block;
