@@ -10349,6 +10349,19 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                 let tasksDone = (await cloudGet(`vetruch_app/tasks_done/${target.userId}`)) || 0;
                 await cloudPut(`vetruch_app/tasks_done/${target.userId}`, Number(tasksDone) + 1);
 
+if (!target.taskKey && !target.p2Key && !target.p3Key && target.title) {
+                    let doneList = (await cloudGet(`vetruch_app/completed_tasks/${target.userId}`)) || [];
+                    if (!Array.isArray(doneList)) doneList = [];
+                    if (!doneList.includes(target.title)) {
+                        doneList.push(target.title);
+                        await cloudPut(`vetruch_app/completed_tasks/${target.userId}`, doneList);
+                    }
+                    if (String(target.userId) === getCurrentTgId()) {
+                        localStorage.setItem('vetruch_completed_tasks', JSON.stringify(doneList));
+                        if (typeof renderCompletedTasksUI === 'function') renderCompletedTasksUI();
+                    }
+                }
+                
                 if (String(target.userId) === getCurrentTgId()) {
                     localStorage.setItem('vetruch_balance', userBal);
                     localStorage.setItem('vetruch_cloud_synced_bal', userBal);
