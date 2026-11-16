@@ -7537,6 +7537,19 @@
             </div>
         </div>
 
+<!-- ВВОД ПРОМОКОДА -->
+        <div class="profile-promo-card anim-item" style="animation-delay: 0.18s;">
+            <div class="profile-promo-head">
+                <div class="profile-promo-title">🎟️ Промокод</div>
+                <span class="profile-promo-sub">Введи код — получи монеты</span>
+            </div>
+            <div class="profile-promo-row">
+                <input type="text" id="profilePromoInput" class="profile-promo-input" placeholder="Введите промокод" maxlength="32">
+                <button type="button" id="profilePromoBtn" class="profile-promo-btn" onclick="activateUserPromoCode()">АКТИВИРОВАТЬ</button>
+            </div>
+            <div id="profilePromoMsg" class="profile-promo-msg"></div>
+        </div>
+        
         <!-- 3. РЕФЕРАЛЬНАЯ ПРОГРАММА -->
         <div class="profile-ref-card anim-item" style="animation-delay: 0.2s;">
             <div class="profile-ref-head">
