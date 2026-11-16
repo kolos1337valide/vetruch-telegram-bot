@@ -10885,7 +10885,7 @@ function filterTasks(category, btnElement) {
         
 function filterShop(category, btnElement) {
     // 1. Переключаем активную кнопку
-    const tabs = document.querySelectorAll('.shop-tab');
+    const tabs = document.querySelectorAll('#shop .shop-tab');
     tabs.forEach(tab => tab.classList.remove('active'));
     btnElement.classList.add('active');
 
