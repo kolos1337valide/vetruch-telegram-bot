@@ -10912,13 +10912,16 @@ function renderCompletedTasksUI() {
         }
     });
 
-    if (count > 0) {
+   const activeTab = document.querySelector('#tasksFilterTabs .shop-tab.active');
+    const isAllTab = !activeTab || (activeTab.getAttribute('onclick') || '').includes("'all'");
+
+    if (count > 0 && isAllTab) {
         section.style.display = 'block';
         heading.textContent = `Выполнено · ${count}`;
         listEl.innerHTML = htmlItems.join('');
     } else {
         section.style.display = 'none';
-        listEl.innerHTML = '';
+        if (count === 0) listEl.innerHTML = '';
     }
 }
 renderCompletedTasksUI();
