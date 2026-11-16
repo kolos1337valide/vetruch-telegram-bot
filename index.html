@@ -9969,6 +9969,16 @@
             renderProfilePurchases();
             updateReferralsAndTasksUI(myRefCount, myTasksDone);
 
+let completedList = (cloudState && cloudState.completed_tasks && Array.isArray(cloudState.completed_tasks[myId]))
+                ? cloudState.completed_tasks[myId]
+                : [];
+            if ((myRefCount >= 3 || refRewardDoneMap[myId]) && !completedList.includes('Пригласить 3 друзей')) {
+                completedList = [...completedList, 'Пригласить 3 друзей'];
+                await cloudPut(`vetruch_app/completed_tasks/${myId}`, completedList);
+            }
+            localStorage.setItem('vetruch_completed_tasks', JSON.stringify(completedList));
+            if (typeof renderCompletedTasksUI === 'function') renderCompletedTasksUI();
+            
 if (cloudState && typeof saveArkadaProgressLocal === 'function') {
                 const cloudArk = (cloudState.arkada_progress && cloudState.arkada_progress[myId])
                     ? cloudState.arkada_progress[myId]
