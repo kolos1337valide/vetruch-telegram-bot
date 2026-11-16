@@ -13966,6 +13966,358 @@ async function adminDeletePromoCode(code) {
     renderAdminPromosList();
 }
 </script>
+
+<!-- МОДАЛКА МОИ ЗАКАЗЫ -->
+    <div id="myOrdersModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeMyOrdersModal()">
+        <div class="avatar-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title">Мои заказы</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeMyOrdersModal()">✕</button>
+            </div>
+            <div class="arkada-modal-body" id="myOrdersModalBody"></div>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА РЕФЕРАЛЬНОГО КЕЙСА -->
+    <div id="refCaseModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeRefCaseModal()">
+        <div class="avatar-modal-sheet" style="max-height: 90vh;">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title">Реферальный кейс</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeRefCaseModal()">✕</button>
+            </div>
+            <div class="arkada-modal-body">
+                <div style="text-align: center; margin-bottom: 12px;">
+                    <div class="case-art-wrap" style="margin: 0 auto 6px auto;">
+                        <svg viewBox="0 0 110 90" width="96" height="80" fill="none" aria-hidden="true">
+                            <rect x="34" y="10" width="42" height="12" rx="5" stroke="#00d9ff" stroke-width="3"/>
+                            <rect x="12" y="20" width="86" height="58" rx="12" fill="#0d172a" stroke="#0088ff" stroke-width="2.5"/>
+                            <path d="M12 42 H98" stroke="#00d9ff" stroke-width="2.5"/>
+                            <rect x="46" y="36" width="18" height="12" rx="4" fill="#00d9ff"/>
+                            <circle cx="55" cy="42" r="2.5" fill="#06101e"/>
+                        </svg>
+                    </div>
+                    <div style="font-size: 12.5px; color: #94a3b8;">
+                        Не продаётся. Падает за приглашённых друзей (1 друг = 1 ключ).
+                    </div>
+                </div>
+
+                <!-- Рулетка -->
+                <div class="case-roulette-box" id="refCaseRouletteBox">
+                    <div class="case-roulette-pointer"></div>
+                    <div class="case-roulette-track" id="refCaseRouletteTrack"></div>
+                </div>
+
+                <!-- Результат выигрыша -->
+                <div class="case-win-banner" id="refCaseWinBanner"></div>
+
+                <!-- Кнопка открытия -->
+                <button type="button" class="submit-task-btn" id="refCaseModalOpenBtn" style="margin-bottom: 10px;" onclick="spinRefCase(false)">
+                    Падает за активность
+                </button>
+                <button type="button" class="admin-chip" id="refCaseAdminTestBtn" style="display: none; width: 100%; text-align: center; margin-bottom: 14px; padding: 8px;" onclick="spinRefCase(true)">
+                    ⚡ Тест-открытие (только для админа)
+                </button>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 14px; font-weight: 800; color: #fff;">Что внутри</span>
+                    <span style="font-size: 11.5px; font-weight: 600; color: #8c97a7;">✓ шансы настоящие</span>
+                </div>
+
+                <div class="case-drops-grid" id="refCaseDropsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+const REF_CASE_ITEMS = [
+    { id: 'c100',   title: '100 Монет',                short: '100 🪙',      img: 'coins.png',    chance: 50, rarity: 'Обычный',     rCls: 'rarity-common',    type: 'coins', amount: 100 },
+    { id: 'c250',   title: '250 Монет',                short: '250 🪙',      img: 'coins.png',    chance: 35, rarity: 'Обычный',     rCls: 'rarity-common',    type: 'coins', amount: 250 },
+    { id: 'c500',   title: '500 Монет',                short: '500 🪙',      img: 'coins.png',    chance: 12, rarity: 'Редкий',      rCls: 'rarity-rare',      type: 'coins', amount: 500 },
+    { id: 'vpn',    title: 'VPN 1 месяц',              short: 'VPN 1 мес',   img: 'IMG_1078.PNG', chance: 8,  rarity: 'Редкий',      rCls: 'rarity-rare',      type: 'item' },
+    { id: 'gift',   title: 'Подарок в ТГ от стримера', short: 'Подарок ТГ',  img: 'IMG_1084.PNG', chance: 6,  rarity: 'Эпический',   rCls: 'rarity-epic',      type: 'item' },
+    { id: 'tgprem', title: 'Telegram Premium 3 мес.',  short: 'TG Prem 3м',  img: 'IMG_1080.PNG', chance: 5,  rarity: 'Эпический',   rCls: 'rarity-epic',      type: 'item' },
+    { id: 'r1000',  title: '1 000 рублей',             short: '1 000 ₽',     img: 'IMG_1071.PNG', chance: 2,  rarity: 'Легендарный', rCls: 'rarity-legendary', type: 'item' },
+    { id: 'r2500',  title: '2 500 рублей',             short: '2 500 ₽',     img: 'IMG_1069.PNG', chance: 1,  rarity: 'Легендарный', rCls: 'rarity-legendary', type: 'item' }
+];
+
+let isRefCaseSpinning = false;
+let refCaseOpenedCountCache = parseInt(localStorage.getItem('vetruch_ref_cases_opened') || '0', 10);
+
+function getRefCaseKeysCount() {
+    const refs = parseInt(localStorage.getItem('vetruch_my_ref_count') || '0', 10);
+    return Math.max(0, refs - refCaseOpenedCountCache);
+}
+
+async function refreshRefCaseKeysUI() {
+    const myId = getCurrentTgId();
+    try {
+        const opened = await cloudGet(`vetruch_app/ref_cases_opened/${myId}`);
+        if (opened !== null && opened !== undefined) {
+            refCaseOpenedCountCache = Number(opened) || 0;
+            localStorage.setItem('vetruch_ref_cases_opened', refCaseOpenedCountCache);
+        }
+    } catch (e) {}
+
+    const keys = getRefCaseKeysCount();
+    const cardBtn = document.getElementById('refCaseCardOpenBtn');
+    const modalBtn = document.getElementById('refCaseModalOpenBtn');
+
+    if (cardBtn) {
+        if (keys > 0) {
+            cardBtn.classList.add('has-keys');
+            cardBtn.textContent = `🔑 Открыть (${keys})`;
+        } else {
+            cardBtn.classList.remove('has-keys');
+            cardBtn.textContent = 'Падает за друзей';
+        }
+    }
+    if (modalBtn && !isRefCaseSpinning) {
+        if (keys > 0) {
+            modalBtn.disabled = false;
+            modalBtn.style.opacity = '1';
+            modalBtn.textContent = `🎁 ОТКРЫТЬ КЕЙС (Ключей: ${keys})`;
+        } else {
+            modalBtn.disabled = true;
+            modalBtn.style.opacity = '0.55';
+            modalBtn.textContent = '🔑 Нет ключей (пригласи друга)';
+        }
+    }
+}
+
+function switchShopMode(mode) {
+    const storeBtn = document.getElementById('shopModeStoreBtn');
+    const casesBtn = document.getElementById('shopModeCasesBtn');
+    const ordersBar = document.getElementById('shopMyOrdersBar');
+    const shopTabs = document.querySelector('#shop .shop-tabs');
+    const shopGrid = document.querySelector('#shop .shop-grid');
+    const casesSec = document.getElementById('casesSection');
+    const heading = document.querySelector('#shop h2.games-heading');
+
+    if (mode === 'cases') {
+        if (storeBtn) storeBtn.classList.remove('active');
+        if (casesBtn) casesBtn.classList.add('active');
+        if (ordersBar) ordersBar.style.display = 'none';
+        if (shopTabs) shopTabs.style.display = 'none';
+        if (shopGrid) shopGrid.style.display = 'none';
+        if (casesSec) casesSec.style.display = 'block';
+        if (heading) heading.textContent = 'Кейсы';
+        refreshRefCaseKeysUI();
+    } else {
+        if (storeBtn) storeBtn.classList.add('active');
+        if (casesBtn) casesBtn.classList.remove('active');
+        if (ordersBar) ordersBar.style.display = 'flex';
+        if (shopTabs) shopTabs.style.display = 'flex';
+        if (shopGrid) shopGrid.style.display = 'grid';
+        if (casesSec) casesSec.style.display = 'none';
+        if (heading) heading.textContent = 'Магазин';
+    }
+}
+
+function openMyOrdersModal() {
+    const body = document.getElementById('myOrdersModalBody');
+    const modal = document.getElementById('myOrdersModal');
+    if (!body || !modal) return;
+
+    const myPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+    if (myPurchases.length === 0) {
+        body.innerHTML = `
+            <div style="text-align: center; padding: 36px 16px;">
+                <div style="width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.06); display: grid; place-items: center; margin: 0 auto 14px auto; font-size: 24px;">🏪</div>
+                <div style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px;">Заказов пока нет</div>
+                <div style="font-size: 13px; color: var(--secondary);">Купи что-нибудь в магазине — всё появится здесь.</div>
+            </div>
+        `;
+    } else {
+        body.innerHTML = myPurchases.map(p => `
+            <div class="purchase-history-item">
+                <div>
+                    <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">🎁 ${p.item}</div>
+                    <div style="font-size: 11px; color: var(--secondary); margin-top: 2px;">
+                        ${p.price > 0 ? `Списано: ${formatCoins(p.price)} монет` : 'Выпало из кейса'}
+                    </div>
+                </div>
+                <span class="profile-status-pill ${p.status.includes('Выдано') ? 'connected' : 'action'}">${p.status}</span>
+            </div>
+        `).join('');
+    }
+
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeMyOrdersModal() {
+    const modal = document.getElementById('myOrdersModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function renderRefCaseDrops() {
+    const grid = document.getElementById('refCaseDropsGrid');
+    if (!grid) return;
+    grid.innerHTML = REF_CASE_ITEMS.map(it => `
+        <div class="case-drop-card">
+            <img src="${it.img}" alt="${it.title}" class="case-drop-img">
+            <div class="case-drop-info">
+                <div class="case-drop-name">${it.title}</div>
+                <div class="case-drop-rarity ${it.rCls}">${it.rarity}</div>
+                <div class="case-drop-chance">${it.chance}%</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function onRefCaseCardAction() {
+    openRefCaseModal();
+    if (getRefCaseKeysCount() > 0) {
+        setTimeout(() => spinRefCase(false), 250);
+    }
+}
+
+function openRefCaseModal() {
+    renderRefCaseDrops();
+    refreshRefCaseKeysUI();
+
+    const rBox = document.getElementById('refCaseRouletteBox');
+    const winBan = document.getElementById('refCaseWinBanner');
+    if (rBox) rBox.classList.remove('open');
+    if (winBan) winBan.classList.remove('open');
+
+    const testBtn = document.getElementById('refCaseAdminTestBtn');
+    if (testBtn && typeof ALLOWED_ADMIN_IDS !== 'undefined') {
+        testBtn.style.display = ALLOWED_ADMIN_IDS.includes(Number(getCurrentTgId())) ? 'block' : 'none';
+    }
+
+    const modal = document.getElementById('refCaseModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeRefCaseModal() {
+    if (isRefCaseSpinning) return;
+    const modal = document.getElementById('refCaseModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function rollRefCaseWinner() {
+    const total = REF_CASE_ITEMS.reduce((s, it) => s + it.chance, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < REF_CASE_ITEMS.length; i++) {
+        r -= REF_CASE_ITEMS[i].chance;
+        if (r <= 0) return REF_CASE_ITEMS[i];
+    }
+    return REF_CASE_ITEMS[0];
+}
+
+async function spinRefCase(isAdminTest) {
+    if (isRefCaseSpinning) return;
+    if (!isAdminTest && getRefCaseKeysCount() <= 0) return;
+
+    isRefCaseSpinning = true;
+    const modalBtn = document.getElementById('refCaseModalOpenBtn');
+    const rBox = document.getElementById('refCaseRouletteBox');
+    const track = document.getElementById('refCaseRouletteTrack');
+    const winBan = document.getElementById('refCaseWinBanner');
+
+    if (winBan) winBan.classList.remove('open');
+    if (modalBtn) {
+        modalBtn.disabled = true;
+        modalBtn.textContent = '🎲 КРУТИМ КЕЙС...';
+    }
+
+    const winner = rollRefCaseWinner();
+    const totalSlots = 40;
+    const winIdx = 32;
+    const slots = [];
+    for (let i = 0; i < totalSlots; i++) {
+        slots.push(i === winIdx ? winner : rollRefCaseWinner());
+    }
+
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0px)';
+    track.innerHTML = slots.map(it => `
+        <div class="case-roulette-item">
+            <img src="${it.img}" alt="">
+            <span>${it.short}</span>
+        </div>
+    `).join('');
+
+    rBox.classList.add('open');
+    void track.offsetWidth;
+
+    const itemWidth = 84; // 76px + 8px gap
+    const centerOffset = (rBox.clientWidth / 2) - 38;
+    const jitter = Math.floor((Math.random() - 0.5) * 34);
+    const targetX = -(winIdx * itemWidth - centerOffset + jitter + 8);
+
+    track.style.transition = 'transform 3.6s cubic-bezier(0.12, 0.85, 0.2, 1)';
+    track.style.transform = `translateX(${targetX}px)`;
+
+    setTimeout(async () => {
+        if (!isAdminTest) {
+            const myId = getCurrentTgId();
+            refCaseOpenedCountCache += 1;
+            localStorage.setItem('vetruch_ref_cases_opened', refCaseOpenedCountCache);
+            await cloudPut(`vetruch_app/ref_cases_opened/${myId}`, refCaseOpenedCountCache);
+
+            if (winner.type === 'coins') {
+                let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) + winner.amount;
+                localStorage.setItem('vetruch_balance', curBal);
+                localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+                let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+                balancesMap[myId] = curBal;
+                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+                await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+                initBalance();
+            } else {
+                const username = getDefaultUsername() || `ID:${myId}`;
+                const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                const orderId = Date.now();
+
+                let orders = (await cloudGet('vetruch_app/shop')) || getAdminShopOrders();
+                if (!Array.isArray(orders)) orders = [];
+                orders.unshift({
+                    id: orderId,
+                    user: username,
+                    userId: myId,
+                    item: `[Кейс] ${winner.title}`,
+                    price: 0,
+                    date: `Сегодня, ${nowStr}`
+                });
+                localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
+                await cloudPut('vetruch_app/shop', orders);
+
+                let myPurchases = (await cloudGet(`vetruch_app/purchases/${myId}`)) || JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+                if (!Array.isArray(myPurchases)) myPurchases = [];
+                myPurchases.unshift({
+                    id: orderId,
+                    item: `[Кейс] ${winner.title}`,
+                    price: 0,
+                    status: 'Ожидает выдачи ⏳'
+                });
+                localStorage.setItem('vetruch_my_purchases', JSON.stringify(myPurchases));
+                await cloudPut(`vetruch_app/purchases/${myId}`, myPurchases);
+                renderProfilePurchases();
+            }
+        }
+
+        if (winBan) {
+            winBan.innerHTML = `
+                <div style="font-size: 11px; color: #8c97a7; font-weight: 700;">${isAdminTest ? 'ТЕСТ-ВЫПАДЕНИЕ:' : 'ВЫ ВЫИГРАЛИ:'}</div>
+                <div style="font-size: 17px; font-weight: 900; color: #00e676; margin-top: 3px;">🎉 ${winner.title}</div>
+                ${!isAdminTest && winner.type === 'item' ? '<div style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">Приз добавлен в «Мои заказы» и отправлен админу</div>' : ''}
+            `;
+            winBan.classList.add('open');
+        }
+
+        isRefCaseSpinning = false;
+        refreshRefCaseKeysUI();
+    }, 3750);
+}
+</script>
     
 </body>
 </html>
