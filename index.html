@@ -10849,6 +10849,68 @@ const shopCategories = {
     'Техника': ['iPhone 18 PRO MAX', 'iPhone DUO', 'AirPods PRO 3']
 };
 
+function getCompletedTasksList() {
+    try {
+        const raw = localStorage.getItem('vetruch_completed_tasks');
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function renderCompletedTasksUI() {
+    const completed = getCompletedTasksList();
+    const tasksPage = document.getElementById('tasks');
+    const section = document.getElementById('completedTasksSection');
+    const heading = document.getElementById('completedTasksHeading');
+    const listEl = document.getElementById('completedTasksList');
+    if (!tasksPage || !section || !heading || !listEl) return;
+
+    const cards = tasksPage.querySelectorAll('.featured-task');
+    const htmlItems = [];
+    let count = 0;
+
+    cards.forEach(card => {
+        const onclickAttr = card.getAttribute('onclick') || '';
+        const match = onclickAttr.match(/openTaskModal\('([^']+)'/);
+        const modalKey = match ? match[1] : '';
+        const title = (card.querySelector('.featured-task-title')?.textContent || '').trim();
+        const desc = (card.querySelector('.featured-task-description')?.textContent || '').trim();
+
+        const isDone = (modalKey && completed.includes(modalKey)) || (title && completed.includes(title));
+        card.classList.toggle('is-task-completed', Boolean(isDone));
+
+        if (isDone) {
+            count++;
+            htmlItems.push(`
+                <div class="completed-task-card">
+                    <div class="completed-task-check">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="completed-task-body">
+                        <div class="completed-task-title">${title || modalKey}</div>
+                        ${desc ? `<div class="completed-task-desc">${desc}</div>` : ''}
+                        <span class="completed-task-pill">Получено</span>
+                    </div>
+                </div>
+            `);
+        }
+    });
+
+    if (count > 0) {
+        section.style.display = 'block';
+        heading.textContent = `Выполнено · ${count}`;
+        listEl.innerHTML = htmlItems.join('');
+    } else {
+        section.style.display = 'none';
+        listEl.innerHTML = '';
+    }
+}
+renderCompletedTasksUI();
+        
 // ================= ФИЛЬТР ЗАДАНИЙ =================
 function filterTasks(category, btnElement) {
     const tabsContainer = document.getElementById('tasksFilterTabs');
