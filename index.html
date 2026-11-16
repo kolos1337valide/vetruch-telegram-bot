@@ -7488,6 +7488,25 @@
 
         <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Магазин</h2>
 
+<!-- Переключатель Магазин / Кейсы -->
+        <div class="shop-mode-switch anim-item" style="animation-delay: 0.06s;">
+            <button type="button" class="shop-mode-btn active" id="shopModeStoreBtn" onclick="switchShopMode('store')">
+                🛒 Магазин
+            </button>
+            <button type="button" class="shop-mode-btn" id="shopModeCasesBtn" onclick="switchShopMode('cases')">
+                📦 Кейсы
+            </button>
+        </div>
+
+        <!-- Строка Мои заказы -->
+        <div class="my-orders-bar anim-item" id="shopMyOrdersBar" style="animation-delay: 0.07s;" onclick="openMyOrdersModal()">
+            <div class="my-orders-bar-left">
+                <span style="color: #fbbf24;">🛒</span>
+                <span>Мои заказы</span>
+            </div>
+            <span class="my-orders-bar-arrow">❯</span>
+        </div>
+        
 <!-- Плашки категорий -->
         <div class="shop-tabs anim-item" style="animation-delay: 0.08s;">
             <button class="shop-tab active" onclick="filterShop('Все', this)">Все</button>
