@@ -10954,11 +10954,16 @@ function filterTasks(category, btnElement) {
             const delay = (visibleIndex * 0.04).toFixed(2);
             item.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
             visibleIndex++;
-        } else {
+       } else {
             item.style.display = 'none';
         }
     });
+
+    if (typeof renderCompletedTasksUI === 'function') {
+        renderCompletedTasksUI();
+    }
 }
+
         
 function filterShop(category, btnElement) {
     // 1. Переключаем активную кнопку
