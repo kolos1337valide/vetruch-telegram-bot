@@ -14162,16 +14162,21 @@ function closeMyOrdersModal() {
 function renderRefCaseDrops() {
     const grid = document.getElementById('refCaseDropsGrid');
     if (!grid) return;
-    grid.innerHTML = REF_CASE_ITEMS.map(it => `
-        <div class="case-drop-card">
-            <img src="${it.img}" alt="${it.title}" class="case-drop-img">
-            <div class="case-drop-info">
-                <div class="case-drop-name">${it.title}</div>
-                <div class="case-drop-rarity ${it.rCls}">${it.rarity}</div>
-                <div class="case-drop-chance">${it.chance}%</div>
+    const sorted = [...REF_CASE_ITEMS].reverse();
+    grid.innerHTML = sorted.map(it => {
+        const bgCls = it.rCls.replace('rarity-', 'bg-');
+        const imgCls = it.img === 'coins.png' ? 'case-drop-img is-coin' : 'case-drop-img';
+        return `
+            <div class="case-drop-card ${bgCls}">
+                <img src="${it.img}" alt="${it.title}" class="${imgCls}">
+                <div class="case-drop-info">
+                    <div class="case-drop-name">${it.title}</div>
+                    <div class="case-drop-rarity ${it.rCls}">${it.rarity}</div>
+                    <div class="case-drop-chance">${it.chance}%</div>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function onRefCaseCardAction() {
