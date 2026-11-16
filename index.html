@@ -10569,6 +10569,12 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                     });
                 }
             }
+
+if (pageId === 'tasks') {
+                document.querySelectorAll('#tasks [data-task-cat]').forEach(el => {
+                    el.style.animation = '';
+                });
+            }
             
             if (pageId !== 'admin') {
                 sessionStorage.setItem('vetruch_active_tab', pageId);
