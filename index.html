@@ -13450,5 +13450,199 @@ function openSupportChat() {
         <iframe id="frame-balloon" src="balloon.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-dice" src="dice.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
+
+<script>
+function showProfilePromoMsg(text, isError) {
+    const el = document.getElementById('profilePromoMsg');
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.background = isError ? 'rgba(255, 51, 102, 0.14)' : 'rgba(0, 230, 118, 0.14)';
+    el.style.border = isError ? '1px solid rgba(255, 51, 102, 0.4)' : '1px solid rgba(0, 230, 118, 0.4)';
+    el.style.color = isError ? '#ff5277' : '#00e676';
+    el.textContent = text;
+}
+
+async function activateUserPromoCode() {
+    const input = document.getElementById('profilePromoInput');
+    const btn = document.getElementById('profilePromoBtn');
+    if (!input || !btn) return;
+
+    const rawCode = input.value.trim().toUpperCase().replace(/[.#$\[\]\/\s]+/g, '');
+    if (!rawCode) {
+        showProfilePromoMsg('⚠️ Введите промокод!', true);
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+        const promo = await cloudGet(`vetruch_app/promocodes/${encodeURIComponent(rawCode)}`);
+        if (!promo || !promo.code) {
+            showProfilePromoMsg('❌ Промокод не найден или удалён', true);
+            return;
+        }
+
+        const myId = getCurrentTgId();
+        const usedBy = (promo.usedBy && typeof promo.usedBy === 'object') ? promo.usedBy : {};
+
+        if (usedBy[myId]) {
+            showProfilePromoMsg('⚠️ Вы уже активировали этот промокод!', true);
+            return;
+        }
+
+        const usedCount = Object.keys(usedBy).length;
+        const maxUses = Number(promo.maxUses) || 0;
+        if (usedCount >= maxUses) {
+            showProfilePromoMsg('😔 Лимит активаций этого промокода исчерпан!', true);
+            return;
+        }
+
+        await cloudPut(`vetruch_app/promocodes/${encodeURIComponent(rawCode)}/usedBy/${myId}`, true);
+
+        const reward = Number(promo.reward) || 0;
+        let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+        curBal += reward;
+        localStorage.setItem('vetruch_balance', curBal);
+        localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+
+        let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+        balancesMap[myId] = curBal;
+        localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+        await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+        initBalance();
+
+        input.value = '';
+        showProfilePromoMsg(`🎉 Промокод активирован! +${formatCoins(reward)} монет`, false);
+
+        if (window.tg && tg.HapticFeedback) {
+            try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+        }
+    } catch (e) {
+        showProfilePromoMsg('❌ Ошибка сети, попробуйте снова', true);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'АКТИВИРОВАТЬ';
+    }
+}
+
+function generateRandomPromoCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = 'VET-';
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const inp = document.getElementById('adminPromoCodeInput');
+    if (inp) inp.value = code;
+}
+
+function showAdminPromoToast(msg, isError) {
+    const t = document.getElementById('adminPromoToast');
+    if (!t) return;
+    t.style.display = 'block';
+    t.style.background = isError ? 'rgba(255, 51, 102, 0.15)' : 'rgba(0, 230, 118, 0.15)';
+    t.style.borderColor = isError ? 'rgba(255, 51, 102, 0.45)' : 'rgba(0, 230, 118, 0.45)';
+    t.style.color = isError ? '#ff3366' : '#00e676';
+    t.textContent = msg;
+    setTimeout(() => { t.style.display = 'none'; }, 3500);
+}
+
+async function adminCreatePromoCode() {
+    const codeInp = document.getElementById('adminPromoCodeInput');
+    const rewInp = document.getElementById('adminPromoRewardInput');
+    const usesInp = document.getElementById('adminPromoUsesInput');
+
+    const code = (codeInp?.value || '').trim().toUpperCase().replace(/[.#$\[\]\/\s]+/g, '');
+    const reward = parseInt(rewInp?.value || '0', 10);
+    const maxUses = parseInt(usesInp?.value || '0', 10);
+
+    if (!code) {
+        showAdminPromoToast('⚠️ Введите название промокода!', true);
+        return;
+    }
+    if (isNaN(reward) || reward <= 0) {
+        showAdminPromoToast('⚠️ Укажите награду больше 0!', true);
+        return;
+    }
+    if (isNaN(maxUses) || maxUses <= 0) {
+        showAdminPromoToast('⚠️ Укажите количество активаций (минимум 1)!', true);
+        return;
+    }
+
+    const existing = await cloudGet(`vetruch_app/promocodes/${encodeURIComponent(code)}`);
+    if (existing && existing.code) {
+        showAdminPromoToast('⚠️ Такой промокод уже есть! Удалите старый или введите другой.', true);
+        return;
+    }
+
+    await cloudPut(`vetruch_app/promocodes/${encodeURIComponent(code)}`, {
+        code: code,
+        reward: reward,
+        maxUses: maxUses,
+        createdAt: Date.now()
+    });
+
+    if (codeInp) codeInp.value = '';
+    if (rewInp) rewInp.value = '';
+    if (usesInp) usesInp.value = '';
+
+    showAdminPromoToast(`✅ Промокод ${code} создан (+${formatCoins(reward)} монет, ${maxUses} акц.)`, false);
+    renderAdminPromosList();
+}
+
+async function renderAdminPromosList() {
+    const listEl = document.getElementById('adminPromosList');
+    const countEl = document.getElementById('adminPromosCount');
+    if (!listEl) return;
+
+    listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center; padding: 12px 0;">Загрузка...</div>';
+
+    const promosObj = (await cloudGet('vetruch_app/promocodes')) || {};
+    const promos = Object.values(promosObj)
+        .filter(p => p && p.code)
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    if (countEl) countEl.textContent = promos.length;
+
+    if (promos.length === 0) {
+        listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center; padding: 14px 0;">Промокодов пока нет 🎟️</div>';
+        return;
+    }
+
+    listEl.innerHTML = promos.map(p => {
+        const usedCount = p.usedBy ? Object.keys(p.usedBy).length : 0;
+        const maxUses = Number(p.maxUses) || 0;
+        const isExhausted = usedCount >= maxUses;
+
+        return `
+            <div class="admin-req-item">
+                <div class="admin-req-head">
+                    <span class="admin-req-user" style="font-size: 15px; letter-spacing: 0.5px; color: #00d9ff; cursor: pointer;" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${p.code}');} showAdminPromoToast('📋 Код ${p.code} скопирован', false);">
+                        🎟️ ${p.code}
+                    </span>
+                    <span class="admin-badge-count" style="background: ${isExhausted ? 'rgba(255,51,102,0.18)' : 'rgba(0,230,118,0.18)'}; color: ${isExhausted ? '#ff5277' : '#00e676'}; border-color: ${isExhausted ? 'rgba(255,51,102,0.4)' : 'rgba(0,230,118,0.4)'};">
+                        ${isExhausted ? 'Закончился' : 'Активен'}
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; color: #cbd5e1; margin-bottom: 10px;">
+                    <span>Награда: <b style="color: #ffd700;">+${formatCoins(p.reward)} 🪙</b></span>
+                    <span>Активаций: <b>${usedCount} / ${maxUses}</b></span>
+                </div>
+                <button type="button" class="admin-btn-reject" style="width: 100%;" onclick="adminDeletePromoCode('${p.code}')">
+                    🗑 Удалить промокод
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+async function adminDeletePromoCode(code) {
+    await cloudPut(`vetruch_app/promocodes/${encodeURIComponent(code)}`, null);
+    showAdminPromoToast(`🗑 Промокод ${code} удалён`, false);
+    renderAdminPromosList();
+}
+</script>
+    
 </body>
 </html>
