@@ -87,6 +87,20 @@
     return 'Игрок';
   }
 
+  function getDbBaseUrl() {
+    try {
+      if (window.parent && window.parent !== window && typeof window.parent.getCleanDbUrl === 'function') {
+        var u = window.parent.getCleanDbUrl();
+        if (u) return u;
+      }
+      if (typeof window.getCleanDbUrl === 'function') {
+        var u2 = window.getCleanDbUrl();
+        if (u2) return u2;
+      }
+    } catch (e) {}
+    return 'https://vetruchbot-default-rtdb.firebaseio.com';
+  }
+
   function recordGameWin(winAmount) {
      if (window.parent && window.parent !== window && window.parent.__hasParentWinTracker) return;
     if (!winAmount || winAmount <= 0) return;
@@ -101,11 +115,12 @@
     } catch (e) {}
 
     var uid = getUserIdSafe();
+    var dbBase = getDbBaseUrl();
     try {
       if (window.parent && window.parent !== window && typeof window.parent.cloudPut === 'function') {
         window.parent.cloudPut('vetruch_app/total_won/' + uid, next);
       } else {
-        fetch('https://vetruchbot-default-rtdb.firebaseio.com/vetruch_app/total_won/' + encodeURIComponent(uid) + '.json', {
+        fetch(dbBase + '/vetruch_app/total_won/' + encodeURIComponent(uid) + '.json', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(next)
@@ -123,7 +138,7 @@
         amount: winAmount,
         ts: Date.now()
       };
-      fetch('https://vetruchbot-default-rtdb.firebaseio.com/vetruch_app/recent_wins.json', {
+      fetch(dbBase + '/vetruch_app/recent_wins.json', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(winEntry)

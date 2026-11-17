@@ -318,6 +318,11 @@
             }
 
             balance -= bet;
+            const expEarned = Math.floor(bet / 50);
+            if (expEarned > 0) {
+                let curXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10);
+                localStorage.setItem('vetruch_user_xp', curXp + expEarned);
+            }
             updateBalanceUI();
             
             state = 'playing';
