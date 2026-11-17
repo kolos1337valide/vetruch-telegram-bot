@@ -88,6 +88,7 @@
   }
 
   function recordGameWin(winAmount) {
+     if (window.parent && window.parent !== window && window.parent.__hasParentWinTracker) return;
     if (!winAmount || winAmount <= 0) return;
     var prev = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
     var next = prev + winAmount;
