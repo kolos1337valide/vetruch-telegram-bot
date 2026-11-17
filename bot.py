@@ -14,7 +14,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN", "СЮДА_ВСТАВЬ_ТОКЕН_ОТ_BOTFAT
 WEBAPP_URL = os.getenv("WEBAPP_URL", "https://kolos1337valide.github.io/vetruch-telegram-bot/?v=1794599457")
 
 # ID закрытой группы, куда бот будет слать мечты (например: -1001234567890)
-DREAMS_GROUP_ID = int(os.getenv("DREAMS_GROUP_ID", "0"))
+DREAMS_GROUP_ID = int(os.getenv("DREAMS_GROUP_ID", "-5488019144"))
 
 ADMIN_IDS = {1067693099, 978548564}
 FIREBASE_DB_URL = "https://vetruchbot-default-rtdb.firebaseio.com"
