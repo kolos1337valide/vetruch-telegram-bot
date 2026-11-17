@@ -14251,6 +14251,10 @@ async function refreshRefCaseKeysUI() {
             modalBtn.textContent = '🔑 Нет ключей (пригласи друга)';
         }
     }
+    const tabCasesBtn = document.getElementById('shopModeCasesBtn');
+    if (tabCasesBtn) {
+        tabCasesBtn.textContent = keys > 0 ? `📦 Кейсы (${keys} 🔑)` : '📦 Кейсы';
+    }
 }
 
 function switchShopMode(mode) {
