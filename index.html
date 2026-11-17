@@ -7936,11 +7936,11 @@
             </div>
         </div>
 
-        <!-- 4. ПРИВЯЗКА АККАУНТОВ -->
+       <!-- 4. ПРИВЯЗКА АККАУНТОВ -->
         <div class="profile-section-card anim-item" style="animation-delay: 0.25s;">
             <div class="profile-section-head">
                 <span class="profile-section-title">🔗 Привязка аккаунтов</span>
-                <span class="profile-section-sub">1 из 3 активно</span>
+                <span class="profile-section-sub" id="profileBindsCountText">1 из 5 активно</span>
             </div>
 
             <div class="profile-bind-list">
@@ -7960,21 +7960,43 @@
                         <div class="profile-bind-ico kick-ico">K</div>
                         <div>
                             <div class="profile-bind-name">Kick (@vetruch)</div>
-                            <div class="profile-bind-desc">Бонус +500 монет за задания</div>
+                            <div class="profile-bind-desc" id="bindKickDesc">Бонус +200 монет за подписку</div>
                         </div>
                     </div>
-                    <span class="profile-status-pill action">Задания ➔</span>
+                    <span class="profile-status-pill action" id="bindKickBadge">Задания ➔</span>
                 </div>
 
-                <div class="profile-bind-row clickable" onclick="openPage('tasks')">
+                <div class="profile-bind-row clickable" onclick="openArkadaModal()">
                     <div class="profile-bind-left">
-                        <div class="profile-bind-ico upx-ico">VIP</div>
+                        <div class="profile-bind-ico ark-ico">A</div>
                         <div>
-                            <div class="profile-bind-name">UP-X & JetTon</div>
-                            <div class="profile-bind-desc">Награда +2 000 монет за привязку</div>
+                            <div class="profile-bind-name">ARKADA</div>
+                            <div class="profile-bind-desc" id="bindArkadaDesc">Награда +1 000 монет за привязку</div>
                         </div>
                     </div>
-                    <span class="profile-status-pill action">Привязать ➔</span>
+                    <span class="profile-status-pill action" id="bindArkadaBadge">Привязать ➔</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openP3Modal()">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico tp-ico">TP</div>
+                        <div>
+                            <div class="profile-bind-name">Ton Play</div>
+                            <div class="profile-bind-desc" id="bindTpDesc">Награда +1 000 монет за привязку</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action" id="bindTpBadge">Привязать ➔</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openP2Modal()">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico upx2-ico">UX</div>
+                        <div>
+                            <div class="profile-bind-name">UP-X</div>
+                            <div class="profile-bind-desc" id="bindUpxDesc">Награда +1 000 монет за привязку</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action" id="bindUpxBadge">Привязать ➔</span>
                 </div>
             </div>
         </div>
