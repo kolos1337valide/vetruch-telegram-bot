@@ -14664,6 +14664,73 @@ syncKickBindFromCloud();
 setInterval(renderProfileBindsUI, 3000);
 document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('click', syncKickBindFromCloud);
 </script>
+
+<script>
+async function renderRecentWins() {
+    const listEl = document.getElementById('gamesHistoryList');
+    if (!listEl) return;
+
+    const base = (typeof getCleanDbUrl === 'function') ? getCleanDbUrl() : '';
+    let winsObj = null;
+
+    if (base) {
+        try {
+            const res = await fetch(`${base}/vetruch_app/recent_wins.json?orderBy=%22$key%22&limitToLast=20`);
+            if (res.ok) winsObj = await res.json();
+        } catch (e) {}
+        if (!winsObj && typeof cloudGet === 'function') {
+            winsObj = await cloudGet('vetruch_app/recent_wins');
+        }
+    }
+
+    const wins = (winsObj && typeof winsObj === 'object')
+        ? Object.values(winsObj)
+            .filter(w => w && Number(w.amount) > 0)
+            .sort((a, b) => (b.ts || 0) - (a.ts || 0))
+            .slice(0, 20)
+        : [];
+
+    if (wins.length === 0) {
+        listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; padding: 14px 0;">Пока никто не выигрывал — стань первым! 🎯</div>';
+        return;
+    }
+
+    const icons = {
+        towers: '🗼',
+        mines: '💣',
+        cards: '🃏',
+        balloon: '🎈',
+        dice: '🎲'
+    };
+
+    const esc = (s) => String(s || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+
+    listEl.innerHTML = wins.map(w => `
+        <div class="recent-win-row">
+            <div class="recent-win-left">
+                <div class="recent-win-ico">${icons[w.gameKey] || '🏆'}</div>
+                <div class="recent-win-info">
+                    <div class="recent-win-name">${esc(w.name || 'Игрок')}</div>
+                    <div class="recent-win-game">Победа · ${esc(w.game || 'Игра')}</div>
+                </div>
+            </div>
+            <div class="recent-win-amount">
+                +${formatCoins(w.amount)} <img src="coins.png" alt="" class="coin-icon-sm">
+            </div>
+        </div>
+    `).join('');
+}
+
+renderRecentWins();
+document.querySelector('.nav-button[data-page="games"]')?.addEventListener('click', renderRecentWins);
+setInterval(() => {
+    if (document.getElementById('games')?.classList.contains('active')) {
+        renderRecentWins();
+    }
+}, 8000);
+</script>
     
 </body>
 </html>
