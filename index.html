@@ -14735,19 +14735,18 @@ function installGameWinHook(frame, gameKey) {
         let betTaken = false;
 
         fw.__resetPrevBal = function () {
-            prevBal = Number(fw.balance);
-            if (isNaN(prevBal)) prevBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+            prevBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
             betTaken = false;
         };
 
         fw.updateBalanceUI = function () {
             const res = origUpdate.apply(this, arguments);
+            const curBal = parseInt(localStorage.getItem('vetruch_balance') || '0', 10);
             if (fw.__vetruchParentSyncing) {
-                prevBal = Number(fw.balance) || 0;
+                if (!isNaN(curBal)) prevBal = curBal;
                 betTaken = false;
                 return res;
             }
-            const curBal = Number(fw.balance);
             if (!isNaN(curBal)) {
                 if (curBal < prevBal) {
                     betTaken = true;
