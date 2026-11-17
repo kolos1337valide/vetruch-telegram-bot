@@ -10499,6 +10499,15 @@
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = finalMyBal);
             renderProfilePurchases();
             updateReferralsAndTasksUI(myRefCount, myTasksDone);
+            
+            const localTotalWon = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
+            const cloudTotalWon = Number((cloudState && cloudState.total_won && cloudState.total_won[myId]) || 0);
+            const finalTotalWon = Math.max(localTotalWon, cloudTotalWon);
+            localStorage.setItem('vetruch_total_won', String(finalTotalWon));
+            if (localTotalWon > cloudTotalWon) {
+                await cloudPut(`vetruch_app/total_won/${myId}`, finalTotalWon);
+            }
+            if (typeof updateTotalWonUI === 'function') updateTotalWonUI();
 
 let completedList = (cloudState && cloudState.completed_tasks && Array.isArray(cloudState.completed_tasks[myId]))
                 ? cloudState.completed_tasks[myId]
