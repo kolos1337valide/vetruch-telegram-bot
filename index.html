@@ -15701,6 +15701,7 @@ function updateOnlineUsersUI(count) {
     if (t3) t3.textContent = `🟢 ${c3} в игре`;
     if (t4) t4.textContent = `🟢 ${c4} в игре`;
     if (t5) t5.textContent = `🟢 ${c5} в игре`;
+    
 }
 
 // Инициализация систем при старте
@@ -16059,6 +16060,40 @@ async function refreshRefCaseKeysUI() {
     const tabCasesBtn = document.getElementById('shopModeCasesBtn');
     if (tabCasesBtn) {
         tabCasesBtn.textContent = keys > 0 ? `📦 Кейсы (${keys} 🔑)` : '📦 Кейсы';
+    }
+}
+    function switchGamesMode(mode) {
+    const miniBtn = document.getElementById('gamesModeMiniBtn');
+    const casinoBtn = document.getElementById('gamesModeCasinoBtn');
+    const miniSec = document.getElementById('miniGamesSection');
+    const casinoSec = document.getElementById('gamblingGamesSection');
+
+    if (mode === 'casino') {
+        if (miniBtn) miniBtn.classList.remove('active');
+        if (casinoBtn) casinoBtn.classList.add('active');
+        if (miniSec) miniSec.style.display = 'none';
+        if (casinoSec) {
+            casinoSec.style.display = 'block';
+            const cards = Array.from(casinoSec.querySelectorAll('.game-card'));
+            cards.forEach(c => { c.style.animation = 'none'; });
+            void casinoSec.offsetWidth;
+            cards.forEach((c, idx) => {
+                c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${(idx * 0.05).toFixed(2)}s backwards`;
+            });
+        }
+    } else {
+        if (miniBtn) miniBtn.classList.add('active');
+        if (casinoBtn) casinoBtn.classList.remove('active');
+        if (casinoSec) casinoSec.style.display = 'none';
+        if (miniSec) {
+            miniSec.style.display = 'block';
+            const cards = Array.from(miniSec.querySelectorAll('.game-card'));
+            cards.forEach(c => { c.style.animation = 'none'; });
+            void miniSec.offsetWidth;
+            cards.forEach((c, idx) => {
+                c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${(idx * 0.05).toFixed(2)}s backwards`;
+            });
+        }
     }
 }
 
