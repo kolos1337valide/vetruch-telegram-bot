@@ -8415,44 +8415,93 @@ img {
 
         <!-- СЕКЦИЯ: АЗАРТНЫЕ ИГРЫ -->
         <div id="gamblingGamesSection" style="display: none; clear: both;">
-            <div class="games-grid" style="clear: both;">
+            <div class="games-grid" style="clear: both; gap: 12px; margin-top: 10px;">
+                <!-- 1. БЛЭКДЖЕК -->
                 <div class="game-card wide-card anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=2')" onclick="openGame('blackjack.html?v=2')">
-                    <span class="game-card-ribbon ribbon-vip">♠️ 21 · 95% RTP</span>
+                    <span class="game-card-ribbon ribbon-vip">♠️ 21 · 50% RTP</span>
                     <div class="game-icon cards-preview" style="margin: 0;">
                         <span class="mini-card card-spade" style="left: 8px; top: 6px; transform: rotate(-12deg);"><b>A</b><i>♠</i></span>
                         <span class="mini-card card-heart" style="left: 34px; top: 8px; transform: rotate(12deg); border-color: #ffd700; color: #ffd700; box-shadow: 0 0 10px rgba(255,215,0,0.6);"><b>K</b><i>♥</i></span>
                     </div>
                     <div class="wide-card-info">
-                        <div class="game-online-tag" id="onlineTagBlackjack" style="justify-content: flex-start;">🟢 2 за столом</div>
+                        <div class="game-online-tag" id="onlineTagBlackjack" style="justify-content: flex-start;">🟢 1 за столом</div>
                         <div class="game-title">БЛЭКДЖЕК</div>
                         <div class="game-subtitle">стол с крупье · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                         <div class="game-play-btn">СЕСТЬ ЗА СТОЛ ➔</div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="game-card wide-card anim-item" style="animation-delay: 0.12s;" onpointerdown="preloadGame('slots.html')" onclick="openGame('slots.html')">
-                    <span class="game-card-ribbon ribbon-fire">🎰 777 · 91% RTP</span>
-                    <!-- Мини-фигура слота с рычагом -->
-                    <div class="game-icon" style="margin: 0; position: relative; width: 66px; height: 58px; display: flex; align-items: center; justify-content: center;">
-                        <div style="width: 54px; height: 52px; border-radius: 11px; background: linear-gradient(180deg, #16243d, #090f1c); border: 1.5px solid #00d9ff; box-shadow: 0 0 14px rgba(0,217,255,0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 4px;">
-                            <div style="font-size: 8px; font-weight: 900; color: #ffd700; letter-spacing: 1px;">777</div>
-                            <div style="display: flex; gap: 2px; background: #050811; padding: 3px 4px; border-radius: 5px; border: 1px solid rgba(255,215,0,0.4); font-size: 11px; line-height: 1;">
-                                <span>🍒</span><span>7️⃣</span><span>🍋</span>
-                            </div>
-                        </div>
-                        <div style="position: absolute; right: 1px; top: 10px; width: 4px; height: 24px; background: #94a3b8; border-radius: 3px;">
-                            <span style="position: absolute; top: -6px; left: -3px; width: 10px; height: 10px; border-radius: 50%; background: #ff3366; box-shadow: 0 0 8px #ff3366;"></span>
-                        </div>
+                <!-- 2. СЛОТЫ 777 (НОВАЯ НЕОНОВАЯ ИКОНКА + ТОЧНЫЙ ОТСТУП) -->
+                <div class="game-card wide-card anim-item" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=2')" onclick="openGame('slots.html?v=2')">
+                    <span class="game-card-ribbon ribbon-fire">🎰 777 · 50% RTP</span>
+                    <!-- Красивая векторная фигура слот-машины -->
+                    <div class="game-icon" style="margin: 0; width: 72px; height: 60px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg viewBox="0 0 88 74" fill="none" style="width: 100%; height: 100%; filter: drop-shadow(0 0 14px rgba(0, 217, 255, 0.45));">
+                            <defs>
+                                <linearGradient id="cabGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#162947"/>
+                                    <stop offset="55%" stop-color="#0a1222"/>
+                                    <stop offset="100%" stop-color="#050811"/>
+                                </linearGradient>
+                                <linearGradient id="reelPlateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#1e3252"/>
+                                    <stop offset="50%" stop-color="#0f1b2f"/>
+                                    <stop offset="100%" stop-color="#080e1a"/>
+                                </linearGradient>
+                                <linearGradient id="goldSevenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fffbeb"/>
+                                    <stop offset="35%" stop-color="#ffd700"/>
+                                    <stop offset="75%" stop-color="#f59e0b"/>
+                                    <stop offset="100%" stop-color="#b45309"/>
+                                </linearGradient>
+                                <radialGradient id="rubyBall" cx="35%" cy="30%" r="65%">
+                                    <stop offset="0%" stop-color="#ff859b"/>
+                                    <stop offset="50%" stop-color="#ff1744"/>
+                                    <stop offset="100%" stop-color="#88001b"/>
+                                </radialGradient>
+                                <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#ffd700" flood-opacity="0.95"/>
+                                </filter>
+                            </defs>
+
+                            <!-- Корпус слота -->
+                            <rect x="3" y="5" width="66" height="64" rx="14" fill="url(#cabGrad)" stroke="#00d9ff" stroke-width="1.8"/>
+                            
+                            <!-- Вывеска 777 вверху -->
+                            <rect x="15" y="8" width="42" height="9" rx="4" fill="#060c18" stroke="rgba(255,215,0,0.55)" stroke-width="1"/>
+                            <text x="36" y="15" font-family="'Inter', sans-serif" font-weight="900" font-size="7.5" fill="#ffd700" text-anchor="middle" letter-spacing="1.5">JACKPOT</text>
+                            
+                            <!-- Окно барабанов -->
+                            <rect x="7" y="20" width="58" height="38" rx="8" fill="#04070f" stroke="rgba(0, 217, 255, 0.4)" stroke-width="1.2"/>
+
+                            <!-- 3 Барабана -->
+                            <rect x="10" y="23" width="16" height="32" rx="4" fill="url(#reelPlateGrad)" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+                            <rect x="28" y="23" width="16" height="32" rx="4" fill="url(#reelPlateGrad)" stroke="rgba(255,215,0,0.5)" stroke-width="0.8"/>
+                            <rect x="46" y="23" width="16" height="32" rx="4" fill="url(#reelPlateGrad)" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+
+                            <!-- Золотые семёрки 7 7 7 -->
+                            <text x="18" y="45.5" font-family="'Inter', sans-serif" font-weight="900" font-size="15" fill="url(#goldSevenGrad)" text-anchor="middle" filter="url(#goldGlow)">7</text>
+                            <text x="36" y="45.5" font-family="'Inter', sans-serif" font-weight="900" font-size="15" fill="url(#goldSevenGrad)" text-anchor="middle" filter="url(#goldGlow)">7</text>
+                            <text x="54" y="45.5" font-family="'Inter', sans-serif" font-weight="900" font-size="15" fill="url(#goldSevenGrad)" text-anchor="middle" filter="url(#goldGlow)">7</text>
+
+                            <!-- Неоновая линия выигрыша -->
+                            <line x1="5" y1="39" x2="67" y2="39" stroke="#ff3366" stroke-width="1.6" opacity="0.85"/>
+
+                            <!-- Боковой рычаг (однорукий бандит) -->
+                            <rect x="69" y="34" width="5" height="12" rx="2" fill="#1e293b" stroke="#00d9ff" stroke-width="1"/>
+                            <line x1="74" y1="38" x2="80" y2="23" stroke="#e2e8f0" stroke-width="2.6" stroke-linecap="round"/>
+                            <circle cx="81" cy="20" r="5.5" fill="url(#rubyBall)" stroke="#ffffff" stroke-width="1"/>
+                        </svg>
                     </div>
                     <div class="wide-card-info">
-                        <div class="game-online-tag" id="onlineTagSlots" style="justify-content: flex-start;">🟢 3 крутят</div>
+                        <div class="game-online-tag" id="onlineTagSlots" style="justify-content: flex-start;">🟢 1 крутят</div>
                         <div class="game-title">СЛОТЫ 777</div>
                         <div class="game-subtitle">однорукий бандит · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                         <div class="game-play-btn">КРУТИТЬ ➔</div>
                     </div>
                 </div>
+            </div>
+        </div>
             
 <!-- БЛОК ПРОГНОЗА -->
         <div class="prediction-card anim-item" id="mainPredictionCard" style="animation-delay: 0.45s;">
