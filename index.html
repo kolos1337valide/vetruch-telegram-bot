@@ -10387,7 +10387,7 @@
                     val.textContent = refCount;
                 }
                 if (lbl.textContent.includes('Заданий выполнено')) {
-                    val.textContent = `${tasksDoneCount} / 8`;
+                   if (typeof updateAccurateTasksCountUI === 'function') updateAccurateTasksCountUI();
                 }
             });
         }
