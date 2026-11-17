@@ -1,11 +1,8 @@
 /* ============================================================
-   VETRUCH ECONOMY ENGINE v3.1
-   Экономическая модель по стандарту SUBO FARM BOT:
-   - Лимит 20 игр в день НА КАЖДУЮ ИГРУ ОТДЕЛЬНО (Башни, Мины, Карты, Шарик, Кости)
-   - Автоматический сброс каждый день в 00:00 по МСК (UTC+3)
-   - Встроенный контроль RTP 60% (Return to Player) для всех мини-игр
-   - Мгновенная синхронизация через localStorage + облако Firebase
-   - Без визуальных плашек и бейджей, которые перекрывают интерфейс
+   VETRUCH ECONOMY ENGINE v3.2
+   - Лимит 20 игр в день на каждую игру (сброс в 00:00 МСК)
+   - Контроль RTP 60%
+   - Автоматический учёт суммы всех выигрышей в играх (total_won)
    ============================================================ */
 
 (function () {
@@ -22,19 +19,18 @@
 
   var DEFAULT_CONFIG = {
     attemptsPerGame: 20,
-    targetRtp: 0.60, // 60% RTP
+    targetRtp: 0.60,
     budgetRubMonth: 50000,
-    ratePer1000: 33, // 1 000 монет ≈ 33 ₽
+    ratePer1000: 33,
     dauAssumption: 100,
     circuits: {
-      shop: 60,       // Магазин 60%
-      giveaways: 20,  // Розыгрыши 20%
-      games: 10,      // Игры 10%
-      reserve: 10     // Резерв 10%
+      shop: 60,
+      giveaways: 20,
+      games: 10,
+      reserve: 10
     }
   };
 
-  // --- Определение текущей игры по имени файла ---
   function detectCurrentGameKey() {
     var path = window.location.pathname.toLowerCase();
     for (var i = 0; i < GAME_KEYS.length; i++) {
@@ -43,6 +39,85 @@
       }
     }
     return null;
+  }
+
+  // --- Учёт всех выигрышей в играх ---
+  var currentGameKey = detectCurrentGameKey();
+  var origSetItem = Storage.prototype.setItem;
+  var roundState = {
+    active: false,
+    betTaken: false,
+    lastBalance: parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0
+  };
+
+  function getUserIdSafe() {
+    try {
+      if (window.parent && window.parent !== window && typeof window.parent.getCurrentTgId === 'function') {
+        return String(window.parent.getCurrentTgId());
+      }
+      if (typeof window.getCurrentTgId === 'function') {
+        return String(window.getCurrentTgId());
+      }
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+        return String(window.Telegram.WebApp.initDataUnsafe.user.id);
+      }
+    } catch (e) {}
+    return '1067693099';
+  }
+
+  function recordGameWin(winAmount) {
+    if (!winAmount || winAmount <= 0) return;
+    var prev = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
+    var next = prev + winAmount;
+    origSetItem.call(window.localStorage, 'vetruch_total_won', String(next));
+
+    try {
+      if (window.parent && window.parent !== window && typeof window.parent.updateTotalWonUI === 'function') {
+        window.parent.updateTotalWonUI();
+      }
+    } catch (e) {}
+
+    try {
+      var uid = getUserIdSafe();
+      if (window.parent && window.parent !== window && typeof window.parent.cloudPut === 'function') {
+        window.parent.cloudPut('vetruch_app/total_won/' + uid, next);
+      } else {
+        fetch('https://vetruchbot-default-rtdb.firebaseio.com/vetruch_app/total_won/' + encodeURIComponent(uid) + '.json', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(next)
+        }).catch(function () {});
+      }
+    } catch (e) {}
+  }
+
+  function cancelRound() {
+    roundState.active = false;
+    roundState.betTaken = false;
+    roundState.lastBalance = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+  }
+
+  if (currentGameKey) {
+    Storage.prototype.setItem = function (key, value) {
+      if (this === window.localStorage && key === 'vetruch_balance') {
+        var nextBal = parseInt(value, 10);
+        if (!isNaN(nextBal)) {
+          if (roundState.active && !roundState.betTaken && nextBal < roundState.lastBalance) {
+            roundState.betTaken = true;
+            roundState.lastBalance = nextBal;
+          } else if (roundState.active && roundState.betTaken && nextBal > roundState.lastBalance) {
+            var winAmt = nextBal - roundState.lastBalance;
+            roundState.active = false;
+            roundState.betTaken = false;
+            roundState.lastBalance = nextBal;
+            recordGameWin(winAmt);
+          } else {
+            roundState.lastBalance = nextBal;
+          }
+        }
+      }
+      return origSetItem.apply(this, arguments);
+    };
   }
 
   // --- Утилиты времени по МСК (UTC+3) ---
@@ -69,7 +144,6 @@
     return { hours: hours, minutes: mins, totalMs: diffMs };
   }
 
-  // --- Локальное хранилище попыток по каждой игре отдельно ---
   function createFreshAttemptsData(today) {
     var fresh = { date: today, games: {} };
     for (var i = 0; i < GAME_KEYS.length; i++) {
@@ -146,6 +220,12 @@
       return { ok: false, left: 0, max: gameData.max, game: k, reason: 'limit' };
     }
 
+    if (currentGameKey) {
+      roundState.active = true;
+      roundState.betTaken = false;
+      roundState.lastBalance = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+    }
+
     gameData.used += 1;
     saveLocalAttemptsData(data);
     var newLeft = Math.max(0, gameData.max - gameData.used);
@@ -165,10 +245,7 @@
   function syncCloudAttempt(gameKey, used) {
     try {
       if (typeof window.cloudGet === 'function' && typeof window.cloudPut === 'function') {
-        var uid = 'user';
-        if (typeof window.getCurrentTgId === 'function') uid = String(window.getCurrentTgId());
-        else if (window.tg && tg.initDataUnsafe && tg.initDataUnsafe.user) uid = String(tg.initDataUnsafe.user.id);
-
+        var uid = getUserIdSafe();
         var today = getMskDateString();
         window.cloudGet('vetruch_app/attempts_v3').then(function (all) {
           all = (all && typeof all === 'object') ? all : {};
@@ -181,13 +258,11 @@
     } catch (e) {}
   }
 
-  // --- RTP 60% Модуль (Return to Player) ---
   function rollRtp(customRtp) {
     var rtp = (typeof customRtp === 'number') ? customRtp : DEFAULT_CONFIG.targetRtp;
     return Math.random() < rtp;
   }
 
-  // --- Модальное окно блокировки ТОЛЬКО при реальном окончании 20 попыток ---
   function showNoAttemptsOverlay(gameName) {
     var k = normalizeGameKey(gameName);
     var title = GAME_NAMES[k] || 'Эту игру';
@@ -233,7 +308,6 @@
     };
   }
 
-  // Заглушки, чтобы ничего визуально не рисовать и ничего не ломать
   function renderGameHeaderBadge() {
     var existing = document.getElementById('veconHeaderBadge');
     if (existing) existing.remove();
@@ -244,12 +318,10 @@
     if (existing) existing.remove();
   }
 
-  // Удаляем любой оставшийся бейдж
   document.addEventListener('DOMContentLoaded', function() {
     renderGameHeaderBadge();
   });
 
-  // --- Публичный API ---
   window.VETRUCH_ECONOMY = {
     GAME_KEYS: GAME_KEYS,
     GAME_NAMES: GAME_NAMES,
@@ -261,6 +333,8 @@
     getTimeUntilReset: getTimeUntilMskMidnight,
     updateBadgeUI: updateBadgeUI,
     renderGameHeaderBadge: renderGameHeaderBadge,
+    cancelRound: cancelRound,
+    recordGameWin: recordGameWin,
     rollRtp: rollRtp,
     RTP: DEFAULT_CONFIG.targetRtp,
     config: DEFAULT_CONFIG
