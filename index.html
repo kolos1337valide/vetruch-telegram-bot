@@ -14933,6 +14933,110 @@ setInterval(() => {
     });
 })();
 </script>
+
+<script>
+window.renderAdminBalancesTable = async function () {
+    const tableEl = document.getElementById('adminBalancesTable');
+    if (!tableEl) return;
+
+    const myId = getCurrentTgId();
+    const [cloudBalances, cloudUsers] = await Promise.all([
+        cloudGet('vetruch_app/balances'),
+        cloudGet('vetruch_app/users')
+    ]);
+
+    const balancesMap = cloudBalances || JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    const usersMap = cloudUsers || {};
+
+    const ids = Object.keys(balancesMap).sort((a, b) => (Number(balancesMap[b]) || 0) - (Number(balancesMap[a]) || 0));
+
+    if (ids.length === 0) {
+        tableEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center;">Список пуст</div>';
+        return;
+    }
+
+    tableEl.innerHTML = ids.map(id => {
+        const u = usersMap[id];
+        const isUnknown = !u || !u.name;
+        const displayName = !isUnknown ? u.name : '⚠️ Не заходил в бота';
+        return `
+            <div class="admin-bal-row" style="gap: 8px;">
+                <div onclick="document.getElementById('adminTargetIdInput').value='${id}'" style="cursor: pointer; flex: 1; min-width: 0;">
+                    <div style="color: ${id === myId ? '#00d9ff' : (isUnknown ? '#fbbf24' : '#ffffff')}; font-size: 13px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        ${displayName} ${id === myId ? '(Вы)' : ''}
+                    </div>
+                    <div style="font-size: 11px; color: var(--secondary);">ID: ${id}</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; color: #00e676; font-weight: 800;">
+                        ${formatCoins(balancesMap[id])} <img src="coins.png" alt="" class="coin-icon-sm">
+                    </span>
+                    ${isUnknown && id !== myId ? `<button type="button" onclick="adminDeleteBalanceEntry('${id}')" style="background: rgba(255,51,102,0.18); border: 1px solid rgba(255,51,102,0.45); color: #ff5277; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 800; cursor: pointer;">🗑</button>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+};
+
+window.adminDeleteBalanceEntry = async function (targetId) {
+    await cloudPut(`vetruch_app/balances/${targetId}`, null);
+    let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    delete balancesMap[targetId];
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+    showAdminToast(`🗑 Левый ID ${targetId} удалён из базы и топа!`, false);
+    renderAdminBalancesTable();
+    if (typeof renderHomePodium === 'function') renderHomePodium();
+};
+
+window.adminModifyUserBalance = async function (mode) {
+    const targetId = document.getElementById('adminTargetIdInput').value.trim().replace(/\s+/g, '');
+    const amount = parseInt(document.getElementById('adminCoinsAmountInput').value.trim(), 10);
+
+    if (!targetId || !/^\d+$/.test(targetId)) {
+        showAdminToast('⚠️ Введите корректный числовой Telegram ID!', true);
+        return;
+    }
+    if (isNaN(amount) || amount < 0) {
+        showAdminToast('⚠️ Введите сумму монет!', true);
+        return;
+    }
+
+    const [balancesRes, usersRes] = await Promise.all([
+        cloudGet('vetruch_app/balances'),
+        cloudGet('vetruch_app/users')
+    ]);
+    let balancesMap = balancesRes || JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    let usersMap = usersRes || {};
+
+    if (!usersMap[targetId] && balancesMap[targetId] === undefined) {
+        showAdminToast(`❌ Игрок с ID ${targetId} ни разу не заходил в бота! Выберите ник из списка ниже.`, true);
+        return;
+    }
+
+    const currentMyId = getCurrentTgId();
+    let curBal = (targetId === currentMyId)
+        ? parseInt(localStorage.getItem('vetruch_balance') || '500', 10)
+        : (balancesMap[targetId] !== undefined ? Number(balancesMap[targetId]) : 500);
+
+    if (mode === 'add') curBal += amount;
+    if (mode === 'sub') curBal = Math.max(0, curBal - amount);
+    if (mode === 'set') curBal = amount;
+
+    balancesMap[targetId] = curBal;
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+    await cloudPut(`vetruch_app/balances/${targetId}`, curBal);
+
+    if (targetId === currentMyId) {
+        localStorage.setItem('vetruch_balance', curBal);
+        localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+        initBalance();
+    }
+
+    const userName = usersMap[targetId]?.name || `ID ${targetId}`;
+    renderAdminBalancesTable();
+    showAdminToast(`✅ ${userName}: баланс обновлён до ${formatCoins(curBal)} монет!`, false);
+};
+</script>
     
 </body>
 </html>
