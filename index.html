@@ -14877,6 +14877,55 @@ setInterval(() => {
     }
 }, 8000);
 </script>
+
+<script>
+(function () {
+    const isInput = (el) => el && el.closest && el.closest('input, textarea');
+
+    document.addEventListener('contextmenu', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('selectstart', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('copy', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('cut', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && ['c', 'a', 'x', 'u', 's'].includes((e.key || '').toLowerCase())) {
+            if (!isInput(e.target)) e.preventDefault();
+        }
+    });
+
+    // Запрет копирования и внутри всех 5 игр
+    ['towers', 'mines', 'cards', 'balloon', 'dice'].forEach((k) => {
+        const frame = document.getElementById('frame-' + k);
+        const applyNoCopy = () => {
+            try {
+                const doc = frame && frame.contentDocument;
+                if (!doc || doc.getElementById('vetruchNoCopyStyle')) return;
+                const st = doc.createElement('style');
+                st.id = 'vetruchNoCopyStyle';
+                st.textContent = 'html, body, * { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }';
+                (doc.head || doc.documentElement).appendChild(st);
+                doc.addEventListener('contextmenu', (e) => e.preventDefault());
+                doc.addEventListener('copy', (e) => e.preventDefault());
+            } catch (err) {}
+        };
+        if (frame) {
+            frame.addEventListener('load', applyNoCopy);
+            applyNoCopy();
+        }
+    });
+})();
+</script>
     
 </body>
 </html>
