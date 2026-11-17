@@ -10455,11 +10455,19 @@ img {
             const inviterId = getStartParamReferrer();
             if (!inviterId || inviterId === myId || inviterId === '0') return;
 
-            const alreadyReferred = await cloudGet(`vetruch_app/referred_by/${myId}`);
-            if (alreadyReferred) return;
+           const [alreadyReferred, existingUser, existingBal, knownUser] = await Promise.all([
+             cloudGet(`vetruch_app/referred_by/${myId}`),
+             cloudGet(`vetruch_app/users/${myId}`),
+             cloudGet(`vetruch_app/balances/${myId}`),
+             cloudGet(`vetruch_app/known_users/${myId}`)
+         ]);
+         if (alreadyReferred || existingUser || (existingBal !== null && existingBal !== undefined) || knownUser) {
+             if (!knownUser) cloudPut(`vetruch_app/known_users/${myId}`, true);
+             return;
+         }
 
-            await cloudPut(`vetruch_app/referred_by/${myId}`, inviterId);
-
+         await cloudPut(`vetruch_app/known_users/${myId}`, true);
+         await cloudPut(`vetruch_app/referred_by/${myId}`, inviterId);
             let inviterRefs = (await cloudGet(`vetruch_app/referrals/${inviterId}`)) || [];
             if (!Array.isArray(inviterRefs)) inviterRefs = [];
 
