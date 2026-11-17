@@ -11327,6 +11327,14 @@ if (pageId === 'tasks') {
             localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
             await cloudPut('vetruch_app/tasks', tasks);
 
+if (currentTaskTitle === 'Подписаться на Kick') {
+                const rawKickNick = document.getElementById('modalUsername').value.trim();
+                const kickObj = { nick: rawKickNick, status: 'pending' };
+                localStorage.setItem('vetruch_kick_bind', JSON.stringify(kickObj));
+                await cloudPut(`vetruch_app/kick_accounts/${getCurrentTgId()}`, kickObj);
+                if (typeof renderProfileBindsUI === 'function') renderProfileBindsUI();
+            }
+            
             textEl.textContent = "🚀 Отправлено на проверку всем админам!";
             textEl.style.color = "#00e676";
 
