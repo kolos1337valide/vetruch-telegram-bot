@@ -12064,6 +12064,7 @@ async function renderLeaderboardPage() {
                     if (targetFrame.contentWindow) {
                         var currentBal = parseInt(localStorage.getItem('vetruch_balance')) || 500;
                         if (typeof targetFrame.contentWindow.updateBalanceUI === 'function') {
+                            if (targetFrame.contentWindow.VETRUCH_ECONOMY) targetFrame.contentWindow.VETRUCH_ECONOMY.cancelRound();
                             targetFrame.contentWindow.balance = currentBal;
                             targetFrame.contentWindow.updateBalanceUI();
                         }
