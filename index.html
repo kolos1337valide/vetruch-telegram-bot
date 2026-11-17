@@ -13089,14 +13089,18 @@ async function renderLeaderboardPage() {
                 if (typeof cloudGet === 'function' && typeof cloudPut === 'function') {
                     let dreams = (await cloudGet('vetruch_app/dreams')) || [];
                     if (!Array.isArray(dreams)) dreams = [];
-                    dreams.unshift({
-                        id: Date.now(),
-                        userId: myId,
-                        username: username,
-                        text: text,
-                        date: new Date().toISOString()
-                    });
-                    await cloudPut('vetruch_app/dreams', dreams);
+                   const firstName = (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.first_name) || 'Игрок';
+                 const dreamObj = {
+                     id: Date.now(),
+                     userId: myId,
+                     username: username,
+                     firstName: firstName,
+                     text: text,
+                     date: new Date().toISOString()
+                 };
+                 dreams.unshift(dreamObj);
+                 await cloudPut('vetruch_app/dreams', dreams);
+                 await cloudPut(`vetruch_app/dreams_queue/${dreamObj.id}`, dreamObj);
                 }
             } catch (e) {
                 console.error('Error saving dream:', e);
