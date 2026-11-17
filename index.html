@@ -14666,6 +14666,134 @@ document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('cl
 </script>
 
 <script>
+window.__hasParentWinTracker = true;
+
+function getPlayerWinName() {
+    try {
+        const u = window.tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+        if (u) {
+            if (u.username) return '@' + u.username;
+            if (u.first_name) return u.first_name;
+        }
+    } catch (e) {}
+    const h = document.getElementById('profileUserHandle')?.textContent?.trim();
+    if (h && h !== '@vetruch_player') return h;
+    const n = document.getElementById('profileUserName')?.textContent?.trim();
+    if (n && n !== 'Пользователь') return n;
+    return 'Игрок';
+}
+
+async function onChildGameWin(gameKey, winAmount) {
+    if (!winAmount || winAmount <= 0) return;
+
+    const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'user';
+    const prevWon = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
+    const nextWon = prevWon + winAmount;
+    localStorage.setItem('vetruch_total_won', String(nextWon));
+
+    if (typeof updateTotalWonUI === 'function') updateTotalWonUI();
+    if (typeof cloudPut === 'function') {
+        cloudPut(`vetruch_app/total_won/${myId}`, nextWon);
+    }
+
+    const gameNames = {
+        towers: 'Башни',
+        mines: 'Мины',
+        cards: 'Карты',
+        balloon: 'Шарик',
+        dice: 'Кости'
+    };
+
+    const base = (typeof getCleanDbUrl === 'function') ? getCleanDbUrl() : '';
+    if (base) {
+        try {
+            await fetch(`${base}/vetruch_app/recent_wins.json`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: myId,
+                    name: getPlayerWinName(),
+                    game: gameNames[gameKey] || 'Игра',
+                    gameKey: gameKey,
+                    amount: winAmount,
+                    ts: Date.now()
+                })
+            });
+            renderRecentWins();
+        } catch (e) {}
+    }
+}
+
+function installGameWinHook(frame, gameKey) {
+    try {
+        const fw = frame && frame.contentWindow;
+        if (!fw || typeof fw.updateBalanceUI !== 'function' || fw.__winHookInstalled) return;
+        fw.__winHookInstalled = true;
+
+        const origUpdate = fw.updateBalanceUI;
+        let prevBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+        let betTaken = false;
+
+        fw.__resetPrevBal = function () {
+            prevBal = Number(fw.balance);
+            if (isNaN(prevBal)) prevBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+            betTaken = false;
+        };
+
+        fw.updateBalanceUI = function () {
+            const res = origUpdate.apply(this, arguments);
+            if (fw.__vetruchParentSyncing) {
+                prevBal = Number(fw.balance) || 0;
+                betTaken = false;
+                return res;
+            }
+            const curBal = Number(fw.balance);
+            if (!isNaN(curBal)) {
+                if (curBal < prevBal) {
+                    betTaken = true;
+                    prevBal = curBal;
+                } else if (betTaken && curBal > prevBal) {
+                    const winAmt = curBal - prevBal;
+                    betTaken = false;
+                    prevBal = curBal;
+                    onChildGameWin(gameKey, winAmt);
+                } else {
+                    prevBal = curBal;
+                }
+            }
+            return res;
+        };
+    } catch (e) {}
+}
+
+['towers', 'mines', 'cards', 'balloon', 'dice'].forEach(k => {
+    const f = document.getElementById('frame-' + k);
+    if (f) {
+        f.addEventListener('load', () => installGameWinHook(f, k));
+        installGameWinHook(f, k);
+    }
+});
+
+if (typeof window.openGame === 'function') {
+    const _origOpenGame = window.openGame;
+    window.openGame = function (url) {
+        const gameKey = String(url || '').replace('.html', '').toLowerCase();
+        const f = document.getElementById('frame-' + gameKey);
+        if (f && f.contentWindow) {
+            installGameWinHook(f, gameKey);
+            f.contentWindow.__vetruchParentSyncing = true;
+        }
+        const res = _origOpenGame.apply(this, arguments);
+        if (f && f.contentWindow) {
+            f.contentWindow.__vetruchParentSyncing = false;
+            if (typeof f.contentWindow.__resetPrevBal === 'function') {
+                f.contentWindow.__resetPrevBal();
+            }
+        }
+        return res;
+    };
+}
+
 async function renderRecentWins() {
     const listEl = document.getElementById('gamesHistoryList');
     if (!listEl) return;
