@@ -65,6 +65,28 @@
     return '1067693099';
   }
 
+ function getUserDisplayNameSafe() {
+    try {
+      var tgApp = (window.parent && window.parent.Telegram && window.parent.Telegram.WebApp) || (window.Telegram && window.Telegram.WebApp);
+      var u = tgApp && tgApp.initDataUnsafe && tgApp.initDataUnsafe.user;
+      if (u) {
+        if (u.username) return '@' + u.username;
+        if (u.first_name) return u.first_name;
+      }
+      if (window.parent && window.parent !== window) {
+        var handleEl = window.parent.document.getElementById('profileUserHandle');
+        var nameEl = window.parent.document.getElementById('profileUserName');
+        if (handleEl && handleEl.textContent && handleEl.textContent.trim() !== '@vetruch_player') {
+          return handleEl.textContent.trim();
+        }
+        if (nameEl && nameEl.textContent && nameEl.textContent.trim() !== 'Пользователь') {
+          return nameEl.textContent.trim();
+        }
+      }
+    } catch (e) {}
+    return 'Игрок';
+  }
+
   function recordGameWin(winAmount) {
     if (!winAmount || winAmount <= 0) return;
     var prev = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
@@ -77,8 +99,8 @@
       }
     } catch (e) {}
 
+    var uid = getUserIdSafe();
     try {
-      var uid = getUserIdSafe();
       if (window.parent && window.parent !== window && typeof window.parent.cloudPut === 'function') {
         window.parent.cloudPut('vetruch_app/total_won/' + uid, next);
       } else {
@@ -88,6 +110,27 @@
           body: JSON.stringify(next)
         }).catch(function () {});
       }
+    } catch (e) {}
+
+    // Отправка победы в общую ленту «Недавние выигрыши»
+    try {
+      var winEntry = {
+        userId: uid,
+        name: getUserDisplayNameSafe(),
+        game: GAME_NAMES[currentGameKey] || 'Игра',
+        gameKey: currentGameKey || 'game',
+        amount: winAmount,
+        ts: Date.now()
+      };
+      fetch('https://vetruchbot-default-rtdb.firebaseio.com/vetruch_app/recent_wins.json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(winEntry)
+      }).then(function () {
+        if (window.parent && window.parent !== window && typeof window.parent.renderRecentWins === 'function') {
+          window.parent.renderRecentWins();
+        }
+      }).catch(function () {});
     } catch (e) {}
   }
 
