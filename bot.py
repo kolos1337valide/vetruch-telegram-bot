@@ -1,9 +1,10 @@
 import os
 import json
+import html
 import asyncio
 import urllib.request
 from aiogram import Bot, Dispatcher, types
-from aiogram.filters import CommandStart, CommandObject
+from aiogram.filters import CommandStart, CommandObject, Command
 from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 
 # Токен берется из переменных окружения сервера, либо пропиши прямо сюда
@@ -12,6 +13,10 @@ BOT_TOKEN = os.getenv("BOT_TOKEN", "СЮДА_ВСТАВЬ_ТОКЕН_ОТ_BOTFAT
 # Ссылка на твой хостинг с Mini App (index.html)
 WEBAPP_URL = os.getenv("WEBAPP_URL", "https://kolos1337valide.github.io/vetruch-telegram-bot/?v=1794599457")
 
+# ID закрытой группы, куда бот будет слать мечты (например: -1001234567890)
+DREAMS_GROUP_ID = int(os.getenv("DREAMS_GROUP_ID", "0"))
+
+ADMIN_IDS = {1067693099, 978548564}
 FIREBASE_DB_URL = "https://vetruchbot-default-rtdb.firebaseio.com"
 
 bot = Bot(token=BOT_TOKEN)
@@ -42,7 +47,6 @@ def register_referral_in_firebase(new_user_id: str, inviter_id: str) -> bool:
         if not new_user_id or not inviter_id or new_user_id == inviter_id:
             return False
 
-        # Проверяем, не заходил ли этот пользователь в бота раньше
         already_ref = fb_request(f"vetruch_app/referred_by/{new_user_id}")
         existing_user = fb_request(f"vetruch_app/users/{new_user_id}")
         existing_bal = fb_request(f"vetruch_app/balances/{new_user_id}")
@@ -53,7 +57,6 @@ def register_referral_in_firebase(new_user_id: str, inviter_id: str) -> bool:
                 fb_request(f"vetruch_app/known_users/{new_user_id}", method="PUT", data=True)
             return False
 
-        # Пользователь точно новый — запоминаем и засчитываем реферала
         fb_request(f"vetruch_app/known_users/{new_user_id}", method="PUT", data=True)
         fb_request(f"vetruch_app/referred_by/{new_user_id}", method="PUT", data=inviter_id)
 
@@ -67,7 +70,6 @@ def register_referral_in_firebase(new_user_id: str, inviter_id: str) -> bool:
             refs.append(new_user_id)
             fb_request(f"vetruch_app/referrals/{inviter_id}", method="PUT", data=refs)
 
-        # Бонус +500 монет за 3 друзей
         if len(refs) >= 3:
             reward_done = fb_request(f"vetruch_app/ref_reward_done/{inviter_id}")
             if not reward_done:
@@ -80,6 +82,46 @@ def register_referral_in_firebase(new_user_id: str, inviter_id: str) -> bool:
     except Exception as e:
         print("Referral error:", e)
         return False
+
+
+async def dreams_watcher():
+    while True:
+        try:
+            if DREAMS_GROUP_ID != 0:
+                queue = await asyncio.to_thread(fb_request, "vetruch_app/dreams_queue")
+                if isinstance(queue, dict):
+                    for key, item in queue.items():
+                        if not isinstance(item, dict) or not item.get("text"):
+                            await asyncio.to_thread(fb_request, f"vetruch_app/dreams_queue/{key}", "DELETE")
+                            continue
+
+                        uid = html.escape(str(item.get("userId") or ""))
+                        fname = html.escape(str(item.get("firstName") or "Игрок"))
+                        uname = html.escape(str(item.get("username") or "").strip())
+                        dream_text = html.escape(str(item.get("text") or ""))
+
+                        user_line = f'<a href="tg://user?id={uid}">{fname}</a>'
+                        if uname:
+                            user_line += f" ({uname})"
+
+                        msg = (
+                            "🌟 <b>Новая мечта!</b>\n\n"
+                            f"👤 Игрок: {user_line}\n"
+                            f"🆔 ID: <code>{uid}</code>\n\n"
+                            f"💭 <b>Мечта:</b>\n{dream_text}"
+                        )
+
+                        await bot.send_message(chat_id=DREAMS_GROUP_ID, text=msg, parse_mode="HTML")
+                        await asyncio.to_thread(fb_request, f"vetruch_app/dreams_queue/{key}", "DELETE")
+        except Exception as e:
+            print("Dreams watcher error:", e)
+        await asyncio.sleep(4)
+
+
+@dp.message(Command("chatid"))
+async def chatid_handler(message: types.Message):
+    if message.from_user and message.from_user.id in ADMIN_IDS:
+        await message.reply(f"ID этого чата: <code>{message.chat.id}</code>", parse_mode="HTML")
 
 
 @dp.message(CommandStart())
@@ -120,7 +162,11 @@ async def start_handler(message: types.Message, command: CommandObject):
 
 async def main():
     print("✅ Бот успешно запущен!")
-    await dp.start_polling(bot)
+    watcher_task = asyncio.create_task(dreams_watcher())
+    try:
+        await dp.start_polling(bot)
+    finally:
+        watcher_task.cancel()
 
 
 if __name__ == "__main__":
