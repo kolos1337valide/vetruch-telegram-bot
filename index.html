@@ -16063,16 +16063,18 @@ async function refreshRefCaseKeysUI() {
         tabCasesBtn.textContent = keys > 0 ? `📦 Кейсы (${keys} 🔑)` : '📦 Кейсы';
     }
 }
-    function switchGamesMode(mode) {
+   function switchGamesMode(mode) {
     const miniBtn = document.getElementById('gamesModeMiniBtn');
     const casinoBtn = document.getElementById('gamesModeCasinoBtn');
     const miniSec = document.getElementById('miniGamesSection');
     const casinoSec = document.getElementById('gamblingGamesSection');
+    const predCard = document.getElementById('mainPredictionCard');
 
     if (mode === 'casino') {
         if (miniBtn) miniBtn.classList.remove('active');
         if (casinoBtn) casinoBtn.classList.add('active');
         if (miniSec) miniSec.style.display = 'none';
+        if (predCard) predCard.style.display = 'none';
         if (casinoSec) {
             casinoSec.style.display = 'block';
             const cards = Array.from(casinoSec.querySelectorAll('.game-card'));
@@ -16086,6 +16088,7 @@ async function refreshRefCaseKeysUI() {
         if (miniBtn) miniBtn.classList.add('active');
         if (casinoBtn) casinoBtn.classList.remove('active');
         if (casinoSec) casinoSec.style.display = 'none';
+        if (predCard) predCard.style.display = 'block';
         if (miniSec) {
             miniSec.style.display = 'block';
             const cards = Array.from(miniSec.querySelectorAll('.game-card'));
