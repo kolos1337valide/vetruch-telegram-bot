@@ -15701,7 +15701,8 @@ function updateOnlineUsersUI(count) {
     if (t3) t3.textContent = `🟢 ${c3} в игре`;
     if (t4) t4.textContent = `🟢 ${c4} в игре`;
     if (t5) t5.textContent = `🟢 ${c5} в игре`;
-    
+    const t6 = document.getElementById('onlineTagBlackjack');
+if (t6) t6.textContent = `🟢 ${Math.max(1, Math.round(count * 0.25))} за столом`;
 }
 
 // Инициализация систем при старте
