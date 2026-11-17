@@ -91,21 +91,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s, box-shadow 0.2s;
+    transition: background 0.2s, box-shadow 0.2s, opacity 0.2s;
     will-change: transform;
     z-index: 1;
-    animation: floatBalloon 2s ease-in-out infinite;
-}
-
-@keyframes floatBalloon {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
 }
 
 .balloon.popped {
     background: radial-gradient(circle at 30% 30%, #ff6b6b, var(--red-main));
     box-shadow: 0 0 40px var(--red-glow), inset -10px -10px 20px rgba(0,0,0,0.3);
-    animation: popVibrate 0.3s ease-out forwards;
+    opacity: 0.25;
 }
 
 
