@@ -12101,6 +12101,7 @@ async function renderLeaderboardPage() {
             }
             if (typeof initBalance === 'function') {
                 try { initBalance(); } catch(e) {}
+                if (typeof updateTotalWonUI === 'function') updateTotalWonUI();
             }
         }
         window.closeGameModal = closeGameModal;
