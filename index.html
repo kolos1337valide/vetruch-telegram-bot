@@ -6528,6 +6528,25 @@
     flex-shrink: 0;
 }
 </style>
+
+<style>
+html, body, body *:not(input):not(textarea) {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+}
+input, textarea {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+    -webkit-touch-callout: default !important;
+}
+img {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+}
+</style>
     
 </head>
 
