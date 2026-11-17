@@ -10953,6 +10953,17 @@ if (!target.taskKey && !target.p2Key && !target.p3Key && target.title) {
                     initBalance();
                 }
             }
+
+if (target && target.title === 'Подписаться на Kick') {
+                const kickData = isApproved ? { nick: target.user, status: 'done' } : null;
+                await cloudPut(`vetruch_app/kick_accounts/${target.userId}`, kickData);
+                if (String(target.userId) === getCurrentTgId()) {
+                    if (kickData) localStorage.setItem('vetruch_kick_bind', JSON.stringify(kickData));
+                    else localStorage.removeItem('vetruch_kick_bind');
+                    if (typeof renderProfileBindsUI === 'function') renderProfileBindsUI();
+                }
+            }
+            
             if (target && target.taskKey) {
                 let arkProg = (await cloudGet(`vetruch_app/arkada_progress/${target.userId}`)) || { bind: null, arkadaId: '', deposits: {} };
                 if (!arkProg.deposits) arkProg.deposits = {};
