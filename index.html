@@ -1049,7 +1049,9 @@
         }
 
         .page.active .game-card,
-        .page.active .shop-card {
+        .page.active .shop-card,
+        .page.active .case-card,
+        .page.active .gw-card {
             animation: gameCardPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
 
@@ -2714,8 +2716,8 @@
         .profile-vip-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
+            gap: 6px;
+            padding: 5px 13px;
             border-radius: 20px;
             background: rgba(148, 163, 184, 0.14);
             border: 1px solid rgba(148, 163, 184, 0.35);
@@ -3735,16 +3737,16 @@
 .user-tier-badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     background: linear-gradient(135deg, rgba(148, 163, 184, 0.14) 0%, rgba(51, 65, 85, 0.1) 100%);
     border: 1px solid rgba(148, 163, 184, 0.35);
     border-radius: 20px;
-    padding: 3px 8px;
+    padding: 4px 12px;
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 0.35px;
     color: #cbd5e1;
-    margin-top: 3px;
+    margin-top: 4px;
     width: fit-content;
     white-space: nowrap;
     flex-shrink: 0;
@@ -3756,10 +3758,10 @@
     background: rgba(148, 163, 184, 0.28);
     color: #f1f5f9;
     border-radius: 6px;
-    padding: 1px 5px;
+    padding: 1.5px 6px;
     font-size: 8.5px;
     font-weight: 900;
-    margin-left: 2px;
+    margin-left: 3px;
     line-height: 1.15;
 }
 
@@ -3960,14 +3962,33 @@
 }
 
 .lux-daily-tag {
-    background: rgba(255, 215, 0, 0.15);
-    border: 1px solid rgba(255, 215, 0, 0.45);
-    color: #ffd700;
-    font-size: 10px;
+    background: rgba(0, 136, 255, 0.16);
+    border: 1px solid rgba(0, 195, 255, 0.45);
+    color: #5ac8ff;
+    font-size: 10.5px;
     font-weight: 800;
-    padding: 3px 8px;
+    padding: 4px 10px;
     border-radius: 12px;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 160, 255, 0.22);
+    letter-spacing: 0.2px;
+    transition: all 0.25s ease;
+}
+
+.lux-daily-card.day7-special {
+    background: linear-gradient(165deg, rgba(42, 30, 10, 0.94) 0%, rgba(16, 12, 6, 0.98) 100%);
+    border-color: rgba(255, 215, 0, 0.55);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 28px rgba(245, 158, 11, 0.24), inset 0 1px 0 rgba(255, 235, 160, 0.25);
+}
+
+.lux-daily-card.day7-special::before {
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.85) 50%, transparent 100%);
+}
+
+.lux-daily-tag.day7-tag {
+    background: rgba(255, 215, 0, 0.18);
+    border-color: rgba(255, 215, 0, 0.55);
+    color: #ffd700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.28);
 }
 
 .lux-streak-row {
@@ -4049,6 +4070,36 @@
     color: #94a3b8;
     box-shadow: none;
     cursor: default;
+}
+
+.lux-claim-btn.day7-btn {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fde047 0%, #f59e0b 48%, #b45309 100%);
+    border: 1px solid rgba(254, 240, 138, 0.78);
+    color: #110c02;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.lux-claim-btn.day7-btn::after {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -60%;
+    width: 45%;
+    height: 180%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: rotate(22deg);
+    animation: goldBtnShimmer 3s infinite;
+    pointer-events: none;
+}
+
+@keyframes goldBtnShimmer {
+    0% { left: -60%; }
+    45% { left: 130%; }
+    100% { left: 130%; }
 }
 
 /* Global Stats Vault Styling */
@@ -4700,14 +4751,14 @@
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             position: relative;
         }
         .gw-card:active {
-            transform: scale(0.97);
-            border-color: #00d9ff;
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.35);
+            transform: scale(0.96);
+            border-color: rgba(0, 210, 255, 0.65);
+            box-shadow: 0 0 20px rgba(0, 160, 255, 0.35);
         }
         .gw-card-thumb {
             width: 100%;
@@ -6940,19 +6991,28 @@
 
 /* ================= ПРОМОКОД В ПРОФИЛЕ ================= */
 .profile-promo-card {
-    background: linear-gradient(180deg, rgba(16, 18, 26, 0.92) 0%, rgba(9, 10, 15, 0.98) 100%);
-    border: 1px solid rgba(0, 136, 255, 0.35);
-    border-radius: 18px;
-    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(165deg, rgba(16, 23, 38, 0.92) 0%, rgba(8, 11, 18, 0.98) 100%);
+    border: 1.5px solid rgba(0, 170, 255, 0.35);
+    border-radius: 20px;
+    padding: 15px 16px;
     margin-bottom: 14px;
     text-align: left;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 20px rgba(0, 136, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.profile-promo-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 210, 255, 0.7) 50%, transparent 100%);
 }
 .profile-promo-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 11px;
 }
 .profile-promo-title {
     font-size: 14.5px;
@@ -6960,12 +7020,17 @@
     color: #ffffff;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 .profile-promo-sub {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
-    color: #5ac8ff;
+    color: #7dd3fc;
+    background: rgba(0, 160, 255, 0.14);
+    border: 1px solid rgba(0, 200, 255, 0.32);
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
 }
 .profile-promo-row {
     display: flex;
@@ -6975,17 +7040,18 @@
 .profile-promo-input {
     flex: 1;
     min-width: 0;
-    background: #07080d;
-    border: 1px solid rgba(0, 136, 255, 0.28);
+    background: rgba(5, 7, 12, 0.9);
+    border: 1px solid rgba(0, 160, 255, 0.26);
     color: #ffffff;
     padding: 12px 13px;
-    border-radius: 12px;
+    border-radius: 13px;
     font-family: 'Inter', sans-serif;
     font-size: 13.5px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.7px;
     outline: none;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .profile-promo-input::placeholder {
@@ -6995,21 +7061,22 @@
     color: #6b7280;
 }
 .profile-promo-input:focus {
-    border-color: #0088ff;
-    box-shadow: 0 0 12px rgba(0, 136, 255, 0.25);
+    border-color: #00aaff;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 14px rgba(0, 170, 255, 0.28);
 }
 .profile-promo-btn {
     flex-shrink: 0;
-    border: none;
-    border-radius: 12px;
+    border: 1px solid rgba(130, 220, 255, 0.45);
+    border-radius: 13px;
     padding: 12px 16px;
-    background: linear-gradient(90deg, #0088ff 0%, #00c6ff 100%);
+    background: linear-gradient(135deg, #0077ff 0%, #00c6ff 100%);
     color: #ffffff;
     font-family: 'Inter', sans-serif;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 800;
+    letter-spacing: 0.4px;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 136, 255, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 136, 255, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transition: transform 0.15s ease, opacity 0.2s ease;
 }
 .profile-promo-btn:active {
@@ -7034,22 +7101,23 @@
     clear: both;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4px;
-    padding: 4px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 5px;
+    padding: 5px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(16, 22, 34, 0.9) 0%, rgba(9, 13, 22, 0.96) 100%);
+    border: 1px solid rgba(0, 160, 255, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     margin-bottom: 12px;
 }
 .shop-mode-btn {
-    border: none;
-    border-radius: 12px;
+    border: 1px solid transparent;
+    border-radius: 13px;
     padding: 11px 10px;
     background: transparent;
-    color: var(--secondary);
+    color: #8fa0b5;
     font-family: 'Inter', sans-serif;
     font-size: 13.5px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -7058,9 +7126,10 @@
     transition: all 0.2s ease;
 }
 .shop-mode-btn.active {
-    background: linear-gradient(135deg, #0070f3 0%, #00b4ff 100%);
+    background: linear-gradient(135deg, #0077ff 0%, #00c6ff 100%);
+    border-color: rgba(130, 220, 255, 0.45);
     color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 136, 255, 0.4);
+    box-shadow: 0 4px 16px rgba(0, 136, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 .shop-mode-btn:active {
     transform: scale(0.97);
@@ -7069,30 +7138,50 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 14px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 11px 14px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(14, 21, 34, 0.92) 0%, rgba(9, 12, 19, 0.98) 100%);
+    border: 1px solid rgba(0, 150, 255, 0.28);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     margin-bottom: 14px;
     cursor: pointer;
-    transition: transform 0.15s ease, border-color 0.2s ease;
+    transition: transform 0.18s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .my-orders-bar:active {
     transform: scale(0.98);
-    border-color: rgba(0, 136, 255, 0.45);
+    border-color: rgba(0, 200, 255, 0.55);
+    box-shadow: 0 0 18px rgba(0, 160, 255, 0.25);
 }
 .my-orders-bar-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
     font-size: 13.5px;
-    font-weight: 700;
+    font-weight: 800;
     color: #ffffff;
 }
+.my-orders-ico-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(0, 150, 255, 0.15);
+    border: 1px solid rgba(0, 195, 255, 0.35);
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    box-shadow: 0 0 10px rgba(0, 150, 255, 0.2);
+}
 .my-orders-bar-arrow {
-    color: var(--secondary);
-    font-size: 14px;
-    font-weight: 700;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: rgba(0, 150, 255, 0.12);
+    border: 1px solid rgba(0, 180, 255, 0.25);
+    color: #5ac8ff;
+    font-size: 12px;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
 }
 .cases-grid {
     display: grid;
@@ -7111,6 +7200,12 @@
     align-items: center;
     text-align: center;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 18px rgba(16, 185, 129, 0.08);
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.case-card:active {
+    transform: scale(0.96);
+    border-color: rgba(34, 197, 94, 0.55);
+    box-shadow: 0 0 22px rgba(16, 185, 129, 0.28);
 }
 .case-title {
     font-size: 13.5px;
@@ -8015,10 +8110,10 @@ img {
         </div>
 
         <!-- ЕЖЕДНЕВНЫЙ БОНУС -->
-        <div class="lux-daily-card anim-item" style="animation-delay: 0.14s;">
+        <div class="lux-daily-card anim-item" id="homeDailyBonusCard" style="animation-delay: 0.14s;">
             <div class="lux-daily-head">
                 <div class="lux-daily-title" id="dailyBonusTitle">🎁 Ежедневный бонус</div>
-                <span class="lux-daily-tag" id="dailyBonusTag">День 1</span>
+                <span class="lux-daily-tag" id="dailyBonusTag">🎁 Доступно</span>
             </div>
             <button type="button" class="lux-claim-btn" id="homeDailyClaimBtn" onclick="claimDailyReward(this)">
                 ⚡ Забрать награду
@@ -8071,7 +8166,7 @@ img {
             <!-- Контейнер активных розыгрышей -->
             <div id="gwActiveContainer">
                 <div class="gw-grid">
-                    <div class="gw-card" onclick="openGwPs5Modal()">
+                    <div class="gw-card" style="animation-delay: 0.14s;" onclick="openGwPs5Modal()">
                         <div class="gw-card-thumb">
                             <img src="giveaway_ps5.jpg" alt="Розыгрыш PS5 и GTA 6">
                             <div class="gw-card-badge">
@@ -8090,7 +8185,7 @@ img {
                             </div>
                         </div>
                     </div>
-                    <div class="gw-card" onclick="openGwTripModal()">
+                    <div class="gw-card" style="animation-delay: 0.2s;" onclick="openGwTripModal()">
                         <div class="gw-card-thumb">
                             <img src="giveaway_trip.jpg" alt="Поездка мечты">
                             <div class="gw-card-badge">
@@ -8567,7 +8662,7 @@ img {
         <!-- Строка Мои заказы -->
         <div class="my-orders-bar anim-item" id="shopMyOrdersBar" style="animation-delay: 0.07s;" onclick="openMyOrdersModal()">
             <div class="my-orders-bar-left">
-                <span style="color: #fbbf24;">🛒</span>
+                <span class="my-orders-ico-wrap">🛒</span>
                 <span>Мои заказы</span>
             </div>
             <span class="my-orders-bar-arrow">❯</span>
@@ -8584,7 +8679,6 @@ img {
         
         <div class="shop-grid">
             <div class="shop-card" style="animation-delay: 0.1s;">
-                <span class="shop-rarity-ribbon rarity-mythic">👑 MYTHIC</span>
                 <div class="shop-card-img-wrap">
                     <img src="IMG_1068.PNG" alt="iPhone 18 PRO MAX">
                     <div class="shop-card-title">iPhone 18 PRO MAX</div>
@@ -8597,7 +8691,6 @@ img {
             </div>
 
             <div class="shop-card" style="animation-delay: 0.15s;">
-                <span class="shop-rarity-ribbon rarity-legendary">💎 LEGENDARY</span>
                 <div class="shop-card-img-wrap">
                     <img src="IMG_1073.PNG" alt="iPhone DUO">
                     <div class="shop-card-title">iPhone DUO</div>
@@ -13128,7 +13221,16 @@ async function renderLeaderboardPage() {
             if (tab === 'active') {
                 if (btnActive) btnActive.classList.add('active');
                 if (btnClosed) btnClosed.classList.remove('active');
-                if (activeCont) activeCont.style.display = 'block';
+                if (activeCont) {
+                    activeCont.style.display = 'block';
+                    const gwCards = Array.from(activeCont.querySelectorAll('.gw-card'));
+                    gwCards.forEach(c => { c.style.animation = 'none'; });
+                    void activeCont.offsetWidth;
+                    gwCards.forEach((c, idx) => {
+                        const delay = (idx * 0.05).toFixed(2);
+                        c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                    });
+                }
                 if (closedCont) closedCont.style.display = 'none';
             } else {
                 if (btnActive) btnActive.classList.remove('active');
@@ -15235,27 +15337,38 @@ function calculateCurrentStreakStatus() {
 function renderDailyBonusUI() {
     const { isClaimedToday, currentDayNumber } = calculateCurrentStreakStatus();
     const todayReward = getDailyBonusReward(currentDayNumber);
+    const isSeventhDay = (currentDayNumber % 7 === 0);
+
+    const cardEl = document.getElementById('homeDailyBonusCard') || document.querySelector('.lux-daily-card');
+    if (cardEl) {
+        cardEl.classList.toggle('day7-special', isSeventhDay && !isClaimedToday);
+    }
 
     const titleEl = document.getElementById('dailyBonusTitle');
     if (titleEl) {
-        titleEl.textContent = '🎁 Ежедневный бонус';
+        titleEl.textContent = (isSeventhDay && !isClaimedToday) ? '👑 Особый еженедельный бонус' : '🎁 Ежедневный бонус';
     }
 
     const tagEl = document.getElementById('dailyBonusTag');
     if (tagEl) {
-        tagEl.textContent = isClaimedToday ? '✅ Забрано' : `День ${currentDayNumber}`;
+        tagEl.classList.toggle('day7-tag', isSeventhDay && !isClaimedToday);
+        tagEl.textContent = isClaimedToday ? '✅ Забрано' : (isSeventhDay ? '👑 Недельный дроп' : '🎁 Доступно');
     }
 
     const btn = document.getElementById('homeDailyClaimBtn');
     if (btn) {
         if (isClaimedToday) {
-            btn.innerHTML = `✅ Награда получена (День ${currentDayNumber})`;
+            btn.innerHTML = '✅ Награда получена';
             btn.disabled = true;
             btn.classList.add('claimed');
+            btn.classList.remove('day7-btn');
         } else {
-            btn.innerHTML = `⚡ Забрать +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет"> (День ${currentDayNumber})`;
+            btn.innerHTML = isSeventhDay
+                ? `👑 Забрать супер-бонус +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет">`
+                : `⚡ Забрать +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет">`;
             btn.disabled = false;
             btn.classList.remove('claimed');
+            btn.classList.toggle('day7-btn', isSeventhDay);
         }
     }
 }
@@ -15719,7 +15832,16 @@ function switchShopMode(mode) {
         if (ordersBar) ordersBar.style.display = 'none';
         if (shopTabs) shopTabs.style.display = 'none';
         if (shopGrid) shopGrid.style.display = 'none';
-        if (casesSec) casesSec.style.display = 'block';
+        if (casesSec) {
+            casesSec.style.display = 'block';
+            const caseCards = Array.from(casesSec.querySelectorAll('.case-card'));
+            caseCards.forEach(c => { c.style.animation = 'none'; });
+            void casesSec.offsetWidth;
+            caseCards.forEach((c, idx) => {
+                const delay = (idx * 0.04).toFixed(2);
+                c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+            });
+        }
         if (heading) heading.textContent = 'Кейсы';
         refreshRefCaseKeysUI();
     } else {
@@ -15727,7 +15849,20 @@ function switchShopMode(mode) {
         if (casesBtn) casesBtn.classList.remove('active');
         if (ordersBar) ordersBar.style.display = 'flex';
         if (shopTabs) shopTabs.style.display = 'flex';
-        if (shopGrid) shopGrid.style.display = 'grid';
+        if (shopGrid) {
+            shopGrid.style.display = 'grid';
+            const cards = Array.from(shopGrid.querySelectorAll('.shop-card'));
+            cards.forEach(c => { c.style.animation = 'none'; });
+            void shopGrid.offsetWidth;
+            let visibleIndex = 0;
+            cards.forEach(c => {
+                if (c.style.display !== 'none') {
+                    const delay = (visibleIndex * 0.04).toFixed(2);
+                    c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                    visibleIndex++;
+                }
+            });
+        }
         if (casesSec) casesSec.style.display = 'none';
         if (heading) heading.textContent = 'Магазин';
     }
