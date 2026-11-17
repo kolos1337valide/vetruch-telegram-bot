@@ -10009,17 +10009,10 @@ img {
                     <button type="button" class="admin-chip" onclick="document.getElementById('adminPredBadgeInput').value='⚔️ БАТЛ'" style="margin: 0; padding: 0 10px;">⚔️ БАТЛ</button>
                 </div>
 
-                <label class="admin-field-label">Статус ставок (справа сверху):</label>
-                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                    <input type="text" id="adminPredStatusInput" class="task-input" placeholder="Ставки открыты" style="margin-bottom: 0; flex: 1;">
-                    <button type="button" class="admin-btn-approve" onclick="document.getElementById('adminPredStatusInput').value='Ставки открыты'" style="padding: 0 10px; font-size: 11px;">🟢 Открыты</button>
-                    <button type="button" class="admin-btn-reject" onclick="document.getElementById('adminPredStatusInput').value='Ставки закрыты'" style="padding: 0 10px; font-size: 11px;">🔴 Закрыты</button>
-                </div>
-
                 <!-- Длительность и таймер прогноза -->
                 <label class="admin-field-label">Длительность прогноза (минут):</label>
                 <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                    <input type="number" id="adminPredDurationInput" class="task-input" placeholder="15" min="1" value="15" style="margin-bottom: 0; flex: 1;">
+                    <input type="number" id="adminPredDurationInput" class="task-input" placeholder="15" min="0" value="15" style="margin-bottom: 0; flex: 1;">
                     <button type="button" class="admin-btn-approve" onclick="adminStartTimerFromInput()" style="padding: 0 12px; font-size: 11px;">⏱ Запустить</button>
                 </div>
                 <div style="display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;">
@@ -10520,7 +10513,6 @@ img {
         function isPredictionClosed(p) {
             if (!p) return true;
             if (p.isResolved) return true;
-            if (p.status && p.status.toLowerCase().includes('закрыт')) return true;
             if (p.endTime && p.endTime > 0 && Date.now() >= p.endTime) return true;
             return false;
         }
@@ -10530,6 +10522,8 @@ img {
             const badgeEl = document.getElementById('predTimerBadge');
             const adminTimerEl = document.getElementById('adminPredTimerLiveStatus');
             const statusEl = document.getElementById('predStatus');
+            const btnLeft = document.getElementById('predBtnLeft');
+            const btnRight = document.getElementById('predBtnRight');
 
             if (!p.endTime || p.endTime <= 0) {
                 if (badgeEl) {
@@ -10537,6 +10531,14 @@ img {
                     badgeEl.classList.remove('pulse-urgent');
                 }
                 if (adminTimerEl) adminTimerEl.textContent = '⏱ Таймер: Без таймера';
+                if (!p.isResolved) {
+                    if (statusEl) {
+                        statusEl.textContent = 'Ставки открыты';
+                        statusEl.style.color = '#00e676';
+                    }
+                    if (btnLeft) btnLeft.classList.remove('disabled-pred-btn');
+                    if (btnRight) btnRight.classList.remove('disabled-pred-btn');
+                }
                 return;
             }
 
@@ -10554,6 +10556,14 @@ img {
                 if (adminTimerEl) {
                     adminTimerEl.textContent = `⏱ Осталось времени: ${timeStr}`;
                 }
+                if (!p.isResolved) {
+                    if (statusEl) {
+                        statusEl.textContent = 'Ставки открыты';
+                        statusEl.style.color = '#00e676';
+                    }
+                    if (btnLeft) btnLeft.classList.remove('disabled-pred-btn');
+                    if (btnRight) btnRight.classList.remove('disabled-pred-btn');
+                }
             } else {
                 if (badgeEl) {
                     badgeEl.textContent = '⏱ Время вышло';
@@ -10562,10 +10572,16 @@ img {
                 if (adminTimerEl) {
                     adminTimerEl.textContent = '⏱ Время вышло (Ставки закрыты)';
                 }
-                if (!p.isResolved && (!p.status || !p.status.toLowerCase().includes('закрыт'))) {
+                if (!p.isResolved) {
                     if (statusEl) {
                         statusEl.textContent = 'Ставки закрыты';
                         statusEl.style.color = '#ff3366';
+                    }
+                    if (btnLeft) btnLeft.classList.add('disabled-pred-btn');
+                    if (btnRight) btnRight.classList.add('disabled-pred-btn');
+                    if (p.status !== 'Ставки закрыты') {
+                        p.status = 'Ставки закрыты';
+                        localStorage.setItem('vetruch_prediction_data', JSON.stringify(p));
                     }
                 }
             }
@@ -10606,7 +10622,7 @@ img {
                     status.textContent = 'Ставки закрыты';
                     status.style.color = '#ff3366';
                 } else {
-                    status.textContent = p.status || 'Ставки открыты';
+                    status.textContent = 'Ставки открыты';
                     status.style.color = '#00e676';
                 }
             }
@@ -11024,9 +11040,6 @@ img {
             const titleInp = document.getElementById('adminPredTitleInput');
             if (titleInp) titleInp.value = data.title || '';
 
-            const statusInp = document.getElementById('adminPredStatusInput');
-            if (statusInp) statusInp.value = data.status || 'Ставки открыты';
-
             const durInp = document.getElementById('adminPredDurationInput');
             if (durInp) durInp.value = data.durationMinutes !== undefined ? data.durationMinutes : 15;
 
@@ -11037,6 +11050,13 @@ img {
             if (btnRightInp) btnRightInp.value = data.btnRight || (currentAdminPredMode === 'battle' ? 'Игрок 2' : 'Нет');
 
             updateAdminPredictionStatsUI();
+        }
+
+        function getAdminPredDurationValue() {
+            const raw = document.getElementById('adminPredDurationInput')?.value;
+            if (raw === undefined || raw === '') return 15;
+            const parsed = parseInt(raw, 10);
+            return isNaN(parsed) ? 15 : Math.max(0, parsed);
         }
 
         async function saveAdminPrediction() {
@@ -11050,14 +11070,16 @@ img {
             const btnLeft = (document.getElementById('adminPredBtnLeftInput')?.value || (currentAdminPredMode === 'battle' ? 'Игрок 1' : 'Да')).trim();
             const btnRight = (document.getElementById('adminPredBtnRightInput')?.value || (currentAdminPredMode === 'battle' ? 'Игрок 2' : 'Нет')).trim();
             const badge = (document.getElementById('adminPredBadgeInput')?.value || (currentAdminPredMode === 'battle' ? '⚔️ БАТЛ' : 'ПРОГНОЗ')).trim();
-            const status = (document.getElementById('adminPredStatusInput')?.value || 'Ставки открыты').trim();
-            const duration = parseInt(document.getElementById('adminPredDurationInput')?.value || '15', 10) || 15;
+            const duration = getAdminPredDurationValue();
+            const autoStatus = prevData.isResolved
+                ? (prevData.status || `Завершён: Победил «${prevData.winnerLabel || ''}»`)
+                : ((prevData.endTime && prevData.endTime > 0 && Date.now() >= prevData.endTime) ? 'Ставки закрыты' : 'Ставки открыты');
 
             const updatedData = {
                 ...prevData,
                 mode: currentAdminPredMode,
                 badge,
-                status,
+                status: autoStatus,
                 title,
                 btnLeft,
                 percentLeft: '0%',
@@ -11086,9 +11108,7 @@ img {
             const p = getPredictionData();
             p.durationMinutes = mins;
             p.endTime = (mins > 0) ? (Date.now() + mins * 60 * 1000) : 0;
-            p.status = 'Ставки открыты';
-            const statusInp = document.getElementById('adminPredStatusInput');
-            if (statusInp) statusInp.value = 'Ставки открыты';
+            if (!p.isResolved) p.status = 'Ставки открыты';
 
             localStorage.setItem('vetruch_prediction_data', JSON.stringify(p));
             renderPredictionCard(p);
@@ -11097,7 +11117,7 @@ img {
         }
 
         async function adminStartTimerFromInput() {
-            const mins = parseInt(document.getElementById('adminPredDurationInput')?.value || '15', 10) || 15;
+            const mins = getAdminPredDurationValue();
             await setAdminDurationAndStart(mins);
         }
 
@@ -11105,9 +11125,7 @@ img {
             const p = getPredictionData();
             const curEnd = (p.endTime && p.endTime > Date.now()) ? p.endTime : Date.now();
             p.endTime = curEnd + extraMinutes * 60 * 1000;
-            p.status = 'Ставки открыты';
-            const statusInp = document.getElementById('adminPredStatusInput');
-            if (statusInp) statusInp.value = 'Ставки открыты';
+            if (!p.isResolved) p.status = 'Ставки открыты';
 
             localStorage.setItem('vetruch_prediction_data', JSON.stringify(p));
             renderPredictionCard(p);
@@ -11331,7 +11349,7 @@ img {
             p.winner = null;
             p.winnerLabel = null;
             p.status = 'Ставки открыты';
-            const duration = parseInt(document.getElementById('adminPredDurationInput')?.value || '15', 10) || 15;
+            const duration = getAdminPredDurationValue();
             p.durationMinutes = duration;
             p.endTime = (duration > 0) ? (Date.now() + duration * 60 * 1000) : 0;
             
