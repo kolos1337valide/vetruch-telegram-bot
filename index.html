@@ -14344,6 +14344,20 @@ async function spinRefCase(isAdminTest) {
     }, 3750);
 }
 </script>
+
+<script>
+function updateTotalWonUI() {
+    const totalWon = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
+    document.querySelectorAll('#profile .profile-bento-item').forEach(item => {
+        const lbl = item.querySelector('.profile-bento-label');
+        const val = item.querySelector('.profile-bento-val');
+        if (lbl && val && lbl.textContent.includes('Выиграно в играх')) {
+            val.innerHTML = `${formatCoins(totalWon)} <img src="coins.png" alt="coins" class="coin-icon">`;
+        }
+    });
+}
+updateTotalWonUI();
+</script>
     
 </body>
 </html>
