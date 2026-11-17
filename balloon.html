@@ -371,7 +371,7 @@
             multDisplay.textContent = currentMult.toFixed(2) + 'x';
             
             // Расчет размера шарика (логарифм)
-            let rawScaleAmount = 1 + Math.log10(currentMult) * 1.5; 
+           let rawScaleAmount = 1 + Math.pow(Math.max(0, currentMult - 1), 0.72) * 1.35;
             
             // ЖЕСТКИЙ ЛИМИТ ОСНОВАННЫЙ НА РАЗМЕРЕ ЭКРАНА
             if (rawScaleAmount >= dynamicMaxScale) {
