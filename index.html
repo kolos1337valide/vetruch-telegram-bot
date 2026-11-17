@@ -10589,7 +10589,8 @@ img {
             localStorage.setItem('vetruch_stream_live', isStreamLive ? 'true' : 'false');
             updateKickStreamUI(isStreamLive);
 
-            const myRefs = Array.isArray(allReferrals[myId]) ? allReferrals[myId] : [];
+            const rawRefs = allReferrals ? allReferrals[myId] : null;
+            const myRefs = Array.isArray(rawRefs) ? rawRefs : (rawRefs && typeof rawRefs === 'object' ? Object.values(rawRefs) : []);
             const myRefCount = myRefs.length;
             let myTasksDone = Number(tasksDoneMap[myId] || 0);
 
