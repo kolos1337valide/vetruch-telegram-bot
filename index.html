@@ -8321,7 +8321,19 @@ img {
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
         </div>
 
-        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Игры</h2>
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 14px !important; display: inline-block; animation-delay: 0.05s;">Игры</h2>
+
+        <!-- Переключатель Мини-игры / Азартные -->
+        <div class="shop-mode-switch anim-item" style="animation-delay: 0.06s;">
+            <button type="button" class="shop-mode-btn active" id="gamesModeMiniBtn" onclick="switchGamesMode('mini')">
+                🎮 Мини-игры
+            </button>
+            <button type="button" class="shop-mode-btn" id="gamesModeCasinoBtn" onclick="switchGamesMode('casino')">
+                🎰 Азартные
+            </button>
+        </div>
+
+        <div id="miniGamesSection">
         
         <div class="games-grid" style="clear: both;">
             <!-- Новая игра: БАШНИ (Широкая кнопка) -->
