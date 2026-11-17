@@ -14494,6 +14494,114 @@ function updateAccurateTasksCountUI() {
 updateAccurateTasksCountUI();
 document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('click', updateAccurateTasksCountUI);
 </script>
+
+<script>
+function applyBindRowUI(descId, badgeId, status, valueText, defaultDesc, defaultBtnText) {
+    const descEl = document.getElementById(descId);
+    const badgeEl = document.getElementById(badgeId);
+    if (!descEl || !badgeEl) return;
+
+    if (status === 'done') {
+        descEl.textContent = valueText || 'Аккаунт привязан';
+        descEl.style.color = '#00e676';
+        badgeEl.className = 'profile-status-pill connected';
+        badgeEl.textContent = 'Привязано ✓';
+    } else if (status === 'pending') {
+        descEl.textContent = valueText ? `${valueText} · ожидает проверки` : 'Ожидает проверки';
+        descEl.style.color = '#fbbf24';
+        badgeEl.className = 'profile-status-pill pending';
+        badgeEl.textContent = 'На проверке ⏳';
+    } else {
+        descEl.textContent = defaultDesc;
+        descEl.style.color = '';
+        badgeEl.className = 'profile-status-pill action';
+        badgeEl.textContent = defaultBtnText;
+    }
+}
+
+function renderProfileBindsUI() {
+    let activeCount = 1; // Telegram активен всегда
+
+    // 1. Kick
+    let kickObj = null;
+    try {
+        kickObj = JSON.parse(localStorage.getItem('vetruch_kick_bind') || 'null');
+    } catch (e) {}
+
+    if (!kickObj) {
+        const comp = (typeof getCompletedTasksList === 'function') ? getCompletedTasksList() : [];
+        if (comp.includes('Подписаться на Kick')) {
+            kickObj = { nick: (typeof getDefaultUsername === 'function' ? getDefaultUsername() : '') || 'Подтверждено', status: 'done' };
+        }
+    }
+    if (kickObj && kickObj.status === 'done') activeCount++;
+    applyBindRowUI(
+        'bindKickDesc',
+        'bindKickBadge',
+        kickObj ? kickObj.status : null,
+        kickObj && kickObj.nick ? `Ник: ${kickObj.nick}` : '',
+        'Бонус +200 монет за подписку',
+        'Задания ➔'
+    );
+
+    // 2. ARKADA
+    const ark = (typeof getArkadaProgress === 'function') ? getArkadaProgress() : { bind: null, arkadaId: '' };
+    if (ark.bind === 'done') activeCount++;
+    applyBindRowUI(
+        'bindArkadaDesc',
+        'bindArkadaBadge',
+        ark.bind,
+        ark.arkadaId ? `ID: ${ark.arkadaId}` : '',
+        'Награда +1 000 монет за привязку',
+        'Привязать ➔'
+    );
+
+    // 3. Ton Play (Партнёр #3)
+    const p3 = (typeof getP3Progress === 'function') ? getP3Progress() : { bind: null, partnerId: '' };
+    if (p3.bind === 'done') activeCount++;
+    applyBindRowUI(
+        'bindTpDesc',
+        'bindTpBadge',
+        p3.bind,
+        p3.partnerId ? `ID: ${p3.partnerId}` : '',
+        'Награда +1 000 монет за привязку',
+        'Привязать ➔'
+    );
+
+    // 4. UP-X (Партнёр #2)
+    const p2 = (typeof getP2Progress === 'function') ? getP2Progress() : { bind: null, partnerId: '' };
+    if (p2.bind === 'done') activeCount++;
+    applyBindRowUI(
+        'bindUpxDesc',
+        'bindUpxBadge',
+        p2.bind,
+        p2.partnerId ? `ID: ${p2.partnerId}` : '',
+        'Награда +1 000 монет за привязку',
+        'Привязать ➔'
+    );
+
+    const cntEl = document.getElementById('profileBindsCountText');
+    if (cntEl) cntEl.textContent = `${activeCount} из 5 активно`;
+}
+
+async function syncKickBindFromCloud() {
+    try {
+        if (typeof cloudGet === 'function' && typeof getCurrentTgId === 'function') {
+            const kData = await cloudGet(`vetruch_app/kick_accounts/${getCurrentTgId()}`);
+            if (kData && kData.status) {
+                localStorage.setItem('vetruch_kick_bind', JSON.stringify(kData));
+            } else if (kData === null) {
+                localStorage.removeItem('vetruch_kick_bind');
+            }
+        }
+    } catch (e) {}
+    renderProfileBindsUI();
+}
+
+syncKickBindFromCloud();
+setInterval(renderProfileBindsUI, 3000);
+document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('click', syncKickBindFromCloud);
+</script>
     
 </body>
 </html>
