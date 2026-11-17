@@ -14358,6 +14358,78 @@ function updateTotalWonUI() {
 }
 updateTotalWonUI();
 </script>
+
+<script>
+function getAccurateTasksProgress() {
+    let done = 0;
+    let total = 0;
+
+    // 1. Обычные задания (6 шт.)
+    const tasksPage = document.getElementById('tasks');
+    if (tasksPage) {
+        const completed = (typeof getCompletedTasksList === 'function') ? getCompletedTasksList() : [];
+        const featuredCards = tasksPage.querySelectorAll('.featured-task');
+        total += featuredCards.length;
+        featuredCards.forEach(card => {
+            const onclickAttr = card.getAttribute('onclick') || '';
+            const match = onclickAttr.match(/openTaskModal\('([^']+)'/);
+            const modalKey = match ? match[1] : '';
+            const title = (card.querySelector('.featured-task-title')?.textContent || '').trim();
+            if ((modalKey && completed.includes(modalKey)) || (title && completed.includes(title))) {
+                done++;
+            }
+        });
+    } else {
+        total += 6;
+    }
+
+    // 2. ARKADA (привязка + 15 депозитов = 16 шт.)
+    if (typeof getArkadaProgress === 'function' && typeof ARKADA_DEPOSITS !== 'undefined') {
+        const ark = getArkadaProgress();
+        total += 1 + ARKADA_DEPOSITS.length;
+        if (ark.bind === 'done') done++;
+        ARKADA_DEPOSITS.forEach(d => {
+            if (ark.deposits && ark.deposits[d.id] === 'done') done++;
+        });
+    }
+
+    // 3. UP-X (привязка + 15 депозитов = 16 шт.)
+    if (typeof getP2Progress === 'function' && typeof P2_DEPOSITS !== 'undefined') {
+        const p2 = getP2Progress();
+        total += 1 + P2_DEPOSITS.length;
+        if (p2.bind === 'done') done++;
+        P2_DEPOSITS.forEach(d => {
+            if (p2.deposits && p2.deposits[d.id] === 'done') done++;
+        });
+    }
+
+    // 4. Ton Play (привязка + 15 депозитов = 16 шт.)
+    if (typeof getP3Progress === 'function' && typeof P3_DEPOSITS !== 'undefined') {
+        const p3 = getP3Progress();
+        total += 1 + P3_DEPOSITS.length;
+        if (p3.bind === 'done') done++;
+        P3_DEPOSITS.forEach(d => {
+            if (p3.deposits && p3.deposits[d.id] === 'done') done++;
+        });
+    }
+
+    return { done, total: total || 54 };
+}
+
+function updateAccurateTasksCountUI() {
+    const stats = getAccurateTasksProgress();
+    document.querySelectorAll('#profile .profile-bento-item').forEach(item => {
+        const lbl = item.querySelector('.profile-bento-label');
+        const val = item.querySelector('.profile-bento-val');
+        if (lbl && val && lbl.textContent.includes('Заданий выполнено')) {
+            val.textContent = `${stats.done} / ${stats.total}`;
+        }
+    });
+}
+
+updateAccurateTasksCountUI();
+document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('click', updateAccurateTasksCountUI);
+</script>
     
 </body>
 </html>
