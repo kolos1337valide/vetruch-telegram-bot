@@ -10626,6 +10626,8 @@ img {
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = finalMyBal);
             renderProfilePurchases();
             updateReferralsAndTasksUI(myRefCount, myTasksDone);
+
+            if (typeof refreshRefCaseKeysUI === 'function') refreshRefCaseKeysUI();
             
             const localTotalWon = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
             const cloudTotalWon = Number((cloudState && cloudState.total_won && cloudState.total_won[myId]) || 0);
