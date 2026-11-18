@@ -867,20 +867,39 @@
 
     function drawPipes() {
         const usableH = H - floorHeight;
-        const outline = '#123458';
 
-        const fillPipeGradient = (gx, gw) => {
+        const getPipePalette = (num) => {
+            if (num === MAX_PIPES) {
+                // 50-я финальная труба — классическая зелёная
+                return {
+                    outline: '#144d1e',
+                    stops: ['#43b530', '#73e048', '#b7f78b', '#55c938', '#2f9621', '#207316']
+                };
+            }
+            if (num % 10 === 0) {
+                // Каждая 10-я труба (10, 20, 30, 40) — жёлтая
+                return {
+                    outline: '#5c3b00',
+                    stops: ['#dfa300', '#ffd838', '#fff29c', '#f5b800', '#c78500', '#9a6300']
+                };
+            }
+            // Обычные трубы — синие
+            return {
+                outline: '#123458',
+                stops: ['#2c8ae6', '#6dc3ff', '#a6dcff', '#3ea0ff', '#1e6ec4', '#145096']
+            };
+        };
+
+        const fillPipeGradient = (gx, gw, stops) => {
             const grad = ctx.createLinearGradient(gx, 0, gx + gw, 0);
-            grad.addColorStop(0.0, '#2c8ae6');
-            grad.addColorStop(0.16, '#6dc3ff');
-            grad.addColorStop(0.28, '#a6dcff');
-            grad.addColorStop(0.46, '#3ea0ff');
-            grad.addColorStop(0.84, '#1e6ec4');
-            grad.addColorStop(1.0, '#145096');
+            const positions = [0.0, 0.16, 0.28, 0.46, 0.84, 1.0];
+            positions.forEach((pos, idx) => grad.addColorStop(pos, stops[idx]));
             return grad;
         };
 
         for (const p of pipes) {
+            const palette = getPipePalette(p.num);
+
             const drawSegment = (x, y, w, h, capAtBottom) => {
                 if (h <= 0) return;
                 const capH = Math.min(22, h);
@@ -888,8 +907,8 @@
                 const capW = w + 8;
                 const capY = capAtBottom ? (y + h - capH) : y;
 
-                // Основной ствол трубы (классический объёмный синий)
-                ctx.fillStyle = fillPipeGradient(x, w);
+                // Основной ствол трубы
+                ctx.fillStyle = fillPipeGradient(x, w, palette.stops);
                 ctx.fillRect(x, y, w, h);
 
                 // Глянцевый блик слева и лёгкая тень справа
@@ -897,16 +916,16 @@
                 ctx.fillRect(x + 9, y, 5, h);
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
                 ctx.fillRect(x + 17, y, 2, h);
-                ctx.fillStyle = 'rgba(10, 35, 70, 0.16)';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.14)';
                 ctx.fillRect(x + w - 8, y, 6, h);
 
                 // Контур ствола
-                ctx.strokeStyle = outline;
+                ctx.strokeStyle = palette.outline;
                 ctx.lineWidth = 2.5;
                 ctx.strokeRect(x, y, w, h);
 
                 // Лёгкая тень под/над ободком
-                ctx.fillStyle = 'rgba(10, 32, 62, 0.22)';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.20)';
                 if (capAtBottom && h > capH + 4) {
                     ctx.fillRect(x + 1, capY - 4, w - 2, 4);
                 } else if (!capAtBottom && h > capH + 4) {
@@ -914,21 +933,21 @@
                 }
 
                 // Классический выступающий оголовок трубы
-                ctx.fillStyle = fillPipeGradient(capX, capW);
+                ctx.fillStyle = fillPipeGradient(capX, capW, palette.stops);
                 ctx.fillRect(capX, capY, capW, capH);
 
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.36)';
                 ctx.fillRect(capX + 10, capY + 1, 6, capH - 2);
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
                 ctx.fillRect(capX + 19, capY + 1, 2, capH - 2);
-                ctx.fillStyle = 'rgba(10, 35, 70, 0.18)';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
                 ctx.fillRect(capX + capW - 9, capY + 1, 7, capH - 2);
 
-                // Верхний/нижний светлый кантик на ободке для объёма
+                // Светлый кантик на ободке для объёма
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
                 ctx.fillRect(capX + 2, capY + 2, capW - 4, 2);
 
-                ctx.strokeStyle = outline;
+                ctx.strokeStyle = palette.outline;
                 ctx.lineWidth = 2.5;
                 ctx.strokeRect(capX, capY, capW, capH);
             };
