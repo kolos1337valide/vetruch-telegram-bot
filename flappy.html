@@ -508,6 +508,14 @@
     }
 
     let nextPipeNum = 1;
+    const BASE_PIPE_SPEED = 2.65;
+    const SPEED_PER_PIPE = 0.024;
+    const MAX_PIPE_SPEED = 3.85;
+    let currentPipeSpeed = BASE_PIPE_SPEED;
+
+    function getTargetPipeSpeed(s) {
+        return Math.min(MAX_PIPE_SPEED, BASE_PIPE_SPEED + s * SPEED_PER_PIPE);
+    }
 
     function resetFlightState() {
         pipes = [];
@@ -515,6 +523,7 @@
         floatingPopups = [];
         score = 0;
         nextPipeNum = 1;
+        currentPipeSpeed = BASE_PIPE_SPEED;
         scoreDisplay.textContent = '0';
         duck.y = Math.round((H - floorHeight) * 0.46);
         duck.vy = 0;
@@ -575,6 +584,7 @@
         state = 'flying';
         score = 0;
         nextPipeNum = 1;
+        currentPipeSpeed = BASE_PIPE_SPEED;
         pipes = [];
         floatingPopups = [];
         scoreDisplay.textContent = '0';
@@ -1031,7 +1041,9 @@
             duck.y = Math.round(usableH * 0.46 + Math.sin(now * 0.004) * 7);
             duck.angle = Math.sin(now * 0.004) * 0.05;
         } else if (state === 'flying') {
-            const pipeSpeed = 2.65;
+            const targetSpeed = getTargetPipeSpeed(score);
+            currentPipeSpeed += (targetSpeed - currentPipeSpeed) * Math.min(1, 0.08 * dt);
+            const pipeSpeed = currentPipeSpeed;
             scrollX += pipeSpeed * dt;
 
             // Физика падения
@@ -1096,7 +1108,8 @@
             if (pipes.length > 0 && nextPipeNum <= MAX_PIPES) {
                 const lastPipe = pipes[pipes.length - 1];
                 if (lastPipe.x < W + 60) {
-                    spawnPipe(lastPipe.x + 225, nextPipeNum++);
+                    const pipeSpacing = Math.round(225 + (currentPipeSpeed - BASE_PIPE_SPEED) * 18);
+                    spawnPipe(lastPipe.x + pipeSpacing, nextPipeNum++);
                 }
             }
         }
