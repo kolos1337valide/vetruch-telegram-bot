@@ -9104,6 +9104,21 @@ img {
             </div>
         </div>
 
+        <!-- 1Б. РАЗВОРАЧИВАЮЩАЯСЯ ВИТРИНА ДОСТИЖЕНИЙ ПОД ФОТКОЙ -->
+        <div class="profile-section-card ach-collapse-card anim-item" id="profileAchievementsCard" style="animation-delay: 0.11s;">
+            <div class="profile-section-head ach-collapse-head" onclick="toggleProfileAchievements()">
+                <span class="profile-section-title">🏆 Достижения</span>
+                <div class="ach-head-right">
+                    <span class="ach-ready-pill" id="achReadyBadge">🎁 Награда!</span>
+                    <span class="profile-section-sub" id="achSummaryText">0 / 6</span>
+                    <span class="ach-chevron">▾</span>
+                </div>
+            </div>
+            <div class="ach-collapse-body" id="profileAchievementsCollapse">
+                <div class="ach-grid" id="profileAchievementsGrid"></div>
+            </div>
+        </div>
+
         <!-- КНОПКА МЕЧТЫ -->
         <div class="dream-entry-card anim-item" style="animation-delay: 0.12s;" onclick="openPage('dream-page')">
             <div class="dream-entry-left">
@@ -9197,15 +9212,6 @@ img {
                 <button type="button" id="profilePromoBtn" class="profile-promo-btn" onclick="activateUserPromoCode()">АКТИВИРОВАТЬ</button>
             </div>
             <div id="profilePromoMsg" class="profile-promo-msg"></div>
-        </div>
-
-        <!-- 2Б. ВИТРИНА ДОСТИЖЕНИЙ -->
-        <div class="profile-section-card anim-item" id="profileAchievementsCard" style="animation-delay: 0.19s;">
-            <div class="profile-section-head">
-                <span class="profile-section-title">🏆 Достижения</span>
-                <span class="profile-section-sub" id="achSummaryText">0 / 6 открыто</span>
-            </div>
-            <div class="ach-grid" id="profileAchievementsGrid"></div>
         </div>
 
         <!-- 3. РЕФЕРАЛЬНАЯ ПРОГРАММА -->
@@ -9502,6 +9508,65 @@ img {
         }
 
         /* ================= ВИТРИНА ДОСТИЖЕНИЙ (ПРОФИЛЬ) ================= */
+        .ach-collapse-card {
+            margin-bottom: 14px !important;
+        }
+        .ach-collapse-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+            user-select: none;
+            margin-bottom: 0 !important;
+        }
+        .ach-head-right {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .ach-ready-pill {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 10.5px;
+            font-weight: 800;
+            background: rgba(0, 230, 118, 0.16);
+            border: 1px solid rgba(0, 230, 118, 0.5);
+            color: #00e676;
+            box-shadow: 0 0 10px rgba(0, 230, 118, 0.25);
+        }
+        .ach-ready-pill.show {
+            display: inline-flex;
+        }
+        .ach-chevron {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #94a3b8;
+            font-size: 12px;
+            transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;
+        }
+        .ach-collapse-card.open .ach-chevron {
+            transform: rotate(180deg);
+            background: rgba(0, 217, 255, 0.16);
+            color: #00d9ff;
+        }
+        .ach-collapse-body {
+            display: none;
+            margin-top: 12px;
+        }
+        .ach-collapse-card.open .ach-collapse-body {
+            display: block;
+            animation: cardFilterIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
         .ach-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -17338,13 +17403,19 @@ window.adminModifyUserBalance = async function (mode) {
 <script>
 // ================= 🏆 ВИТРИНА ДОСТИЖЕНИЙ (ПРОФИЛЬ) =================
 const ACHIEVEMENTS_CONFIG = [
-    { id: 'first_bet', icon: '🎯', title: 'Первая ставка',   desc: 'Сделай 1 ставку в Прогнозе или Батле',     target: 1,     reward: 100,  metric: 'predBets' },
-    { id: 'dreamer',   icon: '✨', title: 'Мечтатель',       desc: 'Отправь свою мечту в разделе «Время мечтать»', target: 1,     reward: 150,  metric: 'dreamSent' },
-    { id: 'gamer_10',  icon: '🎮', title: 'Азартный игрок',  desc: 'Сыграй 10 раундов в любых играх',          target: 10,    reward: 250,  metric: 'gamesPlayed' },
-    { id: 'worker_5',  icon: '📋', title: 'Трудяга',         desc: 'Выполни 5 заданий из списка',              target: 5,     reward: 400,  metric: 'tasksDone' },
-    { id: 'lucky',     icon: '🍀', title: 'Везунчик',        desc: 'Выиграй 1 000+ монет за один раунд',       target: 1000,  reward: 600,  metric: 'bestWin' },
-    { id: 'tycoon',    icon: '🏆', title: 'Магнат',          desc: 'Выиграй суммарно 15 000 монет в играх',    target: 15000, reward: 1000, metric: 'totalWon' }
+    { id: 'dreamer',    icon: '✨', title: 'Мечтатель',       desc: 'Отправь свою мечту в разделе «Время мечтать»', target: 1,     reward: 100,  metric: 'dreamSent' },
+    { id: 'bets_5',     icon: '🎯', title: 'Ставочник',       desc: 'Сделай 5 ставок в Прогнозах или Батлах',      target: 5,     reward: 200,  metric: 'predBets' },
+    { id: 'gamer_35',   icon: '🎮', title: 'Азартный игрок',  desc: 'Сыграй 35 раундов в любых играх',             target: 35,    reward: 300,  metric: 'gamesPlayed' },
+    { id: 'worker_15',  icon: '📋', title: 'Трудяга',         desc: 'Выполни 15 заданий из списка',                target: 15,    reward: 450,  metric: 'tasksDone' },
+    { id: 'lucky_2500', icon: '🍀', title: 'Везунчик',        desc: 'Выиграй 2 500+ монет за один раунд',          target: 2500,  reward: 700,  metric: 'bestWin' },
+    { id: 'tycoon_50k', icon: '🏆', title: 'Магнат',          desc: 'Выиграй суммарно 50 000 монет в играх',       target: 50000, reward: 1000, metric: 'totalWon' }
 ];
+
+function toggleProfileAchievements() {
+    const card = document.getElementById('profileAchievementsCard');
+    if (!card) return;
+    card.classList.toggle('open');
+}
 
 const _claimingAchievements = {};
 
@@ -17394,11 +17465,13 @@ function getAchievementMetrics() {
 window.renderAchievementsUI = function () {
     const grid = document.getElementById('profileAchievementsGrid');
     const summaryEl = document.getElementById('achSummaryText');
+    const readyBadgeEl = document.getElementById('achReadyBadge');
     if (!grid) return;
 
     const metrics = getAchievementMetrics();
     const claimedMap = getClaimedAchievementsLocal();
     let unlockedCount = 0;
+    let readyToClaimCount = 0;
 
     grid.innerHTML = ACHIEVEMENTS_CONFIG.map(ach => {
         const curVal = Math.max(0, Number(metrics[ach.metric] || 0));
@@ -17407,6 +17480,7 @@ window.renderAchievementsUI = function () {
         const isDone = curVal >= ach.target;
         const isClaimed = Boolean(claimedMap[ach.id]);
         if (isClaimed || isDone) unlockedCount++;
+        if (isDone && !isClaimed) readyToClaimCount++;
 
         const cardCls = isClaimed ? 'claimed' : (isDone ? 'ready' : '');
         const progTxt = `${formatCoins(clamped)} / ${formatCoins(ach.target)}`;
@@ -17445,7 +17519,13 @@ window.renderAchievementsUI = function () {
     }).join('');
 
     if (summaryEl) {
-        summaryEl.textContent = `${unlockedCount} / ${ACHIEVEMENTS_CONFIG.length} открыто`;
+        summaryEl.textContent = `${unlockedCount} / ${ACHIEVEMENTS_CONFIG.length}`;
+    }
+    if (readyBadgeEl) {
+        readyBadgeEl.classList.toggle('show', readyToClaimCount > 0);
+        if (readyToClaimCount > 0) {
+            readyBadgeEl.textContent = `🎁 Забрать (${readyToClaimCount})`;
+        }
     }
 };
 
