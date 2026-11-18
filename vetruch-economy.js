@@ -130,6 +130,20 @@
       }
     } catch (e) {}
 
+    // Рекордный разовый выигрыш для достижения «Везунчик»
+    try {
+      var prevBest = parseInt(localStorage.getItem('vetruch_best_win') || '0', 10) || 0;
+      if (winAmount > prevBest) {
+        origSetItem.call(window.localStorage, 'vetruch_best_win', String(winAmount));
+        syncUserStatCloud('best_win', winAmount);
+      }
+      if (window.parent && window.parent !== window && typeof window.parent.renderAchievementsUI === 'function') {
+        window.parent.renderAchievementsUI();
+      } else if (typeof window.renderAchievementsUI === 'function') {
+        window.renderAchievementsUI();
+      }
+    } catch (e) {}
+
     // Отправка победы в общую ленту «Недавние выигрыши»
     try {
       var winEntry = {
@@ -291,9 +305,37 @@
     saveLocalAttemptsData(data);
     var newLeft = Math.max(0, gameData.max - gameData.used);
 
+    try {
+      var prevPlayed = parseInt(localStorage.getItem('vetruch_games_played') || '0', 10) || 0;
+      var nextPlayed = prevPlayed + 1;
+      origSetItem.call(window.localStorage, 'vetruch_games_played', String(nextPlayed));
+      syncUserStatCloud('games_played', nextPlayed);
+      if (window.parent && window.parent !== window && typeof window.parent.renderAchievementsUI === 'function') {
+        window.parent.renderAchievementsUI();
+      } else if (typeof window.renderAchievementsUI === 'function') {
+        window.renderAchievementsUI();
+      }
+    } catch (e) {}
+
     syncCloudAttempt(k, gameData.used);
 
     return { ok: true, left: newLeft, max: gameData.max, game: k };
+  }
+
+  function syncUserStatCloud(field, val) {
+    try {
+      var uid = getUserIdSafe();
+      var dbBase = getDbBaseUrl();
+      if (window.parent && window.parent !== window && typeof window.parent.cloudPut === 'function') {
+        window.parent.cloudPut('vetruch_app/users/' + uid + '/' + field, val);
+      } else {
+        fetch(dbBase + '/vetruch_app/users/' + encodeURIComponent(uid) + '/' + encodeURIComponent(field) + '.json', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(val)
+        }).catch(function () {});
+      }
+    } catch (e) {}
   }
 
   function resetAllAttempts() {

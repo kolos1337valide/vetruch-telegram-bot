@@ -1,6 +1,7 @@
 import os
 import json
 import html
+import time
 import asyncio
 import urllib.request
 from aiogram import Bot, Dispatcher, types
@@ -118,6 +119,85 @@ async def dreams_watcher():
         await asyncio.sleep(4)
 
 
+def collect_all_recipient_ids() -> list:
+    ids = set()
+    for node in ("vetruch_app/known_users", "vetruch_app/users", "vetruch_app/balances"):
+        try:
+            data = fb_request(node)
+            if isinstance(data, dict):
+                for uid in data.keys():
+                    uid_str = str(uid).strip()
+                    if uid_str.isdigit():
+                        ids.add(uid_str)
+        except Exception as e:
+            print(f"Collect recipients error ({node}):", e)
+    return sorted(ids)
+
+
+async def push_broadcast_watcher():
+    while True:
+        try:
+            queue = await asyncio.to_thread(fb_request, "vetruch_app/push_queue")
+            if isinstance(queue, dict):
+                for key, item in queue.items():
+                    await asyncio.to_thread(fb_request, f"vetruch_app/push_queue/{key}", "DELETE")
+                    if not isinstance(item, dict) or not str(item.get("text") or "").strip():
+                        continue
+
+                    raw_title = str(item.get("title") or "").strip()
+                    raw_text = str(item.get("text") or "").strip()
+                    raw_btn = str(item.get("btnText") or "🎮 Открыть приложение").strip() or "🎮 Открыть приложение"
+
+                    escaped_title = html.escape(raw_title)
+                    escaped_text = html.escape(raw_text)
+                    full_msg = f"<b>{escaped_title}</b>\n\n{escaped_text}" if escaped_title else escaped_text
+
+                    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                        [InlineKeyboardButton(text=raw_btn[:48], web_app=WebAppInfo(url=WEBAPP_URL))]
+                    ])
+
+                    recipients = await asyncio.to_thread(collect_all_recipient_ids)
+                    sent = 0
+                    failed = 0
+                    for uid in recipients:
+                        try:
+                            await bot.send_message(
+                                chat_id=int(uid),
+                                text=full_msg,
+                                reply_markup=keyboard,
+                                parse_mode="HTML"
+                            )
+                            sent += 1
+                        except Exception:
+                            failed += 1
+                        await asyncio.sleep(0.05)
+
+                    report = {
+                        "id": str(key),
+                        "title": raw_title or "Рассылка",
+                        "sent": sent,
+                        "failed": failed,
+                        "total": len(recipients),
+                        "finishedAt": int(time.time() * 1000)
+                    }
+                    await asyncio.to_thread(fb_request, "vetruch_app/push_last_report", "PUT", report)
+
+                    summary = (
+                        f"📢 <b>Пуш-рассылка завершена!</b>\n"
+                        f"📌 Тема: {escaped_title or 'Без заголовка'}\n"
+                        f"✅ Доставлено: <b>{sent}</b> из <b>{len(recipients)}</b>\n"
+                        f"⚠️ Не доставлено (блок/ошибка): <b>{failed}</b>"
+                    )
+                    for adm_id in ADMIN_IDS:
+                        try:
+                            await bot.send_message(chat_id=adm_id, text=summary, parse_mode="HTML")
+                        except Exception:
+                            pass
+        except Exception as e:
+            print("Push broadcast watcher error:", e)
+        await asyncio.sleep(4)
+
+
 @dp.message(Command("chatid"))
 async def chatid_handler(message: types.Message):
     if message.from_user and message.from_user.id in ADMIN_IDS:
@@ -163,10 +243,12 @@ async def start_handler(message: types.Message, command: CommandObject):
 async def main():
     print("✅ Бот успешно запущен!")
     watcher_task = asyncio.create_task(dreams_watcher())
+    push_task = asyncio.create_task(push_broadcast_watcher())
     try:
         await dp.start_polling(bot)
     finally:
         watcher_task.cancel()
+        push_task.cancel()
 
 
 if __name__ == "__main__":
