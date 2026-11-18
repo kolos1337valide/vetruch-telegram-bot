@@ -314,11 +314,11 @@
         }
 
         .bj-card.deal-anim-dealer {
-            animation: dealFromShoeDealer 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: dealFromShoeDealer 0.58s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         .bj-card.deal-anim-player {
-            animation: dealFromShoePlayer 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: dealFromShoePlayer 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         @keyframes dealFromShoeDealer {
@@ -354,7 +354,7 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.52s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.85s cubic-bezier(0.22, 0.85, 0.35, 1);
             transform: rotateY(0deg);
         }
 
@@ -928,27 +928,27 @@
             playerCards.push(p1);
             playerCardsEl.appendChild(createCardElement(p1, 'player'));
             updateScoresUI();
-            await sleep(230);
+            await sleep(440);
 
             dealerCards.push(d1);
             dealerCardsEl.appendChild(createCardElement(d1, 'dealer'));
             updateScoresUI();
-            await sleep(230);
+            await sleep(440);
 
             playerCards.push(p2);
             playerCardsEl.appendChild(createCardElement(p2, 'player'));
             updateScoresUI();
-            await sleep(230);
+            await sleep(440);
 
             dealerCards.push(d2);
             dealerCardsEl.appendChild(createCardElement(d2, 'dealer'));
             updateScoresUI();
-            await sleep(320);
+            await sleep(500);
 
             const pInfo = handInfo(playerCards);
             if (pInfo.isBlackjack) {
                 dealerSpeechEl.textContent = 'Блэкджек! Проверяю свою карту...';
-                await sleep(450);
+                await sleep(650);
                 await runDealerTurn();
                 return;
             }
@@ -979,7 +979,7 @@
             playerCards.push(nextCard);
             playerCardsEl.appendChild(createCardElement(nextCard, 'player'));
             updateScoresUI();
-            await sleep(480);
+            await sleep(680);
 
             const pInfo = handInfo(playerCards);
             if (pInfo.isBust) {
@@ -989,7 +989,7 @@
             }
             if (pInfo.total === 21) {
                 dealerSpeechEl.textContent = '21! Мой ход...';
-                await sleep(350);
+                await sleep(550);
                 await runDealerTurn();
                 return;
             }
@@ -1031,7 +1031,7 @@
             playerCards.push(nextCard);
             playerCardsEl.appendChild(createCardElement(nextCard, 'player'));
             updateScoresUI();
-            await sleep(520);
+            await sleep(740);
 
             const pInfo = handInfo(playerCards);
             if (pInfo.isBust) {
@@ -1052,6 +1052,7 @@
         async function runDealerTurn() {
             state = 'dealerTurn';
             dealerSpeechEl.textContent = 'Вскрываю карту...';
+            await sleep(300);
 
             const pInfo = handInfo(playerCards);
             const pTotal = pInfo.total;
@@ -1104,7 +1105,7 @@
                 hiddenEl.classList.remove('is-hidden');
             }
             updateScoresUI();
-            await sleep(600);
+            await sleep(980);
 
             for (let i = 1; i < plannedSeq.length; i++) {
                 if (pInfo.isBlackjack && i >= 1 && dealerCards.length === 2) break;
@@ -1113,7 +1114,7 @@
                 dealerCards.push(extraCard);
                 dealerCardsEl.appendChild(createCardElement(extraCard, 'dealer'));
                 updateScoresUI();
-                await sleep(540);
+                await sleep(820);
             }
 
             await finishRound('compare');
