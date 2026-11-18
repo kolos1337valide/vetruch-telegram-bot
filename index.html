@@ -21,6 +21,7 @@
     <link rel="prefetch" href="dice.html">
     <link rel="prefetch" href="blackjack.html">
     <link rel="prefetch" href="slots.html">
+    <link rel="prefetch" href="flappy.html">
     
     <style>
 
@@ -8414,6 +8415,20 @@ img {
                 <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
+
+            <!-- Новая игра: ФЛАППИ УТКА -->
+            <div class="game-card wide-card anim-item" style="animation-delay: 0.45s;" onpointerdown="preloadGame('flappy.html?v=1')" onclick="openGame('flappy.html?v=1')">
+                <span class="game-card-ribbon ribbon-hot">🦆 ЦЕЛЬ 10 · x2.5</span>
+                <div class="game-icon" style="margin: 0; width: 66px; height: 66px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <img src="flappy-duck.png" alt="Флаппи Утка" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0, 217, 255, 0.45));">
+                </div>
+                <div class="wide-card-info">
+                    <div class="game-online-tag" id="onlineTagFlappy" style="justify-content: flex-start;">🟢 2 в полёте</div>
+                    <div class="game-title">ФЛАППИ УТКА</div>
+                    <div class="game-subtitle">полёт · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                    <div class="game-play-btn">ВЗЛЕТЕТЬ ➔</div>
+                </div>
+            </div>
         </div>
 
 </div><!-- конец miniGamesSection -->
@@ -9115,7 +9130,9 @@ img {
                 </div>
             </div>
             <div class="ach-collapse-body" id="profileAchievementsCollapse">
-                <div class="ach-grid" id="profileAchievementsGrid"></div>
+                <div class="ach-collapse-inner">
+                    <div class="ach-grid" id="profileAchievementsGrid"></div>
+                </div>
             </div>
         </div>
 
@@ -9552,7 +9569,7 @@ img {
             background: rgba(255, 255, 255, 0.06);
             color: #94a3b8;
             font-size: 12px;
-            transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;
+            transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, color 0.25s ease;
         }
         .ach-collapse-card.open .ach-chevron {
             transform: rotate(180deg);
@@ -9560,12 +9577,23 @@ img {
             color: #00d9ff;
         }
         .ach-collapse-body {
-            display: none;
-            margin-top: 12px;
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            margin-top: 0;
+            transition:
+                grid-template-rows 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.3s ease,
+                margin-top 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ach-collapse-inner {
+            overflow: hidden;
+            min-height: 0;
         }
         .ach-collapse-card.open .ach-collapse-body {
-            display: block;
-            animation: cardFilterIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            grid-template-rows: 1fr;
+            opacity: 1;
+            margin-top: 14px;
         }
         .ach-grid {
             display: grid;
@@ -9584,6 +9612,25 @@ img {
             gap: 7px;
             transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
         }
+        .ach-collapse-card .ach-card {
+            opacity: 0;
+            transform: translateY(10px) scale(0.96);
+            transition:
+                opacity 0.32s ease,
+                transform 0.36s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+        .ach-collapse-card.open .ach-card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .ach-collapse-card.open .ach-card:nth-child(1) { transition-delay: 0.03s; }
+        .ach-collapse-card.open .ach-card:nth-child(2) { transition-delay: 0.06s; }
+        .ach-collapse-card.open .ach-card:nth-child(3) { transition-delay: 0.09s; }
+        .ach-collapse-card.open .ach-card:nth-child(4) { transition-delay: 0.12s; }
+        .ach-collapse-card.open .ach-card:nth-child(5) { transition-delay: 0.15s; }
+        .ach-collapse-card.open .ach-card:nth-child(6) { transition-delay: 0.18s; }
         .ach-card.ready {
             border-color: rgba(0, 230, 118, 0.55);
             background: linear-gradient(180deg, rgba(0, 230, 118, 0.11) 0%, rgba(12, 20, 24, 0.92) 100%);
@@ -16183,6 +16230,8 @@ function updateOnlineUsersUI(count) {
 if (t6) t6.textContent = `🟢 ${Math.max(1, Math.round(count * 0.25))} за столом`;
     const t7 = document.getElementById('onlineTagSlots');
     if (t7) t7.textContent = `🟢 ${Math.max(1, Math.round(count * 0.30))} крутят`;
+    const t8 = document.getElementById('onlineTagFlappy');
+    if (t8) t8.textContent = `🟢 ${Math.max(1, Math.round(count * 0.20))} в полёте`;
 }
 
 // Инициализация систем при старте
@@ -16235,6 +16284,7 @@ setTimeout(initAdvancedSystems, 300);
         <iframe id="frame-dice" src="dice.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-blackjack" src="blackjack.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-slots" src="slots.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-flappy" src="flappy.html?v=1" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
 
     <!-- МОДАЛКА МОИ ЗАКАЗЫ -->

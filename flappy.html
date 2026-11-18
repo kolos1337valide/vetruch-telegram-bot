@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script src="vetruch-economy.js?v=4"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Флаппи Утка - Vetruch</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        :root {
+            --bg: #030711;
+            --text: #ffffff;
+            --blue-main: #0088ff;
+            --blue-cyan: #00d9ff;
+            --blue-glow: rgba(0, 170, 255, 0.55);
+            --gold: #ffd700;
+            --green: #00e676;
+            --red: #ff3366;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .game-shell {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at 50% 25%, #0e203d 0%, #050b17 62%, #02050b 100%);
+        }
+
+        /* Верхняя панель навигации и баланса */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px 8px 14px;
+            z-index: 20;
+            flex-shrink: 0;
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            height: 38px;
+            padding: 0 13px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+        }
+        .back-btn:active { transform: scale(0.95); }
+
+        .balance-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 136, 255, 0.16);
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 15px;
+            border: 1px solid rgba(0, 217, 255, 0.35);
+            box-shadow: 0 0 16px rgba(0, 136, 255, 0.25);
+        }
+        .coin-icon { width: 17px; height: 17px; flex-shrink: 0; vertical-align: middle; }
+
+        /* Сцена полёта */
+        .stage-wrap {
+            position: relative;
+            flex: 1 1 auto;
+            min-height: 260px;
+            margin: 0 10px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1.5px solid rgba(0, 217, 255, 0.32);
+            box-shadow:
+                inset 0 0 36px rgba(0, 0, 0, 0.75),
+                0 8px 26px rgba(0, 0, 0, 0.75);
+            touch-action: manipulation;
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Верхний HUD счёта как на референсе */
+        .hud-overlay {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .hud-score {
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.85),
+                0 0 18px rgba(0, 217, 255, 0.75);
+            letter-spacing: -1px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .hud-goal-pill {
+            margin-top: 6px;
+            background: rgba(6, 13, 26, 0.86);
+            border: 1px solid rgba(0, 217, 255, 0.42);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+        }
+        .hud-goal-pill b { color: #00e5ff; }
+        .hud-goal-pill span.gold { color: #ffd700; }
+
+        .hud-sub-pill {
+            margin-top: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            background: rgba(5, 10, 20, 0.7);
+            padding: 2px 9px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Кнопка "Тапни, чтобы лететь" в idle состоянии */
+        .tap-prompt-wrap {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 22%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 12;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .tap-prompt-wrap.hidden {
+            opacity: 0;
+            transform: scale(0.92);
+        }
+        .tap-prompt-pill {
+            pointer-events: auto;
+            background: linear-gradient(135deg, #22e3d0 0%, #00b8ff 100%);
+            color: #03131c;
+            font-size: 15px;
+            font-weight: 900;
+            padding: 11px 24px;
+            border-radius: 999px;
+            border: none;
+            box-shadow:
+                0 6px 22px rgba(0, 217, 255, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.55);
+            cursor: pointer;
+            animation: tapPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes tapPulse {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.03); }
+        }
+
+        /* Результат раунда поверх сцены */
+        .result-overlay {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(4, 8, 18, 0.72);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 15;
+            padding: 18px;
+            text-align: center;
+        }
+        .result-overlay.show {
+            display: flex;
+            animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .result-card {
+            width: 100%;
+            max-width: 290px;
+            background: linear-gradient(180deg, rgba(16, 28, 48, 0.96) 0%, rgba(8, 14, 26, 0.98) 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.45);
+            border-radius: 20px;
+            padding: 18px 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85);
+        }
+        .result-card.win {
+            border-color: rgba(0, 230, 118, 0.65);
+            box-shadow: 0 0 28px rgba(0, 230, 118, 0.25), 0 12px 32px rgba(0, 0, 0, 0.85);
+        }
+        .result-card.lose {
+            border-color: rgba(255, 51, 102, 0.6);
+            box-shadow: 0 0 26px rgba(255, 51, 102, 0.2), 0 12px 32px rgba(0, 0, 0, 0.85);
+        }
+        .result-title {
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+        .result-sub {
+            font-size: 13px;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .result-btn {
+            width: 100%;
+            border: none;
+            border-radius: 13px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #031520;
+            background: linear-gradient(135deg, #22e3d0 0%, #0095ff 100%);
+            box-shadow: 0 4px 16px rgba(0, 195, 255, 0.45);
+        }
+        .result-btn:active { transform: scale(0.96); }
+        .result-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Нижняя панель ставок */
+        .controls {
+            flex-shrink: 0;
+            margin: 10px 10px 14px 10px;
+            background: rgba(16, 20, 29, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 10px 12px;
+            z-index: 20;
+        }
+
+        .bet-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .bet-header-row b { color: #00e5ff; }
+        .bet-header-row span.gold { color: #ffd700; font-weight: 800; }
+
+        .bet-options {
+            display: flex;
+            gap: 7px;
+        }
+        .bet-btn {
+            flex: 1;
+            background: #1a202c;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 10px 6px;
+            border-radius: 11px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.18s;
+        }
+        .bet-btn.active {
+            background: rgba(0, 217, 255, 0.18);
+            border-color: var(--blue-cyan);
+            color: var(--blue-cyan);
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.25);
+        }
+        .bet-btn:disabled {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-shell">
+    <div class="header">
+        <button type="button" class="back-btn" onclick="goBack()">❮ Назад</button>
+        <div class="balance-pill">
+            <span id="balanceDisplay">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+    </div>
+
+    <div class="stage-wrap" id="stageWrap">
+        <canvas id="gameCanvas"></canvas>
+
+        <div class="hud-overlay">
+            <div class="hud-score" id="scoreDisplay">0</div>
+            <div class="hud-goal-pill">Цель: <b>10</b> &nbsp;·&nbsp; Рекорд: <span class="gold" id="bestScoreDisplay">0</span></div>
+            <div class="hud-sub-pill">5 труб = x1.2 &nbsp;·&nbsp; 10 труб = x2.5</div>
+        </div>
+
+        <div class="tap-prompt-wrap" id="tapPromptWrap">
+            <button type="button" class="tap-prompt-pill" id="tapPromptBtn">Тапни, чтобы лететь</button>
+        </div>
+
+        <div class="result-overlay" id="resultOverlay">
+            <div class="result-card" id="resultCard">
+                <div class="result-title" id="resultTitle">Попытка завершена</div>
+                <div class="result-sub" id="resultSub">Счёт: 0 / 10</div>
+                <button type="button" class="result-btn" id="resultBtn" onclick="prepareNextFlight()">Тапни, чтобы лететь</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="bet-header-row">
+            <span>Ставка: <b id="infoBet">20</b> <img src="coins.png" class="coin-icon" style="width:13px;height:13px;"></span>
+            <span class="gold">Макс. приз (x2.5): <span id="maxPrizeDisplay">50</span> <img src="coins.png" class="coin-icon" style="width:13px;height:13px;"></span>
+        </div>
+        <div class="bet-options">
+            <button type="button" class="bet-btn active" onclick="setBet(20, this)">20</button>
+            <button type="button" class="bet-btn" onclick="setBet(50, this)">50</button>
+            <button type="button" class="bet-btn" onclick="setBet(100, this)">100</button>
+            <button type="button" class="bet-btn" onclick="setBet(200, this)">200</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { ready:()=>{}, expand:()=>{}, setHeaderColor:()=>{}, setBackgroundColor:()=>{}, showAlert:(m)=>alert(m) };
+    tg.ready(); tg.expand();
+    try { tg.setHeaderColor('#030711'); tg.setBackgroundColor('#030711'); } catch (e) {}
+
+    let rawBal = localStorage.getItem('vetruch_balance');
+    let balance = rawBal !== null ? parseInt(rawBal, 10) : 500;
+    if (isNaN(balance)) balance = 500;
+
+    let bet = 20;
+    let bestScore = parseInt(localStorage.getItem('vetruch_flappy_best') || '0', 10) || 0;
+    let state = 'idle'; // 'idle' | 'flying' | 'finished'
+    let score = 0;
+    let restartUnlockAt = 0;
+
+    const GOAL_SCORE = 10;
+    const CHECKPOINT_SCORE = 5;
+
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const infoBet = document.getElementById('infoBet');
+    const maxPrizeDisplay = document.getElementById('maxPrizeDisplay');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const bestScoreDisplay = document.getElementById('bestScoreDisplay');
+    const tapPromptWrap = document.getElementById('tapPromptWrap');
+    const resultOverlay = document.getElementById('resultOverlay');
+    const resultCard = document.getElementById('resultCard');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultSub = document.getElementById('resultSub');
+    const resultBtn = document.getElementById('resultBtn');
+    const betBtns = document.querySelectorAll('.bet-btn');
+    const stageWrap = document.getElementById('stageWrap');
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    bestScoreDisplay.textContent = bestScore;
+
+    function goBack() {
+        if (window.parent && window.parent !== window && typeof window.parent.closeGameModal === 'function') {
+            window.parent.closeGameModal();
+        } else if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
+
+    function updateBalanceUI() {
+        if (isNaN(balance)) balance = 0;
+        balanceDisplay.textContent = balance;
+        localStorage.setItem('vetruch_balance', balance);
+    }
+
+    function setBet(amount, btn) {
+        if (state === 'flying') return;
+        bet = amount;
+        infoBet.textContent = bet;
+        maxPrizeDisplay.textContent = Math.floor(bet * 2.5);
+        betBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    updateBalanceUI();
+
+    // ================= ЗАГРУЗКА СПРАЙТА УТКИ =================
+    const duckImg = new Image();
+    let duckImgLoaded = false;
+    duckImg.onload = () => { duckImgLoaded = true; };
+    duckImg.src = 'flappy-duck.png';
+
+    // ================= РАЗМЕРЫ СЦЕНЫ И СПАВН =================
+    let W = 360;
+    let H = 480;
+    let dpr = 1;
+    let floorHeight = 58;
+
+    const duck = {
+        x: 92,
+        y: 220,
+        vy: 0,
+        w: 56,
+        h: 68,
+        angle: 0
+    };
+
+    let pipes = [];
+    let particles = [];
+    let floatingPopups = [];
+    let bgStars = [];
+    let scrollX = 0;
+    let lastTime = performance.now();
+
+    function initStars() {
+        bgStars = [];
+        for (let i = 0; i < 42; i++) {
+            bgStars.push({
+                x: Math.random() * W,
+                y: Math.random() * (H - floorHeight),
+                r: Math.random() * 1.4 + 0.4,
+                alpha: Math.random() * 0.55 + 0.2,
+                speed: Math.random() * 0.25 + 0.1
+            });
+        }
+    }
+
+    function resizeCanvas() {
+        const rect = stageWrap.getBoundingClientRect();
+        if (rect.width < 10 || rect.height < 10) return;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = rect.width;
+        H = rect.height;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        duck.x = Math.round(Math.min(115, W * 0.27));
+        if (state === 'idle') {
+            duck.y = Math.round((H - floorHeight) * 0.46);
+        }
+        initStars();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 30);
+
+    function spawnPipe(offsetX, indexNum) {
+        const usableH = H - floorHeight;
+        const gap = Math.max(150, Math.min(168, usableH * 0.31));
+        const marginTop = 86;
+        const marginBottom = 56;
+        const maxTop = Math.max(marginTop + 20, usableH - gap - marginBottom);
+        const gapTop = marginTop + Math.random() * (maxTop - marginTop);
+        const isGolden = (indexNum === CHECKPOINT_SCORE || indexNum === GOAL_SCORE);
+
+        pipes.push({
+            x: offsetX,
+            w: 58,
+            gapTop,
+            gapBottom: gapTop + gap,
+            passed: false,
+            num: indexNum,
+            isGolden
+        });
+    }
+
+    let nextPipeNum = 1;
+
+    function resetFlightState() {
+        pipes = [];
+        particles = [];
+        floatingPopups = [];
+        score = 0;
+        nextPipeNum = 1;
+        scoreDisplay.textContent = '0';
+        duck.y = Math.round((H - floorHeight) * 0.46);
+        duck.vy = 0;
+        duck.angle = 0;
+        resultOverlay.classList.remove('show');
+        tapPromptWrap.classList.remove('hidden');
+        betBtns.forEach(b => b.disabled = false);
+        state = 'idle';
+    }
+
+    function prepareNextFlight() {
+        if (Date.now() < restartUnlockAt) return;
+        resetFlightState();
+    }
+
+    function spawnFlapParticles(burstCount) {
+        for (let i = 0; i < burstCount; i++) {
+            particles.push({
+                x: duck.x - 16 + (Math.random() - 0.5) * 10,
+                y: duck.y + 8 + (Math.random() - 0.5) * 12,
+                vx: -2.2 - Math.random() * 2.2,
+                vy: 1.0 + (Math.random() - 0.5) * 2.0,
+                r: Math.random() * 3.8 + 1.8,
+                life: 1.0,
+                decay: 0.045 + Math.random() * 0.03,
+                color: Math.random() < 0.3 ? '#ffd700' : '#00e5ff'
+            });
+        }
+    }
+
+    function startRoundAndFlap() {
+        if (state !== 'idle') return;
+        let storedBal = parseInt(localStorage.getItem('vetruch_balance') || String(balance), 10);
+        if (!isNaN(storedBal)) balance = storedBal;
+
+        if (balance < bet) {
+            tg.showAlert('Недостаточно монет!');
+            return;
+        }
+
+        if (window.VETRUCH_ECONOMY) {
+            var check = VETRUCH_ECONOMY.checkAndUseAttempt('flappy');
+            if (!check.ok) {
+                VETRUCH_ECONOMY.showNoAttemptsOverlay('flappy');
+                return;
+            }
+            VETRUCH_ECONOMY.updateBadgeUI('flappy');
+        }
+
+        balance -= bet;
+        const expEarned = Math.floor(bet / 50);
+        if (expEarned > 0) {
+            let curXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10);
+            localStorage.setItem('vetruch_user_xp', curXp + expEarned);
+        }
+        updateBalanceUI();
+
+        state = 'flying';
+        score = 0;
+        nextPipeNum = 1;
+        pipes = [];
+        floatingPopups = [];
+        scoreDisplay.textContent = '0';
+
+        tapPromptWrap.classList.add('hidden');
+        resultOverlay.classList.remove('show');
+        betBtns.forEach(b => b.disabled = true);
+
+        const firstX = Math.max(W + 60, duck.x + 270);
+        const spacing = 225;
+        for (let i = 0; i < 4; i++) {
+            spawnPipe(firstX + i * spacing, nextPipeNum++);
+        }
+
+        performFlap();
+    }
+
+    function performFlap() {
+        duck.vy = -6.2;
+        spawnFlapParticles(9);
+        if (tg.HapticFeedback) {
+            try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
+        }
+    }
+
+    function handleFlyInput(e) {
+        if (e && e.target && e.target.closest('.controls, .header')) return;
+        if (e) e.preventDefault();
+
+        if (state === 'idle') {
+            startRoundAndFlap();
+        } else if (state === 'flying') {
+            performFlap();
+        }
+    }
+
+    stageWrap.addEventListener('pointerdown', handleFlyInput);
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'ArrowUp') {
+            e.preventDefault();
+            if (state === 'finished' && Date.now() >= restartUnlockAt) {
+                prepareNextFlight();
+            } else {
+                handleFlyInput();
+            }
+        }
+    });
+
+    function finishFlight(reachedGoal) {
+        if (state === 'finished') return;
+        state = 'finished';
+        restartUnlockAt = Date.now() + 450;
+
+        let winAmount = 0;
+        if (reachedGoal) {
+            winAmount = Math.floor(bet * 2.5);
+        } else if (score >= CHECKPOINT_SCORE) {
+            winAmount = Math.floor(bet * 1.2);
+        }
+
+        if (winAmount > 0) {
+            balance += winAmount;
+            updateBalanceUI();
+            if (tg.HapticFeedback) {
+                try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+            }
+        } else {
+            if (tg.HapticFeedback) {
+                try { tg.HapticFeedback.notificationOccurred('error'); } catch (e) {}
+            }
+        }
+
+        resultCard.className = 'result-card ' + (winAmount > 0 ? 'win' : 'lose');
+        if (reachedGoal) {
+            resultTitle.textContent = '🏆 ЦЕЛЬ 10 ПРОЙДЕНА!';
+            resultTitle.style.color = '#00e676';
+            resultSub.innerHTML = `Выигрыш: <b>+${winAmount}</b> <img src="coins.png" class="coin-icon"> (x2.5)`;
+            resultBtn.textContent = 'ЛЕТЕТЬ ЕЩЁ';
+        } else if (winAmount > 0) {
+            resultTitle.textContent = `✨ ЧЕКПОИНТ (${score}/10)!`;
+            resultTitle.style.color = '#00e5ff';
+            resultSub.innerHTML = `Выигрыш: <b>+${winAmount}</b> <img src="coins.png" class="coin-icon"> (x1.2)`;
+            resultBtn.textContent = 'ЛЕТЕТЬ ЕЩЁ';
+        } else {
+            resultTitle.textContent = '💥 СТОЛКНОВЕНИЕ';
+            resultTitle.style.color = '#ff5277';
+            resultSub.textContent = `Пройдено труб: ${score} из ${GOAL_SCORE}`;
+            resultBtn.textContent = 'ПОПРОБОВАТЬ СНОВА';
+        }
+
+        resultBtn.disabled = true;
+        setTimeout(() => { resultBtn.disabled = false; }, 450);
+        resultOverlay.classList.add('show');
+        betBtns.forEach(b => b.disabled = false);
+    }
+
+    // ================= ОТРИСОВКА ФОНА (В СТИЛЕ РЕФЕРЕНСА + VETRUCH NEON) =================
+    function drawBackground() {
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+        skyGrad.addColorStop(0, '#071529');
+        skyGrad.addColorStop(0.55, '#0b1e38');
+        skyGrad.addColorStop(1, '#040914');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Звёзды за панорамными окнами
+        for (const s of bgStars) {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(140, 220, 255, ${s.alpha})`;
+            ctx.fill();
+        }
+
+        // Панорамная остеклённая стена сзади (отсылка к заводу из референса)
+        const winLeft = W * 0.14;
+        const winRight = W * 0.86;
+        const winW = winRight - winLeft;
+        const usableH = H - floorHeight;
+
+        ctx.strokeStyle = 'rgba(0, 217, 255, 0.12)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(winLeft, 24, winW, usableH - 24);
+
+        const cols = 4;
+        for (let i = 1; i < cols; i++) {
+            const gx = winLeft + (winW / cols) * i;
+            ctx.beginPath();
+            ctx.moveTo(gx, 24);
+            ctx.lineTo(gx, usableH);
+            ctx.stroke();
+        }
+        for (let y = 95; y < usableH - 30; y += 72) {
+            ctx.beginPath();
+            ctx.moveTo(winLeft, y);
+            ctx.lineTo(winRight, y);
+            ctx.stroke();
+        }
+
+        // Силосы/баки по краям ангара
+        ctx.fillStyle = 'rgba(13, 28, 52, 0.88)';
+        ctx.fillRect(0, 75, winLeft - 8, usableH - 75);
+        ctx.fillRect(winRight + 8, 75, W - (winRight + 8), usableH - 75);
+        ctx.strokeStyle = 'rgba(0, 217, 255, 0.2)';
+        ctx.strokeRect(0, 75, winLeft - 8, usableH - 75);
+        ctx.strokeRect(winRight + 8, 75, W - (winRight + 8), usableH - 75);
+
+        // Огромный водяной знак VETRUCH DUCK на центральной стене
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(0, 217, 255, 0.12)';
+        ctx.font = '900 32px Inter, sans-serif';
+        ctx.fillText('VETRUCH', W / 2, usableH * 0.34);
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.10)';
+        ctx.font = '900 22px Inter, sans-serif';
+        ctx.fillText('DUCK VAULT', W / 2, usableH * 0.34 + 28);
+        ctx.restore();
+    }
+
+    function drawFloorAndConveyor() {
+        const y = H - floorHeight;
+        // Основной пол
+        const floorGrad = ctx.createLinearGradient(0, y, 0, H);
+        floorGrad.addColorStop(0, '#0f223d');
+        floorGrad.addColorStop(1, '#050b16');
+        ctx.fillStyle = floorGrad;
+        ctx.fillRect(0, y, W, floorHeight);
+
+        // Светящаяся неоновая полоса
+        ctx.fillStyle = '#00d9ff';
+        ctx.fillRect(0, y, W, 3);
+
+        // Движущийся конвейер с капсулами монет
+        const step = 64;
+        const offset = ((scrollX % step) + step) % step;
+        ctx.fillStyle = 'rgba(0, 217, 255, 0.18)';
+        for (let x = -offset; x < W + step; x += step) {
+            ctx.fillRect(x, y + 12, 26, 5);
+            // Мини-контейнер монет на ленте
+            ctx.save();
+            ctx.fillStyle = 'rgba(255, 215, 0, 0.72)';
+            ctx.beginPath();
+            ctx.arc(x + 13, y + 7, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function drawPipes() {
+        const usableH = H - floorHeight;
+        for (const p of pipes) {
+            const accent = p.isGolden ? '#ffd700' : '#00d9ff';
+            const glow = p.isGolden ? 'rgba(255, 215, 0, 0.55)' : 'rgba(0, 217, 255, 0.45)';
+
+            const drawSegment = (x, y, w, h, capAtBottom) => {
+                if (h <= 0) return;
+                const grad = ctx.createLinearGradient(x, 0, x + w, 0);
+                grad.addColorStop(0, '#0b172b');
+                grad.addColorStop(0.5, '#193154');
+                grad.addColorStop(1, '#081222');
+                ctx.fillStyle = grad;
+                ctx.fillRect(x, y, w, h);
+
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, w, h);
+
+                // Блик сбоку
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.fillRect(x + 7, y + 2, 7, Math.max(0, h - 4));
+
+                // Оголовок трубы
+                const capH = 16;
+                const capY = capAtBottom ? (y + h - capH) : y;
+                ctx.save();
+                ctx.shadowColor = glow;
+                ctx.shadowBlur = 10;
+                ctx.fillStyle = '#0f233f';
+                ctx.fillRect(x - 4, capY, w + 8, capH);
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x - 4, capY, w + 8, capH);
+                ctx.restore();
+            };
+
+            drawSegment(p.x, 0, p.w, p.gapTop, true);
+            drawSegment(p.x, p.gapBottom, p.w, usableH - p.gapBottom, false);
+
+            // Номер контрольной трубы 5 или 10
+            if (p.isGolden && p.gapTop > 38) {
+                ctx.save();
+                ctx.fillStyle = '#ffd700';
+                ctx.font = '900 12px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(p.num === GOAL_SCORE ? 'x2.5' : 'x1.2', p.x + p.w / 2, p.gapTop - 22);
+                ctx.restore();
+            }
+        }
+    }
+
+    function drawDuck() {
+        ctx.save();
+        ctx.translate(duck.x, duck.y);
+        ctx.rotate(duck.angle);
+
+        // Джет-пламя при движении вверх или полёте
+        if (state === 'flying' && duck.vy < 1.5) {
+            const flameLen = 14 + Math.random() * 8;
+            const flameGrad = ctx.createLinearGradient(-16, 4, -16 - flameLen, 14);
+            flameGrad.addColorStop(0, '#ffffff');
+            flameGrad.addColorStop(0.4, '#00e5ff');
+            flameGrad.addColorStop(1, 'rgba(0, 136, 255, 0)');
+            ctx.fillStyle = flameGrad;
+            ctx.beginPath();
+            ctx.moveTo(-14, 2);
+            ctx.lineTo(-16 - flameLen, 10);
+            ctx.lineTo(-12, 16);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        if (duckImgLoaded) {
+            const aspect = duckImg.naturalWidth / (duckImg.naturalHeight || 1);
+            duck.h = 66;
+            duck.w = Math.round(duck.h * aspect);
+            ctx.shadowColor = 'rgba(0, 217, 255, 0.35)';
+            ctx.shadowBlur = 10;
+            ctx.drawImage(duckImg, -duck.w / 2, -duck.h / 2, duck.w, duck.h);
+        } else {
+            ctx.fillStyle = '#ffd700';
+            ctx.beginPath();
+            ctx.arc(0, 0, 22, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+
+    function drawParticlesAndPopups(dt) {
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const pt = particles[i];
+            pt.x += pt.vx * dt;
+            pt.y += pt.vy * dt;
+            pt.life -= pt.decay * dt;
+            if (pt.life <= 0) {
+                particles.splice(i, 1);
+                continue;
+            }
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, pt.life);
+            ctx.fillStyle = pt.color;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        for (let i = floatingPopups.length - 1; i >= 0; i--) {
+            const fp = floatingPopups[i];
+            fp.y -= 0.9 * dt;
+            fp.life -= 0.02 * dt;
+            if (fp.life <= 0) {
+                floatingPopups.splice(i, 1);
+                continue;
+            }
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, fp.life);
+            ctx.font = '900 16px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = fp.color;
+            ctx.fillText(fp.text, fp.x, fp.y);
+            ctx.restore();
+        }
+    }
+
+    // ================= ГЛАВНЫЙ ЦИКЛ (60 FPS NORMALIZED) =================
+    function gameLoop(now) {
+        const rawDt = now - lastTime;
+        lastTime = now;
+        const dt = Math.min(32, Math.max(1, rawDt)) / 16.667;
+
+        const usableH = H - floorHeight;
+
+        if (state === 'idle') {
+            scrollX += 1.4 * dt;
+            duck.y = Math.round(usableH * 0.46 + Math.sin(now * 0.004) * 7);
+            duck.angle = Math.sin(now * 0.004) * 0.05;
+        } else if (state === 'flying') {
+            const pipeSpeed = 2.65;
+            scrollX += pipeSpeed * dt;
+
+            // Физика падения
+            duck.vy += 0.34 * dt;
+            if (duck.vy > 8.5) duck.vy = 8.5;
+            duck.y += duck.vy * dt;
+
+            // Плавный наклон утки
+            const targetAngle = Math.max(-0.35, Math.min(0.66, duck.vy * 0.075));
+            duck.angle += (targetAngle - duck.angle) * Math.min(1, 0.22 * dt);
+
+            // Мягкий хитбокс (62% от спрайта)
+            const hitHalfW = duck.w * 0.31;
+            const hitHalfH = duck.h * 0.31;
+
+            // Верх/низ
+            if (duck.y - hitHalfH < 0) {
+                duck.y = hitHalfH;
+                duck.vy = 0;
+            }
+            if (duck.y + hitHalfH >= usableH) {
+                duck.y = usableH - hitHalfH;
+                finishFlight(false);
+            }
+
+            // Движение и коллизия труб
+            for (const p of pipes) {
+                p.x -= pipeSpeed * dt;
+
+                if (!p.passed && (p.x + p.w / 2) < duck.x) {
+                    p.passed = true;
+                    score++;
+                    scoreDisplay.textContent = score;
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestScoreDisplay.textContent = bestScore;
+                        localStorage.setItem('vetruch_flappy_best', bestScore);
+                    }
+                    if (score === CHECKPOINT_SCORE) {
+                        floatingPopups.push({ x: duck.x, y: duck.y - 40, text: '✅ ЧЕКПОИНТ x1.2!', color: '#ffd700', life: 1.0 });
+                    }
+                    if (score >= GOAL_SCORE) {
+                        finishFlight(true);
+                        break;
+                    }
+                }
+
+                // Проверка столкновения
+                const overlapX = (duck.x + hitHalfW > p.x) && (duck.x - hitHalfW < p.x + p.w);
+                if (overlapX) {
+                    if ((duck.y - hitHalfH < p.gapTop) || (duck.y + hitHalfH > p.gapBottom)) {
+                        finishFlight(false);
+                        break;
+                    }
+                }
+            }
+
+            // Убираем ушедшие и доспавниваем новые до цели 10
+            if (pipes.length > 0 && pipes[0].x + pipes[0].w < -20) {
+                pipes.shift();
+            }
+            if (pipes.length > 0 && nextPipeNum <= GOAL_SCORE) {
+                const lastPipe = pipes[pipes.length - 1];
+                if (lastPipe.x < W + 60) {
+                    spawnPipe(lastPipe.x + 225, nextPipeNum++);
+                }
+            }
+        }
+
+        for (const s of bgStars) {
+            s.x -= s.speed * dt;
+            if (s.x < 0) s.x = W;
+        }
+
+        drawBackground();
+        drawPipes();
+        drawFloorAndConveyor();
+        drawParticlesAndPopups(dt);
+        drawDuck();
+
+        requestAnimationFrame(gameLoop);
+    }
+
+    requestAnimationFrame(gameLoop);
+</script>
+</body>
+</html>

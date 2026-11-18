@@ -8,7 +8,7 @@
 (function () {
   'use strict';
 
-  var GAME_KEYS = ['towers', 'mines', 'cards', 'balloon', 'dice', 'blackjack', 'slots'];
+  var GAME_KEYS = ['towers', 'mines', 'cards', 'balloon', 'dice', 'blackjack', 'slots', 'flappy'];
   var GAME_NAMES = {
     towers: 'Башни',
     mines: 'Мины',
@@ -16,7 +16,8 @@
     balloon: 'Шарик',
     dice: 'Кости',
     blackjack: 'Блэкджек',
-    slots: 'Слоты'
+    slots: 'Слоты',
+    flappy: 'Флаппи Утка'
   };
 
   var DEFAULT_CONFIG = {
