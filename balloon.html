@@ -60,12 +60,39 @@
         .balloon-stage::before {
             content: "";
             position: absolute;
-            width: 220px; height: 220px;
+            width: 224px; height: 224px;
             border-radius: 50%;
-            border: 1px dashed rgba(0, 217, 255, 0.26);
+            border: 1px dashed rgba(0, 217, 255, 0.28);
             box-shadow: 0 0 40px rgba(0, 136, 255, 0.16);
             pointer-events: none;
         }
+        .chamber-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 217, 255, 0.14);
+            pointer-events: none;
+        }
+        .chamber-ring.outer {
+            width: 268px;
+            height: 268px;
+            border-style: dotted;
+        }
+        .chamber-tag {
+            position: absolute;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(8, 22, 46, 0.82);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            font-size: 10px;
+            font-weight: 800;
+            color: #7dd3fc;
+            letter-spacing: 0.4px;
+            pointer-events: none;
+        }
+        .chamber-tag.t-tl { top: 14px; left: 12px; }
+        .chamber-tag.t-tr { top: 14px; right: 12px; color: #e0fbff; border-color: rgba(0, 229, 255, 0.45); }
+        .chamber-tag.t-bl { bottom: 14px; left: 12px; }
+        .chamber-tag.t-br { bottom: 14px; right: 12px; }
         
         .balloon-container {
             position: relative;
@@ -203,6 +230,11 @@
 
         <!-- ИГРОВОЕ ПОЛЕ: ШАРИК -->
         <div class="balloon-stage" id="balloonStage">
+            <div class="chamber-ring outer" aria-hidden="true"></div>
+            <div class="chamber-tag t-tl" aria-hidden="true">⚡ X2.0+</div>
+            <div class="chamber-tag t-tr" aria-hidden="true">🔥 ДО X500</div>
+            <div class="chamber-tag t-bl" aria-hidden="true">БАРО-КАМЕРА</div>
+            <div class="chamber-tag t-br" aria-hidden="true">ДАВЛЕНИЕ: ОК</div>
             <div class="balloon-container" id="balloonContainer">
                 <div class="balloon" id="balloon"></div>
                 <div class="explosion-emoji">💥</div>

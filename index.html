@@ -4301,10 +4301,33 @@
     z-index: 4;
     white-space: nowrap;
 }
-.wide-hero-spacer {
-    width: 76px;
-    min-height: 70px;
+.wide-hero-emblem {
+    width: 74px;
+    height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    position: relative;
+    animation: heroEmblemFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 14px rgba(0, 217, 255, 0.42));
+}
+.wide-hero-emblem svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+.wide-hero-emblem .emblem-pulse {
+    animation: emblemPulse 2.1s ease-in-out infinite;
+    transform-origin: center;
+}
+@keyframes heroEmblemFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-5px) rotate(2deg); }
+}
+@keyframes emblemPulse {
+    0%, 100% { opacity: 0.72; }
+    50% { opacity: 1; }
 }
 .art-card .wide-card-info {
     min-width: 0;
@@ -4343,14 +4366,14 @@
 }
 
 /* Синие обложки игр */
-.card-towers .game-art-bg { background-image: url('game-art-towers.jpg'); background-position: 28% center; }
-.card-mines .game-art-bg { background-image: url('game-art-mines.jpg'); background-position: center 22%; }
-.card-cards .game-art-bg { background-image: url('game-art-cards.jpg'); background-position: center 22%; }
-.card-balloon .game-art-bg { background-image: url('game-art-balloon.jpg'); background-position: center 20%; }
-.card-dice .game-art-bg { background-image: url('game-art-dice.jpg'); background-position: center 22%; }
+.card-towers .game-art-bg { background-image: url('game-art-towers.jpg?v=2'); background-position: 28% center; }
+.card-mines .game-art-bg { background-image: url('game-art-mines.jpg?v=2'); background-position: center 22%; }
+.card-cards .game-art-bg { background-image: url('game-art-cards.jpg?v=2'); background-position: center 22%; }
+.card-balloon .game-art-bg { background-image: url('game-art-balloon.jpg?v=2'); background-position: center 20%; }
+.card-dice .game-art-bg { background-image: url('game-art-dice.jpg?v=2'); background-position: center 22%; }
 .card-flappy .game-art-bg { background-image: url('flappy-bg.jpg'); background-position: left center; }
-.card-blackjack .game-art-bg { background-image: url('game-art-blackjack.jpg'); background-position: 24% center; }
-.card-slots .game-art-bg { background-image: url('game-art-slots.jpg'); background-position: 28% center; }
+.card-blackjack .game-art-bg { background-image: url('game-art-blackjack.jpg?v=2'); background-position: 24% center; }
+.card-slots .game-art-bg { background-image: url('game-art-slots.jpg?v=2'); background-position: 28% center; }
 
 .flappy-hero-duck {
     width: 70px;
@@ -8583,11 +8606,45 @@ img {
         
         <div class="games-grid" style="clear: both;">
             <!-- 1. БАШНИ -->
-            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=3')" onclick="openGame('towers.html?v=3')">
+            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=4')" onclick="openGame('towers.html?v=4')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-fire">🔥 ДО x10.9</span>
-                <div class="wide-hero-spacer" aria-hidden="true"></div>
+                <div class="wide-hero-emblem emblem-towers" aria-hidden="true">
+                    <svg viewBox="0 0 80 80" fill="none">
+                        <defs>
+                            <linearGradient id="twBodyGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#38bdf8"/>
+                                <stop offset="55%" stop-color="#0284c7"/>
+                                <stop offset="100%" stop-color="#071a38"/>
+                            </linearGradient>
+                            <radialGradient id="twCoreGlow" cx="50%" cy="48%" r="50%">
+                                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.55"/>
+                                <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+                            </radialGradient>
+                        </defs>
+                        <circle cx="40" cy="42" r="34" fill="url(#twCoreGlow)"/>
+                        <!-- Энергетический луч -->
+                        <rect x="38" y="4" width="4" height="68" rx="2" fill="#7dd3fc" opacity="0.5"/>
+                        <!-- Этажи башни -->
+                        <polygon points="18,68 62,68 57,56 23,56" fill="url(#twBodyGrad)" stroke="#38bdf8" stroke-width="1.6"/>
+                        <polygon points="22,54 58,54 54,43 26,43" fill="url(#twBodyGrad)" stroke="#7dd3fc" stroke-width="1.5"/>
+                        <polygon points="26,41 54,41 50,31 30,31" fill="url(#twBodyGrad)" stroke="#bae6fd" stroke-width="1.5"/>
+                        <polygon points="31,29 49,29 45,19 35,19" fill="#0ea5e9" stroke="#e0f7ff" stroke-width="1.5"/>
+                        <!-- Огоньки этажей -->
+                        <rect x="30" y="60" width="6" height="4" rx="1.5" fill="#e0fbff"/>
+                        <rect x="44" y="60" width="6" height="4" rx="1.5" fill="#00e5ff"/>
+                        <rect x="32" y="46.5" width="5" height="3.5" rx="1" fill="#e0fbff"/>
+                        <rect x="43" y="46.5" width="5" height="3.5" rx="1" fill="#e0fbff"/>
+                        <rect x="36" y="34" width="8" height="3.5" rx="1.2" fill="#ffffff"/>
+                        <!-- Вершина-кристалл -->
+                        <polygon class="emblem-pulse" points="40,5 47,15 40,21 33,15" fill="#e0fbff" stroke="#00e5ff" stroke-width="1.4"/>
+                        <!-- Светящиеся искры -->
+                        <circle class="emblem-pulse" cx="15" cy="30" r="2.2" fill="#00e5ff"/>
+                        <circle class="emblem-pulse" cx="65" cy="24" r="2" fill="#bae6fd"/>
+                        <ellipse cx="40" cy="70" rx="26" ry="3.5" fill="none" stroke="#00e5ff" stroke-width="1.4" opacity="0.7"/>
+                    </svg>
+                </div>
                 <div class="wide-card-info">
                     <div class="game-online-tag" id="onlineTagTowers" style="justify-content: flex-start;">🟢 2 в игре</div>
                     <div class="game-title">БАШНИ</div>
@@ -8597,7 +8654,7 @@ img {
             </div>
             
             <!-- 2. МИНЫ -->
-            <div class="game-card art-card card-mines" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html?v=3')" onclick="openGame('mines.html?v=3')">
+            <div class="game-card art-card card-mines" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html?v=4')" onclick="openGame('mines.html?v=4')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-jackpot">💎 АЛМАЗЫ</span>
@@ -8608,7 +8665,7 @@ img {
             </div>
 
             <!-- 3. КАРТЫ -->
-            <div class="game-card art-card card-cards" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html?v=3')" onclick="openGame('cards.html?v=3')">
+            <div class="game-card art-card card-cards" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html?v=4')" onclick="openGame('cards.html?v=4')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-vip">👑 КАРТЫ</span>
@@ -8619,7 +8676,7 @@ img {
             </div>
 
             <!-- 4. ШАРИК -->
-            <div class="game-card art-card card-balloon" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html?v=4')" onclick="openGame('balloon.html?v=4')">
+            <div class="game-card art-card card-balloon" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html?v=5')" onclick="openGame('balloon.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-hot">⚡ КРАШ x500</span>
@@ -8630,7 +8687,7 @@ img {
             </div>
 
             <!-- 5. КОСТИ -->
-            <div class="game-card art-card card-dice" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html?v=3')" onclick="openGame('dice.html?v=3')">
+            <div class="game-card art-card card-dice" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html?v=4')" onclick="openGame('dice.html?v=4')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-rtp">🎲 98% RTP</span>
@@ -8680,11 +8737,47 @@ img {
 
             <div class="games-grid" style="clear: both; gap: 12px; margin-top: 10px;">
                 <!-- 1. БЛЭКДЖЕК (VIP СЕРЕБРЯНЫЙ) -->
-                <div class="game-card wide-card art-card card-blackjack anim-item" id="cardBlackjack" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=5')" onclick="openGame('blackjack.html?v=5')">
+                <div class="game-card wide-card art-card card-blackjack anim-item" id="cardBlackjack" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=6')" onclick="openGame('blackjack.html?v=6')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
                     <span class="game-card-ribbon ribbon-silver">🥈 VIP СЕРЕБРО · 21</span>
-                    <div class="wide-hero-spacer" aria-hidden="true"></div>
+                    <div class="wide-hero-emblem emblem-blackjack" aria-hidden="true">
+                        <svg viewBox="0 0 80 80" fill="none">
+                            <defs>
+                                <linearGradient id="bjCardBg1" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#0f294d"/>
+                                    <stop offset="100%" stop-color="#061224"/>
+                                </linearGradient>
+                                <linearGradient id="bjChipGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#38bdf8"/>
+                                    <stop offset="100%" stop-color="#0369a1"/>
+                                </linearGradient>
+                                <radialGradient id="bjCoreGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.5"/>
+                                    <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <circle cx="40" cy="42" r="34" fill="url(#bjCoreGlow)"/>
+                            <!-- Задняя карта K♦ -->
+                            <g transform="rotate(-14 36 42)">
+                                <rect x="14" y="13" width="32" height="46" rx="5" fill="url(#bjCardBg1)" stroke="#38bdf8" stroke-width="1.6"/>
+                                <text x="19" y="25" fill="#7dd3fc" font-size="11" font-weight="900" font-family="Inter, sans-serif">K</text>
+                                <polygon points="30,30 35,36 30,42 25,36" fill="#38bdf8"/>
+                            </g>
+                            <!-- Передняя карта A♠ -->
+                            <g transform="rotate(10 44 40)">
+                                <rect x="28" y="12" width="34" height="48" rx="5.5" fill="#f0f9ff" stroke="#00e5ff" stroke-width="2"/>
+                                <text x="33" y="24" fill="#0284c7" font-size="12" font-weight="900" font-family="Inter, sans-serif">A</text>
+                                <text x="45" y="45" text-anchor="middle" fill="#0369a1" font-size="22" font-weight="900">♠</text>
+                            </g>
+                            <!-- VIP фишка 21 -->
+                            <g class="emblem-pulse">
+                                <circle cx="53" cy="57" r="14" fill="url(#bjChipGrad)" stroke="#e0f7ff" stroke-width="1.8"/>
+                                <circle cx="53" cy="57" r="10.2" fill="none" stroke="#bae6fd" stroke-width="1.3" stroke-dasharray="3 2"/>
+                                <text x="53" y="61" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="900" font-family="Inter, sans-serif">21</text>
+                            </g>
+                        </svg>
+                    </div>
                     <div class="wide-card-info">
                         <div class="game-online-tag" id="onlineTagBlackjack" style="justify-content: flex-start;">🟢 1 за столом</div>
                         <div class="game-title">БЛЭКДЖЕК</div>
@@ -8698,11 +8791,45 @@ img {
                 </div>
 
                 <!-- 2. СЛОТЫ 777 (VIP СЕРЕБРЯНЫЙ) -->
-                <div class="game-card wide-card art-card card-slots anim-item" id="cardSlots" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=5')" onclick="openGame('slots.html?v=5')">
+                <div class="game-card wide-card art-card card-slots anim-item" id="cardSlots" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=6')" onclick="openGame('slots.html?v=6')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
                     <span class="game-card-ribbon ribbon-silver">🥈 VIP СЕРЕБРО · 777</span>
-                    <div class="wide-hero-spacer" aria-hidden="true"></div>
+                    <div class="wide-hero-emblem emblem-slots" aria-hidden="true">
+                        <svg viewBox="0 0 80 80" fill="none">
+                            <defs>
+                                <linearGradient id="slCabGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#1e40af"/>
+                                    <stop offset="55%" stop-color="#0b2249"/>
+                                    <stop offset="100%" stop-color="#050e21"/>
+                                </linearGradient>
+                                <radialGradient id="slCoreGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.52"/>
+                                    <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <circle cx="40" cy="42" r="34" fill="url(#slCoreGlow)"/>
+                            <!-- Корпус слот-машины -->
+                            <path d="M14 28 C14 14, 62 14, 62 28 L62 64 C62 67, 59 69, 56 69 L20 69 C17 69, 14 67, 14 64 Z" fill="url(#slCabGrad)" stroke="#00e5ff" stroke-width="2"/>
+                            <!-- Рычаг -->
+                            <path d="M62 47 L69 47 L69 27" stroke="#7dd3fc" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle class="emblem-pulse" cx="69" cy="24" r="4.5" fill="#e0fbff" stroke="#00e5ff" stroke-width="1.6"/>
+                            <!-- Лампочки купола -->
+                            <circle class="emblem-pulse" cx="25" cy="22" r="1.8" fill="#e0fbff"/>
+                            <circle cx="38" cy="19" r="2.2" fill="#00e5ff"/>
+                            <circle class="emblem-pulse" cx="51" cy="22" r="1.8" fill="#e0fbff"/>
+                            <!-- Окно барабанов -->
+                            <rect x="19" y="30" width="38" height="24" rx="5" fill="#040b18" stroke="#38bdf8" stroke-width="1.5"/>
+                            <line x1="31.5" y1="31" x2="31.5" y2="53" stroke="#1e3a5f" stroke-width="1.2"/>
+                            <line x1="44.5" y1="31" x2="44.5" y2="53" stroke="#1e3a5f" stroke-width="1.2"/>
+                            <!-- 7 7 7 -->
+                            <text x="25.2" y="47" text-anchor="middle" fill="#e0fbff" font-size="14" font-weight="900" font-family="Inter, sans-serif">7</text>
+                            <text x="38" y="47" text-anchor="middle" fill="#00e5ff" font-size="14" font-weight="900" font-family="Inter, sans-serif">7</text>
+                            <text x="50.8" y="47" text-anchor="middle" fill="#e0fbff" font-size="14" font-weight="900" font-family="Inter, sans-serif">7</text>
+                            <!-- Лоток -->
+                            <rect x="23" y="59" width="30" height="5" rx="2.5" fill="#0ea5e9" opacity="0.65"/>
+                        </svg>
+                    </div>
                     <div class="wide-card-info">
                         <div class="game-online-tag" id="onlineTagSlots" style="justify-content: flex-start;">🟢 1 крутят</div>
                         <div class="game-title">СЛОТЫ 777</div>
@@ -16648,13 +16775,13 @@ setTimeout(initAdvancedSystems, 300);
 
     <!-- МГНОВЕННЫЙ КОНТЕЙНЕР ДЛЯ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) -->
     <div id="gameModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: #000000; width: 100%; height: 100%; overflow: hidden; -webkit-overflow-scrolling: touch;">
-        <iframe id="frame-towers" src="towers.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-mines" src="mines.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-cards" src="cards.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-balloon" src="balloon.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-dice" src="dice.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-blackjack" src="blackjack.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-slots" src="slots.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-towers" src="towers.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-mines" src="mines.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-cards" src="cards.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-balloon" src="balloon.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-dice" src="dice.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-blackjack" src="blackjack.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-slots" src="slots.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-flappy" src="flappy.html?v=7" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
 

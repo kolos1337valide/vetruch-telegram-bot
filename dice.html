@@ -62,12 +62,38 @@
         .dice-stage::before {
             content: "";
             position: absolute;
-            width: 248px; height: 144px;
+            width: 262px; height: 152px;
             border-radius: 999px;
-            border: 1.5px dashed rgba(0, 217, 255, 0.28);
-            background: radial-gradient(ellipse at center, rgba(0, 136, 255, 0.16) 0%, transparent 72%);
+            border: 1.5px dashed rgba(0, 217, 255, 0.34);
+            background: radial-gradient(ellipse at center, rgba(0, 136, 255, 0.18) 0%, transparent 74%);
+            box-shadow: 0 0 32px rgba(0, 136, 255, 0.16);
             pointer-events: none;
         }
+        .dice-stage-pill {
+            position: absolute;
+            bottom: -44px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: rgba(8, 22, 46, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.38);
+            color: #93c5fd;
+            font-size: 10.5px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .dice-stage-deco {
+            position: absolute;
+            font-size: 14px;
+            color: rgba(0, 217, 255, 0.36);
+            pointer-events: none;
+        }
+        .dice-stage-deco.left { left: 10px; top: 50%; transform: translateY(-50%) rotate(-12deg); }
+        .dice-stage-deco.right { right: 10px; top: 50%; transform: translateY(-50%) rotate(12deg); }
 
         .die-container {
             width: 80px; height: 80px;
@@ -187,6 +213,9 @@
 
         <!-- 3D Кубики -->
         <div class="dice-stage">
+            <span class="dice-stage-deco left" aria-hidden="true">🎲</span>
+            <span class="dice-stage-deco right" aria-hidden="true">🎲</span>
+            <div class="dice-stage-pill" id="diceStagePill">ЦЕЛЬ: ТОЧНО 7</div>
             <div class="die-container" id="die1">
                 <div class="die-face face-1"><div class="dot"></div></div>
                 <div class="die-face face-2"><div class="dot"></div><div class="dot"></div></div>
@@ -353,6 +382,8 @@
             if(mode === 'under') desc = `МЕНЬШЕ ${targetNum}`;
             if(mode === 'over') desc = `БОЛЬШЕ ${targetNum}`;
             multDesc.textContent = `МНОЖИТЕЛЬ НА: ${desc}`;
+            const stagePill = document.getElementById('diceStagePill');
+            if (stagePill) stagePill.textContent = `ЦЕЛЬ: ${desc} · x${currentMultiplier.toFixed(2)}`;
         }
 
         const diceRotations = {

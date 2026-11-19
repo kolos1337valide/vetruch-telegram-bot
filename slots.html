@@ -131,6 +131,21 @@
                 inset 0 1.5px 0 rgba(180, 235, 255, 0.3),
                 inset 0 -6px 16px rgba(0, 0, 0, 0.85);
         }
+        .slot-cabinet::before,
+        .slot-cabinet::after {
+            content: "";
+            position: absolute;
+            top: 42px;
+            bottom: 34px;
+            width: 3px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, transparent, #00e5ff, #0284c7, #00e5ff, transparent);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+            pointer-events: none;
+            opacity: 0.75;
+        }
+        .slot-cabinet::before { left: 4px; }
+        .slot-cabinet::after { right: 4px; }
 
         .slot-top-dome {
             background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.28) 0%, rgba(15, 23, 42, 0.95) 80%);
@@ -549,7 +564,7 @@
                         <div class="pay-pill"><span>ПАРА</span><span class="mult">x1.5</span></div>
                     </div>
 
-                    <div class="cabinet-tray" id="cabinetTray">JACKPOT PAYOUT • RTP 89%</div>
+                    <div class="cabinet-tray" id="cabinetTray">VETRUCH VIP CLUB • SUPER 777 JACKPOT</div>
                 </div>
 
                 <div class="slot-lever" id="slotLever" onclick="spinSlots()" title="Дёрнуть ручку">
@@ -941,7 +956,7 @@
             } else {
                 domeStatus.className = 'dome-status lose';
                 domeStatus.textContent = 'НЕТ КОМБИНАЦИИ · ПОПРОБУЙ ЕЩЁ!';
-                cabinetTray.textContent = 'JACKPOT PAYOUT • RTP 89%';
+                cabinetTray.textContent = 'VETRUCH VIP CLUB • SUPER 777 JACKPOT';
 
                 spinBtn.className = 'action-btn bust';
                 spinBtn.textContent = 'МИМО · КРУТИТЬ СНОВА';

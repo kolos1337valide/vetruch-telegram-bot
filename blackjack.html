@@ -195,6 +195,63 @@
             z-index: 3;
         }
 
+        .table-chip-stack {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(5, 16, 34, 0.8);
+            border: 1px dashed rgba(0, 217, 255, 0.42);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .table-chip-disc {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 32% 30%, #e0fbff 0%, #00d9ff 55%, #0369a1 100%);
+            border: 1.5px dashed #ffffff;
+            box-shadow: 0 0 8px rgba(0, 217, 255, 0.65);
+        }
+        .table-chip-label {
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: #93c5fd;
+            text-transform: uppercase;
+        }
+
+        .table-felt-arc {
+            position: absolute;
+            inset: 22px 20px;
+            border-radius: 26px 26px 95px 95px / 18px 18px 46px 46px;
+            border: 1px solid rgba(0, 217, 255, 0.14);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .table-suit-marks {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .table-suit-marks span {
+            position: absolute;
+            font-size: 16px;
+            color: rgba(0, 217, 255, 0.14);
+            user-select: none;
+        }
+        .table-suit-marks .sm-bl { bottom: 18px; left: 26px; transform: rotate(-14deg); }
+        .table-suit-marks .sm-br { bottom: 18px; right: 26px; transform: rotate(14deg); }
+        .table-suit-marks .sm-ml { top: 50%; left: 16px; transform: translateY(-50%); font-size: 13px; }
+        .table-suit-marks .sm-mr { top: 50%; right: 16px; transform: translateY(-50%); font-size: 13px; }
+
         .hand-zone {
             display: flex;
             flex-direction: column;
@@ -278,11 +335,7 @@
         }
 
         .table-rules-text {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1.3px;
-            text-transform: uppercase;
-            color: rgba(255, 215, 0, 0.45);
+            display: none !important;
         }
 
         .result-banner {
@@ -573,6 +626,17 @@
             </div>
 
             <div class="bj-table">
+                <div class="table-felt-arc" aria-hidden="true"></div>
+                <div class="table-suit-marks" aria-hidden="true">
+                    <span class="sm-ml">♦</span>
+                    <span class="sm-mr">♣</span>
+                    <span class="sm-bl">♥</span>
+                    <span class="sm-br">♠</span>
+                </div>
+                <div class="table-chip-stack" aria-hidden="true">
+                    <span class="table-chip-disc"></span>
+                    <span class="table-chip-label">VIP 21</span>
+                </div>
                 <div class="deck-shoe">♠</div>
 
                 <div class="hand-zone">
@@ -587,7 +651,7 @@
                 </div>
 
                 <div class="table-center-strip">
-                    <span class="table-rules-text" id="tableRulesText">BLACKJACK PAYS 3 TO 2 • RTP 50%</span>
+                    <span class="table-rules-text" id="tableRulesText" style="display:none;"></span>
                     <div class="result-banner" id="resultBanner"></div>
                 </div>
 
@@ -914,7 +978,7 @@
             playerCardsEl.innerHTML = '';
             resultBanner.className = 'result-banner';
             resultBanner.innerHTML = '';
-            tableRulesText.style.display = 'block';
+            tableRulesText.style.display = 'none';
             dealerSpeechEl.textContent = 'Раздаю карты...';
 
             betBtns.forEach(b => b.disabled = true);

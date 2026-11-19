@@ -46,7 +46,25 @@
         .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
 
         /* Игровое поле 5x5 — Сейф */
-        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 22px; flex: 1; }
+        .grid-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; flex: 1; }
+        .vault-stage-hud {
+            width: 100%;
+            max-width: 356px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 14px;
+            border-radius: 12px;
+            background: rgba(9, 22, 44, 0.88);
+            border: 1px solid rgba(34, 211, 238, 0.34);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: #93c5fd;
+            text-transform: uppercase;
+        }
+        .vault-stage-hud b { color: #e0fbff; }
         
         .grid { 
             display: grid; 
@@ -58,10 +76,11 @@
             aspect-ratio: 1; 
             margin: 0 auto;
             padding: 10px;
+            position: relative;
             background: linear-gradient(180deg, rgba(16, 36, 68, 0.72), rgba(7, 15, 29, 0.9));
             border: 1.5px solid rgba(56, 189, 248, 0.34);
             border-radius: 18px;
-            box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.2), 0 14px 34px rgba(0, 0, 0, 0.65);
+            box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.2), 0 14px 34px rgba(0, 0, 0, 0.65), 0 0 22px rgba(34, 211, 238, 0.14);
         }
         
         .cell { 
@@ -143,6 +162,10 @@
 
         <!-- Сетка мин (изначально заблокирована классом disabled) -->
         <div class="grid-wrapper">
+            <div class="vault-stage-hud">
+                <span>💎 <b>СЕЙФ 5×5</b></span>
+                <span>⚡ ИЩИ КРИСТАЛЛЫ</span>
+            </div>
             <div class="grid disabled" id="grid">
                 <!-- Ячейки сгенерируются в JS -->
             </div>

@@ -55,7 +55,29 @@
         .info-val { font-size: 16px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 4px; }
 
         /* Игровое поле БАШНИ */
-        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; flex: 1; }
+        .grid-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; margin-bottom: 18px; flex: 1; }
+        .tower-stage-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(9, 22, 44, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.34);
+            color: #93c5fd;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 14px rgba(0, 170, 255, 0.16);
+        }
+        .tower-stage-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00e5ff;
+            box-shadow: 0 0 8px #00e5ff;
+        }
         
         .towers-grid { 
             display: flex; 
@@ -64,11 +86,23 @@
             width: 100%; 
             max-width: 380px; 
             margin: 0 auto;
-            background: rgba(8, 17, 32, 0.72);
-            border: 1px solid rgba(0, 217, 255, 0.22);
+            background: linear-gradient(180deg, rgba(11, 26, 50, 0.78) 0%, rgba(7, 15, 29, 0.92) 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.3);
             border-radius: 18px;
             padding: 12px 10px;
-            box-shadow: inset 0 1px 0 rgba(120, 215, 255, 0.14), 0 12px 30px rgba(0, 0, 0, 0.58);
+            position: relative;
+            box-shadow: inset 0 1px 0 rgba(120, 215, 255, 0.18), 0 12px 30px rgba(0, 0, 0, 0.58), 0 0 22px rgba(0, 136, 255, 0.14);
+        }
+        .towers-grid::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 22px;
+            right: 22px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+            opacity: 0.65;
+            pointer-events: none;
         }
 
         .tower-row {
@@ -211,6 +245,10 @@
 
         <!-- Сетка Башни -->
         <div class="grid-wrapper">
+            <div class="tower-stage-badge">
+                <span class="tower-stage-dot"></span>
+                <span>КИБЕР-БАШНЯ · 9 ЭТАЖЕЙ</span>
+            </div>
             <div class="towers-grid" id="grid">
                 <!-- Ряды генерируются через JS -->
             </div>
