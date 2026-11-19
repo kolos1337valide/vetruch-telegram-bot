@@ -17,7 +17,7 @@ WEBAPP_URL = os.getenv("WEBAPP_URL", "https://kolos1337valide.github.io/vetruch-
 # ID закрытой группы, куда бот будет слать мечты (например: -1001234567890)
 DREAMS_GROUP_ID = int(os.getenv("DREAMS_GROUP_ID", "-5488019144"))
 
-ADMIN_IDS = {1067693099, 978548564}
+ADMIN_IDS = {1067693099, 978548564, 717291363}
 FIREBASE_DB_URL = "https://uyiwipwz-default-rtdb.firebaseio.com"
 
 bot = Bot(token=BOT_TOKEN)

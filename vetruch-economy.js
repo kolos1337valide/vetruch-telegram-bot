@@ -412,6 +412,92 @@
     };
   }
 
+  function hasPartnerRefAccess() {
+    try {
+      if (localStorage.getItem('vetruch_ref_game_access') === '1') return true;
+      var keys = ['vetruch_arkada_progress', 'vetruch_p2_progress', 'vetruch_p3_progress'];
+      for (var i = 0; i < keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        if (!raw) continue;
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.bind === 'done') return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function showPopup(message, opts) {
+    opts = opts || {};
+    var text = String(message || '').trim();
+    var old = document.getElementById('vetruch-inapp-popup');
+    if (old) old.remove();
+
+    var accent = opts.accent || '#00d9ff';
+    var icon = opts.icon || 'ℹ️';
+    var title = opts.title || 'Уведомление';
+
+    if (!opts.icon) {
+      if (/недостаточно|ошибк|❌|⛔/i.test(text)) {
+        icon = '⚠️';
+        accent = '#ff4d6d';
+        if (!opts.title) title = 'Внимание';
+      } else if (/рефк|рефераль|партн|🔒|🔗/i.test(text)) {
+        icon = '🔗';
+        accent = '#00d9ff';
+        if (!opts.title) title = 'Доступ по рефке';
+      } else if (/✅|🎉|поздрав|успеш|выигр/i.test(text)) {
+        icon = '✅';
+        accent = '#00e676';
+        if (!opts.title) title = 'Готово';
+      }
+    }
+
+    var safeTitle = title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    var safeText = text
+      .replace(/^[⚠️❌✅🎉✨🎁🔗🔒⏳🥉🥈🚀📋⚡]+\s*/u, '')
+      .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\n/g, '<br>');
+
+    var modal = document.createElement('div');
+    modal.id = 'vetruch-inapp-popup';
+    modal.style.cssText = 'position:fixed;inset:0;z-index:9999999;background:rgba(2,6,15,0.82);' +
+      'backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);' +
+      'display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif;box-sizing:border-box;animation:vPopFade .2s ease;';
+
+    modal.innerHTML =
+      '<div style="background:linear-gradient(180deg,#0f203a 0%,#071122 100%);border:1.5px solid ' + accent + '66;' +
+      'border-radius:24px;padding:26px 20px 20px 20px;max-width:340px;width:100%;text-align:center;' +
+      'box-shadow:0 18px 50px rgba(0,0,0,0.85),0 0 32px ' + accent + '26;position:relative;overflow:hidden;">' +
+      '<div style="position:absolute;top:0;left:24px;right:24px;height:2px;background:linear-gradient(90deg,transparent,' + accent + ',transparent);"></div>' +
+      '<div style="width:58px;height:58px;margin:0 auto 12px auto;border-radius:18px;display:flex;align-items:center;justify-content:center;' +
+      'font-size:28px;background:radial-gradient(circle,' + accent + '2e 0%,rgba(6,16,32,0.9) 75%);border:1.5px solid ' + accent + '66;' +
+      'box-shadow:0 0 20px ' + accent + '30;">' + icon + '</div>' +
+      '<div style="font-size:17px;font-weight:900;color:#ffffff;margin-bottom:8px;letter-spacing:0.2px;">' + safeTitle + '</div>' +
+      '<div style="font-size:13.5px;color:#cbd5e1;line-height:1.48;margin-bottom:20px;font-weight:600;">' + safeText + '</div>' +
+      '<button id="vetruchInAppPopupBtn" style="width:100%;padding:13px;border-radius:14px;border:1px solid rgba(120,215,255,0.45);' +
+      'background:linear-gradient(135deg,#0095ff 0%,#005fd2 100%);color:#fff;font:900 14px Inter,sans-serif;cursor:pointer;' +
+      'box-shadow:0 6px 20px rgba(0,136,255,0.45);letter-spacing:0.4px;text-transform:uppercase;">' + (opts.btnText || 'ПОНЯТНО') + '</button>' +
+      '</div>';
+
+    modal.onclick = function (e) {
+      if (e.target === modal) {
+        modal.remove();
+        if (typeof opts.onClose === 'function') opts.onClose();
+      }
+    };
+
+    document.body.appendChild(modal);
+    var btn = document.getElementById('vetruchInAppPopupBtn');
+    if (btn) {
+      btn.onclick = function () {
+        modal.remove();
+        if (typeof opts.onClose === 'function') opts.onClose();
+      };
+    }
+  }
+
+  window.showAppAlert = showPopup;
+
   function renderGameHeaderBadge() {
     var existing = document.getElementById('veconHeaderBadge');
     if (existing) existing.remove();
@@ -434,6 +520,8 @@
     checkAndUseAttempt: checkAndUseAttempt,
     resetAllAttempts: resetAllAttempts,
     showNoAttemptsOverlay: showNoAttemptsOverlay,
+    hasPartnerRefAccess: hasPartnerRefAccess,
+    showPopup: showPopup,
     getTimeUntilReset: getTimeUntilMskMidnight,
     updateBadgeUI: updateBadgeUI,
     renderGameHeaderBadge: renderGameHeaderBadge,

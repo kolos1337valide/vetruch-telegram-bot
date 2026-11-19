@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script src="vetruch-economy.js?v=5"></script>
+    <script src="vetruch-economy.js?v=6"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -423,7 +423,7 @@
 </div>
 
 <script>
-    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { ready:()=>{}, expand:()=>{}, setHeaderColor:()=>{}, setBackgroundColor:()=>{}, showAlert:(m)=>alert(m) };
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { ready:()=>{}, expand:()=>{}, setHeaderColor:()=>{}, setBackgroundColor:()=>{} };
     tg.ready(); tg.expand();
     try { tg.setHeaderColor('#050d1a'); tg.setBackgroundColor('#02050b'); } catch (e) {}
 
@@ -693,18 +693,18 @@
     function startRoundAndFlap() {
         if (state !== 'idle') return;
 
-        // Защита доступа: требуется VIP Бронзовый (500 EXP)
-        const curUserXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0;
-        if (curUserXp < 500) {
-            tg.showAlert('🥉 Игра «Флаппи Утка» доступна с VIP Бронзовый (500 EXP)!');
+        // Защита доступа: требуется регистрация по реферальной ссылке (привязка партнёра)
+        if (!(window.VETRUCH_ECONOMY && VETRUCH_ECONOMY.hasPartnerRefAccess())) {
+            showAppAlert('🔗 Игра «Флаппи Утка» доступна после регистрации по реферальной ссылке в разделе «Задания»!', { title: 'Доступ по рефке' });
             return;
         }
+        const curUserXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0;
 
         let storedBal = parseInt(localStorage.getItem('vetruch_balance') || String(balance), 10);
         if (!isNaN(storedBal)) balance = storedBal;
 
         if (balance < bet) {
-            tg.showAlert('Недостаточно монет!');
+            showAppAlert('Недостаточно монет!');
             return;
         }
 

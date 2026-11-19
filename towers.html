@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 
-<script src="vetruch-economy.js"></script>
+<script src="vetruch-economy.js?v=6"></script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -355,7 +355,7 @@
         }
 
         function startGame() {
-            if (balance < bet) { tg.showAlert("Недостаточно монет!"); return; }
+            if (balance < bet) { showAppAlert("Недостаточно монет!"); return; }
 
             if (window.VETRUCH_ECONOMY) {
                 var check = VETRUCH_ECONOMY.checkAndUseAttempt('towers');

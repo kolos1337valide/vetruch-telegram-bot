@@ -12,7 +12,7 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <script src="vetruch-economy.js?v=5"></script>
+    <script src="vetruch-economy.js?v=6"></script>
     <!-- Предзагрузка игр для мгновенного открытия без задержки -->
     <link rel="prefetch" href="towers.html">
     <link rel="prefetch" href="mines.html">
@@ -8606,7 +8606,7 @@ img {
         
         <div class="games-grid" style="clear: both;">
             <!-- 1. БАШНИ -->
-            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=4')" onclick="openGame('towers.html?v=4')">
+            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=5')" onclick="openGame('towers.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-fire">🔥 ДО x10.9</span>
@@ -8654,7 +8654,7 @@ img {
             </div>
             
             <!-- 2. МИНЫ -->
-            <div class="game-card art-card card-mines" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html?v=4')" onclick="openGame('mines.html?v=4')">
+            <div class="game-card art-card card-mines" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html?v=5')" onclick="openGame('mines.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-jackpot">💎 АЛМАЗЫ</span>
@@ -8665,7 +8665,7 @@ img {
             </div>
 
             <!-- 3. КАРТЫ -->
-            <div class="game-card art-card card-cards" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html?v=4')" onclick="openGame('cards.html?v=4')">
+            <div class="game-card art-card card-cards" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html?v=5')" onclick="openGame('cards.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-vip">👑 КАРТЫ</span>
@@ -8676,7 +8676,7 @@ img {
             </div>
 
             <!-- 4. ШАРИК -->
-            <div class="game-card art-card card-balloon" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html?v=5')" onclick="openGame('balloon.html?v=5')">
+            <div class="game-card art-card card-balloon" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html?v=6')" onclick="openGame('balloon.html?v=6')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-hot">⚡ КРАШ x500</span>
@@ -8687,7 +8687,7 @@ img {
             </div>
 
             <!-- 5. КОСТИ -->
-            <div class="game-card art-card card-dice" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html?v=4')" onclick="openGame('dice.html?v=4')">
+            <div class="game-card art-card card-dice" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html?v=5')" onclick="openGame('dice.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-rtp">🎲 98% RTP</span>
@@ -8697,11 +8697,11 @@ img {
                 <div class="game-play-btn">БРОСИТЬ</div>
             </div>
 
-            <!-- 6. ФЛАППИ УТКА (VIP БРОНЗОВЫЙ) -->
-            <div class="game-card wide-card art-card card-flappy anim-item" id="cardFlappy" style="animation-delay: 0.45s;" onpointerdown="preloadGame('flappy.html?v=7')" onclick="openGame('flappy.html?v=7')">
+            <!-- 6. ФЛАППИ УТКА (ДОСТУП ПО РЕФКЕ) -->
+            <div class="game-card wide-card art-card card-flappy anim-item" id="cardFlappy" style="animation-delay: 0.45s;" onpointerdown="preloadGame('flappy.html?v=8')" onclick="openGame('flappy.html?v=8')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-bronze">🥉 VIP БРОНЗА · x10</span>
+                <span class="game-card-ribbon ribbon-bronze">🔗 ПО РЕФКЕ · x10</span>
                 <div class="flappy-hero-duck">
                     <img src="flappy-duck.png" alt="Флаппи Утка">
                 </div>
@@ -8712,23 +8712,23 @@ img {
                     <div class="game-play-btn">ВЗЛЕТЕТЬ ➔</div>
                 </div>
                 <div class="vip-lock-overlay" id="lockOverlayFlappy">
-                    <div class="vip-lock-pill bronze">🔒 VIP БРОНЗОВЫЙ</div>
-                    <div class="vip-lock-exp" id="lockExpFlappy">Нужно 500 EXP</div>
+                    <div class="vip-lock-pill bronze" id="lockPillFlappy">🔒 ДОСТУП ПО РЕФКЕ</div>
+                    <div class="vip-lock-exp" id="lockExpFlappy">Выполни задание с рефкой</div>
                 </div>
             </div>
         </div>
 
 </div><!-- конец miniGamesSection -->
 
-        <!-- СЕКЦИЯ: АЗАРТНЫЕ ИГРЫ (С VIP СЕРЕБРЯНЫЙ) -->
+        <!-- СЕКЦИЯ: АЗАРТНЫЕ ИГРЫ (ДОСТУП ПО РЕФКЕ) -->
         <div id="gamblingGamesSection" style="display: none; clear: both;">
             <div class="gambling-vip-banner" id="gamblingVipBanner">
                 <div class="gambling-vip-top">
                     <div>
-                        <div class="gambling-vip-title">🥈 Доступ с VIP Серебряный</div>
-                        <div class="gambling-vip-sub" id="gamblingVipBannerSub">Накопи 5 000 EXP в мини-играх, чтобы открыть VIP-столы</div>
+                        <div class="gambling-vip-title">🔗 Доступ по реферальной ссылке</div>
+                        <div class="gambling-vip-sub" id="gamblingVipBannerSub">Зарегистрируйся по нашей ссылке у любого партнёра в «Заданиях», чтобы открыть игры</div>
                     </div>
-                    <button type="button" onclick="openPage('profile')" style="background: rgba(0, 150, 255, 0.22); border: 1px solid rgba(0, 217, 255, 0.5); color: #e0f7ff; padding: 6px 10px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; flex-shrink: 0;">Профиль ❯</button>
+                    <button type="button" onclick="openPage('tasks')" style="background: rgba(0, 150, 255, 0.22); border: 1px solid rgba(0, 217, 255, 0.5); color: #e0f7ff; padding: 6px 10px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; flex-shrink: 0;">Задания ❯</button>
                 </div>
                 <div class="gambling-vip-bar-track">
                     <div class="gambling-vip-bar-fill" id="gamblingVipBarFill"></div>
@@ -8736,11 +8736,11 @@ img {
             </div>
 
             <div class="games-grid" style="clear: both; gap: 12px; margin-top: 10px;">
-                <!-- 1. БЛЭКДЖЕК (VIP СЕРЕБРЯНЫЙ) -->
-                <div class="game-card wide-card art-card card-blackjack anim-item" id="cardBlackjack" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=6')" onclick="openGame('blackjack.html?v=6')">
+                <!-- 1. БЛЭКДЖЕК (ДОСТУП ПО РЕФКЕ) -->
+                <div class="game-card wide-card art-card card-blackjack anim-item" id="cardBlackjack" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=7')" onclick="openGame('blackjack.html?v=7')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
-                    <span class="game-card-ribbon ribbon-silver">🥈 VIP СЕРЕБРО · 21</span>
+                    <span class="game-card-ribbon ribbon-silver">🔗 ПО РЕФКЕ · 21</span>
                     <div class="wide-hero-emblem emblem-blackjack" aria-hidden="true">
                         <svg viewBox="0 0 80 80" fill="none">
                             <defs>
@@ -8785,16 +8785,16 @@ img {
                         <div class="game-play-btn">СЕСТЬ ЗА СТОЛ ➔</div>
                     </div>
                     <div class="vip-lock-overlay" id="lockOverlayBlackjack">
-                        <div class="vip-lock-pill silver">🔒 VIP СЕРЕБРЯНЫЙ</div>
-                        <div class="vip-lock-exp" id="lockExpBlackjack">Нужно 5 000 EXP</div>
+                        <div class="vip-lock-pill silver" id="lockPillBlackjack">🔒 ДОСТУП ПО РЕФКЕ</div>
+                        <div class="vip-lock-exp" id="lockExpBlackjack">Выполни задание с рефкой</div>
                     </div>
                 </div>
 
-                <!-- 2. СЛОТЫ 777 (VIP СЕРЕБРЯНЫЙ) -->
-                <div class="game-card wide-card art-card card-slots anim-item" id="cardSlots" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=6')" onclick="openGame('slots.html?v=6')">
+                <!-- 2. СЛОТЫ 777 (ДОСТУП ПО РЕФКЕ) -->
+                <div class="game-card wide-card art-card card-slots anim-item" id="cardSlots" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=7')" onclick="openGame('slots.html?v=7')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
-                    <span class="game-card-ribbon ribbon-silver">🥈 VIP СЕРЕБРО · 777</span>
+                    <span class="game-card-ribbon ribbon-silver">🔗 ПО РЕФКЕ · 777</span>
                     <div class="wide-hero-emblem emblem-slots" aria-hidden="true">
                         <svg viewBox="0 0 80 80" fill="none">
                             <defs>
@@ -8837,8 +8837,8 @@ img {
                         <div class="game-play-btn">КРУТИТЬ ➔</div>
                     </div>
                     <div class="vip-lock-overlay" id="lockOverlaySlots">
-                        <div class="vip-lock-pill silver">🔒 VIP СЕРЕБРЯНЫЙ</div>
-                        <div class="vip-lock-exp" id="lockExpSlots">Нужно 5 000 EXP</div>
+                        <div class="vip-lock-pill silver" id="lockPillSlots">🔒 ДОСТУП ПО РЕФКЕ</div>
+                        <div class="vip-lock-exp" id="lockExpSlots">Выполни задание с рефкой</div>
                     </div>
                 </div>
             </div>
@@ -11016,6 +11016,7 @@ img {
                 <div class="admin-chips-row">
                     <span class="admin-chip" onclick="document.getElementById('adminTargetIdInput').value='1067693099'">ID: 1067693099</span>
                     <span class="admin-chip" onclick="document.getElementById('adminTargetIdInput').value='978548564'">ID: 978548564</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminTargetIdInput').value='717291363'">ID: 717291363</span>
                     <span class="admin-chip" onclick="openAdminPlayerInspectorFromInput()" style="border-color: rgba(0, 217, 255, 0.45); color: #00d9ff;">🔍 Досье (Анти-абуз)</span>
                 </div>
 
@@ -11680,20 +11681,20 @@ img {
         function onPredictionVote(side) {
             const data = getPredictionData();
             if (isPredictionClosed(data)) {
-                tg.showAlert('⚠️ Ставки на этот прогноз сейчас закрыты!');
+                showAppAlert('⚠️ Ставки на этот прогноз сейчас закрыты!');
                 return;
             }
 
             const inp = document.getElementById('predBetAmountInput');
             let amount = parseInt(inp ? inp.value : '50', 10);
             if (isNaN(amount) || amount <= 0) {
-                tg.showAlert('⚠️ Пожалуйста, укажите сумму ставки (минимум 1 монета)!');
+                showAppAlert('⚠️ Пожалуйста, укажите сумму ставки (минимум 1 монета)!');
                 return;
             }
 
             const myBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
             if (amount > myBal) {
-                tg.showAlert(`⚠️ Недостаточно монет! Ваш текущий баланс: ${formatCoins(myBal)} монет`);
+                showAppAlert(`⚠️ Недостаточно монет! Ваш текущий баланс: ${formatCoins(myBal)} монет`);
                 return;
             }
 
@@ -11749,7 +11750,7 @@ img {
 
             if (isPredictionClosed(data)) {
                 closePredBetModal();
-                tg.showAlert('⚠️ Время вышло, ставки на этот прогноз только что закрылись!');
+                showAppAlert('⚠️ Время вышло, ставки на этот прогноз только что закрылись!');
                 return;
             }
 
@@ -11757,7 +11758,7 @@ img {
             const myBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
             if (amount > myBal) {
                 closePredBetModal();
-                tg.showAlert(`⚠️ Недостаточно монет на балансе!`);
+                showAppAlert(`⚠️ Недостаточно монет на балансе!`);
                 return;
             }
 
@@ -11816,7 +11817,7 @@ img {
                 ? (data.btnLeft || (isBattle ? 'Игрок 1' : 'Да'))
                 : (data.btnRight || (isBattle ? 'Игрок 2' : 'Нет'));
 
-            tg.showAlert(`✅ Ваша ставка ${formatCoins(amount)} монет на «${outcomeLabel}» принята! Удачи! 🍀`);
+            showAppAlert(`✅ Ваша ставка ${formatCoins(amount)} монет на «${outcomeLabel}» принята! Удачи! 🍀`, { title: 'Ставка принята' });
         }
 
         // ================= АДМИН-ФУНКЦИИ ПРОГНОЗА =================
@@ -12038,7 +12039,7 @@ img {
             const prevData = getPredictionData();
             const hasUnresolvedBets = !prevData.isResolved && prevData.bets && Object.keys(prevData.bets).length > 0;
             if (hasUnresolvedBets) {
-                if (!confirm('В текущем прогнозе уже есть активные ставки! Запустить новый прогноз с нуля? (Старые ставки сбросятся)')) {
+                if (!(await showAppConfirm('В текущем прогнозе уже есть активные ставки! Запустить новый прогноз с нуля? (Старые ставки сбросятся)'))) {
                     return;
                 }
             }
@@ -12390,7 +12391,7 @@ img {
         }
 
         async function resetPredictionForNewRound() {
-            if (!confirm('Создать новый раунд прогноза? Текущие ставки будут сброшены, а банк обнулён.')) return;
+            if (!(await showAppConfirm('Создать новый раунд прогноза? Текущие ставки будут сброшены, а банк обнулён.'))) return;
             const p = getPredictionData();
             const mode = currentAdminPredMode || p.mode || 'classic';
             const titleVal = (document.getElementById('adminPredTitleInput')?.value || p.title || 'Будет ли вывод?').trim();
@@ -12852,6 +12853,7 @@ img {
                 saveP3ProgressLocal(cloudP3);
                 renderP3UI();
             }
+            if (typeof updateGamesVipLocksUI === 'function') updateGamesVipLocksUI();
 
 if (cloudState && cloudState.avatars && cloudState.avatars[myId] && typeof saveAvatarStateLocal === 'function') {
                 saveAvatarStateLocal(cloudState.avatars[myId]);
@@ -13184,7 +13186,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
         }
 
         // ================= ДОСТУП К АДМИНКЕ ТОЛЬКО ДЛЯ 2 ID =================
-        const ALLOWED_ADMIN_IDS = [1067693099, 978548564];
+        const ALLOWED_ADMIN_IDS = [1067693099, 978548564, 717291363];
 
         function checkAdminAccess() {
             const currentUserId = Number(getCurrentTgId());
@@ -13484,6 +13486,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
 
             if (balancesMap['1067693099'] === undefined) balancesMap['1067693099'] = 500;
             if (balancesMap['978548564'] === undefined) balancesMap['978548564'] = 500;
+            if (balancesMap['717291363'] === undefined) balancesMap['717291363'] = 500;
             balancesMap[myId] = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
 
@@ -13543,7 +13546,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(idText);
             }
-            tg.showAlert(`Ваш ID (${idText}) скопирован в буфер обмена! 📋`);
+            showAppAlert(`Ваш ID (${idText}) скопирован в буфер обмена!`, { title: 'Скопировано', icon: '📋' });
         }
 
         function shareProfileRefLink() {
@@ -13557,7 +13560,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(refLink);
             }
-            tg.showAlert("Реферальная ссылка скопирована! Отправь её друзьям 🚀");
+            showAppAlert("Реферальная ссылка скопирована! Отправь её друзьям 🚀", { title: 'Скопировано', icon: '🚀' });
         }
 
         // ================= УПРАВЛЕНИЕ ВКЛАДКАМИ (ПАМЯТЬ) =================
@@ -14290,11 +14293,7 @@ async function renderLeaderboardPage() {
             const text = input.value.trim();
 
             if (!text) {
-                if (window.tg && tg.showAlert) {
-                    tg.showAlert('⚠️ Пожалуйста, напишите свою мечту!');
-                } else {
-                    alert('⚠️ Пожалуйста, напишите свою мечту!');
-                }
+                showAppAlert('⚠️ Пожалуйста, напишите свою мечту!');
                 return;
             }
 
@@ -14325,11 +14324,7 @@ async function renderLeaderboardPage() {
                 console.error('Error saving dream:', e);
             }
 
-            if (window.tg && tg.showAlert) {
-                tg.showAlert('✨ Ваша мечта успешно отправлена Vetruch! Удачи!');
-            } else {
-                alert('✨ Ваша мечта успешно отправлена Vetruch! Удачи!');
-            }
+            showAppAlert('✨ Ваша мечта успешно отправлена Vetruch! Удачи!', { title: 'Мечта отправлена', icon: '✨' });
 
             input.value = '';
             updateDreamPageCharCount();
@@ -14387,11 +14382,7 @@ async function renderLeaderboardPage() {
         }
 
         function openGiveawaysAll() {
-            if (window.tg && tg.showAlert) {
-                tg.showAlert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
-            } else {
-                alert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
-            }
+            showAppAlert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!', { title: 'Скоро!', icon: '🎁' });
         }
 
 
@@ -14533,10 +14524,39 @@ async function renderLeaderboardPage() {
         // ================= МГНОВЕННОЕ ОТКРЫТИЕ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) =================
         
         const GAME_VIP_REQUIREMENTS = {
-            flappy:    { minExp: 500,  tierName: 'VIP Бронзовый',  icon: '🥉', title: 'Флаппи Утка', theme: 'bronze' },
-            blackjack: { minExp: 5000, tierName: 'VIP Серебряный', icon: '🥈', title: 'Блэкджек',    theme: 'silver' },
-            slots:     { minExp: 5000, tierName: 'VIP Серебряный', icon: '🥈', title: 'Слоты 777',   theme: 'silver' }
+            flappy:    { icon: '🦆', title: 'Флаппи Утка', theme: 'ref' },
+            blackjack: { icon: '🃏', title: 'Блэкджек',    theme: 'ref' },
+            slots:     { icon: '🎰', title: 'Слоты 777',   theme: 'ref' }
         };
+
+        function getPartnerRefAccessState() {
+            const readProg = (key) => {
+                try {
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : { bind: null };
+                } catch (e) {
+                    return { bind: null };
+                }
+            };
+            const ark = (typeof getArkadaProgress === 'function') ? getArkadaProgress() : readProg('vetruch_arkada_progress');
+            const p2  = (typeof getP2Progress === 'function') ? getP2Progress() : readProg('vetruch_p2_progress');
+            const p3  = (typeof getP3Progress === 'function') ? getP3Progress() : readProg('vetruch_p3_progress');
+
+            const unlocked = (ark.bind === 'done') || (p2.bind === 'done') || (p3.bind === 'done');
+            const pending  = !unlocked && ((ark.bind === 'pending') || (p2.bind === 'pending') || (p3.bind === 'pending'));
+            try {
+                localStorage.setItem('vetruch_ref_game_access', unlocked ? '1' : '0');
+            } catch (e) {}
+            return {
+                unlocked,
+                pending,
+                partners: [
+                    { key: 'arkada', name: 'ARKADA',   status: ark.bind || null, openFn: 'openArkadaModal' },
+                    { key: 'p2',     name: (typeof P2_NAME !== 'undefined' ? P2_NAME : 'UP-X'), status: p2.bind || null, openFn: 'openP2Modal' },
+                    { key: 'p3',     name: (typeof P3_NAME !== 'undefined' ? P3_NAME : 'Ton Play'), status: p3.bind || null, openFn: 'openP3Modal' }
+                ]
+            };
+        }
 
         function preloadGame(url) {
             // Iframes are already preloaded in #gameModal
@@ -14545,15 +14565,15 @@ async function renderLeaderboardPage() {
             var gameKey = String(url || '').split('?')[0].replace('.html', '').toLowerCase();
             var req = GAME_VIP_REQUIREMENTS[gameKey];
             if (req) {
-                var curExp = (typeof getUserExp === 'function') ? getUserExp() : (parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0);
-                if (curExp < req.minExp) {
+                var access = getPartnerRefAccessState();
+                if (!access.unlocked) {
                     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
                         try { Telegram.WebApp.HapticFeedback.notificationOccurred('warning'); } catch(e) {}
                     }
                     if (typeof openVipGateModal === 'function') {
                         openVipGateModal(req);
-                    } else {
-                        alert(req.icon + ' Требуется ' + req.tierName + ' (' + req.minExp + ' EXP)!');
+                    } else if (typeof showAppAlert === 'function') {
+                        showAppAlert('🔗 Для входа в игру «' + req.title + '» зарегистрируйся по реферальной ссылке в разделе «Задания»!', { title: 'Доступ по рефке' });
                     }
                     return;
                 }
@@ -14676,11 +14696,7 @@ async function renderLeaderboardPage() {
             recalculateEconRate();
             updateGamesEnergyUI();
 
-            if (window.tg && tg.showAlert) {
-                tg.showAlert('✅ Настройки экономики сохранены!');
-            } else {
-                alert('✅ Настройки экономики сохранены!');
-            }
+            showAppAlert('✅ Настройки экономики сохранены!', { title: 'Сохранено' });
         }
 
         function adminResetAllAttempts() {
@@ -14694,11 +14710,7 @@ async function renderLeaderboardPage() {
                 updateGamesEnergyUI();
             } catch(e) {}
 
-            if (window.tg && tg.showAlert) {
-                tg.showAlert('⚡ Энергия сброшена: доступно по 20 попыток во ВСЕ 5 игр!');
-            } else {
-                alert('⚡ Энергия сброшена: доступно по 20 попыток во ВСЕ 5 игр!');
-            }
+            showAppAlert('⚡ Энергия сброшена: доступно по 20 попыток во все игры!', { title: 'Энергия восстановлена', icon: '⚡' });
         }
 
         // Авто-обновление таймера и энергии при переключении страниц
@@ -14743,6 +14755,7 @@ function getArkadaProgress() {
 
 function saveArkadaProgressLocal(prog) {
     localStorage.setItem('vetruch_arkada_progress', JSON.stringify(prog));
+    if (typeof updateGamesVipLocksUI === 'function') updateGamesVipLocksUI();
 }
 
 function initArkadaImages() {
@@ -14869,7 +14882,7 @@ function closeArkadaModal() {
 
 function alertArkadaBindFirst() {
     const msg = '⚠️ Сначала привяжите аккаунт ARKADA (Шаг 1) и дождитесь подтверждения!';
-    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+    showAppAlert(msg);
 }
 
 function toggleArkadaBindForm() {
@@ -14917,12 +14930,12 @@ async function submitArkadaBind() {
 
     if (!arkId) {
         const msg = '⚠️ Введите ваш ID профиля на ARKADA!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username) {
         const msg = '⚠️ Укажите ваш @username в Telegram!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username.startsWith('@')) username = '@' + username;
@@ -14954,7 +14967,7 @@ async function submitArkadaBind() {
     renderArkadaUI();
 
     const okMsg = '🚀 ID отправлен администратору на проверку!';
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 async function submitArkadaDeposit(depId) {
@@ -14966,12 +14979,12 @@ async function submitArkadaDeposit(depId) {
 
     if (!username) {
         const msg = '⚠️ Укажите ваш @username!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!shot) {
         const msg = '⚠️ Загрузите скриншот депозита!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username.startsWith('@')) username = '@' + username;
@@ -15004,7 +15017,7 @@ async function submitArkadaDeposit(depId) {
     renderArkadaUI();
 
     const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 initArkadaImages();
@@ -15047,6 +15060,7 @@ function getP2Progress() {
 
 function saveP2ProgressLocal(prog) {
     localStorage.setItem('vetruch_p2_progress', JSON.stringify(prog));
+    if (typeof updateGamesVipLocksUI === 'function') updateGamesVipLocksUI();
 }
 
 function initP2Config() {
@@ -15181,7 +15195,7 @@ function closeP2Modal() {
 
 function alertP2BindFirst() {
     const msg = `⚠️ Сначала привяжите аккаунт ${P2_NAME} (Шаг 1) и дождитесь подтверждения!`;
-    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+    showAppAlert(msg);
 }
 
 function toggleP2BindForm() {
@@ -15229,12 +15243,12 @@ async function submitP2Bind() {
 
     if (!partnerId) {
         const msg = `⚠️ Введите ваш ID профиля на ${P2_NAME}!`;
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username) {
         const msg = '⚠️ Укажите ваш @username в Telegram!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username.startsWith('@')) username = '@' + username;
@@ -15267,7 +15281,7 @@ async function submitP2Bind() {
     renderP2UI();
 
     const okMsg = '🚀 ID отправлен администратору на проверку!';
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 async function submitP2Deposit(depId) {
@@ -15279,12 +15293,12 @@ async function submitP2Deposit(depId) {
 
     if (!username) {
         const msg = '⚠️ Укажите ваш @username!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!shot) {
         const msg = '⚠️ Загрузите скриншот депозита!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username.startsWith('@')) username = '@' + username;
@@ -15318,7 +15332,7 @@ async function submitP2Deposit(depId) {
     renderP2UI();
 
     const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 initP2Config();
@@ -15362,6 +15376,7 @@ function getP3Progress() {
 
 function saveP3ProgressLocal(prog) {
     localStorage.setItem('vetruch_p3_progress', JSON.stringify(prog));
+    if (typeof updateGamesVipLocksUI === 'function') updateGamesVipLocksUI();
 }
 
 function initP3Config() {
@@ -15496,7 +15511,7 @@ function closeP3Modal() {
 
 function alertP3BindFirst() {
     const msg = `⚠️ Сначала привяжите аккаунт ${P3_NAME} (Шаг 1) и дождитесь подтверждения!`;
-    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+    showAppAlert(msg);
 }
 
 function toggleP3BindForm() {
@@ -15544,12 +15559,12 @@ async function submitP3Bind() {
 
     if (!partnerId) {
         const msg = `⚠️ Введите ваш ID профиля на ${P3_NAME}!`;
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username) {
         const msg = '⚠️ Укажите ваш @username в Telegram!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username.startsWith('@')) username = '@' + username;
@@ -15582,7 +15597,7 @@ async function submitP3Bind() {
     renderP3UI();
 
     const okMsg = '🚀 ID отправлен администратору на проверку!';
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 async function submitP3Deposit(depId) {
@@ -15594,12 +15609,12 @@ async function submitP3Deposit(depId) {
 
     if (!username) {
         const msg = '⚠️ Укажите ваш @username!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!shot) {
         const msg = '⚠️ Загрузите скриншот депозита!';
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
     if (!username.startsWith('@')) username = '@' + username;
@@ -15633,7 +15648,7 @@ async function submitP3Deposit(depId) {
     renderP3UI();
 
     const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 initP3Config();
@@ -15834,7 +15849,7 @@ async function confirmBuyAvatar() {
 
     if (curBal < AVATAR_PAID_PRICE) {
         const msg = `❌ Недостаточно монет! Для покупки нужно ${formatCoins(AVATAR_PAID_PRICE)} монет.`;
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
 
@@ -15856,7 +15871,7 @@ async function confirmBuyAvatar() {
     await saveAndSyncAvatar(st);
 
     const okMsg = `✅ Аватарка №${id} куплена и установлена!`;
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 applyCurrentAvatarUI();
@@ -16010,13 +16025,13 @@ async function onAdventDayClick(day) {
 
     if (!info.opened) {
         const msg = `❄️ Календарь откроется 1 декабря в 00:00 МСК! Осталось ${info.d} дн. ${pad2(info.h)} ч.`;
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
 
     if (day > info.currentDay) {
         const msg = `🔒 Подарок за ${day} декабря откроется ${day} декабря в 00:00 МСК!`;
-        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        showAppAlert(msg);
         return;
     }
 
@@ -16046,7 +16061,7 @@ async function onAdventDayClick(day) {
     await cloudPut(`vetruch_app/advent_2026/${myId}`, claimed);
 
     const okMsg = `🎁 Поздравляем! Ты забрал подарок за ${day} декабря: +${formatCoins(reward)} монет!`;
-    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+    showAppAlert(okMsg);
 }
 
 updateAdventTimers();
@@ -16413,7 +16428,7 @@ function closeGiftRewardModal() {
 async function confirmGiftClaim() {
     let username = document.getElementById('giftRewardUsername').value.trim();
     if (!username) {
-        alert('⚠️ Пожалуйста, введите ваш @username в Telegram!');
+        showAppAlert('⚠️ Пожалуйста, введите ваш @username в Telegram!');
         return;
     }
     if (!username.startsWith('@')) username = '@' + username;
@@ -16442,7 +16457,7 @@ async function confirmGiftClaim() {
     } catch(e) {}
 
     closeGiftRewardModal();
-    alert('🎉 Поздравляем! Заявка на получение подарка «Колл бонуски» успешно отправлена администраторам!');
+    showAppAlert('🎉 Поздравляем! Заявка на получение подарка «Колл бонуски» успешно отправлена администраторам!', { title: 'Заявка отправлена', icon: '🎁' });
 }
 
 // ================= ЕЖЕДНЕВНЫЙ БОНУС (28 ДНЕЙ СЕРИИ) =================
@@ -16534,12 +16549,16 @@ async function claimDailyReward(btn) {
     const status = calculateCurrentStreakStatus();
 
     if (status.isClaimedToday) {
-        alert('🎁 Вы уже забрали награду сегодня! Возвращайтесь завтра за следующим днем.');
+        if (typeof showAppAlert === 'function') {
+            showAppAlert('Вы уже забрали награду сегодня!\nВозвращайтесь завтра за следующим днём серии.', { title: 'Награда уже получена', icon: '⏰' });
+        }
         return;
     }
 
     const dayNum = status.currentDayNumber;
     const reward = getDailyBonusReward(dayNum);
+    const nextDayNum = (dayNum % 28) + 1;
+    const nextReward = getDailyBonusReward(nextDayNum);
 
     const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'guest';
     let bal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
@@ -16568,7 +16587,9 @@ async function claimDailyReward(btn) {
         try { window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); } catch(e) {}
     }
 
-    alert(`🎉 Поздравляем! День ${dayNum}/28 успешно пройден!\nВам начислено +${reward} монет и +50 EXP.`);
+    if (typeof openDailyBonusRewardModal === 'function') {
+        openDailyBonusRewardModal(dayNum, reward, nextReward, dayNum % 7 === 0);
+    }
 }
 
 // ================= LIVE ПОКУПКИ (15 МИНУТ ХРАНЕНИЯ) =================
@@ -16662,70 +16683,508 @@ setTimeout(initAdvancedSystems, 300);
         </div>
     </div>
 
-    <!-- МОДАЛКА VIP ДОСТУПА К ИГРАМ -->
+    <!-- МОДАЛКА ДОСТУПА К ИГРАМ ПО РЕФЕРАЛЬНОЙ ССЫЛКЕ -->
     <div id="vipGateModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeVipGateModal()">
-        <div class="avatar-modal-sheet" style="max-height: 85vh;">
+        <div class="avatar-modal-sheet" style="max-height: 88vh;">
             <div class="arkada-modal-header">
-                <h3 class="arkada-modal-title" id="vipGateModalHeader">🔒 Требуется VIP статус</h3>
+                <h3 class="arkada-modal-title" id="vipGateModalHeader">🔗 Доступ по реферальной ссылке</h3>
                 <button type="button" class="arkada-modal-close" onclick="closeVipGateModal()">✕</button>
             </div>
             <div class="arkada-modal-body" style="text-align: center; padding-top: 6px;">
-                <div id="vipGateBadgeIcon" style="font-size: 46px; line-height: 1; margin-bottom: 10px;">🥉</div>
-                <div id="vipGateTitle" style="font-size: 17px; font-weight: 900; color: #ffffff; margin-bottom: 6px;">Игра «Флаппи Утка»</div>
-                <div id="vipGateSub" style="font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 16px;">Доступ открывается с уровня VIP Бронзовый (500 EXP)</div>
+                <div id="vipGateBadgeIcon" style="width: 64px; height: 64px; margin: 0 auto 12px auto; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; background: radial-gradient(circle, rgba(0, 217, 255, 0.25) 0%, rgba(7, 18, 36, 0.92) 74%); border: 1.5px solid rgba(0, 217, 255, 0.55); box-shadow: 0 0 24px rgba(0, 170, 255, 0.35);">🔗</div>
+                <div id="vipGateTitle" style="font-size: 18px; font-weight: 900; color: #ffffff; margin-bottom: 6px;">Игра «Флаппи Утка»</div>
+                <div id="vipGateSub" style="font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 14px; line-height: 1.45;">Чтобы открыть доступ к этой игре, зарегистрируйся по нашей реферальной ссылке у любого партнёра и привяжи свой ID в разделе «Задания».</div>
 
-                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; text-align: left;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; margin-bottom: 8px;">
-                        <span id="vipGateProgressLabel" style="color: #94a3b8;">Ваш прогресс</span>
-                        <span id="vipGateExpNums" style="color: #00d9ff;">0 / 500 EXP</span>
-                    </div>
-                    <div style="width: 100%; height: 9px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">
-                        <div id="vipGateExpBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0077ff, #00d9ff); border-radius: 999px; transition: width 0.35s ease;"></div>
-                    </div>
-                    <div id="vipGateRemaining" style="font-size: 11.5px; font-weight: 700; color: #38bdf8; margin-top: 8px;">Осталось набрать: 500 EXP</div>
-                </div>
+                <div id="refGatePartnersList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; text-align: left;"></div>
 
-                <div style="font-size: 11.5px; color: #bae6fd; line-height: 1.45; margin-bottom: 16px; padding: 8px 10px; border-radius: 10px; background: rgba(0, 136, 255, 0.1); border: 1px dashed rgba(0, 217, 255, 0.32);">
-                    💡 Играй в открытые мини-игры и делай ставки: <b>+1 EXP за каждые 50 монет</b> ставки
+                <div id="vipGateHintBox" style="font-size: 11.5px; color: #bae6fd; line-height: 1.45; margin-bottom: 16px; padding: 9px 11px; border-radius: 12px; background: rgba(0, 136, 255, 0.12); border: 1px dashed rgba(0, 217, 255, 0.38);">
+                    ✨ Достаточно привязать <b>любого одного партнёра</b> — после подтверждения сразу откроются Флаппи Утка, Блэкджек и Слоты 777!
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <button type="button" class="submit-task-btn" style="flex: 1.2; background: linear-gradient(135deg, #0095ff, #005fd2); color: #ffffff; font-weight: 900; border: 1px solid rgba(120, 215, 255, 0.5);" onclick="closeVipGateModal(); openPage('profile');">
-                        👑 В профиль
+                    <button type="button" class="submit-task-btn" style="flex: 1.25; background: linear-gradient(135deg, #0095ff, #005fd2); color: #ffffff; font-weight: 900; border: 1px solid rgba(120, 215, 255, 0.5);" onclick="closeVipGateModal(); openPage('tasks');">
+                        🎯 Открыть задания
                     </button>
-                    <button type="button" class="submit-task-btn" style="flex: 0.8; background: rgba(255,255,255,0.09); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.16);" onclick="closeVipGateModal()">
-                        Понятно
+                    <button type="button" class="submit-task-btn" style="flex: 0.75; background: rgba(255,255,255,0.09); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.16);" onclick="closeVipGateModal()">
+                        Закрыть
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- КРАСИВАЯ МОДАЛКА ЕЖЕДНЕВНОГО БОНУСА -->
+    <style>
+        .vetruch-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999980;
+            background: rgba(2, 6, 15, 0.84);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+        .vetruch-modal-backdrop.active {
+            display: flex;
+            animation: vModalFade 0.22s ease;
+        }
+        @keyframes vModalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes vModalPop {
+            0% { opacity: 0; transform: scale(0.86) translateY(16px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .daily-reward-card {
+            width: 100%;
+            max-width: 360px;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 175, 255, 0.24) 0%, #09162b 48%, #040a16 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.58);
+            border-radius: 26px;
+            padding: 24px 20px 20px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 22px 58px rgba(0, 0, 0, 0.88), 0 0 42px rgba(0, 170, 255, 0.28), inset 0 1px 0 rgba(186, 230, 253, 0.32);
+            animation: vModalPop 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .daily-reward-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 28px;
+            right: 28px;
+            height: 2.5px;
+            background: linear-gradient(90deg, transparent, #00e5ff, #ffffff, #00e5ff, transparent);
+        }
+        .daily-reward-orb {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 12px auto;
+            border-radius: 24px;
+            background: radial-gradient(circle at 35% 30%, rgba(0, 229, 255, 0.38) 0%, rgba(0, 110, 235, 0.24) 60%, rgba(6, 17, 36, 0.94) 100%);
+            border: 1.5px solid rgba(125, 211, 252, 0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            box-shadow: 0 0 32px rgba(0, 217, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            animation: heroEmblemFloat 2.8s ease-in-out infinite;
+        }
+        .daily-reward-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(0, 162, 255, 0.18);
+            border: 1px solid rgba(0, 217, 255, 0.45);
+            color: #7dd3fc;
+            font-size: 10.5px;
+            font-weight: 900;
+            letter-spacing: 0.9px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .daily-reward-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.2px;
+            text-shadow: 0 2px 14px rgba(0, 180, 255, 0.4);
+        }
+        .daily-reward-sub {
+            font-size: 13px;
+            color: #a5c4e2;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+            line-height: 1.4;
+        }
+        .daily-reward-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .daily-reward-tile {
+            background: linear-gradient(180deg, rgba(13, 33, 64, 0.92), rgba(7, 17, 34, 0.95));
+            border: 1px solid rgba(0, 217, 255, 0.34);
+            border-radius: 16px;
+            padding: 12px 10px;
+            box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.14);
+        }
+        .daily-reward-val {
+            font-size: 20px;
+            font-weight: 900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 3px;
+        }
+        .daily-reward-val.coins { color: #e0fbff; text-shadow: 0 0 14px rgba(0, 217, 255, 0.55); }
+        .daily-reward-val.exp { color: #38bdf8; }
+        .daily-reward-lbl {
+            font-size: 11px;
+            font-weight: 700;
+            color: #8cb4db;
+        }
+        .daily-week-strip {
+            background: rgba(5, 14, 29, 0.85);
+            border: 1px solid rgba(0, 217, 255, 0.22);
+            border-radius: 14px;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+        }
+        .daily-week-dots {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-bottom: 7px;
+        }
+        .daily-week-dot {
+            height: 24px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(148, 197, 255, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748b;
+        }
+        .daily-week-dot.done {
+            background: rgba(0, 230, 118, 0.16);
+            border-color: rgba(0, 230, 118, 0.5);
+            color: #00e676;
+        }
+        .daily-week-dot.today {
+            background: linear-gradient(135deg, #0095ff, #00d9ff);
+            border-color: #e0fbff;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.65);
+        }
+        .daily-next-hint {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #93c5fd;
+        }
+        .daily-reward-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 15px;
+            border: 1px solid rgba(125, 211, 252, 0.55);
+            background: linear-gradient(135deg, #0095ff 0%, #005fd2 100%);
+            color: #ffffff;
+            font-size: 14.5px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 136, 255, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        .daily-reward-btn:active { transform: scale(0.97); }
+
+        /* Единая внутренняя модалка уведомлений и подтверждений Vetruch */
+        .v-alert-card {
+            width: 100%;
+            max-width: 344px;
+            background: linear-gradient(180deg, #0f203b 0%, #071122 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.48);
+            border-radius: 24px;
+            padding: 24px 20px 20px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 52px rgba(0, 0, 0, 0.88), 0 0 32px rgba(0, 153, 255, 0.24);
+            animation: vModalPop 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .v-alert-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 24px;
+            right: 24px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--v-alert-accent, #00d9ff), transparent);
+        }
+        .v-alert-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 12px auto;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.22) 0%, rgba(6, 16, 32, 0.92) 74%);
+            border: 1.5px solid var(--v-alert-accent, rgba(0, 217, 255, 0.55));
+            box-shadow: 0 0 22px rgba(0, 170, 255, 0.28);
+        }
+        .v-alert-title {
+            font-size: 17px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .v-alert-msg {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            line-height: 1.48;
+            font-weight: 600;
+            margin-bottom: 18px;
+            word-break: break-word;
+        }
+        .v-alert-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .v-alert-btn {
+            flex: 1;
+            padding: 13px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(120, 215, 255, 0.45);
+            background: linear-gradient(135deg, #0095ff 0%, #005fd2 100%);
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 136, 255, 0.42);
+        }
+        .v-alert-btn.secondary {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.16);
+            color: #cbd5e1;
+            box-shadow: none;
+        }
+        .v-alert-btn:active { transform: scale(0.97); }
+    </style>
+
+    <div id="dailyBonusRewardModal" class="vetruch-modal-backdrop" onclick="if(event.target === this) closeDailyBonusRewardModal()">
+        <div class="daily-reward-card">
+            <div class="daily-reward-orb" id="dailyModalOrb">🎁</div>
+            <div class="daily-reward-pill" id="dailyModalPill">ЕЖЕДНЕВНЫЙ БОНУС · ДЕНЬ 1 / 28</div>
+            <h3 class="daily-reward-title" id="dailyModalTitle">Бонус зачислен!</h3>
+            <p class="daily-reward-sub" id="dailyModalSub">Заходи каждый день, чтобы увеличивать награду до 1 000 монет!</p>
+
+            <div class="daily-reward-grid">
+                <div class="daily-reward-tile">
+                    <div class="daily-reward-val coins"><span id="dailyModalCoins">+50</span> <img src="coins.png" class="coin-icon" alt=""></div>
+                    <div class="daily-reward-lbl">На баланс</div>
+                </div>
+                <div class="daily-reward-tile">
+                    <div class="daily-reward-val exp">+50 EXP</div>
+                    <div class="daily-reward-lbl">Опыт профиля</div>
+                </div>
+            </div>
+
+            <div class="daily-week-strip">
+                <div class="daily-week-dots" id="dailyModalWeekDots"></div>
+                <div class="daily-next-hint" id="dailyModalNextHint">Завтра ждёт: +60 монет</div>
+            </div>
+
+            <button type="button" class="daily-reward-btn" onclick="closeDailyBonusRewardModal()">🔥 ОТЛИЧНО</button>
+        </div>
+    </div>
+
+    <div id="vetruchAlertModal" class="vetruch-modal-backdrop" onclick="if(event.target === this) closeAppAlert()">
+        <div class="v-alert-card" id="vetruchAlertCard">
+            <div class="v-alert-icon" id="vetruchAlertIcon">ℹ️</div>
+            <div class="v-alert-title" id="vetruchAlertTitle">Уведомление</div>
+            <div class="v-alert-msg" id="vetruchAlertMsg"></div>
+            <div class="v-alert-actions">
+                <button type="button" class="v-alert-btn" id="vetruchAlertOkBtn" onclick="closeAppAlert()">ПОНЯТНО</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="vetruchConfirmModal" class="vetruch-modal-backdrop" onclick="if(event.target === this) resolveAppConfirm(false)">
+        <div class="v-alert-card" style="--v-alert-accent: #38bdf8;">
+            <div class="v-alert-icon">❓</div>
+            <div class="v-alert-title" id="vetruchConfirmTitle">Подтверждение</div>
+            <div class="v-alert-msg" id="vetruchConfirmMsg"></div>
+            <div class="v-alert-actions">
+                <button type="button" class="v-alert-btn secondary" onclick="resolveAppConfirm(false)">Отмена</button>
+                <button type="button" class="v-alert-btn" onclick="resolveAppConfirm(true)">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function openDailyBonusRewardModal(dayNum, reward, nextReward, isSeventhDay) {
+            const modal = document.getElementById('dailyBonusRewardModal');
+            if (!modal) return;
+            const fmt = (typeof formatCoins === 'function') ? formatCoins : (n) => String(n);
+
+            const orbEl = document.getElementById('dailyModalOrb');
+            const pillEl = document.getElementById('dailyModalPill');
+            const titleEl = document.getElementById('dailyModalTitle');
+            const subEl = document.getElementById('dailyModalSub');
+            const coinsEl = document.getElementById('dailyModalCoins');
+            const dotsEl = document.getElementById('dailyModalWeekDots');
+            const nextEl = document.getElementById('dailyModalNextHint');
+
+            if (orbEl) orbEl.textContent = isSeventhDay ? '👑' : '🎁';
+            if (pillEl) pillEl.textContent = `СЕРИЯ ВХОДОВ · ДЕНЬ ${dayNum} ИЗ 28`;
+            if (titleEl) titleEl.textContent = isSeventhDay ? 'Супер-бонус недели!' : 'Бонус зачислен!';
+            if (subEl) subEl.textContent = isSeventhDay
+                ? 'Неделя пройдена без пропусков — лови повышенную награду!'
+                : 'Монеты и опыт уже на вашем аккаунте. Возвращайтесь завтра!';
+            if (coinsEl) coinsEl.textContent = '+' + fmt(reward);
+            if (nextEl) nextEl.textContent = `Завтра вас ждёт: +${fmt(nextReward)} монет`;
+
+            if (dotsEl) {
+                const dayInWeek = ((dayNum - 1) % 7) + 1;
+                let html = '';
+                for (let d = 1; d <= 7; d++) {
+                    if (d < dayInWeek) html += '<div class="daily-week-dot done">✓</div>';
+                    else if (d === dayInWeek) html += `<div class="daily-week-dot today">${d === 7 ? '👑' : '★'}</div>`;
+                    else html += `<div class="daily-week-dot">${d}</div>`;
+                }
+                dotsEl.innerHTML = html;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeDailyBonusRewardModal() {
+            const modal = document.getElementById('dailyBonusRewardModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        let _appAlertOnClose = null;
+        window.showAppAlert = function (message, opts) {
+            opts = opts || {};
+            const text = String(message || '').trim();
+            const modal = document.getElementById('vetruchAlertModal');
+            if (!modal) return;
+
+            let icon = opts.icon || 'ℹ️';
+            let title = opts.title || 'Уведомление';
+            let accent = opts.accent || '#00d9ff';
+
+            if (!opts.icon) {
+                if (/^❌|ошибк|недостаточно/i.test(text)) {
+                    icon = '⚠️';
+                    accent = '#ff4d6d';
+                    if (!opts.title) title = 'Внимание';
+                } else if (/^⚠️|пожалуйста|закрыт|сначала|условия|введите/i.test(text)) {
+                    icon = '⚠️';
+                    accent = '#fbbf24';
+                    if (!opts.title) title = 'Внимание';
+                } else if (/^✅|^🎉|^✨|^🏆|скопирован|принята|получен|отправлен|сохранен|сброшена|куплена/i.test(text)) {
+                    icon = text.startsWith('🏆') ? '🏆' : (text.startsWith('✨') ? '✨' : (text.startsWith('📋') || /скопирован/i.test(text) ? '📋' : '✅'));
+                    accent = '#00e676';
+                    if (!opts.title) title = /скопирован/i.test(text) ? 'Скопировано' : 'Успешно!';
+                } else if (/^🔒|^🔗|откроется/i.test(text)) {
+                    icon = '🔒';
+                    accent = '#38bdf8';
+                    if (!opts.title) title = 'Недоступно';
+                } else if (/^🎁|^❄️|^⚡/i.test(text)) {
+                    icon = text.slice(0, 2);
+                    accent = '#00d9ff';
+                    if (!opts.title) title = 'Информация';
+                }
+            }
+
+            const cleaned = text.replace(/^[⚠️❌✅🎉✨🎁🔗🔒⏳🥉🥈🚀📋⚡🏆❄️]+\s*/u, '');
+            const card = document.getElementById('vetruchAlertCard');
+            const iconEl = document.getElementById('vetruchAlertIcon');
+            const titleEl = document.getElementById('vetruchAlertTitle');
+            const msgEl = document.getElementById('vetruchAlertMsg');
+            const okBtn = document.getElementById('vetruchAlertOkBtn');
+
+            if (card) card.style.setProperty('--v-alert-accent', accent);
+            if (iconEl) iconEl.textContent = icon;
+            if (titleEl) titleEl.textContent = title;
+            if (msgEl) {
+                msgEl.innerHTML = cleaned
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/\n/g, '<br>');
+            }
+            if (okBtn) okBtn.textContent = opts.btnText || 'ПОНЯТНО';
+            _appAlertOnClose = typeof opts.onClose === 'function' ? opts.onClose : null;
+            modal.classList.add('active');
+        };
+
+        window.closeAppAlert = function () {
+            const modal = document.getElementById('vetruchAlertModal');
+            if (modal) modal.classList.remove('active');
+            const cb = _appAlertOnClose;
+            _appAlertOnClose = null;
+            if (cb) cb();
+        };
+
+        let _appConfirmResolver = null;
+        window.showAppConfirm = function (message, opts) {
+            opts = opts || {};
+            const modal = document.getElementById('vetruchConfirmModal');
+            if (!modal) return Promise.resolve(false);
+            const titleEl = document.getElementById('vetruchConfirmTitle');
+            const msgEl = document.getElementById('vetruchConfirmMsg');
+            if (titleEl) titleEl.textContent = opts.title || 'Подтверждение';
+            if (msgEl) msgEl.textContent = String(message || '');
+            modal.classList.add('active');
+            return new Promise(resolve => {
+                _appConfirmResolver = resolve;
+            });
+        };
+
+        window.resolveAppConfirm = function (result) {
+            const modal = document.getElementById('vetruchConfirmModal');
+            if (modal) modal.classList.remove('active');
+            const r = _appConfirmResolver;
+            _appConfirmResolver = null;
+            if (r) r(Boolean(result));
+        };
+
         function openVipGateModal(req) {
             const modal = document.getElementById('vipGateModal');
             if (!modal || !req) return;
-            const curExp = (typeof getUserExp === 'function') ? getUserExp() : (parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0);
-            const pct = Math.min(100, Math.max(0, Math.round((curExp / req.minExp) * 100)));
-            const remaining = Math.max(0, req.minExp - curExp);
-            const fmt = (typeof formatCoins === 'function') ? formatCoins : (n) => String(n);
+            const access = getPartnerRefAccessState();
 
             const iconEl = document.getElementById('vipGateBadgeIcon');
             const titleEl = document.getElementById('vipGateTitle');
             const subEl = document.getElementById('vipGateSub');
-            const numsEl = document.getElementById('vipGateExpNums');
-            const barEl = document.getElementById('vipGateExpBar');
-            const remEl = document.getElementById('vipGateRemaining');
+            const listEl = document.getElementById('refGatePartnersList');
 
-            if (iconEl) iconEl.textContent = req.icon;
+            if (iconEl) iconEl.textContent = access.pending ? '⏳' : (req.icon || '🔗');
             if (titleEl) titleEl.textContent = `Игра «${req.title}»`;
-            if (subEl) subEl.textContent = `Доступ открывается с уровня ${req.tierName} (${fmt(req.minExp)} EXP)`;
-            if (numsEl) numsEl.textContent = `${fmt(curExp)} / ${fmt(req.minExp)} EXP`;
-            if (barEl) {
-                barEl.style.width = pct + '%';
-                barEl.style.background = 'linear-gradient(90deg, #0077ff, #00d9ff)';
+            if (subEl) {
+                subEl.textContent = access.pending
+                    ? 'Ваша заявка на привязку аккаунта уже отправлена! Как только администратор подтвердит её, игра откроется автоматически.'
+                    : 'Чтобы открыть доступ, зарегистрируйся по нашей реферальной ссылке у любого партнёра и пришли свой ID на проверку:';
             }
-            if (remEl) remEl.textContent = `Осталось набрать: ${fmt(remaining)} EXP`;
+
+            if (listEl) {
+                listEl.innerHTML = access.partners.map(p => {
+                    const isDone = p.status === 'done';
+                    const isPend = p.status === 'pending';
+                    const badge = isDone
+                        ? '<span style="color:#00e676; font-weight:800; font-size:11.5px;">Открыто ✓</span>'
+                        : (isPend
+                            ? '<span style="color:#fbbf24; font-weight:800; font-size:11.5px;">На проверке ⏳</span>'
+                            : '<span style="color:#38bdf8; font-weight:800; font-size:11.5px;">Привязать ❯</span>');
+                    return `
+                        <div onclick="closeVipGateModal(); ${p.openFn}();" style="display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-radius:14px; background:rgba(12, 28, 54, 0.9); border:1px solid rgba(0, 217, 255, 0.3); cursor:pointer;">
+                            <div>
+                                <div style="font-size:13.5px; font-weight:800; color:#ffffff;">${p.name}</div>
+                                <div style="font-size:11px; color:#94b8db;">Регистрация по реферальной ссылке</div>
+                            </div>
+                            ${badge}
+                        </div>
+                    `;
+                }).join('');
+            }
 
             modal.classList.add('active');
         }
@@ -16736,38 +17195,41 @@ setTimeout(initAdvancedSystems, 300);
         }
 
         function updateGamesVipLocksUI() {
-            const exp = (typeof getUserExp === 'function') ? getUserExp() : (parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0);
-            const fmt = (typeof formatCoins === 'function') ? formatCoins : (n) => String(n);
+            const access = getPartnerRefAccessState();
+            const isLocked = !access.unlocked;
 
-            const bronzeLocked = exp < 500;
-            const silverLocked = exp < 5000;
+            const lockPillText = access.pending ? '⏳ НА ПРОВЕРКЕ' : '🔒 ДОСТУП ПО РЕФКЕ';
+            const lockSubText = access.pending ? 'Ожидает подтверждения админа' : 'Регистрация по рефке в Заданиях';
 
-            const cardFlappy = document.getElementById('cardFlappy');
-            if (cardFlappy) cardFlappy.classList.toggle('is-vip-locked', bronzeLocked);
-            const lockExpFlappy = document.getElementById('lockExpFlappy');
-            if (lockExpFlappy) lockExpFlappy.textContent = `${fmt(exp)} / 500 EXP`;
-
-            ['cardBlackjack', 'cardSlots'].forEach(id => {
+            ['cardFlappy', 'cardBlackjack', 'cardSlots'].forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.classList.toggle('is-vip-locked', silverLocked);
+                if (el) el.classList.toggle('is-vip-locked', isLocked);
             });
-            ['lockExpBlackjack', 'lockExpSlots'].forEach(id => {
+            ['lockPillFlappy', 'lockPillBlackjack', 'lockPillSlots'].forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.textContent = `${fmt(exp)} / 5 000 EXP`;
+                if (el) el.textContent = lockPillText;
+            });
+            ['lockExpFlappy', 'lockExpBlackjack', 'lockExpSlots'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = lockSubText;
             });
 
             const casinoBtn = document.getElementById('gamesModeCasinoBtn');
             if (casinoBtn) {
-                casinoBtn.innerHTML = silverLocked ? '🔒 Азартные · VIP II' : '🎰 Азартные';
+                casinoBtn.innerHTML = isLocked ? (access.pending ? '⏳ Азартные' : '🔒 Азартные · Рефка') : '🎰 Азартные';
             }
 
             const banner = document.getElementById('gamblingVipBanner');
             if (banner) {
-                banner.classList.toggle('show', silverLocked);
+                banner.classList.toggle('show', isLocked);
                 const sub = document.getElementById('gamblingVipBannerSub');
                 const bar = document.getElementById('gamblingVipBarFill');
-                if (sub) sub.textContent = `Прогресс: ${fmt(exp)} / 5 000 EXP (осталось ${fmt(Math.max(0, 5000 - exp))})`;
-                if (bar) bar.style.width = `${Math.min(100, Math.round((exp / 5000) * 100))}%`;
+                if (sub) {
+                    sub.textContent = access.pending
+                        ? 'Заявка по реферальной ссылке на проверке — скоро игры откроются!'
+                        : 'Выполни привязку аккаунта по нашей реф-ссылке в «Заданиях», чтобы открыть игры';
+                }
+                if (bar) bar.style.width = access.pending ? '55%' : '10%';
             }
         }
         updateGamesVipLocksUI();
@@ -16775,14 +17237,14 @@ setTimeout(initAdvancedSystems, 300);
 
     <!-- МГНОВЕННЫЙ КОНТЕЙНЕР ДЛЯ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) -->
     <div id="gameModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: #000000; width: 100%; height: 100%; overflow: hidden; -webkit-overflow-scrolling: touch;">
-        <iframe id="frame-towers" src="towers.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-mines" src="mines.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-cards" src="cards.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-balloon" src="balloon.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-dice" src="dice.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-blackjack" src="blackjack.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-slots" src="slots.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-flappy" src="flappy.html?v=7" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-towers" src="towers.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-mines" src="mines.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-cards" src="cards.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-balloon" src="balloon.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-dice" src="dice.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-blackjack" src="blackjack.html?v=7" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-slots" src="slots.html?v=7" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-flappy" src="flappy.html?v=8" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
 
     <!-- МОДАЛКА МОИ ЗАКАЗЫ -->
@@ -18084,7 +18546,7 @@ window.claimAchievement = async function (achId) {
 
     const metrics = getAchievementMetrics();
     if (Number(metrics[ach.metric] || 0) < ach.target) {
-        if (window.tg && tg.showAlert) tg.showAlert('⚠️ Условия достижения ещё не выполнены!');
+        showAppAlert('⚠️ Условия достижения ещё не выполнены!');
         return;
     }
 
@@ -18100,7 +18562,7 @@ window.claimAchievement = async function (achId) {
         if (claimedMap[achId]) {
             localStorage.setItem('vetruch_achievements_claimed', JSON.stringify(claimedMap));
             renderAchievementsUI();
-            if (window.tg && tg.showAlert) tg.showAlert('✅ Награда за это достижение уже была получена!');
+            showAppAlert('✅ Награда за это достижение уже была получена!');
             return;
         }
 
@@ -18126,11 +18588,9 @@ window.claimAchievement = async function (achId) {
         if (window.tg && tg.HapticFeedback) {
             try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
         }
-        if (window.tg && tg.showAlert) {
-            tg.showAlert(`🏆 Достижение «${ach.title}» получено!\n+${formatCoins(ach.reward)} монет начислено на баланс!`);
-        }
+        showAppAlert(`🏆 Достижение «${ach.title}» получено!\n+${formatCoins(ach.reward)} монет начислено на баланс!`, { title: 'Достижение получено', icon: '🏆' });
     } catch (e) {
-        if (window.tg && tg.showAlert) tg.showAlert('❌ Ошибка сети, попробуйте ещё раз');
+        showAppAlert('❌ Ошибка сети, попробуйте ещё раз');
     } finally {
         _claimingAchievements[achId] = false;
     }
@@ -18177,7 +18637,7 @@ async function sendAdminPushBroadcast() {
         showAdminToast('⚠️ Введите текст уведомления для игроков!', true);
         return;
     }
-    if (!confirm('Отправить это пуш-уведомление в личку Telegram всем пользователям бота?')) return;
+    if (!(await showAppConfirm('Отправить это пуш-уведомление в личку Telegram всем пользователям бота?'))) return;
 
     const pushId = Date.now();
     const payload = {

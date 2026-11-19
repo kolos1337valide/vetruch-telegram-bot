@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script src="vetruch-economy.js"></script>
+    <script src="vetruch-economy.js?v=6"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -875,14 +875,13 @@
         async function spinSlots() {
             if (isSpinning) return;
 
-            const curUserXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0;
-            if (curUserXp < 5000) {
-                tg.showAlert("🥈 Игра «Слоты 777» доступна с VIP Серебряный (5 000 EXP)!");
+            if (!(window.VETRUCH_ECONOMY && VETRUCH_ECONOMY.hasPartnerRefAccess())) {
+                showAppAlert("🔗 Игра «Слоты 777» доступна после регистрации по реферальной ссылке в разделе «Задания»!", { title: "Доступ по рефке" });
                 return;
             }
 
             if (balance < bet) {
-                tg.showAlert("Недостаточно монет!");
+                showAppAlert("Недостаточно монет!");
                 return;
             }
 
