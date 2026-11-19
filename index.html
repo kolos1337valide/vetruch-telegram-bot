@@ -12,7 +12,7 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <script src="vetruch-economy.js?v=4"></script>
+    <script src="vetruch-economy.js?v=5"></script>
     <!-- Предзагрузка игр для мгновенного открытия без задержки -->
     <link rel="prefetch" href="towers.html">
     <link rel="prefetch" href="mines.html">
@@ -10899,7 +10899,7 @@ img {
         // =========================================================================
         // ПОДКЛЮЧЕННАЯ ОБЛАЧНАЯ БАЗА FIREBASE
         // =========================================================================
-        const FIREBASE_DB_URL = "https://vetruchbot-default-rtdb.firebaseio.com";
+        const FIREBASE_DB_URL = "https://uyiwipwz-default-rtdb.firebaseio.com";
         const BOT_USERNAME = "VetruchFarm_bot";
         const KICK_CHANNEL_URL = "https://kick.com/vetruch";
 
@@ -12385,7 +12385,16 @@ img {
             updateKickStreamUI(localStorage.getItem('vetruch_stream_live') === 'true');
         }
 
-        async function syncFromCloud(refreshAdmin) {
+        let __syncFromCloudPromise = null;
+        function syncFromCloud(refreshAdmin) {
+            if (__syncFromCloudPromise) return __syncFromCloudPromise;
+            __syncFromCloudPromise = _runSyncFromCloud(refreshAdmin).finally(() => {
+                __syncFromCloudPromise = null;
+            });
+            return __syncFromCloudPromise;
+        }
+
+        async function _runSyncFromCloud(refreshAdmin) {
             updateCloudStatusUI();
             const base = getCleanDbUrl();
             if (!base) return;
@@ -12396,6 +12405,10 @@ img {
             const gameDelta = localBal - lastSyncedBal;
 
             const cloudState = await cloudGet('vetruch_app');
+            if (window.__cloudError) {
+                updateCloudStatusUI();
+                return;
+            }
 
             // 1. Отправка heartbeat присутствия и подсчет реального онлайна (+2..3 игрока сверху)
             try {
@@ -12417,7 +12430,7 @@ img {
                 }
             } catch(e) {}
 
-            let balancesMap = (cloudState && cloudState.balances) ? cloudState.balances : JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+            let balancesMap = (cloudState && cloudState.balances && typeof cloudState.balances === 'object') ? { ...cloudState.balances } : {};
             let tasksList = (cloudState && Array.isArray(cloudState.tasks)) ? cloudState.tasks : [];
             let shopList = (cloudState && Array.isArray(cloudState.shop)) ? cloudState.shop : [];
             let allPurchases = (cloudState && cloudState.purchases) ? cloudState.purchases : {};
@@ -12471,20 +12484,24 @@ img {
                 await cloudPut(`vetruch_app/balances/${myId}`, finalMyBal);
             }
 
+            const needBalancePush = (gameDelta !== 0 || !cloudState || !cloudState.balances || cloudState.balances[myId] === undefined);
+            let balancePushOk = true;
+            if (!window.__cloudError && needBalancePush) {
+                balancePushOk = await cloudPut(`vetruch_app/balances/${myId}`, finalMyBal);
+            }
+
             balancesMap[myId] = finalMyBal;
 
             localStorage.setItem('vetruch_balance', finalMyBal);
-            localStorage.setItem('vetruch_cloud_synced_bal', finalMyBal);
+            if (!window.__cloudError && balancePushOk) {
+                localStorage.setItem('vetruch_cloud_synced_bal', finalMyBal);
+            }
             localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
             localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasksList));
             localStorage.setItem('vetruch_admin_shop', JSON.stringify(shopList));
 
             if (allPurchases[myId]) {
                 localStorage.setItem('vetruch_my_purchases', JSON.stringify(allPurchases[myId]));
-            }
-
-            if (!window.__cloudError && (gameDelta !== 0 || !cloudState || !cloudState.balances || cloudState.balances[myId] === undefined)) {
-                await cloudPut(`vetruch_app/balances/${myId}`, finalMyBal);
             }
 
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = finalMyBal);
@@ -13419,8 +13436,10 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
             }, 1100);
         }
 
-        // Автообновление из облака каждые 5 секунд
+        // Автообновление из облака каждые 5 секунд (не мешаем открытой мини-игре)
         setInterval(() => {
+            const gameModal = document.getElementById('gameModal');
+            if (gameModal && gameModal.style.display === 'block') return;
             const adminPage = document.getElementById('admin');
             const isAdminOpen = adminPage && adminPage.classList.contains('active');
             syncFromCloud(isAdminOpen);
@@ -15913,6 +15932,13 @@ document.addEventListener('visibilitychange', () => {
     if (v && !document.hidden) {
         v.muted = true;
         v.play().catch(() => {});
+    }
+    if (!document.hidden) {
+        const gameModal = document.getElementById('gameModal');
+        if (!gameModal || gameModal.style.display !== 'block') {
+            if (typeof syncFromCloud === 'function') syncFromCloud(false);
+            if (typeof renderHomePodium === 'function') renderHomePodium();
+        }
     }
 });
 

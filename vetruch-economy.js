@@ -101,7 +101,7 @@
         if (u2) return u2;
       }
     } catch (e) {}
-    return 'https://vetruchbot-default-rtdb.firebaseio.com';
+    return 'https://uyiwipwz-default-rtdb.firebaseio.com';
   }
 
   function recordGameWin(winAmount) {
