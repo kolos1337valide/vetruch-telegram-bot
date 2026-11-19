@@ -16,19 +16,23 @@
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         :root {
-            --bg: #000000; --text: #ffffff;
-            --blue-main: #0088ff; --blue-glow: rgba(0, 136, 255, 0.5);
-            --cell-bg: #1a1d24; --cell-safe: rgba(0, 136, 255, 0.2); --cell-mine: rgba(255, 51, 102, 0.2);
+            --bg: #03070e; --text: #ffffff;
+            --blue-main: #22d3ee; --blue-glow: rgba(34, 211, 238, 0.48);
+            --cell-bg: linear-gradient(180deg, #1f3354 0%, #111f36 100%);
+            --cell-safe: linear-gradient(145deg, rgba(34, 211, 238, 0.28), rgba(16, 185, 129, 0.22));
+            --cell-mine: linear-gradient(145deg, rgba(244, 63, 94, 0.3), rgba(190, 18, 60, 0.22));
         }
         
         body { 
-            margin: 0; background: var(--bg); color: var(--text); 
+            margin: 0;
+            background: radial-gradient(circle at 50% 18%, #0e284b 0%, #06101f 60%, #03070e 100%);
+            color: var(--text); 
             min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
         }
 
         /* Фон */
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; }
+        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(6,16,31,0.1) 0%, rgba(3,7,14,0.78) 100%); pointer-events: none; }
 
         .game-container { 
             position: relative; z-index: 2; display: flex; flex-direction: column; 
@@ -36,48 +40,50 @@
         }
 
         /* Верхняя панель */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+        .back-btn { background: rgba(16, 36, 66, 0.85); border: 1px solid rgba(56, 189, 248, 0.28); color: #fff; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); }
+        .balance-pill { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.16), rgba(16, 185, 129, 0.1)); padding: 8px 16px; border-radius: 20px; font-weight: 800; font-size: 16px; border: 1px solid rgba(34, 211, 238, 0.42); color: #e0f7ff; box-shadow: 0 0 16px rgba(34, 211, 238, 0.2); }
         .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
 
-        /* Игровое поле 5x5 */
-        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 25px; flex: 1; }
+        /* Игровое поле 5x5 — Сейф */
+        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 22px; flex: 1; }
         
-        /* СТРОГИЕ ПРАВИЛА СЕТКИ: фиксируем столбцы и строки */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
-            grid-template-rows: repeat(5, 1fr); /* Жестко 5 строк одинакового размера */
+            grid-template-rows: repeat(5, 1fr);
             gap: 8px; 
             width: 100%; 
-            max-width: 350px; 
+            max-width: 356px; 
             aspect-ratio: 1; 
-            margin: 0 auto; 
+            margin: 0 auto;
+            padding: 10px;
+            background: linear-gradient(180deg, rgba(16, 36, 68, 0.72), rgba(7, 15, 29, 0.9));
+            border: 1.5px solid rgba(56, 189, 248, 0.34);
+            border-radius: 18px;
+            box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.2), 0 14px 34px rgba(0, 0, 0, 0.65);
         }
         
-        /* СТРОГИЕ ПРАВИЛА ЯЧЕЙКИ: запрещаем ей менять размер */
         .cell { 
             background: var(--cell-bg); 
             border-radius: 10px; 
             display: flex; align-items: center; justify-content: center; 
-            font-size: clamp(24px, 7vw, 32px); /* Эмодзи подстраивается под экран, но не рвет ячейку */
+            font-size: clamp(24px, 7vw, 32px);
             cursor: pointer; 
-            border: 1px solid rgba(255,255,255,0.05); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid rgba(148, 197, 255, 0.16); 
+            box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.2), inset 0 -3px 0 rgba(4, 9, 18, 0.65), 0 4px 10px rgba(0,0,0,0.45);
             transition: all 0.2s ease;
             width: 100%;
             height: 100%;
             aspect-ratio: 1;
-            overflow: hidden; /* Обрезает все, что пытается вылезти */
+            overflow: hidden;
             line-height: 1;
         }
         
-        .grid.disabled .cell { opacity: 0.7; pointer-events: none; }
+        .grid.disabled .cell { opacity: 0.72; pointer-events: none; }
 
-        /* ИСПРАВЛЕННАЯ АНИМАЦИЯ: возвращаем масштаб к scale(1) */
-        .cell.safe { background: var(--cell-safe); border: 1px solid var(--blue-main); box-shadow: inset 0 0 15px rgba(0,136,255,0.2); animation: pop 0.4s ease forwards; }
-        .cell.mine { background: var(--cell-mine); border: 1px solid #ff3366; box-shadow: inset 0 0 15px rgba(255,51,102,0.4); animation: shake 0.4s ease forwards; }
+        .cell.safe { background: var(--cell-safe); border: 1px solid #22d3ee; box-shadow: inset 0 0 16px rgba(34, 211, 238, 0.35), 0 0 12px rgba(16, 185, 129, 0.24); animation: pop 0.4s ease forwards; }
+        .cell.mine { background: var(--cell-mine); border: 1px solid #ff3366; box-shadow: inset 0 0 16px rgba(255,51,102,0.45); animation: shake 0.4s ease forwards; }
         .cell.dimmed { opacity: 0.4; }
 
         @keyframes pop { 
@@ -92,32 +98,32 @@
         }
 
         /* Управление ставкой */
-        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
+        .controls { background: rgba(10, 21, 39, 0.9); border: 1px solid rgba(56, 189, 248, 0.24); border-radius: 20px; padding: 18px; margin-top: auto; backdrop-filter: blur(10px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.65); }
         
         .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .label { font-size: 14px; color: var(--secondary); font-weight: 600; }
+        .label { font-size: 14px; color: #94b8db; font-weight: 700; }
         
         .bet-options { display: flex; gap: 8px; }
-        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .bet-btn.active { background: rgba(0, 136, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
+        .bet-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(56,189,248,0.18); color: #fff; padding: 10px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .bet-btn.active { background: rgba(34, 211, 238, 0.22); border-color: #22d3ee; color: #67e8f9; box-shadow: 0 0 12px rgba(34, 211, 238, 0.25); }
         .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
 
-        .mines-selector { display: flex; align-items: center; gap: 15px; background: #1a1d24; border-radius: 10px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .mines-selector { display: flex; align-items: center; gap: 15px; background: rgba(15, 31, 56, 0.9); border-radius: 10px; padding: 5px 10px; border: 1px solid rgba(56,189,248,0.22); }
         .m-btn { background: transparent; border: none; color: #fff; font-size: 20px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .m-btn:disabled { opacity: 0.3; pointer-events: none; }
-        .m-val { font-weight: bold; font-size: 16px; width: 25px; text-align: center; color: var(--blue-main); }
+        .m-val { font-weight: 900; font-size: 16px; width: 25px; text-align: center; color: #22d3ee; }
 
         .action-btn { 
-            width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; 
-            color: #fff; background: var(--blue-main); cursor: pointer; 
-            box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; 
+            width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 900; 
+            color: #031d19; background: linear-gradient(135deg, #38bdf8 0%, #10b981 100%); cursor: pointer; 
+            box-shadow: 0 4px 18px rgba(34, 211, 238, 0.42), inset 0 1px 0 rgba(255,255,255,0.45); transition: 0.2s; 
             display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;
         }
         .action-btn:active { transform: scale(0.97); }
         
-        .action-btn.cashout { background: #00cc66; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
-        .action-btn.bust { background: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); }
-        .action-btn:disabled { background: #2a2d35; color: #555; box-shadow: none; pointer-events: none; }
+        .action-btn.cashout { background: linear-gradient(135deg, #22c55e, #10b981); color: #042111; box-shadow: 0 4px 18px rgba(16, 185, 129, 0.45); }
+        .action-btn.bust { background: linear-gradient(135deg, #fb7185, #e11d48); color: #fff; box-shadow: 0 4px 18px rgba(225, 29, 72, 0.45); }
+        .action-btn:disabled { background: #1d293d; color: #5b6e8a; box-shadow: none; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -172,7 +178,7 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+        tg.ready(); tg.expand(); tg.setHeaderColor('#06101f'); tg.setBackgroundColor('#03070e');
 
         // Глобальные переменные игры
         let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
@@ -409,7 +415,7 @@
             ctx.clearRect(0, 0, w, h);
             for (const star of stars) {
                 ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(100, 180, 255, ${star.o})`; ctx.fill();
+                ctx.fillStyle = `rgba(120, 235, 255, ${star.o})`; ctx.fill();
                 star.y += star.s;
                 if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
             }

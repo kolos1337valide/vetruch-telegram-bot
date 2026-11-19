@@ -19,16 +19,16 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         :root {
-            --bg: #000000;
+            --bg: #020806;
             --text: #ffffff;
-            --blue-main: #0088ff;
-            --blue-cyan: #00d9ff;
-            --blue-glow: rgba(0, 136, 255, 0.55);
+            --blue-main: #34d399;
+            --blue-cyan: #ffd700;
+            --blue-glow: rgba(16, 185, 129, 0.5);
         }
 
         body {
             margin: 0;
-            background: var(--bg);
+            background: radial-gradient(circle at 50% 18%, #0f382a 0%, #051610 58%, #020806 100%);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
@@ -38,7 +38,7 @@
         }
 
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.88) 100%); pointer-events: none; }
+        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(5,22,16,0.12) 0%, rgba(2,8,6,0.82) 100%); pointer-events: none; }
 
         .game-container {
             position: relative;
@@ -54,29 +54,32 @@
         .top-section { display: flex; flex-direction: column; gap: 10px; width: 100%; z-index: 10; }
         .header { display: flex; justify-content: space-between; align-items: center; }
         .back-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
+            background: rgba(10, 38, 28, 0.88);
+            border: 1px solid rgba(255, 215, 0, 0.28);
             color: #fff;
             height: 40px;
             padding: 0 14px;
             border-radius: 12px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
+            backdrop-filter: blur(8px);
         }
         .balance-pill {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0, 136, 255, 0.15);
+            background: linear-gradient(135deg, rgba(226, 232, 240, 0.18), rgba(16, 185, 129, 0.14));
             padding: 8px 16px;
             border-radius: 20px;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 16px;
-            border: 1px solid rgba(0, 136, 255, 0.35);
+            color: #f8fafc;
+            border: 1px solid rgba(226, 232, 240, 0.45);
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.22);
         }
         .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
 
@@ -84,15 +87,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(20, 22, 28, 0.85);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(6, 25, 18, 0.88);
+            border: 1px solid rgba(255, 215, 0, 0.25);
             padding: 10px 16px;
             border-radius: 14px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.45);
         }
-        .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
-        .info-val { font-size: 15px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
+        .info-item { font-size: 13px; color: #a7d7c5; display: flex; align-items: center; gap: 8px; }
+        .info-val { font-size: 15px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 4px; }
 
         /* ================= СЦЕНА СТОЛА И КРУПЬЕ ================= */
         .table-stage {
@@ -117,7 +120,7 @@
         .dealer-avatar-svg {
             width: 82px;
             height: 76px;
-            filter: drop-shadow(0 6px 16px rgba(0, 217, 255, 0.35));
+            filter: drop-shadow(0 6px 16px rgba(255, 215, 0, 0.35));
             animation: dealerFloat 3.4s ease-in-out infinite;
         }
 
@@ -127,9 +130,9 @@
         }
 
         .dealer-speech {
-            background: rgba(12, 18, 30, 0.94);
-            border: 1px solid rgba(0, 217, 255, 0.45);
-            color: #e0f7ff;
+            background: rgba(8, 24, 18, 0.94);
+            border: 1px solid rgba(255, 215, 0, 0.45);
+            color: #fef3c7;
             font-size: 11px;
             font-weight: 700;
             padding: 4px 11px;
@@ -144,8 +147,8 @@
             max-width: 410px;
             min-height: 310px;
             background:
-                radial-gradient(ellipse at 50% 45%, rgba(16, 85, 72, 0.92) 0%, rgba(8, 42, 46, 0.96) 55%, rgba(5, 17, 26, 0.99) 100%);
-            border: 3px solid rgba(0, 170, 255, 0.45);
+                radial-gradient(ellipse at 50% 45%, rgba(20, 102, 74, 0.94) 0%, rgba(10, 52, 39, 0.97) 55%, rgba(5, 23, 18, 0.99) 100%);
+            border: 3px solid rgba(255, 215, 0, 0.55);
             border-radius: 36px 36px 120px 120px / 28px 28px 65px 65px;
             padding: 20px 14px 18px 14px;
             position: relative;
@@ -154,9 +157,9 @@
             justify-content: space-between;
             box-shadow:
                 0 16px 40px rgba(0, 0, 0, 0.85),
-                0 0 28px rgba(0, 153, 255, 0.18),
+                0 0 28px rgba(16, 185, 129, 0.2),
                 inset 0 0 38px rgba(0, 0, 0, 0.65),
-                inset 0 1px 0 rgba(255, 255, 255, 0.22);
+                inset 0 1px 0 rgba(255, 230, 150, 0.3);
             overflow: visible;
         }
 
@@ -164,7 +167,7 @@
             content: "";
             position: absolute;
             inset: 9px;
-            border: 1px dashed rgba(255, 215, 0, 0.24);
+            border: 1px dashed rgba(255, 215, 0, 0.34);
             border-radius: 28px 28px 110px 110px / 22px 22px 56px 56px;
             pointer-events: none;
         }
@@ -176,18 +179,18 @@
             width: 34px;
             height: 46px;
             border-radius: 6px;
-            background: linear-gradient(135deg, #0b1c30, #163a5c);
-            border: 1.5px solid #00d9ff;
+            background: linear-gradient(135deg, #102a21, #1e4d3b);
+            border: 1.5px solid #ffd700;
             box-shadow:
-                2px 2px 0 #07121f,
-                3px 3px 0 rgba(0, 217, 255, 0.45),
+                2px 2px 0 #071912,
+                3px 3px 0 rgba(255, 215, 0, 0.45),
                 0 6px 14px rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             font-weight: 900;
-            color: rgba(0, 217, 255, 0.6);
+            color: rgba(255, 215, 0, 0.8);
             pointer-events: none;
             z-index: 3;
         }
@@ -412,9 +415,9 @@
 
         .bj-card-back {
             transform: rotateY(180deg);
-            background: linear-gradient(135deg, #0a1524 0%, #143354 100%);
-            border: 1.5px solid #00d9ff;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55), inset 0 0 14px rgba(0, 170, 255, 0.35);
+            background: linear-gradient(135deg, #0d2b20 0%, #174a37 100%);
+            border: 1.5px solid #ffd700;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55), inset 0 0 14px rgba(255, 215, 0, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -424,25 +427,26 @@
             content: "V";
             font-size: 24px;
             font-weight: 900;
-            color: rgba(0, 217, 255, 0.75);
-            text-shadow: 0 0 12px rgba(0, 217, 255, 0.8);
+            color: rgba(255, 215, 0, 0.85);
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
         }
 
         /* ================= УПРАВЛЕНИЕ ================= */
         .controls {
-            background: rgba(20, 22, 28, 0.88);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(6, 24, 17, 0.9);
+            border: 1px solid rgba(255, 215, 0, 0.25);
             border-radius: 20px;
             padding: 16px;
             margin-top: auto;
             backdrop-filter: blur(10px);
             z-index: 10;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.65);
         }
 
         .bet-options { display: flex; gap: 8px; margin-bottom: 12px; }
         .bet-btn {
-            background: #1a1d24;
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,215,0,0.2);
             color: #fff;
             padding: 11px 12px;
             border-radius: 10px;
@@ -453,9 +457,10 @@
             font-size: 15px;
         }
         .bet-btn.active {
-            background: rgba(0, 217, 255, 0.2);
-            border-color: var(--blue-cyan);
-            color: var(--blue-cyan);
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #ffd700;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
         }
         .bet-btn:disabled { opacity: 0.45; pointer-events: none; }
 
@@ -465,11 +470,11 @@
             border-radius: 14px;
             border: none;
             font-size: 15px;
-            font-weight: 800;
-            color: #fff;
-            background: linear-gradient(90deg, #0088ff, #00d9ff);
+            font-weight: 900;
+            color: #022114;
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
             cursor: pointer;
-            box-shadow: 0 0 18px var(--blue-glow);
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255,255,255,0.45);
             transition: 0.15s;
             display: flex;
             align-items: center;
@@ -621,7 +626,7 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+        tg.ready(); tg.expand(); tg.setHeaderColor('#051610'); tg.setBackgroundColor('#020806');
 
         let rawBal = localStorage.getItem('vetruch_balance');
         let balance = rawBal !== null ? parseInt(rawBal, 10) : 500;
@@ -863,6 +868,13 @@
 
         async function startGame() {
             if (state !== 'idle' && state !== 'finished') return;
+
+            const curUserXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0;
+            if (curUserXp < 5000) {
+                tg.showAlert("🥈 Игра «Блэкджек» доступна с VIP Серебряный (5 000 EXP)!");
+                return;
+            }
+
             if (balance < bet) {
                 tg.showAlert("Недостаточно монет!");
                 return;
@@ -1210,7 +1222,7 @@
             ctx.clearRect(0, 0, w, h);
             for (const star of stars) {
                 ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(100, 180, 255, ${star.o})`; ctx.fill();
+                ctx.fillStyle = `rgba(255, 224, 145, ${star.o})`; ctx.fill();
                 star.y += star.s;
                 if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
             }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script src="vetruch-economy.js?v=4"></script>
+    <script src="vetruch-economy.js?v=5"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -19,12 +19,11 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         :root {
-            --bg: #030711;
+            --bg: #05070c;
             --text: #ffffff;
-            --blue-main: #0088ff;
-            --blue-cyan: #00d9ff;
-            --blue-glow: rgba(0, 170, 255, 0.55);
             --gold: #ffd700;
+            --amber: #f59e0b;
+            --sky: #38bdf8;
             --green: #00e676;
             --red: #ff3366;
         }
@@ -48,32 +47,35 @@
             height: 100dvh;
             display: flex;
             flex-direction: column;
-            background: radial-gradient(circle at 50% 25%, #0e203d 0%, #050b17 62%, #02050b 100%);
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255, 200, 65, 0.16) 0%, transparent 45%),
+                linear-gradient(180deg, #0b111e 0%, #050810 60%, #030408 100%);
         }
 
-        /* Верхняя панель навигации и баланса */
+        /* Верхняя luxury-панель как на премиум аркадах */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 14px 8px 14px;
+            padding: 10px 12px 8px 12px;
             z-index: 20;
             flex-shrink: 0;
         }
         .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(18, 24, 38, 0.85);
+            border: 1px solid rgba(255, 215, 0, 0.25);
             color: #fff;
-            height: 38px;
+            height: 36px;
             padding: 0 13px;
             border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 13.5px;
+            font-weight: 800;
             display: flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
         .back-btn:active { transform: scale(0.95); }
 
@@ -81,13 +83,14 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0, 136, 255, 0.16);
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 15px;
-            border: 1px solid rgba(0, 217, 255, 0.35);
-            box-shadow: 0 0 16px rgba(0, 136, 255, 0.25);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.18), rgba(245, 158, 11, 0.08));
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-weight: 900;
+            font-size: 14.5px;
+            color: #fff8dc;
+            border: 1px solid rgba(255, 215, 0, 0.42);
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.22);
         }
         .coin-icon { width: 17px; height: 17px; flex-shrink: 0; vertical-align: middle; }
 
@@ -97,12 +100,13 @@
             flex: 1 1 auto;
             min-height: 260px;
             margin: 0 10px;
-            border-radius: 20px;
+            border-radius: 22px;
             overflow: hidden;
-            border: 1.5px solid rgba(0, 217, 255, 0.32);
+            border: 1.5px solid rgba(255, 215, 0, 0.34);
             box-shadow:
-                inset 0 0 36px rgba(0, 0, 0, 0.75),
-                0 8px 26px rgba(0, 0, 0, 0.75);
+                inset 0 0 30px rgba(0, 0, 0, 0.38),
+                0 10px 30px rgba(0, 0, 0, 0.8),
+                0 0 22px rgba(245, 158, 11, 0.12);
             touch-action: manipulation;
         }
 
@@ -113,17 +117,64 @@
             cursor: pointer;
         }
 
-        /* Верхний HUD счёта как на референсе */
+        /* Верхний HUD: минималистичный визуальный трек и счёт */
         .hud-overlay {
             position: absolute;
             top: 10px;
-            left: 0;
-            right: 0;
+            left: 14px;
+            right: 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
             pointer-events: none;
             z-index: 10;
+            gap: 8px;
+        }
+
+        .flight-progress-track {
+            position: relative;
+            width: 100%;
+            max-width: 260px;
+            height: 6px;
+            background: rgba(6, 12, 24, 0.48);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 999px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            overflow: visible;
+        }
+
+        .flight-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #38bdf8 0%, #ffd700 72%, #00e676 100%);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.75);
+            transition: width 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .milestone-dot {
+            position: absolute;
+            top: 50%;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 215, 0, 0.42);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+        }
+        .milestone-dot.reached {
+            background: #ffd700;
+            box-shadow: 0 0 8px #ffd700;
+        }
+        .milestone-dot.final {
+            width: 9px;
+            height: 9px;
+            background: rgba(0, 230, 118, 0.5);
+        }
+        .milestone-dot.final.reached {
+            background: #00e676;
+            box-shadow: 0 0 10px #00e676;
         }
 
         .hud-score {
@@ -131,11 +182,11 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            -webkit-text-stroke: 2px rgba(10, 32, 60, 0.55);
+            -webkit-text-stroke: 2.5px rgba(8, 22, 42, 0.62);
             paint-order: stroke fill;
             text-shadow:
-                0 3px 0 rgba(10, 32, 60, 0.55),
-                0 6px 14px rgba(0, 0, 0, 0.35);
+                0 3px 0 rgba(8, 22, 42, 0.6),
+                0 6px 16px rgba(0, 0, 0, 0.38);
             letter-spacing: -1px;
             font-variant-numeric: tabular-nums;
         }
@@ -145,7 +196,7 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 22%;
+            bottom: 20%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -159,16 +210,18 @@
         }
         .tap-prompt-pill {
             pointer-events: auto;
-            background: linear-gradient(135deg, #22e3d0 0%, #00b8ff 100%);
-            color: #03131c;
-            font-size: 15px;
+            background: linear-gradient(135deg, #ffe066 0%, #f59e0b 100%);
+            color: #1c1002;
+            font-size: 14.5px;
             font-weight: 900;
+            letter-spacing: 0.3px;
             padding: 11px 24px;
             border-radius: 999px;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.65);
             box-shadow:
-                0 6px 22px rgba(0, 217, 255, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.55);
+                0 8px 24px rgba(245, 158, 11, 0.48),
+                0 2px 8px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
             cursor: pointer;
             animation: tapPulse 1.5s ease-in-out infinite;
         }
@@ -185,9 +238,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(4, 8, 18, 0.72);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            background: rgba(5, 8, 16, 0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             z-index: 15;
             padding: 18px;
             text-align: center;
@@ -203,29 +256,29 @@
 
         .result-card {
             width: 100%;
-            max-width: 290px;
-            background: linear-gradient(180deg, rgba(16, 28, 48, 0.96) 0%, rgba(8, 14, 26, 0.98) 100%);
-            border: 1.5px solid rgba(0, 217, 255, 0.45);
-            border-radius: 20px;
+            max-width: 295px;
+            background: linear-gradient(180deg, rgba(20, 26, 40, 0.96) 0%, rgba(10, 14, 24, 0.98) 100%);
+            border: 1.5px solid rgba(255, 215, 0, 0.45);
+            border-radius: 22px;
             padding: 18px 16px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.14);
         }
         .result-card.win {
-            border-color: rgba(0, 230, 118, 0.65);
-            box-shadow: 0 0 28px rgba(0, 230, 118, 0.25), 0 12px 32px rgba(0, 0, 0, 0.85);
+            border-color: rgba(0, 230, 118, 0.7);
+            box-shadow: 0 0 30px rgba(0, 230, 118, 0.28), 0 14px 36px rgba(0, 0, 0, 0.85);
         }
         .result-card.lose {
-            border-color: rgba(255, 51, 102, 0.6);
-            box-shadow: 0 0 26px rgba(255, 51, 102, 0.2), 0 12px 32px rgba(0, 0, 0, 0.85);
+            border-color: rgba(255, 51, 102, 0.65);
+            box-shadow: 0 0 28px rgba(255, 51, 102, 0.22), 0 14px 36px rgba(0, 0, 0, 0.85);
         }
         .result-title {
-            font-size: 16px;
+            font-size: 16.5px;
             font-weight: 900;
             margin-bottom: 6px;
             color: #fff;
         }
         .result-sub {
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 700;
             color: #cbd5e1;
             margin-bottom: 10px;
@@ -242,8 +295,8 @@
             font-size: 12px;
             font-weight: 800;
             color: #ffd700;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.28);
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.34);
             padding: 4px 12px;
             border-radius: 999px;
             margin-bottom: 14px;
@@ -257,22 +310,23 @@
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            color: #031520;
-            background: linear-gradient(135deg, #22e3d0 0%, #0095ff 100%);
-            box-shadow: 0 4px 16px rgba(0, 195, 255, 0.45);
+            color: #1c1002;
+            background: linear-gradient(135deg, #ffe066 0%, #f59e0b 100%);
+            box-shadow: 0 4px 18px rgba(245, 158, 11, 0.45);
         }
         .result-btn:active { transform: scale(0.96); }
         .result-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* Нижняя панель ставок */
+        /* Нижняя luxury панель ставок */
         .controls {
             flex-shrink: 0;
-            margin: 10px 10px 14px 10px;
-            background: rgba(16, 20, 29, 0.92);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 10px 10px 12px 10px;
+            background: linear-gradient(180deg, rgba(19, 24, 36, 0.94) 0%, rgba(10, 14, 22, 0.98) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.22);
             border-radius: 18px;
             padding: 10px 12px;
             z-index: 20;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .bet-header-row {
@@ -284,7 +338,7 @@
             color: #94a3b8;
             margin-bottom: 8px;
         }
-        .bet-header-row b { color: #00e5ff; }
+        .bet-header-row b { color: #38bdf8; }
         .bet-header-row span.gold { color: #ffd700; font-weight: 800; }
 
         .bet-options {
@@ -293,8 +347,8 @@
         }
         .bet-btn {
             flex: 1;
-            background: #1a202c;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: #ffffff;
             padding: 10px 6px;
             border-radius: 11px;
@@ -304,10 +358,10 @@
             transition: 0.18s;
         }
         .bet-btn.active {
-            background: rgba(0, 217, 255, 0.18);
-            border-color: var(--blue-cyan);
-            color: var(--blue-cyan);
-            box-shadow: 0 0 12px rgba(0, 217, 255, 0.25);
+            background: rgba(255, 215, 0, 0.18);
+            border-color: var(--gold);
+            color: var(--gold);
+            box-shadow: 0 0 14px rgba(255, 215, 0, 0.25);
         }
         .bet-btn:disabled {
             opacity: 0.45;
@@ -329,6 +383,14 @@
         <canvas id="gameCanvas"></canvas>
 
         <div class="hud-overlay">
+            <div class="flight-progress-track" aria-hidden="true">
+                <div class="flight-progress-fill" id="flightProgressFill"></div>
+                <span class="milestone-dot" data-pipe="10" style="left: 20%;"></span>
+                <span class="milestone-dot" data-pipe="20" style="left: 40%;"></span>
+                <span class="milestone-dot" data-pipe="30" style="left: 60%;"></span>
+                <span class="milestone-dot" data-pipe="40" style="left: 80%;"></span>
+                <span class="milestone-dot final" data-pipe="50" style="left: 100%;"></span>
+            </div>
             <div class="hud-score" id="scoreDisplay">0</div>
         </div>
 
@@ -340,7 +402,7 @@
             <div class="result-card" id="resultCard">
                 <div class="result-title" id="resultTitle">Попытка завершена</div>
                 <div class="result-sub" id="resultSub">Счёт: 0</div>
-                <div class="result-best" id="resultBest">Рекорд: 0</div>
+                <div class="result-best" id="resultBest">🏆 Рекорд: 0</div>
                 <button type="button" class="result-btn" id="resultBtn" onclick="prepareNextFlight()">Тапни, чтобы лететь</button>
             </div>
         </div>
@@ -363,7 +425,7 @@
 <script>
     const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { ready:()=>{}, expand:()=>{}, setHeaderColor:()=>{}, setBackgroundColor:()=>{}, showAlert:(m)=>alert(m) };
     tg.ready(); tg.expand();
-    try { tg.setHeaderColor('#030711'); tg.setBackgroundColor('#030711'); } catch (e) {}
+    try { tg.setHeaderColor('#0b111e'); tg.setBackgroundColor('#05070c'); } catch (e) {}
 
     let rawBal = localStorage.getItem('vetruch_balance');
     let balance = rawBal !== null ? parseInt(rawBal, 10) : 500;
@@ -387,6 +449,8 @@
     const infoBet = document.getElementById('infoBet');
     const maxPrizeDisplay = document.getElementById('maxPrizeDisplay');
     const scoreDisplay = document.getElementById('scoreDisplay');
+    const flightProgressFill = document.getElementById('flightProgressFill');
+    const milestoneDots = document.querySelectorAll('.milestone-dot');
     const tapPromptWrap = document.getElementById('tapPromptWrap');
     const resultOverlay = document.getElementById('resultOverlay');
     const resultCard = document.getElementById('resultCard');
@@ -398,6 +462,15 @@
     const stageWrap = document.getElementById('stageWrap');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+
+    function updateProgressHUD(currentScore) {
+        const pct = Math.max(0, Math.min(100, (currentScore / MAX_PIPES) * 100));
+        if (flightProgressFill) flightProgressFill.style.width = pct + '%';
+        milestoneDots.forEach(dot => {
+            const p = parseInt(dot.getAttribute('data-pipe') || '0', 10);
+            dot.classList.toggle('reached', currentScore >= p);
+        });
+    }
 
     function goBack() {
         if (window.parent && window.parent !== window && typeof window.parent.closeGameModal === 'function') {
@@ -425,18 +498,24 @@
     }
 
     updateBalanceUI();
+    updateProgressHUD(0);
 
-    // ================= ЗАГРУЗКА СПРАЙТА УТКИ =================
+    // ================= ЗАГРУЗКА СПРАЙТА И ПАНОРАМНОГО ФОНА =================
     const duckImg = new Image();
     let duckImgLoaded = false;
     duckImg.onload = () => { duckImgLoaded = true; };
     duckImg.src = 'flappy-duck.png';
 
+    const bgImg = new Image();
+    let bgImgLoaded = false;
+    bgImg.onload = () => { bgImgLoaded = true; };
+    bgImg.src = 'flappy-bg.jpg';
+
     // ================= РАЗМЕРЫ СЦЕНЫ И СПАВН =================
     let W = 360;
     let H = 480;
     let dpr = 1;
-    let floorHeight = 58;
+    let floorHeight = 60;
 
     const duck = {
         x: 92,
@@ -451,18 +530,51 @@
     let particles = [];
     let floatingPopups = [];
     let bgClouds = [];
+    let bgBirds = [];
+    let bgStars = [];
+    let windStreaks = [];
     let scrollX = 0;
     let lastTime = performance.now();
+    let ambientPhase = 0; // Плавный переход день -> закат -> сумерки
+    let shakeTimer = 0;
 
-    function initClouds() {
+    function initAmbient() {
         bgClouds = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 4; i++) {
             bgClouds.push({
-                x: (i * 95 + Math.random() * 40) % (W + 120) - 40,
-                y: 34 + Math.random() * Math.max(80, (H - floorHeight) * 0.36),
-                scale: 0.75 + Math.random() * 0.55,
-                speed: 0.18 + Math.random() * 0.22,
-                alpha: 0.72 + Math.random() * 0.22
+                x: (i * 115 + Math.random() * 40) % (W + 120) - 40,
+                y: 44 + Math.random() * Math.max(70, (H - floorHeight) * 0.28),
+                scale: 0.72 + Math.random() * 0.45,
+                speed: 0.16 + Math.random() * 0.18,
+                alpha: 0.24 + Math.random() * 0.18
+            });
+        }
+        bgBirds = [];
+        for (let i = 0; i < 4; i++) {
+            bgBirds.push({
+                x: Math.random() * W,
+                y: 62 + Math.random() * Math.max(90, (H - floorHeight) * 0.34),
+                speed: 0.45 + Math.random() * 0.35,
+                size: 4 + Math.random() * 3,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+        bgStars = [];
+        for (let i = 0; i < 36; i++) {
+            bgStars.push({
+                x: Math.random() * W,
+                y: 12 + Math.random() * Math.max(120, (H - floorHeight) * 0.56),
+                r: Math.random() * 1.4 + 0.6,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+        windStreaks = [];
+        for (let i = 0; i < 8; i++) {
+            windStreaks.push({
+                x: Math.random() * W,
+                y: 40 + Math.random() * Math.max(150, H - floorHeight - 70),
+                len: 28 + Math.random() * 44,
+                speed: 6 + Math.random() * 4
             });
         }
     }
@@ -481,7 +593,7 @@
         if (state === 'idle') {
             duck.y = Math.round((H - floorHeight) * 0.46);
         }
-        initClouds();
+        initAmbient();
     }
 
     window.addEventListener('resize', resizeCanvas);
@@ -524,7 +636,10 @@
         score = 0;
         nextPipeNum = 1;
         currentPipeSpeed = BASE_PIPE_SPEED;
+        ambientPhase = 0;
+        shakeTimer = 0;
         scoreDisplay.textContent = '0';
+        updateProgressHUD(0);
         duck.y = Math.round((H - floorHeight) * 0.46);
         duck.vy = 0;
         duck.angle = 0;
@@ -541,21 +656,50 @@
 
     function spawnFlapParticles(burstCount) {
         for (let i = 0; i < burstCount; i++) {
+            const palette = ['#ffffff', '#ffd700', '#ffeaa7', '#bae6fd'];
             particles.push({
-                x: duck.x - 16 + (Math.random() - 0.5) * 10,
+                x: duck.x - 14 + (Math.random() - 0.5) * 10,
                 y: duck.y + 8 + (Math.random() - 0.5) * 12,
-                vx: -2.2 - Math.random() * 2.2,
-                vy: 1.0 + (Math.random() - 0.5) * 2.0,
-                r: Math.random() * 3.8 + 1.8,
+                vx: -2.0 - Math.random() * 2.2,
+                vy: 0.7 + (Math.random() - 0.5) * 2.2,
+                r: Math.random() * 3.4 + 1.6,
                 life: 1.0,
                 decay: 0.045 + Math.random() * 0.03,
-                color: Math.random() < 0.3 ? '#ffd700' : '#00e5ff'
+                color: palette[i % palette.length]
+            });
+        }
+    }
+
+    function spawnMilestoneBurst(cx, cy, isFinalWin) {
+        const colors = isFinalWin
+            ? ['#00e676', '#ffd700', '#ffffff', '#38bdf8']
+            : ['#ffd700', '#ffe066', '#ffffff', '#f59e0b'];
+        for (let i = 0; i < 24; i++) {
+            const a = (Math.PI * 2 * i) / 24 + Math.random() * 0.2;
+            const spd = 2.0 + Math.random() * 3.8;
+            particles.push({
+                x: cx,
+                y: cy,
+                vx: Math.cos(a) * spd,
+                vy: Math.sin(a) * spd - 0.8,
+                r: Math.random() * 3.8 + 2.2,
+                life: 1.0,
+                decay: 0.025 + Math.random() * 0.02,
+                color: colors[i % colors.length]
             });
         }
     }
 
     function startRoundAndFlap() {
         if (state !== 'idle') return;
+
+        // Защита доступа: требуется VIP Бронзовый (500 EXP)
+        const curUserXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0;
+        if (curUserXp < 500) {
+            tg.showAlert('🥉 Игра «Флаппи Утка» доступна с VIP Бронзовый (500 EXP)!');
+            return;
+        }
+
         let storedBal = parseInt(localStorage.getItem('vetruch_balance') || String(balance), 10);
         if (!isNaN(storedBal)) balance = storedBal;
 
@@ -576,8 +720,7 @@
         balance -= bet;
         const expEarned = Math.floor(bet / 50);
         if (expEarned > 0) {
-            let curXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10);
-            localStorage.setItem('vetruch_user_xp', curXp + expEarned);
+            localStorage.setItem('vetruch_user_xp', curUserXp + expEarned);
         }
         updateBalanceUI();
 
@@ -585,9 +728,12 @@
         score = 0;
         nextPipeNum = 1;
         currentPipeSpeed = BASE_PIPE_SPEED;
+        ambientPhase = 0;
+        shakeTimer = 0;
         pipes = [];
         floatingPopups = [];
         scoreDisplay.textContent = '0';
+        updateProgressHUD(0);
 
         tapPromptWrap.classList.add('hidden');
         resultOverlay.classList.remove('show');
@@ -646,6 +792,10 @@
         const mult = getMultiplierForScore(score);
         const winAmount = mult > 0 ? Math.floor(bet * mult) : 0;
 
+        if (winAmount === 0) {
+            shakeTimer = 14;
+        }
+
         if (winAmount > 0) {
             balance += winAmount;
             updateBalanceUI();
@@ -666,7 +816,7 @@
             resultBtn.textContent = 'ЛЕТЕТЬ ЕЩЁ';
         } else if (winAmount > 0) {
             resultTitle.textContent = `✨ ОТЛИЧНЫЙ ПОЛЁТ (${score})`;
-            resultTitle.style.color = '#00e5ff';
+            resultTitle.style.color = '#38bdf8';
             resultSub.innerHTML = `Выигрыш: <b>+${winAmount}</b> <img src="coins.png" class="coin-icon"> (x${mult})`;
             resultBtn.textContent = 'ЛЕТЕТЬ ЕЩЁ';
         } else {
@@ -683,7 +833,7 @@
         betBtns.forEach(b => b.disabled = false);
     }
 
-    // ================= ОТРИСОВКА ФОНА (НЕБО, ОБЛАКА И ДЕРЕВЬЯ) =================
+    // ================= ОТРИСОВКА ЖИВОПИСНОГО МНОГОСЛОЙНОГО ФОНА =================
     function drawCloud(cx, cy, scale, alpha) {
         ctx.save();
         ctx.translate(cx, cy);
@@ -699,183 +849,195 @@
         ctx.restore();
     }
 
-    function drawTree(x, baseY, treeIdx) {
-        const variant = ((treeIdx % 3) + 3) % 3;
-        const sizeBoost = ((treeIdx * 37) % 19) - 9;
-
-        if (variant === 0) {
-            // Высокое лиственное дерево
-            const trunkH = 38 + sizeBoost * 0.6;
-            ctx.fillStyle = '#6f4e37';
-            ctx.fillRect(x - 5, baseY - trunkH, 10, trunkH);
-
-            ctx.fillStyle = '#249448';
-            ctx.beginPath();
-            ctx.arc(x, baseY - trunkH - 10, 24, 0, Math.PI * 2);
-            ctx.arc(x - 16, baseY - trunkH + 2, 17, 0, Math.PI * 2);
-            ctx.arc(x + 16, baseY - trunkH + 2, 17, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.fillStyle = '#34c759';
-            ctx.beginPath();
-            ctx.arc(x - 4, baseY - trunkH - 14, 16, 0, Math.PI * 2);
-            ctx.fill();
-        } else if (variant === 1) {
-            // Ель
-            const trunkH = 24;
-            ctx.fillStyle = '#5d4037';
-            ctx.fillRect(x - 4, baseY - trunkH, 8, trunkH);
-
-            const layers = [
-                { yOff: 18, w: 28, h: 30, col: '#1e7e3e' },
-                { yOff: 36, w: 22, h: 28, col: '#259b4d' },
-                { yOff: 54, w: 16, h: 24, col: '#2ecc71' }
-            ];
-            for (const l of layers) {
-                ctx.fillStyle = l.col;
-                ctx.beginPath();
-                ctx.moveTo(x, baseY - l.yOff - l.h);
-                ctx.lineTo(x - l.w, baseY - l.yOff);
-                ctx.lineTo(x + l.w, baseY - l.yOff);
-                ctx.closePath();
-                ctx.fill();
-            }
-        } else {
-            // Пышное круглое дерево + куст
-            const trunkH = 30 + sizeBoost * 0.5;
-            ctx.fillStyle = '#6f4e37';
-            ctx.fillRect(x - 4, baseY - trunkH, 8, trunkH);
-
-            ctx.fillStyle = '#27ae60';
-            ctx.beginPath();
-            ctx.arc(x, baseY - trunkH - 6, 20, 0, Math.PI * 2);
-            ctx.arc(x - 13, baseY - trunkH + 4, 14, 0, Math.PI * 2);
-            ctx.arc(x + 13, baseY - trunkH + 4, 14, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.fillStyle = '#58d68d';
-            ctx.beginPath();
-            ctx.arc(x - 3, baseY - trunkH - 10, 12, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    function drawBackground() {
+    function drawBackground(now) {
         const usableH = H - floorHeight;
 
-        // Чистое дневное небо
+        // 1. Базовый градиент неба (виден мгновенно до загрузки картинки)
         const skyGrad = ctx.createLinearGradient(0, 0, 0, usableH);
-        skyGrad.addColorStop(0, '#36b5ff');
-        skyGrad.addColorStop(0.58, '#7ad7ff');
-        skyGrad.addColorStop(1, '#c8f2ff');
+        skyGrad.addColorStop(0, '#1e90e8');
+        skyGrad.addColorStop(0.55, '#6ecbf5');
+        skyGrad.addColorStop(1, '#bcebff');
         ctx.fillStyle = skyGrad;
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillRect(0, 0, W, usableH);
 
-        // Мягкое солнце в небе
-        const sunX = W * 0.82;
-        const sunY = Math.max(54, usableH * 0.16);
-        const sunGlow = ctx.createRadialGradient(sunX, sunY, 8, sunX, sunY, 56);
-        sunGlow.addColorStop(0, 'rgba(255, 248, 200, 0.95)');
-        sunGlow.addColorStop(0.4, 'rgba(255, 232, 130, 0.45)');
-        sunGlow.addColorStop(1, 'rgba(255, 232, 130, 0)');
-        ctx.fillStyle = sunGlow;
-        ctx.beginPath();
-        ctx.arc(sunX, sunY, 56, 0, Math.PI * 2);
-        ctx.fill();
+        // 2. Живописный бесшовный параллакс-задник (зеркальное тайлирование)
+        if (bgImgLoaded && bgImg.naturalHeight > 0) {
+            const tileH = usableH + 8;
+            const tileW = Math.max(tileH, Math.round(tileH * (bgImg.naturalWidth / bgImg.naturalHeight)));
+            const parallaxX = scrollX * 0.18;
+            const firstTile = Math.floor(parallaxX / tileW);
+            const lastTile = Math.ceil((parallaxX + W) / tileW);
 
-        // Плывущие облака
+            for (let t = firstTile; t <= lastTile; t++) {
+                const drawX = t * tileW - parallaxX;
+                ctx.save();
+                if (((t % 2) + 2) % 2 === 1) {
+                    ctx.translate(drawX + tileW, 0);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(bgImg, 0, 0, tileW + 1.5, tileH);
+                } else {
+                    ctx.drawImage(bgImg, drawX, 0, tileW + 1.5, tileH);
+                }
+                ctx.restore();
+            }
+        }
+
+        // 3. Динамическая эволюция освещения: день (0..19) -> золотой закат (20..39) -> сумерки со звёздами (40..50)
+        const sunsetAlpha = Math.max(0, Math.min(1, (ambientPhase - 0.36) / 0.28)) * (1 - Math.max(0, Math.min(1, (ambientPhase - 0.78) / 0.2)));
+        const twilightAlpha = Math.max(0, Math.min(1, (ambientPhase - 0.72) / 0.25));
+
+        if (sunsetAlpha > 0.01) {
+            const sunTint = ctx.createLinearGradient(0, 0, 0, usableH);
+            sunTint.addColorStop(0, `rgba(255, 118, 64, ${0.28 * sunsetAlpha})`);
+            sunTint.addColorStop(0.55, `rgba(255, 168, 76, ${0.32 * sunsetAlpha})`);
+            sunTint.addColorStop(1, `rgba(190, 80, 120, ${0.22 * sunsetAlpha})`);
+            ctx.fillStyle = sunTint;
+            ctx.fillRect(0, 0, W, usableH);
+        }
+
+        if (twilightAlpha > 0.01) {
+            const duskTint = ctx.createLinearGradient(0, 0, 0, usableH);
+            duskTint.addColorStop(0, `rgba(14, 16, 54, ${0.68 * twilightAlpha})`);
+            duskTint.addColorStop(0.6, `rgba(42, 20, 74, ${0.56 * twilightAlpha})`);
+            duskTint.addColorStop(1, `rgba(245, 158, 11, ${0.22 * twilightAlpha})`);
+            ctx.fillStyle = duskTint;
+            ctx.fillRect(0, 0, W, usableH);
+
+            // Мягкие золотые звёздочки в сумерках финала
+            for (const st of bgStars) {
+                const tw = 0.45 + 0.55 * Math.sin(now * 0.005 + st.phase);
+                ctx.fillStyle = `rgba(255, 240, 180, ${tw * twilightAlpha * 0.85})`;
+                ctx.beginPath();
+                ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Тёплые солнечные лучи в дневную и закатную фазы
+        const sunBeamAlpha = Math.max(0, 1 - twilightAlpha * 0.9);
+        if (sunBeamAlpha > 0.05) {
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            const beamGrad = ctx.createLinearGradient(W * 0.95, 0, W * 0.3, usableH * 0.72);
+            beamGrad.addColorStop(0, `rgba(255, 244, 185, ${0.28 * sunBeamAlpha})`);
+            beamGrad.addColorStop(1, 'rgba(255, 244, 185, 0)');
+            ctx.fillStyle = beamGrad;
+            ctx.beginPath();
+            ctx.moveTo(W * 0.65, 0);
+            ctx.lineTo(W, 0);
+            ctx.lineTo(W * 0.45, usableH * 0.85);
+            ctx.lineTo(W * 0.15, usableH * 0.75);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // 4. Лёгкие плывущие облака поверх неба
         for (const c of bgClouds) {
-            drawCloud(c.x, c.y, c.scale, c.alpha);
+            drawCloud(c.x, c.y, c.scale, c.alpha * (1 - twilightAlpha * 0.5));
         }
 
-        // Дальние зелёные холмы (параллакс)
-        const hillStep = 140;
-        const hillOffset = ((scrollX * 0.18) % hillStep + hillStep) % hillStep;
-        ctx.fillStyle = '#8be098';
-        ctx.beginPath();
-        ctx.moveTo(-hillStep, usableH);
-        for (let x = -hillStep - hillOffset; x <= W + hillStep * 2; x += hillStep) {
-            ctx.quadraticCurveTo(x + hillStep * 0.5, usableH - 76, x + hillStep, usableH - 14);
+        // 5. Далёкие летящие силуэты птиц
+        ctx.save();
+        ctx.strokeStyle = twilightAlpha > 0.5 ? 'rgba(255, 224, 150, 0.55)' : 'rgba(18, 42, 68, 0.48)';
+        ctx.lineWidth = 1.6;
+        ctx.lineCap = 'round';
+        for (const b of bgBirds) {
+            const wingY = Math.sin(now * 0.008 + b.phase) * b.size * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(b.x - b.size, b.y + wingY);
+            ctx.quadraticCurveTo(b.x - b.size * 0.4, b.y - b.size * 0.35, b.x, b.y);
+            ctx.quadraticCurveTo(b.x + b.size * 0.4, b.y - b.size * 0.35, b.x + b.size, b.y + wingY);
+            ctx.stroke();
         }
-        ctx.lineTo(W + hillStep, usableH);
+        ctx.restore();
+
+        // 6. Силуэт прибрежного леса у самого горизонта перед травой (связывает фон и землю)
+        const ridgeStep = 56;
+        const ridgeOffset = ((scrollX * 0.52) % ridgeStep + ridgeStep) % ridgeStep;
+        ctx.fillStyle = twilightAlpha > 0.5 ? '#153b2c' : '#1f6f3b';
+        ctx.beginPath();
+        ctx.moveTo(-ridgeStep, usableH);
+        for (let x = -ridgeStep - ridgeOffset; x <= W + ridgeStep * 2; x += ridgeStep) {
+            ctx.arc(x + 14, usableH + 2, 18, Math.PI, 0);
+            ctx.arc(x + 36, usableH, 22, Math.PI, 0);
+        }
+        ctx.lineTo(W + ridgeStep, usableH);
         ctx.closePath();
         ctx.fill();
 
-        // Средний план холмов
-        const midStep = 110;
-        const midOffset = ((scrollX * 0.3) % midStep + midStep) % midStep;
-        ctx.fillStyle = '#65c975';
-        ctx.beginPath();
-        ctx.moveTo(-midStep, usableH);
-        for (let x = -midStep - midOffset; x <= W + midStep * 2; x += midStep) {
-            ctx.quadraticCurveTo(x + midStep * 0.5, usableH - 48, x + midStep, usableH - 8);
+        // Полосы ветра на высоких скоростях
+        if (state === 'flying' && currentPipeSpeed > 3.1) {
+            const windAlpha = Math.min(0.32, (currentPipeSpeed - 3.1) * 0.38);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${windAlpha})`;
+            ctx.lineWidth = 1.5;
+            for (const ws of windStreaks) {
+                ctx.beginPath();
+                ctx.moveTo(ws.x, ws.y);
+                ctx.lineTo(ws.x + ws.len, ws.y);
+                ctx.stroke();
+            }
         }
-        ctx.lineTo(W + midStep, usableH);
-        ctx.closePath();
-        ctx.fill();
-
-        // Деревья сзади (бесконечный плавный параллакс)
-        const treeSpacing = 76;
-        const firstIdx = Math.floor((scrollX * 0.45 - 80) / treeSpacing);
-        const lastIdx = Math.ceil((scrollX * 0.45 + W + 80) / treeSpacing);
-        for (let idx = firstIdx; idx <= lastIdx; idx++) {
-            const screenX = idx * treeSpacing - scrollX * 0.45;
-            drawTree(screenX, usableH - 4, idx);
-        }
-
-        // Передние низкие кустики вдоль горизонта
-        const bushStep = 48;
-        const bushOffset = ((scrollX * 0.62) % bushStep + bushStep) % bushStep;
-        ctx.fillStyle = '#27ae60';
-        ctx.beginPath();
-        for (let x = -bushStep - bushOffset; x <= W + bushStep * 2; x += bushStep) {
-            ctx.arc(x + 14, usableH, 16, Math.PI, 0);
-            ctx.arc(x + 34, usableH + 2, 13, Math.PI, 0);
-        }
-        ctx.fill();
     }
 
     function drawGround() {
         const y = H - floorHeight;
 
-        // Земля
-        const earthGrad = ctx.createLinearGradient(0, y + 16, 0, H);
-        earthGrad.addColorStop(0, '#c49652');
-        earthGrad.addColorStop(1, '#7a4f23');
+        // Тёплая фактурная каменная/земляная основа
+        const earthGrad = ctx.createLinearGradient(0, y + 17, 0, H);
+        earthGrad.addColorStop(0, '#c89b54');
+        earthGrad.addColorStop(0.35, '#9d6c35');
+        earthGrad.addColorStop(1, '#68411b');
         ctx.fillStyle = earthGrad;
-        ctx.fillRect(0, y + 16, W, floorHeight - 16);
+        ctx.fillRect(0, y + 17, W, floorHeight - 17);
 
-        // Верхняя полоса травы
-        ctx.fillStyle = '#4cd137';
-        ctx.fillRect(0, y, W, 16);
+        // Декоративные скроллящиеся камни в грунте
+        const stoneStep = 44;
+        const stoneOff = ((scrollX % stoneStep) + stoneStep) % stoneStep;
+        ctx.fillStyle = 'rgba(62, 34, 12, 0.25)';
+        for (let x = -stoneStep - stoneOff; x < W + stoneStep; x += stoneStep) {
+            ctx.beginPath();
+            ctx.roundRect ? ctx.roundRect(x + 4, y + 25, 22, 10, 4) : ctx.fillRect(x + 4, y + 25, 22, 10);
+            ctx.fill();
+            ctx.fillRect(x + 28, y + 40, 18, 8);
+        }
 
-        // Диагональные полоски на траве для ощущения движения
+        // Сочный верхний газон
+        const grassGrad = ctx.createLinearGradient(0, y, 0, y + 17);
+        grassGrad.addColorStop(0, '#6bf04f');
+        grassGrad.addColorStop(1, '#32a824');
+        ctx.fillStyle = grassGrad;
+        ctx.fillRect(0, y, W, 17);
+
+        // Бегущие диагональные шевроны травы
         const step = 28;
         const offset = ((scrollX % step) + step) % step;
         ctx.save();
         ctx.beginPath();
-        ctx.rect(0, y, W, 16);
+        ctx.rect(0, y, W, 17);
         ctx.clip();
-        ctx.fillStyle = '#6fe356';
+        ctx.fillStyle = 'rgba(182, 255, 140, 0.42)';
         for (let x = -step - offset; x < W + step; x += step) {
             ctx.beginPath();
-            ctx.moveTo(x, y + 16);
+            ctx.moveTo(x, y + 17);
             ctx.lineTo(x + 10, y);
             ctx.lineTo(x + 20, y);
-            ctx.lineTo(x + 10, y + 16);
+            ctx.lineTo(x + 10, y + 17);
             ctx.closePath();
             ctx.fill();
         }
         ctx.restore();
 
-        // Блик и нижняя кромка травы
-        ctx.fillStyle = '#9bf78a';
-        ctx.fillRect(0, y, W, 2);
-        ctx.fillStyle = '#25701b';
-        ctx.fillRect(0, y + 15, W, 3);
+        // Верхний глянцевый блик и тень под газоном
+        ctx.fillStyle = '#b4ff99';
+        ctx.fillRect(0, y, W, 2.5);
+        ctx.fillStyle = '#1d6616';
+        ctx.fillRect(0, y + 16, W, 3);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+        ctx.fillRect(0, y + 19, W, 4);
     }
 
-    function drawPipes() {
+    function drawPipes(now) {
         const usableH = H - floorHeight;
 
         const getPipePalette = (num) => {
@@ -887,16 +1049,16 @@
                 };
             }
             if (num % 10 === 0) {
-                // Каждая 10-я труба (10, 20, 30, 40) — жёлтая
+                // Каждая 10-я труба (10, 20, 30, 40) — золотисто-жёлтая
                 return {
                     outline: '#5c3b00',
-                    stops: ['#dfa300', '#ffd838', '#fff29c', '#f5b800', '#c78500', '#9a6300']
+                    stops: ['#dfa300', '#ffd838', '#fff4a8', '#f5b800', '#c78500', '#9a6300']
                 };
             }
-            // Обычные трубы — синие
+            // Обычные трубы — классические синие
             return {
                 outline: '#123458',
-                stops: ['#2c8ae6', '#6dc3ff', '#a6dcff', '#3ea0ff', '#1e6ec4', '#145096']
+                stops: ['#2c8ae6', '#6dc3ff', '#b2e2ff', '#3ea0ff', '#1e6ec4', '#145096']
             };
         };
 
@@ -909,6 +1071,8 @@
 
         for (const p of pipes) {
             const palette = getPipePalette(p.num);
+            const isGold = p.num % 10 === 0 && p.num < MAX_PIPES;
+            const isFinal = p.num === MAX_PIPES;
 
             const drawSegment = (x, y, w, h, capAtBottom) => {
                 if (h <= 0) return;
@@ -921,40 +1085,50 @@
                 ctx.fillStyle = fillPipeGradient(x, w, palette.stops);
                 ctx.fillRect(x, y, w, h);
 
-                // Глянцевый блик слева и лёгкая тень справа
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.34)';
+                // Глянцевые блики и глубина объёма
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.36)';
                 ctx.fillRect(x + 9, y, 5, h);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
                 ctx.fillRect(x + 17, y, 2, h);
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.14)';
-                ctx.fillRect(x + w - 8, y, 6, h);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.16)';
+                ctx.fillRect(x + w - 9, y, 7, h);
+
+                // Металлический живой блик на золотых 10-х трубах
+                if (isGold) {
+                    const sheen = ((now * 0.06) % (w + 40)) - 20;
+                    const gradSheen = ctx.createLinearGradient(x + sheen - 10, 0, x + sheen + 10, 0);
+                    gradSheen.addColorStop(0, 'rgba(255,255,255,0)');
+                    gradSheen.addColorStop(0.5, 'rgba(255,255,255,0.28)');
+                    gradSheen.addColorStop(1, 'rgba(255,255,255,0)');
+                    ctx.fillStyle = gradSheen;
+                    ctx.fillRect(x, y, w, h);
+                }
 
                 // Контур ствола
                 ctx.strokeStyle = palette.outline;
                 ctx.lineWidth = 2.5;
                 ctx.strokeRect(x, y, w, h);
 
-                // Лёгкая тень под/над ободком
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.20)';
+                // Тень под/над ободком
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.24)';
                 if (capAtBottom && h > capH + 4) {
-                    ctx.fillRect(x + 1, capY - 4, w - 2, 4);
+                    ctx.fillRect(x + 1, capY - 5, w - 2, 5);
                 } else if (!capAtBottom && h > capH + 4) {
-                    ctx.fillRect(x + 1, capY + capH, w - 2, 4);
+                    ctx.fillRect(x + 1, capY + capH, w - 2, 5);
                 }
 
-                // Классический выступающий оголовок трубы
+                // Классический выступающий оголовок
                 ctx.fillStyle = fillPipeGradient(capX, capW, palette.stops);
                 ctx.fillRect(capX, capY, capW, capH);
 
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.36)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
                 ctx.fillRect(capX + 10, capY + 1, 6, capH - 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
                 ctx.fillRect(capX + 19, capY + 1, 2, capH - 2);
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.16)';
                 ctx.fillRect(capX + capW - 9, capY + 1, 7, capH - 2);
 
-                // Светлый кантик на ободке для объёма
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.34)';
                 ctx.fillRect(capX + 2, capY + 2, capW - 4, 2);
 
                 ctx.strokeStyle = palette.outline;
@@ -964,6 +1138,18 @@
 
             drawSegment(p.x, 0, p.w, p.gapTop, true);
             drawSegment(p.x, p.gapBottom, p.w, usableH - p.gapBottom, false);
+
+            // Праздничное мерцание в проёме 50-й финальной трубы
+            if (isFinal) {
+                for (let k = 0; k < 4; k++) {
+                    const spY = p.gapTop + 20 + ((p.gapBottom - p.gapTop - 40) * ((Math.sin(now * 0.004 + k * 1.7) + 1) / 2));
+                    const spX = p.x + p.w * 0.5 + Math.cos(now * 0.005 + k * 2.1) * 16;
+                    ctx.fillStyle = k % 2 === 0 ? 'rgba(0, 255, 136, 0.85)' : 'rgba(255, 215, 0, 0.9)';
+                    ctx.beginPath();
+                    ctx.arc(spX, spY, 2.4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
         }
     }
 
@@ -976,8 +1162,8 @@
             const aspect = duckImg.naturalWidth / (duckImg.naturalHeight || 1);
             duck.h = 66;
             duck.w = Math.round(duck.h * aspect);
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
-            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.32)';
+            ctx.shadowBlur = 10;
             ctx.drawImage(duckImg, -duck.w / 2, -duck.h / 2, duck.w, duck.h);
         } else {
             ctx.fillStyle = '#ffd700';
@@ -1009,7 +1195,7 @@
 
         for (let i = floatingPopups.length - 1; i >= 0; i--) {
             const fp = floatingPopups[i];
-            fp.y -= 0.9 * dt;
+            fp.y -= 0.95 * dt;
             fp.life -= 0.02 * dt;
             if (fp.life <= 0) {
                 floatingPopups.splice(i, 1);
@@ -1017,11 +1203,11 @@
             }
             ctx.save();
             ctx.globalAlpha = Math.max(0, fp.life);
-            ctx.font = '900 16px Inter, sans-serif';
+            ctx.font = '900 17px Inter, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillStyle = fp.color;
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.65)';
-            ctx.lineWidth = 3;
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.72)';
+            ctx.lineWidth = 3.5;
             ctx.strokeText(fp.text, fp.x, fp.y);
             ctx.fillText(fp.text, fp.x, fp.y);
             ctx.restore();
@@ -1035,6 +1221,9 @@
         const dt = Math.min(32, Math.max(1, rawDt)) / 16.667;
 
         const usableH = H - floorHeight;
+
+        const targetPhase = Math.min(1, score / MAX_PIPES);
+        ambientPhase += (targetPhase - ambientPhase) * Math.min(1, 0.05 * dt);
 
         if (state === 'idle') {
             scrollX += 1.4 * dt;
@@ -1077,17 +1266,20 @@
                     p.passed = true;
                     score++;
                     scoreDisplay.textContent = score;
+                    updateProgressHUD(score);
                     if (score > bestScore) {
                         bestScore = score;
                         localStorage.setItem('vetruch_flappy_best', bestScore);
                     }
                     if (score >= MAX_PIPES) {
+                        spawnMilestoneBurst(duck.x, duck.y - 20, true);
                         floatingPopups.push({ x: duck.x, y: duck.y - 40, text: '🏆 x10!', color: '#00e676', life: 1.0 });
                         finishFlight(true);
                         break;
                     }
                     if (score % 10 === 0) {
-                        floatingPopups.push({ x: duck.x, y: duck.y - 40, text: `✅ x${getMultiplierForScore(score)}!`, color: '#ffd700', life: 1.0 });
+                        spawnMilestoneBurst(duck.x, duck.y - 20, false);
+                        floatingPopups.push({ x: duck.x, y: duck.y - 40, text: `✨ x${getMultiplierForScore(score)}!`, color: '#ffd700', life: 1.0 });
                     }
                 }
 
@@ -1118,12 +1310,34 @@
             c.x -= c.speed * dt;
             if (c.x < -110) c.x = W + 70;
         }
+        for (const b of bgBirds) {
+            b.x -= b.speed * dt;
+            if (b.x < -30) {
+                b.x = W + 30;
+                b.y = 50 + Math.random() * Math.max(90, usableH * 0.35);
+            }
+        }
+        for (const ws of windStreaks) {
+            ws.x -= ws.speed * dt;
+            if (ws.x + ws.len < 0) {
+                ws.x = W + 20;
+                ws.y = 40 + Math.random() * Math.max(120, usableH - 70);
+            }
+        }
 
-        drawBackground();
-        drawPipes();
+        ctx.save();
+        if (shakeTimer > 0) {
+            const mag = shakeTimer * 0.45;
+            ctx.translate((Math.random() - 0.5) * mag, (Math.random() - 0.5) * mag);
+            shakeTimer = Math.max(0, shakeTimer - dt);
+        }
+
+        drawBackground(now);
+        drawPipes(now);
         drawGround();
         drawParticlesAndPopups(dt);
         drawDuck();
+        ctx.restore();
 
         requestAnimationFrame(gameLoop);
     }
