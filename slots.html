@@ -19,17 +19,17 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         :root {
-            --bg: #05020a;
+            --bg: #02050b;
             --text: #ffffff;
-            --blue-main: #d946ef;
-            --blue-cyan: #ffd700;
-            --blue-glow: rgba(245, 158, 11, 0.55);
-            --gold: #ffd700;
+            --blue-main: #0088ff;
+            --blue-cyan: #00d9ff;
+            --blue-glow: rgba(0, 136, 255, 0.55);
+            --gold: #00d9ff;
         }
 
         body {
             margin: 0;
-            background: radial-gradient(circle at 50% 22%, #2e0f4c 0%, #11061e 58%, #05020a 100%);
+            background: radial-gradient(circle at 50% 22%, #0d2444 0%, #050d1a 58%, #02050b 100%);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
@@ -39,7 +39,7 @@
         }
 
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(17,6,30,0.12) 0%, rgba(5,2,10,0.82) 100%); pointer-events: none; }
+        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(5,13,26,0.12) 0%, rgba(2,5,11,0.82) 100%); pointer-events: none; }
 
         .game-container {
             position: relative;
@@ -55,8 +55,8 @@
         .top-section { display: flex; flex-direction: column; gap: 8px; width: 100%; z-index: 10; }
         .header { display: flex; justify-content: space-between; align-items: center; }
         .back-btn {
-            background: rgba(30, 12, 48, 0.88);
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: rgba(11, 24, 46, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.3);
             color: #fff;
             height: 38px;
             padding: 0 13px;
@@ -73,14 +73,14 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: linear-gradient(135deg, rgba(226, 232, 240, 0.18), rgba(217, 70, 239, 0.14));
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.2), rgba(0, 217, 255, 0.1));
             padding: 7px 15px;
             border-radius: 20px;
             font-weight: 800;
             font-size: 15px;
-            color: #fdf4ff;
-            border: 1px solid rgba(255, 215, 0, 0.42);
-            box-shadow: 0 0 16px rgba(217, 70, 239, 0.22);
+            color: #e0f7ff;
+            border: 1px solid rgba(0, 217, 255, 0.42);
+            box-shadow: 0 0 16px rgba(0, 136, 255, 0.24);
         }
         .coin-icon { width: 17px; height: 17px; flex-shrink: 0; vertical-align: middle; }
 
@@ -88,17 +88,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(24, 9, 38, 0.88);
-            border: 1px solid rgba(255, 215, 0, 0.24);
+            background: rgba(9, 20, 38, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.24);
             padding: 8px 14px;
             border-radius: 12px;
             backdrop-filter: blur(10px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.45);
         }
-        .info-item { font-size: 12.5px; color: #d8b4fe; display: flex; align-items: center; gap: 6px; }
+        .info-item { font-size: 12.5px; color: #94b8db; display: flex; align-items: center; gap: 6px; }
         .info-val { font-size: 14.5px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 4px; }
 
-        /* ================= КОМПАКТНЫЙ ЛАКШЕРИ АВТОМАТ ================= */
+        /* ================= КОМПАКТНЫЙ САПФИРОВЫЙ АВТОМАТ ================= */
         .slot-stage {
             flex: 1;
             display: flex;
@@ -120,15 +120,15 @@
 
         .slot-cabinet {
             width: 100%;
-            background: linear-gradient(180deg, #341354 0%, #19092b 55%, #0c0416 100%);
-            border: 2.5px solid #ffd700;
+            background: linear-gradient(180deg, #162a4a 0%, #0b1629 55%, #050a14 100%);
+            border: 2.5px solid #00d9ff;
             border-radius: 26px 26px 18px 18px;
             padding: 10px 10px 12px 10px;
             position: relative;
             box-shadow:
                 0 16px 38px rgba(0, 0, 0, 0.92),
-                0 0 28px rgba(217, 70, 239, 0.28),
-                inset 0 1.5px 0 rgba(255, 240, 180, 0.35),
+                0 0 28px rgba(0, 170, 255, 0.28),
+                inset 0 1.5px 0 rgba(180, 235, 255, 0.3),
                 inset 0 -6px 16px rgba(0, 0, 0, 0.85);
         }
 
@@ -195,14 +195,14 @@
 
         .reels-frame {
             position: relative;
-            background: #0a0414;
-            border: 2px solid rgba(255, 215, 0, 0.48);
+            background: #050a14;
+            border: 2px solid rgba(0, 217, 255, 0.45);
             border-radius: 14px;
             padding: 6px 5px;
             box-shadow:
                 inset 0 8px 16px rgba(0, 0, 0, 0.95),
                 inset 0 -8px 16px rgba(0, 0, 0, 0.95),
-                0 0 16px rgba(217, 70, 239, 0.25);
+                0 0 16px rgba(0, 170, 255, 0.25);
             margin-bottom: 8px;
         }
 
@@ -251,11 +251,11 @@
         /* Высота барабана уменьшена со 116px до 76px */
         .reel-window {
             height: 76px;
-            background: linear-gradient(180deg, #160929 0%, #2a1147 50%, #120620 100%);
+            background: linear-gradient(180deg, #0b1629 0%, #172b4f 50%, #091324 100%);
             border-radius: 9px;
             overflow: hidden;
             position: relative;
-            border: 1.5px solid rgba(255, 215, 0, 0.45);
+            border: 1.5px solid rgba(0, 217, 255, 0.45);
             box-shadow: inset 0 10px 12px -6px rgba(0,0,0,0.75), inset 0 -10px 12px -6px rgba(0,0,0,0.75);
         }
 
@@ -343,15 +343,15 @@
         .cabinet-tray {
             margin-top: 6px;
             height: 22px;
-            background: linear-gradient(180deg, #0d051a 0%, #240d3d 100%);
-            border: 1px solid rgba(255, 215, 0, 0.42);
+            background: linear-gradient(180deg, #060e1c 0%, #132542 100%);
+            border: 1px solid rgba(0, 217, 255, 0.42);
             border-radius: 6px 6px 10px 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 9.5px;
             font-weight: 900;
-            color: #f3e8ff;
+            color: #e0f7ff;
             letter-spacing: 0.6px;
             box-shadow: inset 0 3px 6px rgba(0,0,0,0.8);
         }
@@ -374,8 +374,8 @@
             top: 48px;
             width: 10px;
             height: 28px;
-            background: linear-gradient(90deg, #2d1447, #5b288e, #2d1447);
-            border: 1.5px solid #ffd700;
+            background: linear-gradient(90deg, #162947, #2b4c7e, #162947);
+            border: 1.5px solid #00d9ff;
             border-left: none;
             border-radius: 0 8px 8px 0;
             box-shadow: 0 3px 8px rgba(0,0,0,0.7);
@@ -427,8 +427,8 @@
 
         /* Панель управления */
         .controls {
-            background: rgba(24, 9, 38, 0.9);
-            border: 1px solid rgba(255, 215, 0, 0.28);
+            background: rgba(9, 20, 38, 0.9);
+            border: 1px solid rgba(0, 217, 255, 0.28);
             border-radius: 18px;
             padding: 12px;
             z-index: 10;
@@ -438,7 +438,7 @@
         .bet-options { display: flex; gap: 7px; margin-bottom: 10px; }
         .bet-btn {
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,215,0,0.2);
+            border: 1px solid rgba(0,195,255,0.2);
             color: #fff;
             padding: 10px 10px;
             border-radius: 10px;
@@ -449,10 +449,10 @@
             font-size: 14px;
         }
         .bet-btn.active {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: var(--gold);
-            color: var(--gold);
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.26);
+            background: rgba(0, 170, 255, 0.22);
+            border-color: #00d9ff;
+            color: #7dd3fc;
+            box-shadow: 0 0 12px rgba(0, 170, 255, 0.28);
         }
         .bet-btn:disabled { opacity: 0.45; pointer-events: none; }
 
@@ -464,9 +464,9 @@
             font-size: 15px;
             font-weight: 900;
             color: #fff;
-            background: linear-gradient(135deg, #fcd34d 0%, #d946ef 100%);
+            background: linear-gradient(135deg, #0095ff 0%, #005fd2 100%);
             cursor: pointer;
-            box-shadow: 0 4px 18px rgba(217, 70, 239, 0.45), inset 0 1px 0 rgba(255,255,255,0.38);
+            box-shadow: 0 4px 18px rgba(0, 136, 255, 0.48), inset 0 1px 0 rgba(255,255,255,0.3);
             transition: 0.15s;
             display: flex;
             align-items: center;
@@ -477,7 +477,7 @@
         .action-btn:active { transform: scale(0.97); }
         .action-btn.win { background: linear-gradient(90deg, #00c853, #00e676); color: #052210; box-shadow: 0 0 18px rgba(0, 230, 118, 0.5); }
         .action-btn.bust { background: linear-gradient(90deg, #ff3366, #ff5277); box-shadow: 0 0 16px rgba(255, 51, 102, 0.4); }
-        .action-btn:disabled { background: #261a36; color: #7e6899; box-shadow: none; pointer-events: none; }
+        .action-btn:disabled { background: #192538; color: #5b6e8a; box-shadow: none; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -576,7 +576,7 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready(); tg.expand(); tg.setHeaderColor('#11061e'); tg.setBackgroundColor('#05020a');
+        tg.ready(); tg.expand(); tg.setHeaderColor('#050d1a'); tg.setBackgroundColor('#02050b');
 
         let rawBal = localStorage.getItem('vetruch_balance');
         let balance = rawBal !== null ? parseInt(rawBal, 10) : 500;
@@ -970,7 +970,7 @@
             ctx.clearRect(0, 0, w, h);
             for (const star of stars) {
                 ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 210, 165, ${star.o})`; ctx.fill();
+                ctx.fillStyle = `rgba(100, 200, 255, ${star.o})`; ctx.fill();
                 star.y += star.s;
                 if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
             }

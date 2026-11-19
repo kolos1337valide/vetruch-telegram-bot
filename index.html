@@ -4230,7 +4230,7 @@
     letter-spacing: 0.3px;
 }
 
-/* Игровые карточки: AAA иллюстрированные обложки, уникальные темы и VIP-блокировки */
+/* Игровые карточки: единый синий стиль Vetruch, ровные бейджи и VIP-блокировки */
 .game-card {
     position: relative;
     overflow: hidden;
@@ -4238,24 +4238,34 @@
 }
 
 .game-card.art-card {
-    background: #070b14;
-    border-width: 1.5px;
-    border-style: solid;
+    background: #050b16;
+    border: 1.5px solid rgba(0, 185, 255, 0.45) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(120, 215, 255, 0.22),
+        0 10px 28px rgba(0, 0, 0, 0.78),
+        0 0 20px rgba(0, 136, 255, 0.16);
     transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .game-card.art-card::before {
     display: none;
 }
+.game-card.art-card:active {
+    border-color: rgba(0, 225, 255, 0.9) !important;
+    box-shadow:
+        inset 0 0 24px rgba(0, 170, 255, 0.22),
+        0 0 24px rgba(0, 170, 255, 0.45);
+}
 .game-card.art-card:not(.wide-card) {
-    min-height: 186px;
-    padding: 12px 10px 13px 10px;
+    min-height: 192px;
+    padding: 36px 10px 13px 10px;
     justify-content: flex-end;
     align-items: center;
 }
 .game-card.art-card.wide-card {
-    min-height: 124px;
-    padding: 16px 16px;
+    min-height: 126px;
+    padding: 28px 15px 14px 15px;
     gap: 14px;
+    align-items: center;
 }
 
 .game-art-bg {
@@ -4274,84 +4284,77 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: linear-gradient(180deg, rgba(5, 8, 15, 0.10) 0%, rgba(5, 8, 15, 0.42) 44%, rgba(5, 8, 15, 0.92) 78%, rgba(4, 6, 12, 0.98) 100%);
+    background: linear-gradient(180deg, rgba(4, 10, 22, 0.12) 0%, rgba(4, 10, 22, 0.48) 44%, rgba(4, 10, 22, 0.92) 78%, rgba(3, 8, 18, 0.98) 100%);
 }
 .game-card.wide-card .game-art-scrim {
-    background: linear-gradient(90deg, rgba(5, 8, 15, 0.14) 0%, rgba(6, 10, 18, 0.72) 42%, rgba(5, 8, 16, 0.95) 80%, rgba(4, 6, 12, 0.98) 100%);
+    background: linear-gradient(90deg, rgba(4, 10, 22, 0.16) 0%, rgba(5, 12, 26, 0.78) 42%, rgba(4, 10, 22, 0.95) 78%, rgba(3, 8, 18, 0.98) 100%);
 }
 
-.game-card.art-card > *:not(.game-art-bg):not(.game-art-scrim):not(.vip-lock-overlay) {
+.game-card.art-card > *:not(.game-art-bg):not(.game-art-scrim):not(.vip-lock-overlay):not(.game-card-ribbon) {
     position: relative;
     z-index: 2;
 }
 .game-card.art-card .game-card-ribbon {
+    position: absolute !important;
+    top: 8px;
+    right: 8px;
     z-index: 4;
+    white-space: nowrap;
 }
 .wide-hero-spacer {
-    width: 82px;
-    min-height: 76px;
+    width: 76px;
+    min-height: 70px;
     flex-shrink: 0;
+}
+.art-card .wide-card-info {
+    min-width: 0;
+    flex: 1;
 }
 .art-card .game-title {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
     margin-bottom: 2px;
+    white-space: nowrap;
+}
+.art-card.wide-card .game-title {
+    font-size: 18.5px;
 }
 .art-card .game-online-tag {
     margin-bottom: 3px;
-    color: #e2e8f0;
+    color: #dbeafe;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+    white-space: nowrap;
 }
 .art-card .game-subtitle {
-    color: #cbd5e1;
+    color: #bfdbfe;
     margin-bottom: 4px;
+    font-size: 11.5px;
+    white-space: nowrap;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
 }
-
-/* Индивидуальные темы и акценты каждой игры */
-.card-towers {
-    border-color: rgba(245, 158, 11, 0.52) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 224, 130, 0.25), 0 10px 28px rgba(0, 0, 0, 0.78), 0 0 22px rgba(245, 158, 11, 0.16);
+.art-card .game-play-btn {
+    background: linear-gradient(135deg, #0095ff 0%, #005fd2 100%);
+    color: #ffffff;
+    border: 1px solid rgba(120, 215, 255, 0.55);
+    box-shadow: 0 4px 14px rgba(0, 136, 255, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    white-space: nowrap;
+    padding: 6px 14px;
+    font-size: 10.5px;
+    margin-top: 5px;
 }
-.card-towers .game-art-bg { background-image: url('game-art-towers.jpg'); background-position: left center; }
-.card-towers .game-play-btn { background: linear-gradient(135deg, #fde047 0%, #f59e0b 100%); color: #1c1002; border-color: rgba(255, 245, 190, 0.75); box-shadow: 0 4px 16px rgba(245, 158, 11, 0.45); }
 
-.card-mines {
-    border-color: rgba(34, 211, 238, 0.48) !important;
-    box-shadow: inset 0 1px 0 rgba(165, 243, 252, 0.2), 0 10px 26px rgba(0, 0, 0, 0.75), 0 0 18px rgba(16, 185, 129, 0.14);
-}
-.card-mines .game-art-bg { background-image: url('game-art-mines.jpg'); background-position: center 25%; }
-.card-mines .game-play-btn { background: linear-gradient(135deg, #22d3ee 0%, #10b981 100%); color: #031d19; border-color: rgba(167, 243, 208, 0.7); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); }
-
-.card-cards {
-    border-color: rgba(244, 63, 94, 0.52) !important;
-    box-shadow: inset 0 1px 0 rgba(254, 205, 211, 0.2), 0 10px 26px rgba(0, 0, 0, 0.75), 0 0 18px rgba(244, 63, 94, 0.15);
-}
+/* Синие обложки игр */
+.card-towers .game-art-bg { background-image: url('game-art-towers.jpg'); background-position: 28% center; }
+.card-mines .game-art-bg { background-image: url('game-art-mines.jpg'); background-position: center 22%; }
 .card-cards .game-art-bg { background-image: url('game-art-cards.jpg'); background-position: center 22%; }
-.card-cards .game-play-btn { background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%); color: #ffffff; border-color: rgba(255, 200, 210, 0.65); box-shadow: 0 4px 14px rgba(225, 29, 72, 0.45); }
-
-.card-balloon {
-    border-color: rgba(232, 121, 249, 0.52) !important;
-    box-shadow: inset 0 1px 0 rgba(245, 208, 254, 0.2), 0 10px 26px rgba(0, 0, 0, 0.75), 0 0 18px rgba(192, 38, 211, 0.18);
-}
 .card-balloon .game-art-bg { background-image: url('game-art-balloon.jpg'); background-position: center 20%; }
-.card-balloon .game-play-btn { background: linear-gradient(135deg, #f472b6 0%, #c026d3 100%); color: #ffffff; border-color: rgba(250, 204, 255, 0.65); box-shadow: 0 4px 14px rgba(192, 38, 211, 0.45); }
-
-.card-dice {
-    border-color: rgba(52, 211, 153, 0.52) !important;
-    box-shadow: inset 0 1px 0 rgba(167, 243, 208, 0.22), 0 10px 26px rgba(0, 0, 0, 0.75), 0 0 18px rgba(16, 185, 129, 0.16);
-}
-.card-dice .game-art-bg { background-image: url('game-art-dice.jpg'); background-position: center 24%; }
-.card-dice .game-play-btn { background: linear-gradient(135deg, #34d399 0%, #059669 100%); color: #022114; border-color: rgba(167, 243, 208, 0.7); box-shadow: 0 4px 14px rgba(5, 150, 105, 0.45); }
-
-.card-flappy {
-    border-color: rgba(56, 189, 248, 0.58) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 235, 150, 0.28), 0 10px 28px rgba(0, 0, 0, 0.78), 0 0 24px rgba(56, 189, 248, 0.18);
-}
+.card-dice .game-art-bg { background-image: url('game-art-dice.jpg'); background-position: center 22%; }
 .card-flappy .game-art-bg { background-image: url('flappy-bg.jpg'); background-position: left center; }
-.card-flappy .game-play-btn { background: linear-gradient(135deg, #fde047 0%, #f59e0b 100%); color: #1c1002; border-color: rgba(255, 250, 205, 0.8); box-shadow: 0 4px 16px rgba(245, 158, 11, 0.45); }
+.card-blackjack .game-art-bg { background-image: url('game-art-blackjack.jpg'); background-position: 24% center; }
+.card-slots .game-art-bg { background-image: url('game-art-slots.jpg'); background-position: 28% center; }
+
 .flappy-hero-duck {
-    width: 74px;
-    height: 78px;
+    width: 70px;
+    height: 74px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4369,26 +4372,9 @@
     50% { transform: translateY(-5px) rotate(3deg); }
 }
 
-.card-blackjack {
-    border-color: rgba(203, 213, 225, 0.5) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 10px 28px rgba(0, 0, 0, 0.8), 0 0 22px rgba(16, 185, 129, 0.18);
-}
-.card-blackjack .game-art-bg { background-image: url('game-art-blackjack.jpg'); background-position: left center; }
-.card-blackjack .game-play-btn { background: linear-gradient(135deg, #34d399 0%, #0d9488 100%); color: #022119; border-color: rgba(167, 243, 208, 0.75); box-shadow: 0 4px 16px rgba(16, 185, 129, 0.42); }
-
-.card-slots {
-    border-color: rgba(251, 191, 36, 0.56) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 230, 150, 0.25), 0 10px 28px rgba(0, 0, 0, 0.8), 0 0 24px rgba(217, 70, 239, 0.2);
-}
-.card-slots .game-art-bg { background-image: url('game-art-slots.jpg'); background-position: 75% center; }
-.card-slots .game-art-scrim {
-    background: linear-gradient(90deg, rgba(10, 5, 18, 0.94) 0%, rgba(12, 6, 22, 0.82) 55%, rgba(8, 4, 15, 0.24) 100%);
-}
-.card-slots .game-play-btn { background: linear-gradient(135deg, #fcd34d 0%, #d946ef 100%); color: #ffffff; border-color: rgba(255, 240, 180, 0.7); box-shadow: 0 4px 16px rgba(217, 70, 239, 0.45); }
-
-/* Оверлей VIP-блокировки игр */
+/* Оверлей VIP-блокировки игр (единая синяя палитра) */
 .game-card.is-vip-locked .game-art-bg {
-    filter: brightness(0.4) saturate(0.55);
+    filter: brightness(0.42) saturate(0.75);
 }
 .game-card.is-vip-locked .game-play-btn {
     opacity: 0.45;
@@ -4398,7 +4384,7 @@
     position: absolute;
     inset: 0;
     z-index: 6;
-    background: rgba(6, 10, 18, 0.56);
+    background: rgba(4, 10, 22, 0.56);
     backdrop-filter: blur(3.5px);
     -webkit-backdrop-filter: blur(3.5px);
     flex-direction: column;
@@ -4415,40 +4401,37 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 13px;
+    padding: 6px 14px;
     border-radius: 999px;
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 900;
     letter-spacing: 0.3px;
     text-transform: uppercase;
+    white-space: nowrap;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
 }
-.vip-lock-pill.bronze {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.38), rgba(146, 64, 14, 0.55));
-    border: 1px solid rgba(245, 158, 11, 0.72);
-    color: #fde68a;
-}
+.vip-lock-pill.bronze,
 .vip-lock-pill.silver {
-    background: linear-gradient(135deg, rgba(226, 232, 240, 0.28), rgba(100, 116, 139, 0.48));
-    border: 1px solid rgba(226, 232, 240, 0.72);
-    color: #f8fafc;
+    background: linear-gradient(135deg, rgba(0, 150, 255, 0.32), rgba(0, 82, 180, 0.55));
+    border: 1px solid rgba(0, 217, 255, 0.72);
+    color: #e0f2fe;
 }
 .vip-lock-exp {
     font-size: 11px;
     font-weight: 800;
-    color: #e2e8f0;
+    color: #bae6fd;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
 }
 
 /* Баннер серебряного VIP для раздела Азартных */
 .gambling-vip-banner {
     display: none;
-    background: linear-gradient(135deg, rgba(226, 232, 240, 0.14) 0%, rgba(30, 41, 59, 0.92) 100%);
-    border: 1.5px solid rgba(203, 213, 225, 0.45);
+    background: linear-gradient(135deg, rgba(0, 136, 255, 0.16) 0%, rgba(10, 20, 40, 0.94) 100%);
+    border: 1.5px solid rgba(0, 195, 255, 0.45);
     border-radius: 18px;
     padding: 13px 14px;
     margin-bottom: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(120, 215, 255, 0.22);
 }
 .gambling-vip-banner.show {
     display: block;
@@ -4463,42 +4446,28 @@
 .gambling-vip-title {
     font-size: 13px;
     font-weight: 900;
-    color: #f8fafc;
+    color: #f0f9ff;
 }
 .gambling-vip-sub {
     font-size: 11px;
     font-weight: 700;
-    color: #cbd5e1;
+    color: #bae6fd;
     margin-top: 2px;
 }
 .gambling-vip-bar-track {
     width: 100%;
     height: 7px;
-    background: rgba(15, 23, 42, 0.85);
+    background: rgba(6, 14, 28, 0.85);
     border-radius: 999px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(0, 217, 255, 0.22);
 }
 .gambling-vip-bar-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #94a3b8 0%, #f8fafc 60%, #38bdf8 100%);
+    background: linear-gradient(90deg, #0077ff 0%, #00d9ff 100%);
     border-radius: 999px;
     transition: width 0.35s ease;
-}
-
-/* Бейджи риббоны карточек */
-.ribbon-bronze {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.35) 0%, rgba(146, 64, 14, 0.28) 100%);
-    border: 1px solid rgba(245, 158, 11, 0.72);
-    color: #fde68a;
-    box-shadow: 0 0 10px rgba(245, 158, 11, 0.28);
-}
-.ribbon-silver {
-    background: linear-gradient(135deg, rgba(226, 232, 240, 0.28) 0%, rgba(100, 116, 139, 0.24) 100%);
-    border: 1px solid rgba(226, 232, 240, 0.65);
-    color: #f1f5f9;
-    box-shadow: 0 0 10px rgba(203, 213, 225, 0.24);
 }
 
 .game-card-ribbon {
@@ -4512,6 +4481,14 @@
     letter-spacing: 0.4px;
     text-transform: uppercase;
     z-index: 2;
+}
+
+.games-grid .game-card-ribbon {
+    background: linear-gradient(135deg, rgba(0, 150, 255, 0.32) 0%, rgba(0, 80, 195, 0.26) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.6);
+    color: #e0f7ff;
+    box-shadow: 0 2px 10px rgba(0, 136, 255, 0.32);
+    backdrop-filter: blur(6px);
 }
 
 .ribbon-fire {
@@ -8605,22 +8582,22 @@ img {
         <div id="miniGamesSection">
         
         <div class="games-grid" style="clear: both;">
-            <!-- 1. БАШНИ (Hero AAA Card) -->
-            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=2')" onclick="openGame('towers.html?v=2')">
+            <!-- 1. БАШНИ -->
+            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=3')" onclick="openGame('towers.html?v=3')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-fire">🔥 ХИТ · ДО x10.9</span>
+                <span class="game-card-ribbon ribbon-fire">🔥 ДО x10.9</span>
                 <div class="wide-hero-spacer" aria-hidden="true"></div>
                 <div class="wide-card-info">
                     <div class="game-online-tag" id="onlineTagTowers" style="justify-content: flex-start;">🟢 2 в игре</div>
                     <div class="game-title">БАШНИ</div>
-                    <div class="game-subtitle">подъём по этажам · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                    <div class="game-subtitle">этажи · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                     <div class="game-play-btn">ВОСХОДИТЬ ➔</div>
                 </div>
             </div>
             
             <!-- 2. МИНЫ -->
-            <div class="game-card art-card card-mines" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html?v=2')" onclick="openGame('mines.html?v=2')">
+            <div class="game-card art-card card-mines" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html?v=3')" onclick="openGame('mines.html?v=3')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-jackpot">💎 АЛМАЗЫ</span>
@@ -8631,18 +8608,18 @@ img {
             </div>
 
             <!-- 3. КАРТЫ -->
-            <div class="game-card art-card card-cards" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html?v=2')" onclick="openGame('cards.html?v=2')">
+            <div class="game-card art-card card-cards" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html?v=3')" onclick="openGame('cards.html?v=3')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-vip">👑 HIGH-ROLLER</span>
+                <span class="game-card-ribbon ribbon-vip">👑 КАРТЫ</span>
                 <div class="game-title">Карты</div>
                 <div class="game-online-tag" id="onlineTagCards">🟢 1 в игре</div>
-                <div class="game-subtitle">угадай масть · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                <div class="game-subtitle">масть · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
 
             <!-- 4. ШАРИК -->
-            <div class="game-card art-card card-balloon" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html?v=3')" onclick="openGame('balloon.html?v=3')">
+            <div class="game-card art-card card-balloon" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html?v=4')" onclick="openGame('balloon.html?v=4')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-hot">⚡ КРАШ x500</span>
@@ -8653,7 +8630,7 @@ img {
             </div>
 
             <!-- 5. КОСТИ -->
-            <div class="game-card art-card card-dice" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html?v=2')" onclick="openGame('dice.html?v=2')">
+            <div class="game-card art-card card-dice" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html?v=3')" onclick="openGame('dice.html?v=3')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
                 <span class="game-card-ribbon ribbon-rtp">🎲 98% RTP</span>
@@ -8664,17 +8641,17 @@ img {
             </div>
 
             <!-- 6. ФЛАППИ УТКА (VIP БРОНЗОВЫЙ) -->
-            <div class="game-card wide-card art-card card-flappy anim-item" id="cardFlappy" style="animation-delay: 0.45s;" onpointerdown="preloadGame('flappy.html?v=6')" onclick="openGame('flappy.html?v=6')">
+            <div class="game-card wide-card art-card card-flappy anim-item" id="cardFlappy" style="animation-delay: 0.45s;" onpointerdown="preloadGame('flappy.html?v=7')" onclick="openGame('flappy.html?v=7')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-bronze">🥉 VIP БРОНЗОВЫЙ · x10</span>
+                <span class="game-card-ribbon ribbon-bronze">🥉 VIP БРОНЗА · x10</span>
                 <div class="flappy-hero-duck">
                     <img src="flappy-duck.png" alt="Флаппи Утка">
                 </div>
                 <div class="wide-card-info">
                     <div class="game-online-tag" id="onlineTagFlappy" style="justify-content: flex-start;">🟢 2 в полёте</div>
                     <div class="game-title">ФЛАППИ УТКА</div>
-                    <div class="game-subtitle">полёт до 50 труб · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                    <div class="game-subtitle">до 50 труб · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                     <div class="game-play-btn">ВЗЛЕТЕТЬ ➔</div>
                 </div>
                 <div class="vip-lock-overlay" id="lockOverlayFlappy">
@@ -8694,7 +8671,7 @@ img {
                         <div class="gambling-vip-title">🥈 Доступ с VIP Серебряный</div>
                         <div class="gambling-vip-sub" id="gamblingVipBannerSub">Накопи 5 000 EXP в мини-играх, чтобы открыть VIP-столы</div>
                     </div>
-                    <button type="button" onclick="openPage('profile')" style="background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); color: #fff; padding: 6px 10px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; flex-shrink: 0;">Профиль ❯</button>
+                    <button type="button" onclick="openPage('profile')" style="background: rgba(0, 150, 255, 0.22); border: 1px solid rgba(0, 217, 255, 0.5); color: #e0f7ff; padding: 6px 10px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; flex-shrink: 0;">Профиль ❯</button>
                 </div>
                 <div class="gambling-vip-bar-track">
                     <div class="gambling-vip-bar-fill" id="gamblingVipBarFill"></div>
@@ -8703,7 +8680,7 @@ img {
 
             <div class="games-grid" style="clear: both; gap: 12px; margin-top: 10px;">
                 <!-- 1. БЛЭКДЖЕК (VIP СЕРЕБРЯНЫЙ) -->
-                <div class="game-card wide-card art-card card-blackjack anim-item" id="cardBlackjack" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=4')" onclick="openGame('blackjack.html?v=4')">
+                <div class="game-card wide-card art-card card-blackjack anim-item" id="cardBlackjack" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=5')" onclick="openGame('blackjack.html?v=5')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
                     <span class="game-card-ribbon ribbon-silver">🥈 VIP СЕРЕБРО · 21</span>
@@ -8711,7 +8688,7 @@ img {
                     <div class="wide-card-info">
                         <div class="game-online-tag" id="onlineTagBlackjack" style="justify-content: flex-start;">🟢 1 за столом</div>
                         <div class="game-title">БЛЭКДЖЕК</div>
-                        <div class="game-subtitle">VIP стол с крупье · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                        <div class="game-subtitle">стол с крупье · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                         <div class="game-play-btn">СЕСТЬ ЗА СТОЛ ➔</div>
                     </div>
                     <div class="vip-lock-overlay" id="lockOverlayBlackjack">
@@ -8721,17 +8698,17 @@ img {
                 </div>
 
                 <!-- 2. СЛОТЫ 777 (VIP СЕРЕБРЯНЫЙ) -->
-                <div class="game-card wide-card art-card card-slots anim-item" id="cardSlots" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=4')" onclick="openGame('slots.html?v=4')">
+                <div class="game-card wide-card art-card card-slots anim-item" id="cardSlots" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=5')" onclick="openGame('slots.html?v=5')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
                     <span class="game-card-ribbon ribbon-silver">🥈 VIP СЕРЕБРО · 777</span>
+                    <div class="wide-hero-spacer" aria-hidden="true"></div>
                     <div class="wide-card-info">
                         <div class="game-online-tag" id="onlineTagSlots" style="justify-content: flex-start;">🟢 1 крутят</div>
                         <div class="game-title">СЛОТЫ 777</div>
-                        <div class="game-subtitle">лакшери барабан · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                        <div class="game-subtitle">барабан 777 · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                         <div class="game-play-btn">КРУТИТЬ ➔</div>
                     </div>
-                    <div class="wide-hero-spacer" aria-hidden="true"></div>
                     <div class="vip-lock-overlay" id="lockOverlaySlots">
                         <div class="vip-lock-pill silver">🔒 VIP СЕРЕБРЯНЫЙ</div>
                         <div class="vip-lock-exp" id="lockExpSlots">Нужно 5 000 EXP</div>
@@ -16573,20 +16550,20 @@ setTimeout(initAdvancedSystems, 300);
                 <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; text-align: left;">
                     <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; margin-bottom: 8px;">
                         <span id="vipGateProgressLabel" style="color: #94a3b8;">Ваш прогресс</span>
-                        <span id="vipGateExpNums" style="color: #ffd700;">0 / 500 EXP</span>
+                        <span id="vipGateExpNums" style="color: #00d9ff;">0 / 500 EXP</span>
                     </div>
                     <div style="width: 100%; height: 9px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">
-                        <div id="vipGateExpBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #f59e0b, #ffd700); border-radius: 999px; transition: width 0.35s ease;"></div>
+                        <div id="vipGateExpBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0077ff, #00d9ff); border-radius: 999px; transition: width 0.35s ease;"></div>
                     </div>
                     <div id="vipGateRemaining" style="font-size: 11.5px; font-weight: 700; color: #38bdf8; margin-top: 8px;">Осталось набрать: 500 EXP</div>
                 </div>
 
-                <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.45; margin-bottom: 16px; padding: 8px 10px; border-radius: 10px; background: rgba(255,215,0,0.06); border: 1px dashed rgba(255,215,0,0.25);">
+                <div style="font-size: 11.5px; color: #bae6fd; line-height: 1.45; margin-bottom: 16px; padding: 8px 10px; border-radius: 10px; background: rgba(0, 136, 255, 0.1); border: 1px dashed rgba(0, 217, 255, 0.32);">
                     💡 Играй в открытые мини-игры и делай ставки: <b>+1 EXP за каждые 50 монет</b> ставки
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <button type="button" class="submit-task-btn" style="flex: 1.2; background: linear-gradient(135deg, #ffd700, #f59e0b); color: #1a1002; font-weight: 900; border: none;" onclick="closeVipGateModal(); openPage('profile');">
+                    <button type="button" class="submit-task-btn" style="flex: 1.2; background: linear-gradient(135deg, #0095ff, #005fd2); color: #ffffff; font-weight: 900; border: 1px solid rgba(120, 215, 255, 0.5);" onclick="closeVipGateModal(); openPage('profile');">
                         👑 В профиль
                     </button>
                     <button type="button" class="submit-task-btn" style="flex: 0.8; background: rgba(255,255,255,0.09); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.16);" onclick="closeVipGateModal()">
@@ -16619,9 +16596,7 @@ setTimeout(initAdvancedSystems, 300);
             if (numsEl) numsEl.textContent = `${fmt(curExp)} / ${fmt(req.minExp)} EXP`;
             if (barEl) {
                 barEl.style.width = pct + '%';
-                barEl.style.background = req.theme === 'silver'
-                    ? 'linear-gradient(90deg, #94a3b8, #f8fafc, #38bdf8)'
-                    : 'linear-gradient(90deg, #d97706, #ffd700)';
+                barEl.style.background = 'linear-gradient(90deg, #0077ff, #00d9ff)';
             }
             if (remEl) remEl.textContent = `Осталось набрать: ${fmt(remaining)} EXP`;
 
@@ -16673,14 +16648,14 @@ setTimeout(initAdvancedSystems, 300);
 
     <!-- МГНОВЕННЫЙ КОНТЕЙНЕР ДЛЯ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) -->
     <div id="gameModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: #000000; width: 100%; height: 100%; overflow: hidden; -webkit-overflow-scrolling: touch;">
-        <iframe id="frame-towers" src="towers.html?v=2" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-mines" src="mines.html?v=2" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-cards" src="cards.html?v=2" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-balloon" src="balloon.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-dice" src="dice.html?v=2" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-blackjack" src="blackjack.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-slots" src="slots.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-flappy" src="flappy.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-towers" src="towers.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-mines" src="mines.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-cards" src="cards.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-balloon" src="balloon.html?v=4" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-dice" src="dice.html?v=3" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-blackjack" src="blackjack.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-slots" src="slots.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-flappy" src="flappy.html?v=7" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
 
     <!-- МОДАЛКА МОИ ЗАКАЗЫ -->
