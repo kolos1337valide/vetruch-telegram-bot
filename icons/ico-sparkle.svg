@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gSpkGold" x1="8" y1="3" x2="24" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="gSpkCyan" x1="4" y1="6" x2="14" y2="18" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#00d9ff"/>
+    </linearGradient>
+  </defs>
+  <path d="M18.5 3.5L20.8 10.7L28 13L20.8 15.3L18.5 22.5L16.2 15.3L9 13L16.2 10.7Z" fill="url(#gSpkGold)"/>
+  <path d="M8.5 16.5L9.8 20.7L14 22L9.8 23.3L8.5 27.5L7.2 23.3L3 22L7.2 20.7Z" fill="url(#gSpkCyan)"/>
+  <path d="M8.5 4.2L9.3 6.7L11.8 7.5L9.3 8.3L8.5 10.8L7.7 8.3L5.2 7.5L7.7 6.7Z" fill="#e0fbff"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gPadBody" x1="4" y1="8" x2="28" y2="25" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="55%" stop-color="#0f2952"/>
+      <stop offset="100%" stop-color="#061224"/>
+    </linearGradient>
+  </defs>
+  <path d="M8.5 9.5H23.5C26.4 9.5 28.4 11.7 28.8 14.9L29.4 20.4C29.7 22.8 27.8 24.8 25.5 24.4C24.2 24.2 23.2 23.2 22.4 22L20.8 19.5H11.2L9.6 22C8.8 23.2 7.8 24.2 6.5 24.4C4.2 24.8 2.3 22.8 2.6 20.4L3.2 14.9C3.6 11.7 5.6 9.5 8.5 9.5Z" fill="url(#gPadBody)" stroke="#38bdf8" stroke-width="1.2"/>
+  <path d="M9.5 12.2V16.8M7.2 14.5H11.8" stroke="#00e5ff" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="22.8" cy="13.3" r="1.2" fill="#facc15"/>
+  <circle cx="20.4" cy="15.3" r="1.2" fill="#00e5ff"/>
+  <circle cx="24.8" cy="15.3" r="1.2" fill="#4ade80"/>
+  <circle cx="22.8" cy="17.3" r="1.2" fill="#fb7185"/>
+</svg>

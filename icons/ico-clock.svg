@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gClkFace" x1="6" y1="6" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f2952"/>
+      <stop offset="100%" stop-color="#040c1a"/>
+    </linearGradient>
+    <linearGradient id="gClkRim" x1="6" y1="4" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e0fbff"/>
+      <stop offset="50%" stop-color="#00d9ff"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+  </defs>
+  <rect x="13" y="2.8" width="6" height="2.6" rx="1.2" fill="#facc15"/>
+  <circle cx="16" cy="17.2" r="10.8" fill="url(#gClkFace)" stroke="url(#gClkRim)" stroke-width="2.2"/>
+  <path d="M16 11.2V17.4L20.4 19.8" stroke="#00e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="16" cy="17.2" r="1.4" fill="#ffffff"/>
+</svg>

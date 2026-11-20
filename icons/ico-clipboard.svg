@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gClpBoard" x1="6" y1="6" x2="26" y2="29" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#07162e"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="20" height="23" rx="3.5" fill="url(#gClpBoard)" stroke="#38bdf8" stroke-width="1.1"/>
+  <rect x="11.5" y="3.5" width="9" height="4.5" rx="1.8" fill="#facc15" stroke="#fef08a" stroke-width="0.8"/>
+  <line x1="10.5" y1="13" x2="21.5" y2="13" stroke="#00e5ff" stroke-width="2" stroke-linecap="round"/>
+  <line x1="10.5" y1="18" x2="21.5" y2="18" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="10.5" y1="23" x2="17.5" y2="23" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round"/>
+</svg>

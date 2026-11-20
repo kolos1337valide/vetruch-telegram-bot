@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gPickHead" x1="5" y1="4" x2="28" y2="18" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e0fbff"/>
+      <stop offset="50%" stop-color="#00d9ff"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="gPickHandle" x1="6" y1="26" x2="22" y2="10" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#78350f"/>
+      <stop offset="60%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+  </defs>
+  <path d="M6.2 25.8L21.8 10.2" stroke="url(#gPickHandle)" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M10.5 6C17.2 4.8 23.2 8.2 26.8 14.5C27.2 15.2 26.5 16 25.8 15.6C22.4 13.6 19.6 11.9 16.5 12.5C15.8 9.8 13.8 7.8 10.5 6Z" fill="url(#gPickHead)" stroke="#ffffff" stroke-width="0.9" stroke-linejoin="round"/>
+  <rect x="17.8" y="8.2" width="5.5" height="4.6" rx="1.2" transform="rotate(45 20.5 10.5)" fill="#38bdf8" stroke="#e0fbff" stroke-width="0.8"/>
+</svg>

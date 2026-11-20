@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gMedGld" x1="8" y1="10" x2="24" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="48%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+  <polygon points="9,3 14.5,3 16.5,12 11,12" fill="#0369a1"/>
+  <polygon points="23,3 17.5,3 15.5,12 21,12" fill="#00d9ff"/>
+  <circle cx="16" cy="19.5" r="9.2" fill="url(#gMedGld)" stroke="#fef08a" stroke-width="1.1"/>
+  <circle cx="16" cy="19.5" r="5.6" fill="none" stroke="#fef9c3" stroke-width="0.9" opacity="0.75"/>
+  <polygon points="16,15.2 17.2,17.8 20,18.2 18,20.1 18.5,22.9 16,21.5 13.5,22.9 14,20.1 12,18.2 14.8,17.8" fill="#ffffff"/>
+</svg>

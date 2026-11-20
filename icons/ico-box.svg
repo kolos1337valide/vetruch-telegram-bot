@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gBoxTop" x1="5" y1="4" x2="27" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="gBoxLeft" x1="5" y1="12" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#07346e"/>
+    </linearGradient>
+    <linearGradient id="gBoxRight" x1="16" y1="12" x2="27" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#041936"/>
+    </linearGradient>
+  </defs>
+  <polygon points="16,4 27.5,10 16,16 4.5,10" fill="url(#gBoxTop)" stroke="#e0fbff" stroke-width="0.9" stroke-linejoin="round"/>
+  <polygon points="4.5,10 16,16 16,28 4.5,22" fill="url(#gBoxLeft)" stroke="#7dd3fc" stroke-width="0.9" stroke-linejoin="round"/>
+  <polygon points="27.5,10 16,16 16,28 27.5,22" fill="url(#gBoxRight)" stroke="#38bdf8" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M10.5 7L22 13V17.5L19 16V14.2L10.5 9.8V7Z" fill="#facc15"/>
+</svg>

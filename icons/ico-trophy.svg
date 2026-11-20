@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gTroGold" x1="6" y1="4" x2="26" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="45%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="gTroBase" x1="9" y1="24" x2="23" y2="29" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+  </defs>
+  <path d="M9 6.5H5.2C4.5 6.5 4 7.1 4 7.8C4 11.6 6.1 14.3 9.4 14.8" stroke="url(#gTroGold)" stroke-width="2.1" stroke-linecap="round"/>
+  <path d="M23 6.5H26.8C27.5 6.5 28 7.1 28 7.8C28 11.6 25.9 14.3 22.6 14.8" stroke="url(#gTroGold)" stroke-width="2.1" stroke-linecap="round"/>
+  <path d="M9 5H23V12.5C23 16.5 20 19.5 16 19.5C12 19.5 9 16.5 9 12.5V5Z" fill="url(#gTroGold)" stroke="#fef08a" stroke-width="0.9"/>
+  <rect x="14.2" y="19.3" width="3.6" height="4.8" fill="url(#gTroGold)"/>
+  <rect x="10" y="24" width="12" height="4.2" rx="1.5" fill="url(#gTroBase)" stroke="#7dd3fc" stroke-width="0.8"/>
+  <path d="M12 8.2V12.2" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.7"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gUsersFront" x1="7" y1="6" x2="22" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="50%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="gUsersBack" x1="15" y1="8" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#082f68"/>
+    </linearGradient>
+  </defs>
+  <circle cx="21.2" cy="11.5" r="3.6" fill="url(#gUsersBack)" stroke="#7dd3fc" stroke-width="0.8"/>
+  <path d="M16.5 25C16.5 20.8 18.8 17.8 22.5 17.8C26.2 17.8 28.2 20.8 28.2 25H16.5Z" fill="url(#gUsersBack)" stroke="#7dd3fc" stroke-width="0.8" stroke-linejoin="round"/>
+  <circle cx="12.2" cy="10.2" r="4.5" fill="url(#gUsersFront)" stroke="#e0fbff" stroke-width="0.9"/>
+  <path d="M4.2 26.5C4.2 21.1 7.6 17.6 12.2 17.6C16.8 17.6 20.2 21.1 20.2 26.5H4.2Z" fill="url(#gUsersFront)" stroke="#e0fbff" stroke-width="0.9" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <radialGradient id="gBmbBody" cx="35%" cy="30%" r="68%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="35%" stop-color="#0f2952"/>
+      <stop offset="100%" stop-color="#020814"/>
+    </radialGradient>
+  </defs>
+  <path d="M19.5 10.5C21.2 7.5 23.8 6.5 25.5 6.8" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="26.5" cy="6.8" r="2.2" fill="#facc15"/>
+  <circle cx="26.5" cy="6.8" r="1" fill="#ffffff"/>
+  <rect x="16.2" y="9" width="5.2" height="3.2" rx="1" transform="rotate(28 18.8 10.6)" fill="#0ea5e9"/>
+  <circle cx="14" cy="18.5" r="9.5" fill="url(#gBmbBody)" stroke="#38bdf8" stroke-width="1.1"/>
+  <ellipse cx="11" cy="15" rx="2.6" ry="1.4" transform="rotate(-35 11 15)" fill="#e0fbff" opacity="0.65"/>
+</svg>

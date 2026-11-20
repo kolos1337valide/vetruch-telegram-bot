@@ -832,7 +832,7 @@
 @keyframes cardFilterIn {
     0% {
         opacity: 0;
-        transform: translateY(22px) scale(0.9);
+        transform: translateY(28px) scale(0.88);
     }
     100% {
         opacity: 1;
@@ -1261,6 +1261,49 @@
             top: -1px; 
             margin-left: 2px; 
             filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+        }
+
+        .ui-ico {
+            width: 1.18em;
+            height: 1.18em;
+            display: inline-block;
+            vertical-align: -0.22em;
+            object-fit: contain;
+            flex-shrink: 0;
+            margin-right: 0.16em;
+            filter: drop-shadow(0 1px 4px rgba(0, 180, 255, 0.28));
+            pointer-events: none;
+        }
+        .ui-ico-solo {
+            margin-right: 0;
+        }
+        .ui-ico-end {
+            margin-right: 0;
+            margin-left: 0.2em;
+        }
+        .ui-ico-node {
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 0;
+        }
+        .ui-ico-md {
+            width: 22px;
+            height: 22px;
+            vertical-align: middle;
+            margin-right: 0;
+        }
+        .ui-ico-lg {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-right: 0;
+        }
+        .ui-ico-xl {
+            width: 38px;
+            height: 38px;
+            vertical-align: middle;
+            margin-right: 0;
         }
 
         .promo-banner {
@@ -7888,29 +7931,29 @@ img {
             <button class="modal-close" onclick="closeGwPs5Modal()">✖</button>
             <div class="gw-modal-banner">
                 <img src="giveaway_ps5.jpg" alt="Розыгрыш PS5 и GTA 6">
-                <div class="gw-modal-badge">🔥 РОЗЫГРЫШ</div>
+                <div class="gw-modal-badge"><img src="icons/ico-fire.svg" class="ui-ico" alt="">РОЗЫГРЫШ</div>
             </div>
             <div class="gw-modal-body">
-                <h3 class="gw-modal-title">🚀 ВРЫВАЙСЯ В РОЗЫГРЫШ ТОЛЬКО ДЛЯ АПХ! 🚀</h3>
+                <h3 class="gw-modal-title"><img src="icons/ico-rocket.svg" class="ui-ico" alt="">ВРЫВАЙСЯ В РОЗЫГРЫШ ТОЛЬКО ДЛЯ АПХ!<img src="icons/ico-rocket.svg" class="ui-ico ui-ico-end" alt=""></h3>
                 <div class="gw-modal-pills">
-                    <span class="gw-pill">🟢 Активен</span>
-                    <span class="gw-pill">👥 64 участника</span>
-                    <span class="gw-pill">🎟️ 30$ = 1 билет</span>
+                    <span class="gw-pill"><img src="icons/ico-online.svg" class="ui-ico" alt="">Активен</span>
+                    <span class="gw-pill"><img src="icons/ico-users.svg" class="ui-ico" alt="">64 участника</span>
+                    <span class="gw-pill"><img src="icons/ico-ticket.svg" class="ui-ico" alt="">30$ = 1 билет</span>
                 </div>
 
                 <div class="gw-modal-perks">
                     <div class="gw-perk-item">
-                        <span class="gw-perk-icon">🎮</span>
+                        <span class="gw-perk-icon"><img src="icons/ico-gamepad.svg" class="ui-ico ui-ico-solo" alt=""></span>
                         <span>Последняя PlayStation</span>
                     </div>
                     <div class="gw-perk-item">
-                        <span class="gw-perk-icon">🔥</span>
+                        <span class="gw-perk-icon"><img src="icons/ico-fire.svg" class="ui-ico ui-ico-solo" alt=""></span>
                         <span>Новая GTA 6</span>
                     </div>
                 </div>
 
                 <div class="gw-modal-notice">
-                    ⚠️ Важно: учитываются только новые депозиты, сделанные начиная с <b>14.11.2026</b>
+                    <img src="icons/ico-warn.svg" class="ui-ico" alt="">Важно: учитываются только новые депозиты, сделанные начиная с <b>14.11.2026</b>
                 </div>
 
                 <a href="https://t.me/vetruchtut/1605" target="_blank" onclick="if(window.tg && tg.openTelegramLink) { tg.openTelegramLink('https://t.me/vetruchtut/1605'); return false; }" class="gw-modal-action-btn">
@@ -7927,37 +7970,37 @@ img {
             <button class="modal-close" onclick="closeGwTripModal()">✖</button>
             <div class="gw-modal-banner">
                 <img src="giveaway_trip.jpg" alt="Поездка мечты">
-                <div class="gw-modal-badge">🔥 РОЗЫГРЫШ</div>
+                <div class="gw-modal-badge"><img src="icons/ico-fire.svg" class="ui-ico" alt="">РОЗЫГРЫШ</div>
             </div>
             <div class="gw-modal-body">
-                <h3 class="gw-modal-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</h3>
+                <h3 class="gw-modal-title"><img src="icons/ico-plane.svg" class="ui-ico" alt="">ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА!<img src="icons/ico-plane.svg" class="ui-ico ui-ico-end" alt=""></h3>
                 <div class="gw-modal-pills">
-                    <span class="gw-pill">🟢 Активен</span>
-                    <span class="gw-pill">👥 128 участников</span>
-                    <span class="gw-pill">🎟️ 500 ₽ = 1 билет</span>
+                    <span class="gw-pill"><img src="icons/ico-online.svg" class="ui-ico" alt="">Активен</span>
+                    <span class="gw-pill"><img src="icons/ico-users.svg" class="ui-ico" alt="">128 участников</span>
+                    <span class="gw-pill"><img src="icons/ico-ticket.svg" class="ui-ico" alt="">500 ₽ = 1 билет</span>
                 </div>
                 
                 <div class="gw-modal-perks">
                     <div class="gw-perk-item">
-                        <span class="gw-perk-icon">✈️</span>
+                        <span class="gw-perk-icon"><img src="icons/ico-plane.svg" class="ui-ico ui-ico-solo" alt=""></span>
                         <span>Дорога и отдых полностью оплачены</span>
                     </div>
                     <div class="gw-perk-item">
-                        <span class="gw-perk-icon">🏝️</span>
+                        <span class="gw-perk-icon"><img src="icons/ico-island.svg" class="ui-ico ui-ico-solo" alt=""></span>
                         <span>Город на ваш выбор</span>
                     </div>
                     <div class="gw-perk-item">
-                        <span class="gw-perk-icon">🎥</span>
+                        <span class="gw-perk-icon"><img src="icons/ico-video.svg" class="ui-ico ui-ico-solo" alt=""></span>
                         <span>Совместный стрим со стримером</span>
                     </div>
                     <div class="gw-perk-item">
-                        <span class="gw-perk-icon">🎁</span>
+                        <span class="gw-perk-icon"><img src="icons/ico-gift.svg" class="ui-ico ui-ico-solo" alt=""></span>
                         <span>Подарки и развлечения от стримера</span>
                     </div>
                 </div>
 
                 <div class="gw-modal-notice">
-                    ⚠️ Новые билеты начисляются за депозиты на <b>UP-X</b> или <b>Ton Play</b>. Количество билетов не ограничено!
+                    <img src="icons/ico-warn.svg" class="ui-ico" alt="">Новые билеты начисляются за депозиты на <b>UP-X</b> или <b>Ton Play</b>. Количество билетов не ограничено!
                 </div>
 
                 <a href="https://t.me/vetruchtut/1558" target="_blank" onclick="if(window.tg && tg.openTelegramLink) { tg.openTelegramLink('https://t.me/vetruchtut/1558'); return false; }" class="gw-modal-action-btn">
@@ -7981,7 +8024,7 @@ img {
                 
                 <label class="file-upload-lbl">
                     <input type="file" accept="image/*" onchange="updateModalFileName(this)">
-                    <span id="modalFileName">📷 Загрузить скриншот</span>
+                    <span id="modalFileName"><img src="icons/ico-camera.svg" class="ui-ico" alt="">Загрузить скриншот</span>
                 </label>
                 
                 <button class="submit-task-btn" onclick="submitTask()">Отправить на проверку</button>
@@ -7994,7 +8037,7 @@ img {
         <div class="advent-modal-sheet">
             <div class="arkada-modal-header">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3 class="arkada-modal-title">🎄 Календарь</h3>
+                    <h3 class="arkada-modal-title"><img src="icons/ico-tree.svg" class="ui-ico" alt="">Календарь</h3>
                     <div class="balance-pill" style="padding: 4px 10px; font-size: 13px;">
                         <span class="app-balance">500</span> <img src="coins.png" alt="" class="coin-icon" style="width: 14px; height: 14px;">
                     </div>
@@ -8018,7 +8061,7 @@ img {
         <div class="xmas-modal-sheet">
             <div class="arkada-modal-header">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3 class="arkada-modal-title">🎄 Новогодняя ёлка</h3>
+                    <h3 class="arkada-modal-title"><img src="icons/ico-tree.svg" class="ui-ico" alt="">Новогодняя ёлка</h3>
                     <div class="balance-pill" style="padding: 4px 10px; font-size: 13px;">
                         <span class="app-balance">500</span> <img src="coins.png" alt="" class="coin-icon" style="width: 14px; height: 14px;">
                     </div>
@@ -8190,7 +8233,7 @@ img {
                 </div>
 
                 <button type="button" class="xmas-action-btn" id="xmasModalActionBtn" onclick="shakeXmasTreeOnce()">
-                    🎄 ПОТРЯСТИ ЁЛКУ
+                    <img src="icons/ico-tree.svg" class="ui-ico" alt="">ПОТРЯСТИ ЁЛКУ
                 </button>
             </div>
         </div>
@@ -8234,7 +8277,7 @@ img {
                 <!-- Секция платных (20-25) -->
                 <div class="avatar-section-title">
                     <span>Эксклюзив (№20–25)</span>
-                    <span class="avatar-section-tag paid">👑 1 000 МОНЕТ</span>
+                    <span class="avatar-section-tag paid"><img src="icons/ico-crown.svg" class="ui-ico" alt="">1 000 МОНЕТ</span>
                 </div>
                 <div class="avatar-grid" id="avatarPaidGrid"></div>
             </div>
@@ -8460,7 +8503,7 @@ img {
                 <div class="user-info">
                     <span class="greeting-text">Добро пожаловать,</span>
                     <span class="user-name" id="homeUserName">Пользователь</span>
-                    <div class="user-tier-badge tier-basic" id="homeUserTierBadge">👤 ОБЫЧНЫЙ АККАУНТ <span class="tier-boost">1.0x</span></div>
+                    <div class="user-tier-badge tier-basic" id="homeUserTierBadge"><img src="icons/ico-user.svg" class="ui-ico" alt="">ОБЫЧНЫЙ АККАУНТ <span class="tier-boost">1.0x</span></div>
                 </div>
             </div>
         </div>
@@ -8489,7 +8532,7 @@ img {
             <div class="advent-left">
                 <div class="advent-bar"></div>
                 <div class="advent-texts">
-                    <span class="advent-eyebrow" id="adventBannerEyebrow">❄️ НОВОГОДНИЙ КАЛЕНДАРЬ</span>
+                    <span class="advent-eyebrow" id="adventBannerEyebrow"><img src="icons/ico-snowflake.svg" class="ui-ico" alt="">НОВОГОДНИЙ КАЛЕНДАРЬ</span>
                     <div class="advent-title" id="adventBannerTitle">Откроется 1 декабря...</div>
                     <div class="advent-sub" id="adventBannerSub">Подарки каждый день с 1 по 31 декабря</div>
                 </div>
@@ -8528,21 +8571,21 @@ img {
         <!-- ЕЖЕДНЕВНЫЙ БОНУС -->
         <div class="lux-daily-card anim-item" id="homeDailyBonusCard" style="animation-delay: 0.14s;">
             <div class="lux-daily-head">
-                <div class="lux-daily-title" id="dailyBonusTitle">🎁 Ежедневный бонус</div>
-                <span class="lux-daily-tag" id="dailyBonusTag">🎁 Доступно</span>
+                <div class="lux-daily-title" id="dailyBonusTitle"><img src="icons/ico-gift.svg" class="ui-ico" alt="">Ежедневный бонус</div>
+                <span class="lux-daily-tag" id="dailyBonusTag"><img src="icons/ico-gift.svg" class="ui-ico" alt="">Доступно</span>
             </div>
             <button type="button" class="lux-claim-btn" id="homeDailyClaimBtn" onclick="claimDailyReward(this)">
-                ⚡ Забрать награду
+                <img src="icons/ico-bolt.svg" class="ui-ico" alt="">Забрать награду
             </button>
         </div>
 
         <div class="card global-stats anim-item" style="animation-delay: 0.16s;">
-            <div class="stats-title">🔒 ПРОВЕРЕННЫЙ ФОНД ВЫПЛАТ · 100% ГАРАНТИЯ</div>
+            <div class="stats-title"><img src="icons/ico-lock.svg" class="ui-ico" alt="">ПРОВЕРЕННЫЙ ФОНД ВЫПЛАТ · 100% ГАРАНТИЯ</div>
             <div class="stats-main-sum">24 714 120 ₽</div>
             <div class="stats-row">
-                <div class="stat-item"><span class="stat-val">👥 14 820+</span><span class="stat-label">игроков в клубе</span></div>
+                <div class="stat-item"><span class="stat-val"><img src="icons/ico-users.svg" class="ui-ico" alt="">14 820+</span><span class="stat-label">игроков в клубе</span></div>
                 <div class="stat-item"><span class="stat-val"><img src="coins.png" class="coin-icon-sm" alt="монет"> 8.9M+</span><span class="stat-label">монет выплачено</span></div>
-                <div class="stat-item"><span class="stat-val" id="homeOnlineCountVal" style="color: #00ff88;">🟢 4</span><span class="stat-label">онлайн сейчас</span></div>
+                <div class="stat-item"><span class="stat-val" id="homeOnlineCountVal" style="color: #00ff88;"><img src="icons/ico-online.svg" class="ui-ico" alt="">4</span><span class="stat-label">онлайн сейчас</span></div>
             </div>
         </div>
 
@@ -8591,9 +8634,9 @@ img {
                             </div>
                         </div>
                         <div class="gw-card-body">
-                            <div class="gw-card-title">🚀 ВРЫВАЙСЯ В РОЗЫГРЫШ ТОЛЬКО ДЛЯ АПХ! 🚀</div>
+                            <div class="gw-card-title"><img src="icons/ico-rocket.svg" class="ui-ico" alt="">ВРЫВАЙСЯ В РОЗЫГРЫШ ТОЛЬКО ДЛЯ АПХ!<img src="icons/ico-rocket.svg" class="ui-ico ui-ico-end" alt=""></div>
                             <div class="gw-card-footer">
-                                <span class="gw-card-status">🔥 Идёт</span>
+                                <span class="gw-card-status"><img src="icons/ico-fire.svg" class="ui-ico" alt="">Идёт</span>
                                 <span class="gw-card-users">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                     <span>64</span>
@@ -8610,9 +8653,9 @@ img {
                             </div>
                         </div>
                         <div class="gw-card-body">
-                            <div class="gw-card-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</div>
+                            <div class="gw-card-title"><img src="icons/ico-plane.svg" class="ui-ico" alt="">ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА!<img src="icons/ico-plane.svg" class="ui-ico ui-ico-end" alt=""></div>
                             <div class="gw-card-footer">
-                                <span class="gw-card-status">🔥 Идёт</span>
+                                <span class="gw-card-status"><img src="icons/ico-fire.svg" class="ui-ico" alt="">Идёт</span>
                                 <span class="gw-card-users">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                     <span>128</span>
@@ -8646,7 +8689,7 @@ img {
             <div class="advent-left">
                 <div class="xmas-banner-bar"></div>
                 <div class="advent-texts">
-                    <span class="xmas-banner-eyebrow">🎄 НОВОГОДНЯЯ ЁЛКА</span>
+                    <span class="xmas-banner-eyebrow"><img src="icons/ico-tree.svg" class="ui-ico" alt="">НОВОГОДНЯЯ ЁЛКА</span>
                     <div class="advent-title" id="xmasBannerTitle">Потряси ёлку — забери подарок!</div>
                     <div class="advent-sub" id="xmasBannerSub">1 раз в день · от 50 до 500 монет</div>
                 </div>
@@ -8691,10 +8734,10 @@ img {
         <!-- Переключатель Мини-игры / Азартные -->
         <div class="shop-mode-switch anim-item" style="animation-delay: 0.06s;">
             <button type="button" class="shop-mode-btn active" id="gamesModeMiniBtn" onclick="switchGamesMode('mini')">
-                 🎮 Мини-игры
+                 <img src="icons/ico-gamepad.svg" class="ui-ico" alt="">Мини-игры
             </button>
             <button type="button" class="shop-mode-btn" id="gamesModeCasinoBtn" onclick="switchGamesMode('casino')">
-                 🔒 Азартные · VIP II
+                 <img src="icons/ico-lock.svg" class="ui-ico" alt="">Азартные · VIP II
             </button>
         </div>
 
@@ -8705,7 +8748,7 @@ img {
             <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=8')" onclick="openGame('towers.html?v=8')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-fire">⛏️ ДО x24.5</span>
+                <span class="game-card-ribbon ribbon-fire"><img src="icons/ico-pickaxe.svg" class="ui-ico" alt="">ДО x24.5</span>
                 <div class="wide-hero-emblem emblem-towers" aria-hidden="true">
                     <svg viewBox="0 0 80 80" fill="none">
                         <defs>
@@ -8746,7 +8789,7 @@ img {
                     </svg>
                 </div>
                 <div class="wide-card-info">
-                    <div class="game-online-tag" id="onlineTagTowers" style="justify-content: flex-start;">🟢 2 в шахте</div>
+                    <div class="game-online-tag" id="onlineTagTowers" style="justify-content: flex-start;"><img src="icons/ico-online.svg" class="ui-ico" alt="">2 в шахте</div>
                     <div class="game-title">ШАХТА</div>
                     <div class="game-subtitle">8 уровней · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                     <div class="game-play-btn">В ШАХТУ ➔</div>
@@ -8757,9 +8800,9 @@ img {
             <div class="game-card art-card card-mines" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html?v=5')" onclick="openGame('mines.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-jackpot">💎 АЛМАЗЫ</span>
+                <span class="game-card-ribbon ribbon-jackpot"><img src="icons/ico-diamond.svg" class="ui-ico" alt="">АЛМАЗЫ</span>
                 <div class="game-title">Мины</div>
-                <div class="game-online-tag" id="onlineTagMines">🟢 1 в игре</div>
+                <div class="game-online-tag" id="onlineTagMines"><img src="icons/ico-online.svg" class="ui-ico" alt="">1 в игре</div>
                 <div class="game-subtitle">сейф 5×5 · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ОТКРЫТЬ</div>
             </div>
@@ -8768,9 +8811,9 @@ img {
             <div class="game-card art-card card-cards" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html?v=5')" onclick="openGame('cards.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-vip">👑 КАРТЫ</span>
+                <span class="game-card-ribbon ribbon-vip"><img src="icons/ico-crown.svg" class="ui-ico" alt="">КАРТЫ</span>
                 <div class="game-title">Карты</div>
-                <div class="game-online-tag" id="onlineTagCards">🟢 1 в игре</div>
+                <div class="game-online-tag" id="onlineTagCards"><img src="icons/ico-online.svg" class="ui-ico" alt="">1 в игре</div>
                 <div class="game-subtitle">масть · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
@@ -8779,9 +8822,9 @@ img {
             <div class="game-card art-card card-balloon" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html?v=6')" onclick="openGame('balloon.html?v=6')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-hot">⚡ КРАШ x500</span>
+                <span class="game-card-ribbon ribbon-hot"><img src="icons/ico-bolt.svg" class="ui-ico" alt="">КРАШ x500</span>
                 <div class="game-title">Шарик</div>
-                <div class="game-online-tag" id="onlineTagBalloon">🟢 1 в игре</div>
+                <div class="game-online-tag" id="onlineTagBalloon"><img src="icons/ico-online.svg" class="ui-ico" alt="">1 в игре</div>
                 <div class="game-subtitle">краш · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">НАДУВАТЬ</div>
             </div>
@@ -8790,9 +8833,9 @@ img {
             <div class="game-card art-card card-dice" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html?v=5')" onclick="openGame('dice.html?v=5')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-rtp">🎲 98% RTP</span>
+                <span class="game-card-ribbon ribbon-rtp"><img src="icons/ico-dice.svg" class="ui-ico" alt="">98% RTP</span>
                 <div class="game-title">Кости</div>
-                <div class="game-online-tag" id="onlineTagDice">🟢 1 в игре</div>
+                <div class="game-online-tag" id="onlineTagDice"><img src="icons/ico-online.svg" class="ui-ico" alt="">1 в игре</div>
                 <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">БРОСИТЬ</div>
             </div>
@@ -8801,18 +8844,18 @@ img {
             <div class="game-card wide-card art-card card-flappy anim-item" id="cardFlappy" style="animation-delay: 0.45s;" onpointerdown="preloadGame('flappy.html?v=8')" onclick="openGame('flappy.html?v=8')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-bronze">🔗 ПО РЕФКЕ · x10</span>
+                <span class="game-card-ribbon ribbon-bronze"><img src="icons/ico-link.svg" class="ui-ico" alt="">ПО РЕФКЕ · x10</span>
                 <div class="flappy-hero-duck">
                     <img src="flappy-duck.png" alt="Флаппи Утка">
                 </div>
                 <div class="wide-card-info">
-                    <div class="game-online-tag" id="onlineTagFlappy" style="justify-content: flex-start;">🟢 2 в полёте</div>
+                    <div class="game-online-tag" id="onlineTagFlappy" style="justify-content: flex-start;"><img src="icons/ico-online.svg" class="ui-ico" alt="">2 в полёте</div>
                     <div class="game-title">ФЛАППИ УТКА</div>
                     <div class="game-subtitle">до 50 труб · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                     <div class="game-play-btn">ВЗЛЕТЕТЬ ➔</div>
                 </div>
                 <div class="vip-lock-overlay" id="lockOverlayFlappy">
-                    <div class="vip-lock-pill bronze" id="lockPillFlappy">🔒 ДОСТУП ПО РЕФКЕ</div>
+                    <div class="vip-lock-pill bronze" id="lockPillFlappy"><img src="icons/ico-lock.svg" class="ui-ico" alt="">ДОСТУП ПО РЕФКЕ</div>
                     <div class="vip-lock-exp" id="lockExpFlappy">Выполни задание с рефкой</div>
                 </div>
             </div>
@@ -8825,7 +8868,7 @@ img {
             <div class="gambling-vip-banner" id="gamblingVipBanner">
                 <div class="gambling-vip-top">
                     <div>
-                        <div class="gambling-vip-title">🔗 Доступ по реферальной ссылке</div>
+                        <div class="gambling-vip-title"><img src="icons/ico-link.svg" class="ui-ico" alt="">Доступ по реферальной ссылке</div>
                         <div class="gambling-vip-sub" id="gamblingVipBannerSub">Зарегистрируйся по нашей ссылке у любого партнёра в «Заданиях», чтобы открыть игры</div>
                     </div>
                     <button type="button" onclick="openPage('tasks')" style="background: rgba(0, 150, 255, 0.22); border: 1px solid rgba(0, 217, 255, 0.5); color: #e0f7ff; padding: 6px 10px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; flex-shrink: 0;">Задания ❯</button>
@@ -8840,7 +8883,7 @@ img {
                 <div class="game-card wide-card art-card card-blackjack anim-item" id="cardBlackjack" style="animation-delay: 0.05s;" onpointerdown="preloadGame('blackjack.html?v=7')" onclick="openGame('blackjack.html?v=7')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
-                    <span class="game-card-ribbon ribbon-silver">🔗 ПО РЕФКЕ · 21</span>
+                    <span class="game-card-ribbon ribbon-silver"><img src="icons/ico-link.svg" class="ui-ico" alt="">ПО РЕФКЕ · 21</span>
                     <div class="wide-hero-emblem emblem-blackjack" aria-hidden="true">
                         <svg viewBox="0 0 80 80" fill="none">
                             <defs>
@@ -8879,13 +8922,13 @@ img {
                         </svg>
                     </div>
                     <div class="wide-card-info">
-                        <div class="game-online-tag" id="onlineTagBlackjack" style="justify-content: flex-start;">🟢 1 за столом</div>
+                        <div class="game-online-tag" id="onlineTagBlackjack" style="justify-content: flex-start;"><img src="icons/ico-online.svg" class="ui-ico" alt="">1 за столом</div>
                         <div class="game-title">БЛЭКДЖЕК</div>
                         <div class="game-subtitle">стол с крупье · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                         <div class="game-play-btn">СЕСТЬ ЗА СТОЛ ➔</div>
                     </div>
                     <div class="vip-lock-overlay" id="lockOverlayBlackjack">
-                        <div class="vip-lock-pill silver" id="lockPillBlackjack">🔒 ДОСТУП ПО РЕФКЕ</div>
+                        <div class="vip-lock-pill silver" id="lockPillBlackjack"><img src="icons/ico-lock.svg" class="ui-ico" alt="">ДОСТУП ПО РЕФКЕ</div>
                         <div class="vip-lock-exp" id="lockExpBlackjack">Выполни задание с рефкой</div>
                     </div>
                 </div>
@@ -8894,7 +8937,7 @@ img {
                 <div class="game-card wide-card art-card card-slots anim-item" id="cardSlots" style="animation-delay: 0.1s;" onpointerdown="preloadGame('slots.html?v=7')" onclick="openGame('slots.html?v=7')">
                     <div class="game-art-bg"></div>
                     <div class="game-art-scrim"></div>
-                    <span class="game-card-ribbon ribbon-silver">🔗 ПО РЕФКЕ · 777</span>
+                    <span class="game-card-ribbon ribbon-silver"><img src="icons/ico-link.svg" class="ui-ico" alt="">ПО РЕФКЕ · 777</span>
                     <div class="wide-hero-emblem emblem-slots" aria-hidden="true">
                         <svg viewBox="0 0 80 80" fill="none">
                             <defs>
@@ -8931,13 +8974,13 @@ img {
                         </svg>
                     </div>
                     <div class="wide-card-info">
-                        <div class="game-online-tag" id="onlineTagSlots" style="justify-content: flex-start;">🟢 1 крутят</div>
+                        <div class="game-online-tag" id="onlineTagSlots" style="justify-content: flex-start;"><img src="icons/ico-online.svg" class="ui-ico" alt="">1 крутят</div>
                         <div class="game-title">СЛОТЫ 777</div>
                         <div class="game-subtitle">барабан 777 · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                         <div class="game-play-btn">КРУТИТЬ ➔</div>
                     </div>
                     <div class="vip-lock-overlay" id="lockOverlaySlots">
-                        <div class="vip-lock-pill silver" id="lockPillSlots">🔒 ДОСТУП ПО РЕФКЕ</div>
+                        <div class="vip-lock-pill silver" id="lockPillSlots"><img src="icons/ico-lock.svg" class="ui-ico" alt="">ДОСТУП ПО РЕФКЕ</div>
                         <div class="vip-lock-exp" id="lockExpSlots">Выполни задание с рефкой</div>
                     </div>
                 </div>
@@ -8949,7 +8992,7 @@ img {
             <div class="prediction-header">
                 <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
                     <span class="prediction-badge" id="predBadge">ПРОГНОЗ</span>
-                    <span class="pred-timer-badge" id="predTimerBadge">⏱ --:--</span>
+                    <span class="pred-timer-badge" id="predTimerBadge"><img src="icons/ico-clock.svg" class="ui-ico" alt="">--:--</span>
                 </div>
                 <span class="prediction-status" id="predStatus" style="color: #00e676;">Ставки открыты</span>
             </div>
@@ -9122,7 +9165,7 @@ img {
                     </div>
                 </div>
                 <div class="ssq-counter-box">
-                    <div class="ssq-counter-top">🔥 <span id="ssqCountVal">0</span></div>
+                    <div class="ssq-counter-top"><img src="icons/ico-fire.svg" class="ui-ico" alt=""><span id="ssqCountVal">0</span></div>
                     <div class="ssq-counter-sub">из 7</div>
                 </div>
             </div>
@@ -9131,7 +9174,7 @@ img {
 
             <div class="ssq-reward-box" id="ssqRewardBox">
                 <div class="ssq-reward-left">
-                    <div class="ssq-gift-ico" aria-hidden="true">🎁</div>
+                    <div class="ssq-gift-ico" aria-hidden="true"><img src="icons/ico-gift.svg" class="ui-ico ui-ico-md" alt=""></div>
                     <div>
                         <div class="ssq-step-lbl" id="ssqStepLabel">ШАГ 1 ИЗ 7</div>
                         <div class="ssq-step-title" id="ssqStepTitle">За следующий эфир</div>
@@ -9336,17 +9379,17 @@ img {
         <!-- Переключатель Магазин / Кейсы -->
         <div class="shop-mode-switch anim-item" style="animation-delay: 0.06s;">
             <button type="button" class="shop-mode-btn active" id="shopModeStoreBtn" onclick="switchShopMode('store')">
-                🛒 Магазин
+                <img src="icons/ico-cart.svg" class="ui-ico" alt="">Магазин
             </button>
             <button type="button" class="shop-mode-btn" id="shopModeCasesBtn" onclick="switchShopMode('cases')">
-                📦 Кейсы
+                <img src="icons/ico-box.svg" class="ui-ico" alt="">Кейсы
             </button>
         </div>
 
         <!-- Строка Мои заказы -->
         <div class="my-orders-bar anim-item" id="shopMyOrdersBar" style="animation-delay: 0.07s;" onclick="openMyOrdersModal()">
             <div class="my-orders-bar-left">
-                <span class="my-orders-ico-wrap">🛒</span>
+                <span class="my-orders-ico-wrap"><img src="icons/ico-cart.svg" class="ui-ico ui-ico-solo" alt=""></span>
                 <span>Мои заказы</span>
             </div>
             <span class="my-orders-bar-arrow">❯</span>
@@ -9576,7 +9619,7 @@ img {
 
             <div class="profile-hero-top">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="profile-vip-badge tier-basic" id="profileVipBadge"><span class="profile-online-dot"></span> 👤 ОБЫЧНЫЙ АККАУНТ</div>
+                    <div class="profile-vip-badge tier-basic" id="profileVipBadge"><span class="profile-online-dot"></span> <img src="icons/ico-user.svg" class="ui-ico" alt="">ОБЫЧНЫЙ АККАУНТ</div>
                     
                 </div>
                 <button type="button" class="profile-id-pill" onclick="copyProfileId()">
@@ -9608,7 +9651,7 @@ img {
 
                 <div class="profile-xp-box">
                     <div class="profile-xp-head">
-                        <span class="profile-xp-rank" id="profileXpRank">👤 Обычный аккаунт</span>
+                        <span class="profile-xp-rank" id="profileXpRank"><img src="icons/ico-user.svg" class="ui-ico" alt="">Обычный аккаунт</span>
                         <span class="profile-xp-nums" id="profileXpNums">0 / 500 EXP</span>
                     </div>
                     <div class="profile-xp-track">
@@ -9624,9 +9667,9 @@ img {
         <!-- 1Б. РАЗВОРАЧИВАЮЩАЯСЯ ВИТРИНА ДОСТИЖЕНИЙ ПОД ФОТКОЙ -->
         <div class="profile-section-card ach-collapse-card anim-item" id="profileAchievementsCard" style="animation-delay: 0.11s;">
             <div class="profile-section-head ach-collapse-head" onclick="toggleProfileAchievements()">
-                <span class="profile-section-title">🏆 Достижения</span>
+                <span class="profile-section-title"><img src="icons/ico-trophy.svg" class="ui-ico" alt="">Достижения</span>
                 <div class="ach-head-right">
-                    <span class="ach-ready-pill" id="achReadyBadge">🎁 Награда!</span>
+                    <span class="ach-ready-pill" id="achReadyBadge"><img src="icons/ico-gift.svg" class="ui-ico" alt="">Награда!</span>
                     <span class="profile-section-sub" id="achSummaryText">0 / 6</span>
                     <span class="ach-chevron">▾</span>
                 </div>
@@ -9727,7 +9770,7 @@ img {
                         </svg>
                     </div>
                     <div>
-                        <div class="profile-bento-label" style="color: #e0f7ff; font-weight: 800; font-size: 13px;">🔥 Стрик стримов</div>
+                        <div class="profile-bento-label" style="color: #e0f7ff; font-weight: 800; font-size: 13px;"><img src="icons/ico-fire.svg" class="ui-ico" alt="">Стрик стримов</div>
                         <div id="profileStreamStreakSub" style="font-size: 11px; color: #8cb4db; margin-top: 2px;">Рекорд: 0 · Переходов: 0</div>
                     </div>
                 </div>
@@ -9738,7 +9781,7 @@ img {
         <!-- ВВОД ПРОМОКОДА -->
         <div class="profile-promo-card anim-item" style="animation-delay: 0.18s;">
             <div class="profile-promo-head">
-                <div class="profile-promo-title">🎟️ Промокод</div>
+                <div class="profile-promo-title"><img src="icons/ico-ticket.svg" class="ui-ico" alt="">Промокод</div>
                 <span class="profile-promo-sub">Введи код — получи монеты</span>
             </div>
             <div class="profile-promo-row">
@@ -9751,7 +9794,7 @@ img {
         <!-- 3. РЕФЕРАЛЬНАЯ ПРОГРАММА -->
         <div class="profile-ref-card anim-item" style="animation-delay: 0.2s;">
             <div class="profile-ref-head">
-                <div class="profile-ref-title">🚀 Реферальная система</div>
+                <div class="profile-ref-title"><img src="icons/ico-rocket.svg" class="ui-ico" alt="">Реферальная система</div>
                 <span class="profile-ref-bonus">+500 <img src="coins.png" alt="" class="coin-icon-sm"></span>
             </div>
             <p class="profile-ref-desc">
@@ -9773,7 +9816,7 @@ img {
         <!-- 4. ПРИВЯЗКА АККАУНТОВ -->
         <div class="profile-section-card anim-item" style="animation-delay: 0.25s;">
             <div class="profile-section-head">
-                <span class="profile-section-title">🔗 Привязка аккаунтов</span>
+                <span class="profile-section-title"><img src="icons/ico-link.svg" class="ui-ico" alt="">Привязка аккаунтов</span>
                 <span class="profile-section-sub" id="profileBindsCountText">1 из 5 активно</span>
             </div>
 
@@ -9838,11 +9881,11 @@ img {
         <!-- 5. ИНВЕНТАРЬ / МОИ ПОКУПКИ -->
         <div class="profile-section-card anim-item" style="animation-delay: 0.3s;">
             <div class="profile-section-head">
-                <span class="profile-section-title">🎁 Мои покупки</span>
+                <span class="profile-section-title"><img src="icons/ico-gift.svg" class="ui-ico" alt="">Мои покупки</span>
                 <span class="profile-section-sub">0 предметов</span>
             </div>
             <div class="profile-inventory-empty">
-                <div style="font-size: 28px; filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.5));">📦</div>
+                <div style="font-size: 28px; filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.5));"><img src="icons/ico-box.svg" class="ui-ico ui-ico-lg" alt=""></div>
                 <div class="profile-inventory-empty-text">У вас пока нет купленных призов из магазина</div>
                 <button type="button" class="profile-shop-Action" onclick="openPage('shop')">
                     Перейти в магазин ➔
@@ -10612,7 +10655,6 @@ img {
                 radial-gradient(120% 100% at 15% 0%, rgba(0, 162, 255, 0.16) 0%, rgba(10, 20, 38, 0.94) 55%, rgba(5, 11, 22, 0.98) 100%);
             border: 1.5px solid rgba(0, 217, 255, 0.34);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(186, 230, 253, 0.18);
-            animation: taskCardReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
         .ssq-header {
             display: flex;
@@ -10825,79 +10867,48 @@ img {
             line-height: 1.35;
         }
 
-        /* ================= ЖИВЫЕ АНИМАЦИИ МАГАЗИНА И ЗАДАНИЙ ================= */
+        /* ================= ЖИВЫЕ АНИМАЦИИ МАГАЗИНА И ЗАДАНИЙ (В СТИЛЕ ИГР) ================= */
         @keyframes shopCardReveal {
-            0%   { opacity: 0; transform: translateY(20px) scale(0.94); }
+            0%   { opacity: 0; transform: translateY(30px) scale(0.86); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes shopItemFloat {
-            0%, 100% { transform: scale(1) translateY(0); }
-            50%      { transform: scale(1.035) translateY(-3px); }
-        }
-        @keyframes cardSheenSweep {
-            0%        { transform: translateX(-140%) skewX(-22deg); }
-            42%, 100% { transform: translateX(260%) skewX(-22deg); }
+            0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+            50%      { transform: translateY(-5px) rotate(1.5deg); }
         }
         @keyframes taskCardReveal {
-            0%   { opacity: 0; transform: translateY(18px) scale(0.96); }
+            0%   { opacity: 0; transform: translateY(28px) scale(0.92); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
+        @keyframes partnerArtFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50%      { transform: translateY(-4px) scale(1.02); }
+        }
         @keyframes questIconBreath {
-            0%, 100% { box-shadow: 0 0 10px rgba(0, 150, 255, 0.35); transform: scale(1); }
-            50%      { box-shadow: 0 0 18px rgba(0, 217, 255, 0.65); transform: scale(1.04); }
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 150, 255, 0.3); transform: translateY(0) scale(1); }
+            50%      { box-shadow: 0 0 18px rgba(0, 217, 255, 0.6); transform: translateY(-2px) scale(1.04); }
         }
 
         #shop.page.active .shop-card,
         #shop.page.active .case-card {
-            animation: shopCardReveal 0.44s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            animation: shopCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
-        .shop-card::after,
-        .featured-task::after,
-        .arkada-partner-card::after,
-        .p2-partner-card::after,
-        .p3-partner-card::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 42%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(125, 211, 252, 0.1) 50%, transparent 100%);
-            transform: translateX(-140%) skewX(-22deg);
-            pointer-events: none;
-            z-index: 3;
-            animation: cardSheenSweep 5.5s ease-in-out infinite;
-        }
-        .shop-card:nth-child(2n)::after,
-        .featured-task:nth-child(2n)::after { animation-delay: 1.6s; }
-        .shop-card:nth-child(3n)::after,
-        .featured-task:nth-child(3n)::after { animation-delay: 3.1s; }
 
         .shop-card-img-wrap img,
         .case-art-wrap img {
-            animation: shopItemFloat 4.2s ease-in-out infinite;
+            animation: shopItemFloat 4.8s ease-in-out infinite;
             will-change: transform;
         }
         .shop-card:nth-child(2n) .shop-card-img-wrap img,
         .case-card:nth-child(2n) .case-art-wrap img { animation-delay: -1.4s; }
         .shop-card:nth-child(3n) .shop-card-img-wrap img,
         .case-card:nth-child(3n) .case-art-wrap img { animation-delay: -2.8s; }
+        .shop-card:nth-child(4n) .shop-card-img-wrap img,
+        .case-card:nth-child(4n) .case-art-wrap img { animation-delay: -4.0s; }
 
         .shop-btn {
             position: relative;
             overflow: hidden;
-        }
-        .shop-btn::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 38%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.26), transparent);
-            transform: translateX(-140%) skewX(-22deg);
-            pointer-events: none;
-            animation: cardSheenSweep 4.6s ease-in-out infinite;
         }
 
         .featured-task {
@@ -10907,11 +10918,24 @@ img {
         #tasks.page.active .featured-task,
         #tasks.page.active .arkada-partner-card,
         #tasks.page.active .p2-partner-card,
-        #tasks.page.active .p3-partner-card {
-            animation: taskCardReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        #tasks.page.active .p3-partner-card,
+        #tasks.page.active .stream-streak-quest-card {
+            animation: taskCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
-        .featured-task-icon {
-            animation: questIconBreath 3.2s ease-in-out infinite;
+
+        .arkada-card-girl,
+        .p2-card-girl,
+        .p3-card-img {
+            transform-origin: bottom center;
+            animation: partnerArtFloat 5.2s ease-in-out infinite;
+            will-change: transform;
+        }
+        .p2-card-girl { animation-delay: -1.6s; }
+        .p3-card-img { animation-delay: -3.2s; }
+
+        .featured-task-icon,
+        .ssq-flame-orb {
+            animation: questIconBreath 4.4s ease-in-out infinite;
         }
 
         /* ================= ВЕРХНЯЯ МИНИ-ТАБЛИЧКА ПРИ ЗАХОДЕ В БОТА ================= */
@@ -11042,7 +11066,7 @@ img {
                     <span class="kick-status-dot" style="background: #53fc18; box-shadow: 0 0 8px #53fc18;"></span>
                     СТРИМ ОНЛАЙН
                 </div>
-                <div class="kick-mini-title">Vetruch сейчас в эфире! 🔥</div>
+                <div class="kick-mini-title">Vetruch сейчас в эфире! <img src="icons/ico-fire.svg" class="ui-ico ui-ico-end" alt=""></div>
             </div>
         </div>
         <div class="kick-mini-actions">
@@ -11078,7 +11102,7 @@ img {
     <div id="predBetModal" class="modal-overlay" onclick="if(event.target === this) closePredBetModal()">
         <div class="modal-content" style="border-color: #00d9ff; box-shadow: 0 0 35px rgba(0, 217, 255, 0.35); max-width: 380px;">
             <button class="modal-close" onclick="closePredBetModal()">✕</button>
-            <div style="font-size: 32px; margin-bottom: 6px;">🎯</div>
+            <div style="font-size: 32px; margin-bottom: 6px;"><img src="icons/ico-target.svg" class="ui-ico ui-ico-lg" alt=""></div>
             <h3 style="margin-top: 0; margin-bottom: 10px; color: #fff; font-size: 18px;">Подтверждение ставки</h3>
             <p style="font-size: 13.5px; color: #94a3b8; margin-bottom: 16px; line-height: 1.45;">
                 Вы уверены, что хотите поставить ставку на данный исход?
@@ -11099,7 +11123,7 @@ img {
 
             <!-- ОБЯЗАТЕЛЬНОЕ ПРЕДУПРЕЖДЕНИЕ ПО ТРЕБОВАНИЮ -->
             <div style="background: rgba(255, 51, 102, 0.12); border: 1px solid rgba(255, 51, 102, 0.35); border-radius: 12px; padding: 10px 12px; margin-bottom: 18px; color: #ff5277; font-size: 11.5px; font-weight: 700; line-height: 1.4; text-align: center;">
-                ⚠️ Внимание: после принятия баллы будет вернуть невозможно!
+                <img src="icons/ico-warn.svg" class="ui-ico" alt="">Внимание: после принятия баллы будет вернуть невозможно!
             </div>
 
             <div style="display: flex; gap: 10px;">
@@ -11107,7 +11131,7 @@ img {
                     Отмена
                 </button>
                 <button type="button" class="admin-btn-approve" id="modalConfirmBetBtn" onclick="confirmExecuteBet()" style="flex: 1.4; padding: 12px; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #00d9ff, #0088ff); color: #fff; border: none;">
-                    ✅ Поставить
+                    <img src="icons/ico-check.svg" class="ui-ico" alt="">Поставить
                 </button>
             </div>
         </div>
@@ -11219,7 +11243,7 @@ img {
     <div id="predWinCelebrationModal" class="modal-overlay" onclick="if(event.target === this) closePredWinModal()">
         <div class="modal-content" style="border-color: #00e676; box-shadow: 0 0 45px rgba(0, 230, 118, 0.4); max-width: 380px;">
             <button class="modal-close" onclick="closePredWinModal()">✕</button>
-            <div style="font-size: 40px; margin-bottom: 8px;">🎉</div>
+            <div style="font-size: 40px; margin-bottom: 8px;"><img src="icons/ico-party.svg" class="ui-ico ui-ico-xl" alt=""></div>
             <h3 style="margin-top: 0; margin-bottom: 8px; color: #00e676; font-size: 20px;">Победа в прогнозе!</h3>
             <p id="predWinModalDesc" style="font-size: 13.5px; color: #e2e8f0; margin-bottom: 14px; line-height: 1.4;">
                 Ваш прогноз успешно сработал!
@@ -11233,7 +11257,7 @@ img {
             </div>
 
             <button type="button" class="admin-submit-btn" onclick="closePredWinModal()" style="padding: 13px; font-size: 14px; background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);">
-                🚀 ЗАБРАТЬ МОНЕТЫ
+                <img src="icons/ico-rocket.svg" class="ui-ico" alt="">ЗАБРАТЬ МОНЕТЫ
             </button>
         </div>
     </div>
@@ -11305,7 +11329,7 @@ img {
                 <h1 class="lb-main-title">Топ-10 Фармеров</h1>
                 <div class="lb-subtitle">Рейтинг игроков по балансу монет</div>
             </div>
-            <div class="lb-trophy-box">🏆</div>
+            <div class="lb-trophy-box"><img src="icons/ico-trophy.svg" class="ui-ico ui-ico-lg" alt=""></div>
         </div>
 
         <!-- Карточка со статистикой -->
@@ -11778,6 +11802,122 @@ img {
             return FIREBASE_DB_URL ? FIREBASE_DB_URL.trim().replace(/\/+$/, '') : '';
         }
 
+        // ================= ПРЕМИАЛЬНЫЕ 3D SVG-ИКОНКИ ВМЕСТО СТАНДАРТНЫХ СМАЙЛИКОВ =================
+        const UI_ICON_FILES = {
+            fire: 'icons/ico-fire.svg',
+            gift: 'icons/ico-gift.svg',
+            bolt: 'icons/ico-bolt.svg',
+            lock: 'icons/ico-lock.svg',
+            crown: 'icons/ico-crown.svg',
+            diamond: 'icons/ico-diamond.svg',
+            tree: 'icons/ico-tree.svg',
+            snowflake: 'icons/ico-snowflake.svg',
+            rocket: 'icons/ico-rocket.svg',
+            plane: 'icons/ico-plane.svg',
+            users: 'icons/ico-users.svg',
+            user: 'icons/ico-user.svg',
+            online: 'icons/ico-online.svg',
+            check: 'icons/ico-check.svg',
+            trophy: 'icons/ico-trophy.svg',
+            ticket: 'icons/ico-ticket.svg',
+            link: 'icons/ico-link.svg',
+            gamepad: 'icons/ico-gamepad.svg',
+            pickaxe: 'icons/ico-pickaxe.svg',
+            dice: 'icons/ico-dice.svg',
+            cart: 'icons/ico-cart.svg',
+            box: 'icons/ico-box.svg',
+            key: 'icons/ico-key.svg',
+            clock: 'icons/ico-clock.svg',
+            hourglass: 'icons/ico-hourglass.svg',
+            sparkle: 'icons/ico-sparkle.svg',
+            target: 'icons/ico-target.svg',
+            slots: 'icons/ico-slots.svg',
+            medalBronze: 'icons/ico-medal-bronze.svg',
+            medalSilver: 'icons/ico-medal-silver.svg',
+            medalGold: 'icons/ico-medal-gold.svg',
+            warn: 'icons/ico-warn.svg',
+            camera: 'icons/ico-camera.svg',
+            island: 'icons/ico-island.svg',
+            video: 'icons/ico-video.svg',
+            clover: 'icons/ico-clover.svg',
+            clipboard: 'icons/ico-clipboard.svg',
+            party: 'icons/ico-party.svg',
+            info: 'icons/ico-info.svg',
+            question: 'icons/ico-question.svg',
+            bomb: 'icons/ico-bomb.svg',
+            balloon: 'icons/ico-balloon.svg',
+            duck: 'icons/ico-duck.svg'
+        };
+
+        window.uiIco = function (name, extraCls) {
+            const src = UI_ICON_FILES[name] || UI_ICON_FILES.info;
+            const cls = extraCls ? `ui-ico ${extraCls}` : 'ui-ico';
+            return `<img src="${src}" class="${cls}" alt="">`;
+        };
+
+        const UI_EMOJI_TO_ICON = {
+            '🔥': 'fire',
+            '🎁': 'gift',
+            '⚡': 'bolt',
+            '🔒': 'lock',
+            '👑': 'crown',
+            '💎': 'diamond',
+            '🎄': 'tree',
+            '❄️': 'snowflake',
+            '❄': 'snowflake',
+            '🚀': 'rocket',
+            '✈️': 'plane',
+            '✈': 'plane',
+            '👥': 'users',
+            '👤': 'user',
+            '🟢': 'online',
+            '✅': 'check',
+            '✓': 'check',
+            '🏆': 'trophy',
+            '🎟️': 'ticket',
+            '🎟': 'ticket',
+            '🔗': 'link',
+            '🎮': 'gamepad',
+            '⛏️': 'pickaxe',
+            '⛏': 'pickaxe',
+            '🎲': 'dice',
+            '🛒': 'cart',
+            '📦': 'box',
+            '🔑': 'key',
+            '⏱': 'clock',
+            '⏱️': 'clock',
+            '⏰': 'clock',
+            '⏳': 'hourglass',
+            '✨': 'sparkle',
+            '🎯': 'target',
+            '🎰': 'slots',
+            '🥉': 'medalBronze',
+            '🥈': 'medalSilver',
+            '🥇': 'medalGold',
+            '⚠️': 'warn',
+            '⚠': 'warn',
+            '📷': 'camera',
+            '🏝️': 'island',
+            '🏝': 'island',
+            '🎥': 'video',
+            '🍀': 'clover',
+            '📋': 'clipboard',
+            '🎉': 'party',
+            'ℹ️': 'info',
+            'ℹ': 'info',
+            '❓': 'question',
+            '💣': 'bomb',
+            '🎈': 'balloon',
+            '🦆': 'duck'
+        };
+
+        window.emojiToUiIco = function (emojiStr, extraCls) {
+            const key = String(emojiStr || '').trim();
+            const icoName = UI_EMOJI_TO_ICON[key] || UI_EMOJI_TO_ICON[key.replace(/\uFE0F/g, '')];
+            if (icoName) return window.uiIco(icoName, extraCls || 'ui-ico-solo');
+            return key;
+        };
+
         // ================= ТАБЛИЧКА KICK НА ГЛАВНОЙ + ВЕРХНЕЕ МИНИ-УВЕДОМЛЕНИЕ + СТРИКИ СТРИМОВ =================
         let kickMiniPopupTimer = null;
         let _kickStatusSaving = false;
@@ -11897,8 +12037,8 @@ img {
                 const nodeCls = isDone ? 'is-done' : (isNext ? 'is-next' : '');
                 const numCls = isDone ? 'is-done' : (isNext ? 'is-next' : '');
                 const iconHtml = isDone
-                    ? (claimed[i] ? '✓' : '🔥')
-                    : (isNext ? '🔥' : '🔒');
+                    ? (claimed[i] ? uiIco('check', 'ui-ico-node') : uiIco('fire', 'ui-ico-node'))
+                    : (isNext ? uiIco('fire', 'ui-ico-node') : uiIco('lock', 'ui-ico-node'));
 
                 html += `
                     <div class="ssq-node-col">
@@ -11994,10 +12134,10 @@ img {
             if (valEl) valEl.textContent = String(effectiveCount);
             if (badgeEl) {
                 if (countedThisStream) {
-                    badgeEl.textContent = '✓ Засчитан в этом эфире';
+                    badgeEl.innerHTML = `${uiIco('check')}Засчитан в этом эфире`;
                     badgeEl.classList.add('counted');
                 } else if (sess.live) {
-                    badgeEl.textContent = '⚡ Перейди для +1 к стрику';
+                    badgeEl.innerHTML = `${uiIco('bolt')}Перейди для +1 к стрику`;
                     badgeEl.classList.remove('counted');
                 } else {
                     badgeEl.textContent = `Рекорд: ${st.best || effectiveCount}`;
@@ -12085,7 +12225,7 @@ img {
                 </button>
                 <div class="kick-streak-bar" id="kickStreakBar">
                     <div class="kick-streak-left">
-                        <span>🔥 Стрик стримов:</span>
+                        <span>${uiIco('fire')}Стрик стримов:</span>
                         <span class="kick-streak-num" id="kickStreakVal">0</span>
                     </div>
                     <span class="kick-streak-pill" id="kickStreakBadge">Рекорд: 0</span>
@@ -12147,7 +12287,7 @@ img {
                     card.classList.remove('is-offline');
                     card.classList.add('is-online');
                     badgeText.textContent = 'ОНЛАЙН';
-                    subText.textContent = 'Стрим идёт прямо сейчас! Залетай в эфир 🔥';
+                    subText.innerHTML = `Стрим идёт прямо сейчас! Залетай в эфир ${uiIco('fire', 'ui-ico-end')}`;
                     goBtn.textContent = 'СМОТРЕТЬ СТРИМ НА KICK ➔';
                 } else {
                     card.classList.remove('is-online');
@@ -12343,7 +12483,7 @@ img {
 
             if (p.isResolved) {
                 if (badgeEl) {
-                    badgeEl.textContent = '🏆 Завершён';
+                    badgeEl.innerHTML = `${uiIco('trophy')}Завершён`;
                     badgeEl.classList.remove('pulse-urgent');
                 }
                 if (adminTimerEl) adminTimerEl.textContent = '🏆 Прогноз завершён (Итоги подведены)';
@@ -12354,7 +12494,7 @@ img {
 
             if (p.manuallyClosed) {
                 if (badgeEl) {
-                    badgeEl.textContent = '🔒 Закрыто';
+                    badgeEl.innerHTML = `${uiIco('lock')}Закрыто`;
                     badgeEl.classList.remove('pulse-urgent');
                 }
                 if (adminTimerEl) adminTimerEl.textContent = '🔒 Ставки закрыты досрочно';
@@ -12369,7 +12509,7 @@ img {
 
             if (!p.endTime || p.endTime <= 0) {
                 if (badgeEl) {
-                    badgeEl.textContent = '⏱ Без таймера';
+                    badgeEl.innerHTML = `${uiIco('clock')}Без таймера`;
                     badgeEl.classList.remove('pulse-urgent');
                 }
                 if (adminTimerEl) adminTimerEl.textContent = '⏱ Таймер: Без таймера';
@@ -12390,7 +12530,7 @@ img {
                 const timeStr = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 
                 if (badgeEl) {
-                    badgeEl.textContent = `⏱ ${timeStr}`;
+                    badgeEl.innerHTML = `${uiIco('clock')}${timeStr}`;
                     badgeEl.classList.toggle('pulse-urgent', mins < 1);
                 }
                 if (adminTimerEl) {
@@ -12404,7 +12544,7 @@ img {
                 if (btnRight) btnRight.classList.remove('disabled-pred-btn');
             } else {
                 if (badgeEl) {
-                    badgeEl.textContent = '⏱ Время вышло';
+                    badgeEl.innerHTML = `${uiIco('clock')}Время вышло`;
                     badgeEl.classList.remove('pulse-urgent');
                 }
                 if (adminTimerEl) {
@@ -12523,7 +12663,7 @@ img {
                         if (p.winner === myBet.side) {
                             userBetStatusEl.style.borderColor = 'rgba(0, 230, 118, 0.4)';
                             userBetStatusEl.style.color = '#00e676';
-                            userBetStatusEl.innerHTML = `🏆 <b>Ваша ставка победила!</b> Исход «${votedLabel}» — ставка ${formatCoins(myBet.amount)} <img src="coins.png" class="coin-icon-sm" alt="монет">`;
+                            userBetStatusEl.innerHTML = `${uiIco('trophy')}<b>Ваша ставка победила!</b> Исход «${votedLabel}» — ставка ${formatCoins(myBet.amount)} <img src="coins.png" class="coin-icon-sm" alt="монет">`;
                         } else if (p.winner === 'cancel') {
                             userBetStatusEl.style.borderColor = 'rgba(0, 217, 255, 0.4)';
                             userBetStatusEl.style.color = '#00d9ff';
@@ -12531,12 +12671,12 @@ img {
                         } else {
                             userBetStatusEl.style.borderColor = 'rgba(255, 51, 102, 0.4)';
                             userBetStatusEl.style.color = '#ff5277';
-                            userBetStatusEl.innerHTML = `❌ <b>Ставка не сыграла:</b> вы ставили на «${votedLabel}» (${formatCoins(myBet.amount)} <img src="coins.png" class="coin-icon-sm" alt="монет">)`;
+                            userBetStatusEl.innerHTML = `${uiIco('warn')}<b>Ставка не сыграла:</b> вы ставили на «${votedLabel}» (${formatCoins(myBet.amount)} <img src="coins.png" class="coin-icon-sm" alt="монет">)`;
                         }
                     } else {
                         userBetStatusEl.style.borderColor = 'rgba(0, 217, 255, 0.25)';
                         userBetStatusEl.style.color = '#00d9ff';
-                        userBetStatusEl.innerHTML = `🎯 Ваша ставка: <b>${formatCoins(myBet.amount)}</b> <img src="coins.png" class="coin-icon-sm"> на исход <b>«${votedLabel}»</b>`;
+                        userBetStatusEl.innerHTML = `${uiIco('target')}Ваша ставка: <b>${formatCoins(myBet.amount)}</b> <img src="coins.png" class="coin-icon-sm"> на исход <b>«${votedLabel}»</b>`;
                     }
                 } else {
                     userBetStatusEl.style.display = 'none';
@@ -13515,7 +13655,7 @@ img {
             const fillBar = document.querySelector('#tasks .invite-progress-fill');
             if (countSpan) {
                 if (refCount >= 3) {
-                    countSpan.textContent = `✅ Выполнено (${refCount} / 3)`;
+                    countSpan.innerHTML = `${uiIco('check')}Выполнено (${refCount} / 3)`;
                     countSpan.style.color = '#00e676';
                 } else {
                     countSpan.textContent = `${refCount} / 3`;
@@ -14057,15 +14197,20 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                 listWrap.innerHTML = '';
             } else {
                 emptyBox.style.display = 'none';
-                listWrap.innerHTML = myPurchases.map(p => `
+                listWrap.innerHTML = myPurchases.map(p => {
+                    const stRaw = String(p.status || 'Ожидает выдачи');
+                    const stHtml = stRaw
+                        .replace(/\s*⏳/g, ' ' + uiIco('hourglass', 'ui-ico-end'))
+                        .replace(/\s*✓/g, ' ' + uiIco('check', 'ui-ico-end'));
+                    return `
                     <div class="purchase-history-item">
                         <div>
-                            <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">🎁 ${p.item}</div>
+                            <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">${uiIco('gift')}${p.item}</div>
                             <div style="font-size: 11px; color: var(--secondary); margin-top: 2px;">Списано: ${formatCoins(p.price)} монет</div>
                         </div>
-                        <span class="profile-status-pill ${p.status.includes('Выдано') ? 'connected' : 'action'}">${p.status}</span>
-                    </div>
-                `).join('');
+                        <span class="profile-status-pill ${stRaw.includes('Выдано') ? 'connected' : 'action'}">${stHtml}</span>
+                    </div>`;
+                }).join('');
             }
         }
 
@@ -14485,48 +14630,60 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
         // ================= УПРАВЛЕНИЕ ВКЛАДКАМИ (ПАМЯТЬ) =================
         function openPage(pageId) {
             document.querySelectorAll(".page").forEach(function(page) { page.classList.remove("active"); });
-            setTimeout(() => { document.getElementById(pageId).classList.add("active"); }, 10);
+            const targetPage = document.getElementById(pageId);
+
+            if (pageId === 'shop' && targetPage) {
+                targetPage.querySelectorAll('.shop-card, .case-card').forEach(c => {
+                    c.style.animation = 'none';
+                });
+            }
+            if (pageId === 'tasks' && targetPage) {
+                if (typeof renderTasksStreamStreakWidget === 'function') renderTasksStreamStreakWidget();
+                targetPage.querySelectorAll('#tasksStreamStreakCard, [data-task-cat]').forEach(el => {
+                    el.style.animation = 'none';
+                });
+            }
+
+            setTimeout(() => {
+                if (!targetPage) return;
+                targetPage.classList.add("active");
+
+                if (pageId === 'shop') {
+                    void targetPage.offsetWidth;
+                    const shopCards = Array.from(targetPage.querySelectorAll('.shop-card, .case-card'));
+                    let sIdx = 0;
+                    shopCards.forEach(c => {
+                        if (c.style.display !== 'none') {
+                            const delay = (Math.min(sIdx, 12) * 0.085).toFixed(3);
+                            c.style.animation = `shopCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                            sIdx++;
+                        } else {
+                            c.style.animation = '';
+                        }
+                    });
+                }
+
+                if (pageId === 'tasks') {
+                    void targetPage.offsetWidth;
+                    const taskEls = Array.from(targetPage.querySelectorAll('#tasksStreamStreakCard, [data-task-cat]'));
+                    let tIdx = 0;
+                    taskEls.forEach(el => {
+                        if (el.style.display !== 'none') {
+                            const delay = (Math.min(tIdx, 12) * 0.085).toFixed(3);
+                            el.style.animation = `taskCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                            tIdx++;
+                        } else {
+                            el.style.animation = '';
+                        }
+                    });
+                }
+            }, 15);
             
             document.querySelectorAll(".nav-button").forEach(function(button) { button.classList.remove("active"); });
             const activeButton = document.querySelector('.nav-button[data-page="' + pageId + '"]');
             if (activeButton) activeButton.classList.add("active");
             
             window.scrollTo(0, 0);
-
-            if (pageId === 'shop') {
-                const shopPage = document.getElementById('shop');
-                const shopCards = shopPage ? Array.from(shopPage.querySelectorAll('.shop-card, .case-card')) : [];
-                shopCards.forEach(c => { c.style.animation = 'none'; });
-                if (shopPage) void shopPage.offsetWidth;
-                let sIdx = 0;
-                shopCards.forEach(c => {
-                    if (c.style.display !== 'none') {
-                        const delay = (Math.min(sIdx, 12) * 0.035).toFixed(3);
-                        c.style.animation = `shopCardReveal 0.44s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
-                        sIdx++;
-                    } else {
-                        c.style.animation = '';
-                    }
-                });
-            }
-
-            if (pageId === 'tasks') {
-                if (typeof renderTasksStreamStreakWidget === 'function') renderTasksStreamStreakWidget();
-                const tasksPage = document.getElementById('tasks');
-                const taskEls = tasksPage ? Array.from(tasksPage.querySelectorAll('#tasksStreamStreakCard, [data-task-cat]')) : [];
-                taskEls.forEach(el => { el.style.animation = 'none'; });
-                if (tasksPage) void tasksPage.offsetWidth;
-                let tIdx = 0;
-                taskEls.forEach(el => {
-                    if (el.style.display !== 'none') {
-                        const delay = (Math.min(tIdx, 12) * 0.04).toFixed(2);
-                        el.style.animation = `taskCardReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
-                        tIdx++;
-                    } else {
-                        el.style.animation = '';
-                    }
-                });
-            }
             
             if (pageId !== 'admin') {
                 sessionStorage.setItem('vetruch_active_tab', pageId);
@@ -14581,7 +14738,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                         <div style="font-size: 12px; color: var(--secondary); line-height: 1.4; margin-bottom: 14px;">
                             Скриншот не требуется! Как только 3 друга перейдут по вашей ссылке, задание выполнится и +500 монет начислятся автоматически.
                         </div>
-                        <button type="button" class="submit-task-btn" onclick="copyProfileRefLink()">📋 СКОПИРОВАТЬ ССЫЛКУ</button>
+                        <button type="button" class="submit-task-btn" onclick="copyProfileRefLink()">${uiIco('clipboard')}СКОПИРОВАТЬ ССЫЛКУ</button>
                     `;
                 }
             } else {
@@ -14605,7 +14762,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                 }
 
                 document.getElementById('modalUsername').value = getDefaultUsername();
-                document.getElementById('modalFileName').textContent = '📷 Загрузить скриншот';
+                document.getElementById('modalFileName').innerHTML = `${uiIco('camera')}Загрузить скриншот`;
                 document.getElementById('modalFileName').style.color = '#0088ff';
             }
 
@@ -14624,7 +14781,8 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 const textEl = document.getElementById('modalFileName');
-                textEl.textContent = "✅ " + file.name;
+                const safeName = String(file.name || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+                textEl.innerHTML = `${uiIco('check')}${safeName}`;
                 textEl.style.color = "#00cc66";
 
                 const reader = new FileReader();
@@ -14651,12 +14809,12 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
             const textEl = document.getElementById('modalFileName');
 
             if (!username) {
-                textEl.textContent = "⚠️ Сначала укажите ваш @username!";
+                textEl.innerHTML = `${uiIco('warn')}Сначала укажите ваш @username!`;
                 textEl.style.color = "#ff3366";
                 return;
             }
             if (!currentTaskScreenshotBase64) {
-                textEl.textContent = "⚠️ Прикрепите скриншот выполнения!";
+                textEl.innerHTML = `${uiIco('warn')}Прикрепите скриншот выполнения!`;
                 textEl.style.color = "#ff3366";
                 return;
             }
@@ -14664,7 +14822,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                 username = '@' + username;
             }
 
-            textEl.textContent = "⏳ Отправляем заявку...";
+            textEl.innerHTML = `${uiIco('hourglass')}Отправляем заявку...`;
             textEl.style.color = "#00d9ff";
 
             const reward = TASK_REWARDS[currentTaskTitle] || 150;
@@ -14691,7 +14849,7 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                 if (typeof renderProfileBindsUI === 'function') renderProfileBindsUI();
             }
 
-            textEl.textContent = "🚀 Отправлено на проверку всем админам!";
+            textEl.innerHTML = `${uiIco('rocket')}Отправлено на проверку всем админам!`;
             textEl.style.color = "#00e676";
 
             setTimeout(() => {
@@ -14906,8 +15064,8 @@ function filterTasks(category, btnElement) {
 
         if (shouldShow) {
             item.style.display = '';
-            const delay = (visibleIndex * 0.04).toFixed(2);
-            item.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+            const delay = (Math.min(visibleIndex, 10) * 0.085).toFixed(3);
+            item.style.animation = `taskCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
             visibleIndex++;
         } else {
             item.style.display = 'none';
@@ -14953,8 +15111,8 @@ function filterShop(category, btnElement) {
 
         if (shouldShow) {
             card.style.display = 'flex';
-            const delay = (visibleIndex * 0.04).toFixed(2);
-            card.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+            const delay = (Math.min(visibleIndex, 10) * 0.085).toFixed(3);
+            card.style.animation = `shopCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
             visibleIndex++;
         } else {
             card.style.display = 'none';
@@ -15110,7 +15268,7 @@ async function renderHomePodium() {
 
     const uEl = document.querySelector('.global-stats .stat-item:nth-child(1) .stat-val');
     const cEl = document.querySelector('.global-stats .stat-item:nth-child(2) .stat-val');
-    if (uEl) uEl.textContent = `👥 ${totalUsers}`;
+    if (uEl) uEl.innerHTML = `${uiIco('users')}${totalUsers}`;
     if (cEl) cEl.innerHTML = `${formatCoins(totalCoins)} <img src="coins.png" alt="coins" class="coin-icon">`;
 
     const slots = [
@@ -15214,7 +15372,7 @@ async function renderLeaderboardPage() {
     podiumEl.innerHTML = top3.map(u => `
         <div class="lb-podium-card place-${u.place}">
             <div class="lb-place-badge">
-                ${u.place === 1 ? '🏆 1' : u.place}
+                ${u.place === 1 ? `${uiIco('trophy')}1` : u.place}
             </div>
             <div class="lb-avatar-wrap">
                 ${renderLbAvatarHtml(u)}
@@ -15485,9 +15643,9 @@ async function renderLeaderboardPage() {
         // ================= МГНОВЕННОЕ ОТКРЫТИЕ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) =================
         
         const GAME_VIP_REQUIREMENTS = {
-            flappy:    { icon: '🦆', title: 'Флаппи Утка', theme: 'ref' },
-            blackjack: { icon: '🃏', title: 'Блэкджек',    theme: 'ref' },
-            slots:     { icon: '🎰', title: 'Слоты 777',   theme: 'ref' }
+            flappy:    { icon: uiIco('duck', 'ui-ico-lg'), title: 'Флаппи Утка', theme: 'ref' },
+            blackjack: { icon: uiIco('crown', 'ui-ico-lg'), title: 'Блэкджек',    theme: 'ref' },
+            slots:     { icon: uiIco('slots', 'ui-ico-lg'), title: 'Слоты 777',   theme: 'ref' }
         };
 
         function getPartnerRefAccessState() {
@@ -15753,14 +15911,14 @@ function renderArkadaUI() {
     if (bindCard && stepNum && toggleBtn) {
         bindCard.classList.toggle('is-done', isBound);
         if (isBound) {
-            stepNum.textContent = '✓';
+            stepNum.innerHTML = uiIco('check', 'ui-ico-solo');
             stepNum.style.color = '#00e676';
             stepNum.style.borderColor = '#00e676';
             toggleBtn.textContent = `Привязано (ID: ${prog.arkadaId || 'OK'})`;
             toggleBtn.style.color = '#00e676';
         } else if (prog.bind === 'pending') {
-            stepNum.textContent = '⏳';
-            toggleBtn.textContent = 'На проверке ⏳';
+            stepNum.innerHTML = uiIco('hourglass', 'ui-ico-solo');
+            toggleBtn.innerHTML = `На проверке ${uiIco('hourglass', 'ui-ico-end')}`;
             toggleBtn.style.color = '#fbbf24';
         } else {
             stepNum.textContent = '1';
@@ -15781,9 +15939,9 @@ function renderArkadaUI() {
         let itemClass = 'arkada-dep-item';
 
         if (st === 'done') {
-            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+            statusHtml = `<span class="arkada-dep-status done">Выполнено ${uiIco('check', 'ui-ico-end')}</span>`;
         } else if (st === 'pending') {
-            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+            statusHtml = `<span class="arkada-dep-status pending">На проверке ${uiIco('hourglass', 'ui-ico-end')}</span>`;
         } else if (isBound) {
             itemClass += ' unlocked';
             statusHtml = '<span class="arkada-dep-status ready">Выполнить ❯</span>';
@@ -15796,7 +15954,7 @@ function renderArkadaUI() {
                 <div class="arkada-dep-row">
                     <div class="arkada-dep-left">
                         <span class="arkada-dep-rub">${dep.rub}</span>
-                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        ${dep.hot ? `<span class="arkada-hot-badge">${uiIco('fire')}HOT</span>` : ''}
                         <span class="arkada-dep-reward">
                             <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
                         </span>
@@ -15813,7 +15971,7 @@ function renderArkadaUI() {
                     <input type="text" class="task-input" id="arkadaDepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
                     <label class="file-upload-lbl" style="margin-bottom:12px;">
                         <input type="file" accept="image/*" onchange="handleArkadaDepFile(this, '${dep.id}')">
-                        <span id="arkadaDepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                        <span id="arkadaDepFileName_${dep.id}">${uiIco('camera')}Загрузить скриншот депозита</span>
                     </label>
                     <button type="button" class="submit-task-btn" onclick="submitArkadaDeposit('${dep.id}')">Отправить на проверку</button>
                 </div>
@@ -15866,7 +16024,8 @@ function handleArkadaDepFile(input, depId) {
     const file = input.files[0];
     const lbl = document.getElementById('arkadaDepFileName_' + depId);
     if (lbl) {
-        lbl.textContent = '✅ ' + file.name;
+        const safeName = String(file.name || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        lbl.innerHTML = `${uiIco('check')}${safeName}`;
         lbl.style.color = '#00e676';
     }
     const reader = new FileReader();
@@ -16067,14 +16226,14 @@ function renderP2UI() {
     if (bindCard && stepNum && toggleBtn) {
         bindCard.classList.toggle('is-done', isBound);
         if (isBound) {
-            stepNum.textContent = '✓';
+            stepNum.innerHTML = uiIco('check', 'ui-ico-solo');
             stepNum.style.color = '#00e676';
             stepNum.style.borderColor = '#00e676';
             toggleBtn.textContent = `Привязано (ID: ${prog.partnerId || 'OK'})`;
             toggleBtn.style.color = '#00e676';
         } else if (prog.bind === 'pending') {
-            stepNum.textContent = '⏳';
-            toggleBtn.textContent = 'На проверке ⏳';
+            stepNum.innerHTML = uiIco('hourglass', 'ui-ico-solo');
+            toggleBtn.innerHTML = `На проверке ${uiIco('hourglass', 'ui-ico-end')}`;
             toggleBtn.style.color = '#fbbf24';
         } else {
             stepNum.textContent = '1';
@@ -16094,9 +16253,9 @@ function renderP2UI() {
         let itemClass = 'p2-dep-item';
 
         if (st === 'done') {
-            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+            statusHtml = `<span class="arkada-dep-status done">Выполнено ${uiIco('check', 'ui-ico-end')}</span>`;
         } else if (st === 'pending') {
-            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+            statusHtml = `<span class="arkada-dep-status pending">На проверке ${uiIco('hourglass', 'ui-ico-end')}</span>`;
         } else if (isBound) {
             itemClass += ' unlocked';
             statusHtml = '<span class="arkada-dep-status p2-dep-status-ready">Выполнить ❯</span>';
@@ -16109,7 +16268,7 @@ function renderP2UI() {
                 <div class="arkada-dep-row">
                     <div class="arkada-dep-left">
                         <span class="arkada-dep-rub">${dep.rub}</span>
-                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        ${dep.hot ? `<span class="arkada-hot-badge">${uiIco('fire')}HOT</span>` : ''}
                         <span class="arkada-dep-reward">
                             <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
                         </span>
@@ -16126,7 +16285,7 @@ function renderP2UI() {
                     <input type="text" class="task-input" id="p2DepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
                     <label class="file-upload-lbl" style="margin-bottom:12px; color:#00d9ff;">
                         <input type="file" accept="image/*" onchange="handleP2DepFile(this, '${dep.id}')">
-                        <span id="p2DepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                        <span id="p2DepFileName_${dep.id}">${uiIco('camera')}Загрузить скриншот депозита</span>
                     </label>
                     <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #0088ff, #00d9ff); box-shadow: 0 0 20px rgba(255, 46, 147, 0.4);" onclick="submitP2Deposit('${dep.id}')">Отправить на проверку</button>
                 </div>
@@ -16179,7 +16338,8 @@ function handleP2DepFile(input, depId) {
     const file = input.files[0];
     const lbl = document.getElementById('p2DepFileName_' + depId);
     if (lbl) {
-        lbl.textContent = '✅ ' + file.name;
+        const safeName = String(file.name || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        lbl.innerHTML = `${uiIco('check')}${safeName}`;
         lbl.style.color = '#00e676';
     }
     const reader = new FileReader();
@@ -16383,14 +16543,14 @@ function renderP3UI() {
     if (bindCard && stepNum && toggleBtn) {
         bindCard.classList.toggle('is-done', isBound);
         if (isBound) {
-            stepNum.textContent = '✓';
+            stepNum.innerHTML = uiIco('check', 'ui-ico-solo');
             stepNum.style.color = '#00e676';
             stepNum.style.borderColor = '#00e676';
             toggleBtn.textContent = `Привязано (ID: ${prog.partnerId || 'OK'})`;
             toggleBtn.style.color = '#00e676';
         } else if (prog.bind === 'pending') {
-            stepNum.textContent = '⏳';
-            toggleBtn.textContent = 'На проверке ⏳';
+            stepNum.innerHTML = uiIco('hourglass', 'ui-ico-solo');
+            toggleBtn.innerHTML = `На проверке ${uiIco('hourglass', 'ui-ico-end')}`;
             toggleBtn.style.color = '#fbbf24';
         } else {
             stepNum.textContent = '1';
@@ -16410,9 +16570,9 @@ function renderP3UI() {
         let itemClass = 'p3-dep-item';
 
         if (st === 'done') {
-            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+            statusHtml = `<span class="arkada-dep-status done">Выполнено ${uiIco('check', 'ui-ico-end')}</span>`;
         } else if (st === 'pending') {
-            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+            statusHtml = `<span class="arkada-dep-status pending">На проверке ${uiIco('hourglass', 'ui-ico-end')}</span>`;
         } else if (isBound) {
             itemClass += ' unlocked';
             statusHtml = '<span class="arkada-dep-status p3-dep-status-ready">Выполнить ❯</span>';
@@ -16425,7 +16585,7 @@ function renderP3UI() {
                 <div class="arkada-dep-row">
                     <div class="arkada-dep-left">
                         <span class="arkada-dep-rub">${dep.rub}</span>
-                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        ${dep.hot ? `<span class="arkada-hot-badge">${uiIco('fire')}HOT</span>` : ''}
                         <span class="arkada-dep-reward">
                             <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
                         </span>
@@ -16442,7 +16602,7 @@ function renderP3UI() {
                     <input type="text" class="task-input" id="p3DepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
                     <label class="file-upload-lbl" style="margin-bottom:12px; color:#fbbf24;">
                         <input type="file" accept="image/*" onchange="handleP3DepFile(this, '${dep.id}')">
-                        <span id="p3DepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                        <span id="p3DepFileName_${dep.id}">${uiIco('camera')}Загрузить скриншот депозита</span>
                     </label>
                     <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #f59e0b, #0088ff); box-shadow: 0 0 20px rgba(251, 191, 36, 0.35);" onclick="submitP3Deposit('${dep.id}')">Отправить на проверку</button>
                 </div>
@@ -16495,7 +16655,8 @@ function handleP3DepFile(input, depId) {
     const file = input.files[0];
     const lbl = document.getElementById('p3DepFileName_' + depId);
     if (lbl) {
-        lbl.textContent = '✅ ' + file.name;
+        const safeName = String(file.name || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        lbl.innerHTML = `${uiIco('check')}${safeName}`;
         lbl.style.color = '#00e676';
     }
     const reader = new FileReader();
@@ -16908,12 +17069,12 @@ function updateAdventTimers() {
         const shortTimer = `${info.d}д ${pad2(info.h)}ч ${pad2(info.m)}м ${pad2(info.s)}с`;
         if (bannerTitle) bannerTitle.textContent = `Откроется через ${shortTimer}`;
         if (bannerSub) bannerSub.textContent = `Старт 1 декабря · подарки каждый день до 31.12`;
-        if (modalLbl) modalLbl.textContent = `⏳ Открытие 1 декабря в 00:00 МСК`;
+        if (modalLbl) modalLbl.innerHTML = `${uiIco('hourglass')}Открытие 1 декабря в 00:00 МСК`;
         if (modalVal) modalVal.textContent = `${info.d} дн · ${pad2(info.h)}:${pad2(info.m)}:${pad2(info.s)}`;
     } else {
         if (bannerTitle) bannerTitle.textContent = `День ${info.currentDay} из 31 · Забирай подарки!`;
         if (bannerSub) bannerSub.textContent = `Собрано наград: ${claimed.length} / 31`;
-        if (modalLbl) modalLbl.textContent = `🎄 Новогодний календарь открыт!`;
+        if (modalLbl) modalLbl.innerHTML = `${uiIco('tree')}Новогодний календарь открыт!`;
         if (modalVal) modalVal.textContent = `День ${info.currentDay} · Собрано ${claimed.length} / 31`;
     }
 }
@@ -16938,17 +17099,17 @@ function renderAdventGrid() {
         else cls += ' is-locked';
         if (isToday && !isClaimed) cls += ' is-today';
 
-        let icon = '🔒';
+        let icon = uiIco('lock', 'ui-ico-md');
         let status = `${day} дек`;
 
         if (isClaimed) {
-            icon = '✅';
+            icon = uiIco('check', 'ui-ico-md');
             status = 'Забрано';
         } else if (isAvailable) {
-            icon = day === 31 ? '🎄' : '🎁';
+            icon = day === 31 ? uiIco('tree', 'ui-ico-md') : uiIco('gift', 'ui-ico-md');
             status = isToday ? 'Сегодня!' : 'Забрать';
         } else if (day === 31) {
-            icon = '🎄';
+            icon = uiIco('tree', 'ui-ico-md');
         }
 
         return `
@@ -17123,7 +17284,7 @@ function renderXmasTreeV2UI() {
             bTitle.textContent = 'Подарок упал под ёлку!';
             bSub.textContent = 'Открой меню и нажми на подарок';
         } else {
-            bTitle.textContent = `Получено +${formatCoins(st.reward)} монет ✓`;
+            bTitle.innerHTML = `Получено +${formatCoins(st.reward)} монет ${uiIco('check', 'ui-ico-end')}`;
             bSub.textContent = `Новое встряхивание через ${leftTime}`;
         }
     }
@@ -17135,7 +17296,7 @@ function renderXmasTreeV2UI() {
         giftSlot.innerHTML = '';
         resultBox.classList.remove('open');
         actionBtn.className = 'xmas-action-btn';
-        actionBtn.textContent = '🎄 ПОТРЯСТИ ЁЛКУ';
+        actionBtn.innerHTML = `${uiIco('tree')}ПОТРЯСТИ ЁЛКУ`;
     } else if (!st.claimed) {
         if (!giftSlot.querySelector('.xmas-single-gift')) {
             giftSlot.innerHTML = `
@@ -17153,14 +17314,14 @@ function renderXmasTreeV2UI() {
         }
         resultBox.classList.remove('open');
         actionBtn.className = 'xmas-action-btn is-collect';
-        actionBtn.textContent = '🎁 НАЖМИ НА ПОДАРОК ПОД ЁЛКОЙ';
+        actionBtn.innerHTML = `${uiIco('gift')}НАЖМИ НА ПОДАРОК ПОД ЁЛКОЙ`;
         actionBtn.onclick = claimXmasTreeGift;
     } else {
         giftSlot.innerHTML = '';
         if (rewardText) rewardText.textContent = formatCoins(st.reward);
         resultBox.classList.add('open');
         actionBtn.className = 'xmas-action-btn is-cooldown';
-        actionBtn.textContent = `⏳ Следующий раз через ${leftTime}`;
+        actionBtn.innerHTML = `${uiIco('hourglass')}Следующий раз через ${leftTime}`;
         actionBtn.onclick = null;
     }
 }
@@ -17291,11 +17452,11 @@ function openSupportChat() {
 
 // ================= СИСТЕМА VIP СТАТУСОВ И ПОДАРКОВ =================
 const VIP_TIERS = [
-    { key: 'tier-basic',   name: 'Обычный аккаунт', minExp: 0,      maxExp: 500,      icon: '👤', boost: '1.0x' },
-    { key: 'tier-bronze',  name: 'VIP Бронзовый',   minExp: 500,    maxExp: 5000,     icon: '🥉', boost: '1.1x' },
-    { key: 'tier-silver',  name: 'VIP Серебряный',  minExp: 5000,   maxExp: 25000,    icon: '🥈', boost: '1.25x' },
-    { key: 'tier-gold',    name: 'VIP Золотой',     minExp: 25000,  maxExp: 100000,   icon: '🥇', boost: '1.5x' },
-    { key: 'tier-diamond', name: 'VIP Алмазный',    minExp: 100000, maxExp: Infinity, icon: '💎', boost: '2.0x' }
+    { key: 'tier-basic',   name: 'Обычный аккаунт', minExp: 0,      maxExp: 500,      icon: uiIco('user'),        boost: '1.0x' },
+    { key: 'tier-bronze',  name: 'VIP Бронзовый',   minExp: 500,    maxExp: 5000,     icon: uiIco('medalBronze'), boost: '1.1x' },
+    { key: 'tier-silver',  name: 'VIP Серебряный',  minExp: 5000,   maxExp: 25000,    icon: uiIco('medalSilver'), boost: '1.25x' },
+    { key: 'tier-gold',    name: 'VIP Золотой',     minExp: 25000,  maxExp: 100000,   icon: uiIco('medalGold'),   boost: '1.5x' },
+    { key: 'tier-diamond', name: 'VIP Алмазный',    minExp: 100000, maxExp: Infinity, icon: uiIco('diamond'),     boost: '2.0x' }
 ];
 
 function getUserExp() {
@@ -17351,7 +17512,7 @@ function updateVipStatusUI() {
         const extra = exp - 100000;
         const progressIn10k = extra % 10000;
         const pct = Math.min(100, Math.round((progressIn10k / 10000) * 100));
-        if (rankEl) rankEl.innerHTML = `💎 VIP Алмазный · До подарка`;
+        if (rankEl) rankEl.innerHTML = `${uiIco('diamond')}VIP Алмазный · До подарка`;
         if (numsEl) numsEl.textContent = `${formatCoins(progressIn10k)} / 10 000 EXP`;
         if (fillEl) fillEl.style.width = `${pct}%`;
     } else {
@@ -17478,26 +17639,30 @@ function renderDailyBonusUI() {
 
     const titleEl = document.getElementById('dailyBonusTitle');
     if (titleEl) {
-        titleEl.textContent = (isSeventhDay && !isClaimedToday) ? '👑 Особый еженедельный бонус' : '🎁 Ежедневный бонус';
+        titleEl.innerHTML = (isSeventhDay && !isClaimedToday)
+            ? `${uiIco('crown')}Особый еженедельный бонус`
+            : `${uiIco('gift')}Ежедневный бонус`;
     }
 
     const tagEl = document.getElementById('dailyBonusTag');
     if (tagEl) {
         tagEl.classList.toggle('day7-tag', isSeventhDay && !isClaimedToday);
-        tagEl.textContent = isClaimedToday ? '✅ Забрано' : (isSeventhDay ? '👑 Недельный дроп' : '🎁 Доступно');
+        tagEl.innerHTML = isClaimedToday
+            ? `${uiIco('check')}Забрано`
+            : (isSeventhDay ? `${uiIco('crown')}Недельный дроп` : `${uiIco('gift')}Доступно`);
     }
 
     const btn = document.getElementById('homeDailyClaimBtn');
     if (btn) {
         if (isClaimedToday) {
-            btn.innerHTML = '✅ Награда получена';
+            btn.innerHTML = `${uiIco('check')}Награда получена`;
             btn.disabled = true;
             btn.classList.add('claimed');
             btn.classList.remove('day7-btn');
         } else {
             btn.innerHTML = isSeventhDay
-                ? `👑 Забрать супер-бонус +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет">`
-                : `⚡ Забрать +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет">`;
+                ? `${uiIco('crown')}Забрать супер-бонус +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет">`
+                : `${uiIco('bolt')}Забрать +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет">`;
             btn.disabled = false;
             btn.classList.remove('claimed');
             btn.classList.toggle('day7-btn', isSeventhDay);
@@ -17574,9 +17739,9 @@ function updateLivePurchaseUI(data) {
 // ================= ОНЛАЙН СТАТИСТИКА (РЕАЛЬНЫЕ + 2..3 СВЕРХУ) =================
 function updateOnlineUsersUI(count) {
     const statEl = document.getElementById('homeOnlineCountVal');
-    if (statEl) statEl.textContent = `🟢 ${count}`;
+    if (statEl) statEl.innerHTML = `${uiIco('online')}${count}`;
     const gamesHeadTag = document.getElementById('gamesOnlineHeaderTag');
-    if (gamesHeadTag) gamesHeadTag.textContent = `🟢 ${count} игроков онлайн`;
+    if (gamesHeadTag) gamesHeadTag.innerHTML = `${uiIco('online')}${count} игроков онлайн`;
 
     const c1 = Math.max(1, Math.round(count * 0.35));
     const c2 = Math.max(1, Math.round(count * 0.25));
@@ -17590,17 +17755,17 @@ function updateOnlineUsersUI(count) {
     const t4 = document.getElementById('onlineTagBalloon');
     const t5 = document.getElementById('onlineTagDice');
 
-    if (t1) t1.textContent = `🟢 ${c1} в шахте`;
-    if (t2) t2.textContent = `🟢 ${c2} в игре`;
-    if (t3) t3.textContent = `🟢 ${c3} в игре`;
-    if (t4) t4.textContent = `🟢 ${c4} в игре`;
-    if (t5) t5.textContent = `🟢 ${c5} в игре`;
+    if (t1) t1.innerHTML = `${uiIco('online')}${c1} в шахте`;
+    if (t2) t2.innerHTML = `${uiIco('online')}${c2} в игре`;
+    if (t3) t3.innerHTML = `${uiIco('online')}${c3} в игре`;
+    if (t4) t4.innerHTML = `${uiIco('online')}${c4} в игре`;
+    if (t5) t5.innerHTML = `${uiIco('online')}${c5} в игре`;
     const t6 = document.getElementById('onlineTagBlackjack');
-if (t6) t6.textContent = `🟢 ${Math.max(1, Math.round(count * 0.25))} за столом`;
+    if (t6) t6.innerHTML = `${uiIco('online')}${Math.max(1, Math.round(count * 0.25))} за столом`;
     const t7 = document.getElementById('onlineTagSlots');
-    if (t7) t7.textContent = `🟢 ${Math.max(1, Math.round(count * 0.30))} крутят`;
+    if (t7) t7.innerHTML = `${uiIco('online')}${Math.max(1, Math.round(count * 0.30))} крутят`;
     const t8 = document.getElementById('onlineTagFlappy');
-    if (t8) t8.textContent = `🟢 ${Math.max(1, Math.round(count * 0.20))} в полёте`;
+    if (t8) t8.innerHTML = `${uiIco('online')}${Math.max(1, Math.round(count * 0.20))} в полёте`;
 }
 
 // Инициализация систем при старте
@@ -17623,7 +17788,7 @@ setTimeout(initAdvancedSystems, 300);
     <div id="giftRewardModal" class="modal-overlay" onclick="if(event.target === this) closeGiftRewardModal()">
         <div class="modal-content" style="border-color: #ffd700; box-shadow: 0 0 45px rgba(255, 215, 0, 0.4); max-width: 380px;">
             <button class="modal-close" onclick="closeGiftRewardModal()">✖</button>
-            <div style="font-size: 34px; margin-bottom: 6px;">🎉</div>
+            <div style="font-size: 34px; margin-bottom: 6px;"><img src="icons/ico-party.svg" class="ui-ico ui-ico-lg" alt=""></div>
             <h3 style="margin-top: 0; margin-bottom: 6px; color: #ffd700; font-size: 19px;">ВЫ ПОЛУЧИЛИ ПОДАРОК!</h3>
             <p style="font-size: 12.5px; color: #94a3b8; margin-bottom: 14px; line-height: 1.4;">
                 Награда за достижение +10 000 EXP в Алмазном VIP-статусе!
@@ -17649,23 +17814,23 @@ setTimeout(initAdvancedSystems, 300);
     <div id="vipGateModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeVipGateModal()">
         <div class="avatar-modal-sheet" style="max-height: 88vh;">
             <div class="arkada-modal-header">
-                <h3 class="arkada-modal-title" id="vipGateModalHeader">🔗 Доступ по реферальной ссылке</h3>
+                <h3 class="arkada-modal-title" id="vipGateModalHeader"><img src="icons/ico-link.svg" class="ui-ico" alt="">Доступ по реферальной ссылке</h3>
                 <button type="button" class="arkada-modal-close" onclick="closeVipGateModal()">✕</button>
             </div>
             <div class="arkada-modal-body" style="text-align: center; padding-top: 6px;">
-                <div id="vipGateBadgeIcon" style="width: 64px; height: 64px; margin: 0 auto 12px auto; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; background: radial-gradient(circle, rgba(0, 217, 255, 0.25) 0%, rgba(7, 18, 36, 0.92) 74%); border: 1.5px solid rgba(0, 217, 255, 0.55); box-shadow: 0 0 24px rgba(0, 170, 255, 0.35);">🔗</div>
+                <div id="vipGateBadgeIcon" style="width: 64px; height: 64px; margin: 0 auto 12px auto; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; background: radial-gradient(circle, rgba(0, 217, 255, 0.25) 0%, rgba(7, 18, 36, 0.92) 74%); border: 1.5px solid rgba(0, 217, 255, 0.55); box-shadow: 0 0 24px rgba(0, 170, 255, 0.35);"><img src="icons/ico-link.svg" class="ui-ico ui-ico-lg" alt=""></div>
                 <div id="vipGateTitle" style="font-size: 18px; font-weight: 900; color: #ffffff; margin-bottom: 6px;">Игра «Флаппи Утка»</div>
                 <div id="vipGateSub" style="font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 14px; line-height: 1.45;">Чтобы открыть доступ к этой игре, зарегистрируйся по нашей реферальной ссылке у любого партнёра и привяжи свой ID в разделе «Задания».</div>
 
                 <div id="refGatePartnersList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; text-align: left;"></div>
 
                 <div id="vipGateHintBox" style="font-size: 11.5px; color: #bae6fd; line-height: 1.45; margin-bottom: 16px; padding: 9px 11px; border-radius: 12px; background: rgba(0, 136, 255, 0.12); border: 1px dashed rgba(0, 217, 255, 0.38);">
-                    ✨ Достаточно привязать <b>любого одного партнёра</b> — после подтверждения сразу откроются Флаппи Утка, Блэкджек и Слоты 777!
+                    <img src="icons/ico-sparkle.svg" class="ui-ico" alt="">Достаточно привязать <b>любого одного партнёра</b> — после подтверждения сразу откроются Флаппи Утка, Блэкджек и Слоты 777!
                 </div>
 
                 <div style="display: flex; gap: 8px;">
                     <button type="button" class="submit-task-btn" style="flex: 1.25; background: linear-gradient(135deg, #0095ff, #005fd2); color: #ffffff; font-weight: 900; border: 1px solid rgba(120, 215, 255, 0.5);" onclick="closeVipGateModal(); openPage('tasks');">
-                        🎯 Открыть задания
+                        <img src="icons/ico-target.svg" class="ui-ico" alt="">Открыть задания
                     </button>
                     <button type="button" class="submit-task-btn" style="flex: 0.75; background: rgba(255,255,255,0.09); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.16);" onclick="closeVipGateModal()">
                         Закрыть
@@ -17933,7 +18098,7 @@ setTimeout(initAdvancedSystems, 300);
 
     <div id="dailyBonusRewardModal" class="vetruch-modal-backdrop" onclick="if(event.target === this) closeDailyBonusRewardModal()">
         <div class="daily-reward-card">
-            <div class="daily-reward-orb" id="dailyModalOrb">🎁</div>
+            <div class="daily-reward-orb" id="dailyModalOrb"><img src="icons/ico-gift.svg" class="ui-ico ui-ico-xl" alt=""></div>
             <div class="daily-reward-pill" id="dailyModalPill">ЕЖЕДНЕВНЫЙ БОНУС · ДЕНЬ 1 / 28</div>
             <h3 class="daily-reward-title" id="dailyModalTitle">Бонус зачислен!</h3>
             <p class="daily-reward-sub" id="dailyModalSub">Заходи каждый день, чтобы увеличивать награду до 1 000 монет!</p>
@@ -17954,13 +18119,13 @@ setTimeout(initAdvancedSystems, 300);
                 <div class="daily-next-hint" id="dailyModalNextHint">Завтра ждёт: +60 монет</div>
             </div>
 
-            <button type="button" class="daily-reward-btn" onclick="closeDailyBonusRewardModal()">🔥 ОТЛИЧНО</button>
+            <button type="button" class="daily-reward-btn" onclick="closeDailyBonusRewardModal()"><img src="icons/ico-fire.svg" class="ui-ico" alt="">ОТЛИЧНО</button>
         </div>
     </div>
 
     <div id="vetruchAlertModal" class="vetruch-modal-backdrop" onclick="if(event.target === this) closeAppAlert()">
         <div class="v-alert-card" id="vetruchAlertCard">
-            <div class="v-alert-icon" id="vetruchAlertIcon">ℹ️</div>
+            <div class="v-alert-icon" id="vetruchAlertIcon"><img src="icons/ico-info.svg" class="ui-ico ui-ico-lg" alt=""></div>
             <div class="v-alert-title" id="vetruchAlertTitle">Уведомление</div>
             <div class="v-alert-msg" id="vetruchAlertMsg"></div>
             <div class="v-alert-actions">
@@ -17971,7 +18136,7 @@ setTimeout(initAdvancedSystems, 300);
 
     <div id="vetruchConfirmModal" class="vetruch-modal-backdrop" onclick="if(event.target === this) resolveAppConfirm(false)">
         <div class="v-alert-card" style="--v-alert-accent: #38bdf8;">
-            <div class="v-alert-icon">❓</div>
+            <div class="v-alert-icon"><img src="icons/ico-question.svg" class="ui-ico ui-ico-lg" alt=""></div>
             <div class="v-alert-title" id="vetruchConfirmTitle">Подтверждение</div>
             <div class="v-alert-msg" id="vetruchConfirmMsg"></div>
             <div class="v-alert-actions">
@@ -17995,7 +18160,7 @@ setTimeout(initAdvancedSystems, 300);
             const dotsEl = document.getElementById('dailyModalWeekDots');
             const nextEl = document.getElementById('dailyModalNextHint');
 
-            if (orbEl) orbEl.textContent = isSeventhDay ? '👑' : '🎁';
+            if (orbEl) orbEl.innerHTML = isSeventhDay ? uiIco('crown', 'ui-ico-xl') : uiIco('gift', 'ui-ico-xl');
             if (pillEl) pillEl.textContent = `СЕРИЯ ВХОДОВ · ДЕНЬ ${dayNum} ИЗ 28`;
             if (titleEl) titleEl.textContent = isSeventhDay ? 'Супер-бонус недели!' : 'Бонус зачислен!';
             if (subEl) subEl.textContent = isSeventhDay
@@ -18008,8 +18173,8 @@ setTimeout(initAdvancedSystems, 300);
                 const dayInWeek = ((dayNum - 1) % 7) + 1;
                 let html = '';
                 for (let d = 1; d <= 7; d++) {
-                    if (d < dayInWeek) html += '<div class="daily-week-dot done">✓</div>';
-                    else if (d === dayInWeek) html += `<div class="daily-week-dot today">${d === 7 ? '👑' : '★'}</div>`;
+                    if (d < dayInWeek) html += `<div class="daily-week-dot done">${uiIco('check', 'ui-ico-node')}</div>`;
+                    else if (d === dayInWeek) html += `<div class="daily-week-dot today">${d === 7 ? uiIco('crown', 'ui-ico-node') : '★'}</div>`;
                     else html += `<div class="daily-week-dot">${d}</div>`;
                 }
                 dotsEl.innerHTML = html;
@@ -18066,7 +18231,7 @@ setTimeout(initAdvancedSystems, 300);
             const okBtn = document.getElementById('vetruchAlertOkBtn');
 
             if (card) card.style.setProperty('--v-alert-accent', accent);
-            if (iconEl) iconEl.textContent = icon;
+            if (iconEl) iconEl.innerHTML = emojiToUiIco(icon, 'ui-ico-lg');
             if (titleEl) titleEl.textContent = title;
             if (msgEl) {
                 msgEl.innerHTML = cleaned
@@ -18119,7 +18284,7 @@ setTimeout(initAdvancedSystems, 300);
             const subEl = document.getElementById('vipGateSub');
             const listEl = document.getElementById('refGatePartnersList');
 
-            if (iconEl) iconEl.textContent = access.pending ? '⏳' : (req.icon || '🔗');
+            if (iconEl) iconEl.innerHTML = access.pending ? uiIco('hourglass', 'ui-ico-lg') : (req.icon || uiIco('link', 'ui-ico-lg'));
             if (titleEl) titleEl.textContent = `Игра «${req.title}»`;
             if (subEl) {
                 subEl.textContent = access.pending
@@ -18132,9 +18297,9 @@ setTimeout(initAdvancedSystems, 300);
                     const isDone = p.status === 'done';
                     const isPend = p.status === 'pending';
                     const badge = isDone
-                        ? '<span style="color:#00e676; font-weight:800; font-size:11.5px;">Открыто ✓</span>'
+                        ? `<span style="color:#00e676; font-weight:800; font-size:11.5px;">Открыто ${uiIco('check', 'ui-ico-end')}</span>`
                         : (isPend
-                            ? '<span style="color:#fbbf24; font-weight:800; font-size:11.5px;">На проверке ⏳</span>'
+                            ? `<span style="color:#fbbf24; font-weight:800; font-size:11.5px;">На проверке ${uiIco('hourglass', 'ui-ico-end')}</span>`
                             : '<span style="color:#38bdf8; font-weight:800; font-size:11.5px;">Привязать ❯</span>');
                     return `
                         <div onclick="closeVipGateModal(); ${p.openFn}();" style="display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-radius:14px; background:rgba(12, 28, 54, 0.9); border:1px solid rgba(0, 217, 255, 0.3); cursor:pointer;">
@@ -18160,7 +18325,9 @@ setTimeout(initAdvancedSystems, 300);
             const access = getPartnerRefAccessState();
             const isLocked = !access.unlocked;
 
-            const lockPillText = access.pending ? '⏳ НА ПРОВЕРКЕ' : '🔒 ДОСТУП ПО РЕФКЕ';
+            const lockPillHtml = access.pending
+                ? `${uiIco('hourglass')}НА ПРОВЕРКЕ`
+                : `${uiIco('lock')}ДОСТУП ПО РЕФКЕ`;
             const lockSubText = access.pending ? 'Ожидает подтверждения админа' : 'Регистрация по рефке в Заданиях';
 
             ['cardFlappy', 'cardBlackjack', 'cardSlots'].forEach(id => {
@@ -18169,7 +18336,7 @@ setTimeout(initAdvancedSystems, 300);
             });
             ['lockPillFlappy', 'lockPillBlackjack', 'lockPillSlots'].forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.textContent = lockPillText;
+                if (el) el.innerHTML = lockPillHtml;
             });
             ['lockExpFlappy', 'lockExpBlackjack', 'lockExpSlots'].forEach(id => {
                 const el = document.getElementById(id);
@@ -18178,7 +18345,9 @@ setTimeout(initAdvancedSystems, 300);
 
             const casinoBtn = document.getElementById('gamesModeCasinoBtn');
             if (casinoBtn) {
-                casinoBtn.innerHTML = isLocked ? (access.pending ? '⏳ Азартные' : '🔒 Азартные · Рефка') : '🎰 Азартные';
+                casinoBtn.innerHTML = isLocked
+                    ? (access.pending ? `${uiIco('hourglass')}Азартные` : `${uiIco('lock')}Азартные · Рефка`)
+                    : `${uiIco('slots')}Азартные`;
             }
 
             const banner = document.getElementById('gamblingVipBanner');
@@ -18249,7 +18418,7 @@ setTimeout(initAdvancedSystems, 300);
                     Падает за активность
                 </button>
                 <button type="button" class="admin-chip" id="refCaseAdminTestBtn" style="display: none; width: 100%; text-align: center; margin-bottom: 14px; padding: 8px;" onclick="spinRefCase(true)">
-                    ⚡ Тест-открытие (только для админа)
+                    <img src="icons/ico-bolt.svg" class="ui-ico" alt="">Тест-открытие (только для админа)
                 </button>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -18494,7 +18663,7 @@ async function refreshRefCaseKeysUI() {
     if (cardBtn) {
         if (keys > 0) {
             cardBtn.classList.add('has-keys');
-            cardBtn.textContent = `🔑 Открыть (${keys})`;
+            cardBtn.innerHTML = `${uiIco('key')}Открыть (${keys})`;
         } else {
             cardBtn.classList.remove('has-keys');
             cardBtn.textContent = 'Падает за друзей';
@@ -18504,16 +18673,18 @@ async function refreshRefCaseKeysUI() {
         if (keys > 0) {
             modalBtn.disabled = false;
             modalBtn.style.opacity = '1';
-            modalBtn.textContent = `🎁 ОТКРЫТЬ КЕЙС (Ключей: ${keys})`;
+            modalBtn.innerHTML = `${uiIco('gift')}ОТКРЫТЬ КЕЙС (Ключей: ${keys})`;
         } else {
             modalBtn.disabled = true;
             modalBtn.style.opacity = '0.55';
-            modalBtn.textContent = '🔑 Нет ключей (пригласи друга)';
+            modalBtn.innerHTML = `${uiIco('key')}Нет ключей (пригласи друга)`;
         }
     }
     const tabCasesBtn = document.getElementById('shopModeCasesBtn');
     if (tabCasesBtn) {
-        tabCasesBtn.textContent = keys > 0 ? `📦 Кейсы (${keys} 🔑)` : '📦 Кейсы';
+        tabCasesBtn.innerHTML = keys > 0
+            ? `${uiIco('box')}Кейсы (${keys}${uiIco('key', 'ui-ico-end')})`
+            : `${uiIco('box')}Кейсы`;
     }
 }
    function switchGamesMode(mode) {
@@ -18534,7 +18705,7 @@ async function refreshRefCaseKeysUI() {
             cards.forEach(c => { c.style.animation = 'none'; });
             void casinoSec.offsetWidth;
             cards.forEach((c, idx) => {
-                c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${(idx * 0.05).toFixed(2)}s backwards`;
+                c.style.animation = `gameCardPop 0.68s cubic-bezier(0.16, 1, 0.3, 1) ${(idx * 0.085).toFixed(3)}s backwards`;
             });
         }
     } else {
@@ -18548,7 +18719,7 @@ async function refreshRefCaseKeysUI() {
             cards.forEach(c => { c.style.animation = 'none'; });
             void miniSec.offsetWidth;
             cards.forEach((c, idx) => {
-                c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${(idx * 0.05).toFixed(2)}s backwards`;
+                c.style.animation = `gameCardPop 0.68s cubic-bezier(0.16, 1, 0.3, 1) ${(idx * 0.085).toFixed(3)}s backwards`;
             });
         }
     }
@@ -18575,8 +18746,8 @@ function switchShopMode(mode) {
             caseCards.forEach(c => { c.style.animation = 'none'; });
             void casesSec.offsetWidth;
             caseCards.forEach((c, idx) => {
-                const delay = (idx * 0.04).toFixed(2);
-                c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                const delay = (Math.min(idx, 10) * 0.085).toFixed(3);
+                c.style.animation = `shopCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
             });
         }
         if (heading) heading.textContent = 'Кейсы';
@@ -18594,8 +18765,8 @@ function switchShopMode(mode) {
             let visibleIndex = 0;
             cards.forEach(c => {
                 if (c.style.display !== 'none') {
-                    const delay = (visibleIndex * 0.04).toFixed(2);
-                    c.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                    const delay = (Math.min(visibleIndex, 10) * 0.085).toFixed(3);
+                    c.style.animation = `shopCardReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
                     visibleIndex++;
                 }
             });
@@ -18614,23 +18785,28 @@ function openMyOrdersModal() {
     if (myPurchases.length === 0) {
         body.innerHTML = `
             <div style="text-align: center; padding: 36px 16px;">
-                <div style="width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.06); display: grid; place-items: center; margin: 0 auto 14px auto; font-size: 24px;">🏪</div>
+                <div style="width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.06); display: grid; place-items: center; margin: 0 auto 14px auto; font-size: 24px;">${uiIco('cart', 'ui-ico-lg')}</div>
                 <div style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px;">Заказов пока нет</div>
                 <div style="font-size: 13px; color: var(--secondary);">Купи что-нибудь в магазине — всё появится здесь.</div>
             </div>
         `;
     } else {
-        body.innerHTML = myPurchases.map(p => `
+        body.innerHTML = myPurchases.map(p => {
+            const stRaw = String(p.status || 'Ожидает выдачи');
+            const stHtml = stRaw
+                .replace(/\s*⏳/g, ' ' + uiIco('hourglass', 'ui-ico-end'))
+                .replace(/\s*✓/g, ' ' + uiIco('check', 'ui-ico-end'));
+            return `
             <div class="purchase-history-item">
                 <div>
-                    <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">🎁 ${p.item}</div>
+                    <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">${uiIco('gift')}${p.item}</div>
                     <div style="font-size: 11px; color: var(--secondary); margin-top: 2px;">
                         ${p.price > 0 ? `Списано: ${formatCoins(p.price)} монет` : 'Выпало из кейса'}
                     </div>
                 </div>
-                <span class="profile-status-pill ${p.status.includes('Выдано') ? 'connected' : 'action'}">${p.status}</span>
-            </div>
-        `).join('');
+                <span class="profile-status-pill ${stRaw.includes('Выдано') ? 'connected' : 'action'}">${stHtml}</span>
+            </div>`;
+        }).join('');
     }
 
     modal.style.display = 'flex';
@@ -18722,7 +18898,7 @@ async function spinRefCase(isAdminTest) {
     if (winBan) winBan.classList.remove('open');
     if (modalBtn) {
         modalBtn.disabled = true;
-        modalBtn.textContent = '🎲 КРУТИМ КЕЙС...';
+        modalBtn.innerHTML = `${uiIco('dice')}КРУТИМ КЕЙС...`;
     }
 
     const winner = rollRefCaseWinner();
@@ -18804,7 +18980,7 @@ async function spinRefCase(isAdminTest) {
         if (winBan) {
             winBan.innerHTML = `
                 <div style="font-size: 11px; color: #8c97a7; font-weight: 700;">${isAdminTest ? 'ТЕСТ-ВЫПАДЕНИЕ:' : 'ВЫ ВЫИГРАЛИ:'}</div>
-                <div style="font-size: 17px; font-weight: 900; color: #00e676; margin-top: 3px;">🎉 ${winner.title}</div>
+                <div style="font-size: 17px; font-weight: 900; color: #00e676; margin-top: 3px;">${uiIco('party')}${winner.title}</div>
                 ${!isAdminTest && winner.type === 'item' ? '<div style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">Приз добавлен в «Мои заказы» и отправлен админу</div>' : ''}
             `;
             winBan.classList.add('open');
@@ -18926,12 +19102,12 @@ function applyBindRowUI(descId, badgeId, status, valueText, defaultDesc, default
         descEl.textContent = valueText || 'Аккаунт привязан';
         descEl.style.color = '#00e676';
         badgeEl.className = 'profile-status-pill connected';
-        badgeEl.textContent = 'Привязано ✓';
+        badgeEl.innerHTML = `Привязано ${uiIco('check', 'ui-ico-end')}`;
     } else if (status === 'pending') {
         descEl.textContent = valueText ? `${valueText} · ожидает проверки` : 'Ожидает проверки';
         descEl.style.color = '#fbbf24';
         badgeEl.className = 'profile-status-pill pending';
-        badgeEl.textContent = 'На проверке ⏳';
+        badgeEl.innerHTML = `На проверке ${uiIco('hourglass', 'ui-ico-end')}`;
     } else {
         descEl.textContent = defaultDesc;
         descEl.style.color = '';
@@ -19177,16 +19353,16 @@ async function renderRecentWins() {
         : [];
 
     if (wins.length === 0) {
-        listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; padding: 14px 0;">Пока никто не выигрывал — стань первым! 🎯</div>';
+        listEl.innerHTML = `<div style="color: var(--secondary); font-size: 13px; padding: 14px 0;">Пока никто не выигрывал — стань первым! ${uiIco('target', 'ui-ico-end')}</div>`;
         return;
     }
 
     const icons = {
-        towers: '🗼',
-        mines: '💣',
-        cards: '🃏',
-        balloon: '🎈',
-        dice: '🎲'
+        towers: uiIco('pickaxe', 'ui-ico-solo'),
+        mines: uiIco('bomb', 'ui-ico-solo'),
+        cards: uiIco('crown', 'ui-ico-solo'),
+        balloon: uiIco('balloon', 'ui-ico-solo'),
+        dice: uiIco('dice', 'ui-ico-solo')
     };
 
     const esc = (s) => String(s || '').replace(/[&<>"']/g, m => ({
@@ -19196,7 +19372,7 @@ async function renderRecentWins() {
     listEl.innerHTML = wins.map(w => `
         <div class="recent-win-row">
             <div class="recent-win-left">
-                <div class="recent-win-ico">${icons[w.gameKey] || '🏆'}</div>
+                <div class="recent-win-ico">${icons[w.gameKey] || uiIco('trophy', 'ui-ico-solo')}</div>
                 <div class="recent-win-info">
                     <div class="recent-win-name">${esc(w.name || 'Игрок')}</div>
                     <div class="recent-win-game">Победа · ${esc(w.game || 'Игра')}</div>
@@ -19459,7 +19635,7 @@ window.renderAchievementsUI = function () {
 
         let footerHtml = '';
         if (isClaimed) {
-            footerHtml = `<div class="ach-status-txt done">✅ Получено</div>`;
+            footerHtml = `<div class="ach-status-txt done">${uiIco('check')}Получено</div>`;
         } else if (isDone) {
             footerHtml = `<button type="button" class="ach-claim-btn" onclick="claimAchievement('${ach.id}')">Забрать +${formatCoins(ach.reward)}</button>`;
         } else {
@@ -19470,7 +19646,7 @@ window.renderAchievementsUI = function () {
             <div class="ach-card ${cardCls}">
                 <div>
                     <div class="ach-top">
-                        <div class="ach-ico">${ach.icon}</div>
+                        <div class="ach-ico">${emojiToUiIco(ach.icon, 'ui-ico-md')}</div>
                         <span class="ach-reward-pill">+${formatCoins(ach.reward)} <img src="coins.png" class="coin-icon-sm" alt=""></span>
                     </div>
                     <div class="ach-title" style="margin-top: 7px;">${ach.title}</div>
@@ -19496,7 +19672,7 @@ window.renderAchievementsUI = function () {
     if (readyBadgeEl) {
         readyBadgeEl.classList.toggle('show', readyToClaimCount > 0);
         if (readyToClaimCount > 0) {
-            readyBadgeEl.textContent = `🎁 Забрать (${readyToClaimCount})`;
+            readyBadgeEl.innerHTML = `${uiIco('gift')}Забрать (${readyToClaimCount})`;
         }
     }
 };

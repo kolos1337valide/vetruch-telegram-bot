@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gCamBody" x1="4" y1="8" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#071224"/>
+    </linearGradient>
+    <radialGradient id="gCamLens" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#e0fbff"/>
+      <stop offset="45%" stop-color="#00d9ff"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </radialGradient>
+  </defs>
+  <path d="M11 6.5H21L22.8 9.5H26.5C27.9 9.5 29 10.6 29 12V24C29 25.4 27.9 26.5 26.5 26.5H5.5C4.1 26.5 3 25.4 3 24V12C3 10.6 4.1 9.5 5.5 9.5H9.2L11 6.5Z" fill="url(#gCamBody)" stroke="#38bdf8" stroke-width="1.1"/>
+  <circle cx="16" cy="17.8" r="5.5" fill="#030a16" stroke="#7dd3fc" stroke-width="1.4"/>
+  <circle cx="16" cy="17.8" r="3.4" fill="url(#gCamLens)"/>
+  <circle cx="24.5" cy="13" r="1.2" fill="#00e5ff"/>
+</svg>

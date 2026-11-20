@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gRockHull" x1="8" y1="5" x2="25" y2="23" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="55%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="gRockNose" x1="19" y1="4" x2="28" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="gRockFlame" x1="4" y1="20" x2="12" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="55%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+  <path d="M6 21C4 23 3.5 27.5 4.5 28.5C5.5 29.5 10 28 12 26L6 21Z" fill="url(#gRockFlame)"/>
+  <path d="M11 12L5.5 14L8.5 19.5" fill="#0284c7" stroke="#7dd3fc" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M20 21L18 26.5L12.5 23.5" fill="#0284c7" stroke="#7dd3fc" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M26.8 5.2C21.5 4.8 14.8 8.3 10.6 13.8L8.8 19.2L12.8 23.2L18.2 21.4C23.7 17.2 27.2 10.5 26.8 5.2Z" fill="url(#gRockHull)" stroke="#e0f7ff" stroke-width="1"/>
+  <path d="M26.8 5.2C24 5 21.2 5.9 19 7.6L24.4 13C26.1 10.8 27 8 26.8 5.2Z" fill="url(#gRockNose)"/>
+  <circle cx="17.8" cy="14.2" r="2.7" fill="#041936" stroke="#38bdf8" stroke-width="1.2"/>
+  <circle cx="17.2" cy="13.5" r="0.9" fill="#ffffff"/>
+</svg>

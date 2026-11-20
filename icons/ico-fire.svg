@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <radialGradient id="gFireGlow" cx="50%" cy="62%" r="50%">
+      <stop offset="0%" stop-color="#ff9d00" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ff5500" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gFireOuter" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="40%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+    <linearGradient id="gFireInner" x1="16" y1="10" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#fff099"/>
+      <stop offset="100%" stop-color="#ff9500"/>
+    </linearGradient>
+  </defs>
+  <circle cx="16" cy="18" r="13" fill="url(#gFireGlow)"/>
+  <path d="M16.4 2.4C17.2 6.8 21.8 9.2 23.6 13.8C24.2 12.6 24.4 11.2 24.1 9.8C26.7 12.2 27.6 16.2 26.8 20.1C25.6 25.8 20.9 29.6 15.8 29.6C9.9 29.6 5.4 25.1 5.4 19.2C5.4 14.3 8.4 10.6 11.6 7.8C13.6 6.1 15.6 4.4 16.4 2.4Z" fill="url(#gFireOuter)" stroke="#ffb74d" stroke-width="0.9" stroke-linejoin="round"/>
+  <path d="M16 11.2C17.7 14 20.8 16.2 20.8 20.1C20.8 23.8 18.4 26.6 15.8 26.6C12.9 26.6 10.8 24.2 10.8 20.7C10.8 16.9 13.7 14 16 11.2Z" fill="url(#gFireInner)"/>
+  <ellipse cx="15.8" cy="22.8" rx="2.6" ry="3.2" fill="#ffffff" opacity="0.88"/>
+  <circle cx="9.2" cy="7.5" r="1.2" fill="#ffd166"/>
+  <circle cx="23.5" cy="6.2" r="1" fill="#ff9f1c"/>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="gKeyGold" x1="4" y1="6" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="48%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+  <circle cx="10.2" cy="13.2" r="6.2" fill="url(#gKeyGold)" stroke="#fef08a" stroke-width="0.9"/>
+  <circle cx="10.2" cy="13.2" r="2.3" fill="#061428" stroke="#00d9ff" stroke-width="0.9"/>
+  <path d="M15.6 15.2L27.5 27L29 25.2L26.5 22.8L28.2 21.1L25.8 18.8L24.1 20.5L17.4 13.8" fill="url(#gKeyGold)" stroke="#fef08a" stroke-width="0.9" stroke-linejoin="round"/>
+</svg>
