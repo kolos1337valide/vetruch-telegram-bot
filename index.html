@@ -3038,6 +3038,17 @@
                 linear-gradient(165deg, rgba(16, 28, 52, 0.95) 0%, rgba(8, 14, 25, 0.98) 100%);
             box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7), 0 0 22px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22);
         }
+        .profile-bento-item.streak-wide {
+            grid-column: 1 / -1;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 15px;
+            border-color: rgba(0, 217, 255, 0.42);
+            background:
+                radial-gradient(95% 120% at 0% 50%, rgba(0, 149, 255, 0.16) 0%, rgba(0, 0, 0, 0) 65%),
+                linear-gradient(165deg, rgba(14, 26, 48, 0.94) 0%, rgba(7, 13, 24, 0.98) 100%);
+        }
 
         .profile-bento-top {
             display: flex;
@@ -8605,11 +8616,11 @@ img {
         <div id="miniGamesSection">
         
         <div class="games-grid" style="clear: both;">
-            <!-- 1. БАШНИ -->
-            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=5')" onclick="openGame('towers.html?v=5')">
+            <!-- 1. БАШНИ (ЛЕДЯНАЯ ШАХТА) -->
+            <div class="game-card wide-card art-card card-towers anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html?v=6')" onclick="openGame('towers.html?v=6')">
                 <div class="game-art-bg"></div>
                 <div class="game-art-scrim"></div>
-                <span class="game-card-ribbon ribbon-fire">🔥 ДО x10.9</span>
+                <span class="game-card-ribbon ribbon-fire">⛏️ ДО x24.5</span>
                 <div class="wide-hero-emblem emblem-towers" aria-hidden="true">
                     <svg viewBox="0 0 80 80" fill="none">
                         <defs>
@@ -8648,7 +8659,7 @@ img {
                 <div class="wide-card-info">
                     <div class="game-online-tag" id="onlineTagTowers" style="justify-content: flex-start;">🟢 2 в игре</div>
                     <div class="game-title">БАШНИ</div>
-                    <div class="game-subtitle">этажи · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                    <div class="game-subtitle">лесенки шахты · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                     <div class="game-play-btn">ВОСХОДИТЬ ➔</div>
                 </div>
             </div>
@@ -9024,6 +9035,48 @@ img {
                 <div class="featured-task-title">Подпишись на тгк @vetruchtut</div>
                 <div class="featured-task-description">
                     Главный источник информации: все анонсы, свежие новости и закрытые подгоны для тех, кто с нами в Telegram.
+                </div>
+            </div>
+        </div>
+
+        <!-- 1.1 Задание: 5 комментариев в ТГ -->
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="animation-delay: 0.12s;" onclick="openTaskModal('5 комментариев в Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Telegram</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 200
+                    </span>
+                </div>
+                <div class="featured-task-title">Оставить 5 комментариев</div>
+                <div class="featured-task-description">
+                    Оставь 5 осмысленных комментариев под разными постами в канале @vetruchtut и прикрепи скриншот.
+                </div>
+            </div>
+        </div>
+
+        <!-- 1.2 Задание: 15 реакций в ТГ -->
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="animation-delay: 0.14s;" onclick="openTaskModal('15 реакций в Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Telegram</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 150
+                    </span>
+                </div>
+                <div class="featured-task-title">Оставить 15 реакций</div>
+                <div class="featured-task-description">
+                    Поставь 15 реакций под разными постами в канале @vetruchtut и прикрепи скриншот.
                 </div>
             </div>
         </div>
@@ -9519,7 +9572,7 @@ img {
                         </svg>
                     </div>
                 </div>
-                <div class="profile-bento-val">0 / 54</div>
+                <div class="profile-bento-val">0 / 56</div>
                 <div class="profile-bento-label">Заданий выполнено</div>
             </div>
 
@@ -9536,6 +9589,21 @@ img {
                 </div>
                 <div class="profile-bento-val">0</div>
                 <div class="profile-bento-label">Приглашено друзей</div>
+            </div>
+
+            <div class="profile-bento-item streak-wide">
+                <div style="display: flex; align-items: center; gap: 11px;">
+                    <div class="profile-bento-icon" style="color: #00d9ff;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="profile-bento-label" style="color: #e0f7ff; font-weight: 800; font-size: 13px;">🔥 Стрик стримов</div>
+                        <div id="profileStreamStreakSub" style="font-size: 11px; color: #8cb4db; margin-top: 2px;">Рекорд: 0 · Переходов: 0</div>
+                    </div>
+                </div>
+                <div class="profile-bento-val" id="profileStreamStreakVal" style="color: #00e5ff; font-size: 20px;">0</div>
             </div>
         </div>
 
@@ -10363,6 +10431,46 @@ img {
             border: 1px solid rgba(255, 255, 255, 0.12);
             color: #9ca3af;
             box-shadow: none;
+        }
+
+        .kick-streak-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 8px 11px;
+            border-radius: 12px;
+            background: rgba(7, 17, 32, 0.72);
+            border: 1px solid rgba(0, 217, 255, 0.25);
+        }
+        .kick-streak-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #e0f7ff;
+        }
+        .kick-streak-num {
+            color: #00e5ff;
+            font-size: 14px;
+            font-weight: 900;
+        }
+        .kick-streak-pill {
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(0, 170, 255, 0.14);
+            border: 1px solid rgba(0, 217, 255, 0.35);
+            color: #7dd3fc;
+            white-space: nowrap;
+        }
+        .kick-streak-pill.counted {
+            background: rgba(0, 230, 118, 0.16);
+            border-color: rgba(0, 230, 118, 0.5);
+            color: #00e676;
         }
 
         /* ================= ВЕРХНЯЯ МИНИ-ТАБЛИЧКА ПРИ ЗАХОДЕ В БОТА ================= */
@@ -11229,8 +11337,146 @@ img {
             return FIREBASE_DB_URL ? FIREBASE_DB_URL.trim().replace(/\/+$/, '') : '';
         }
 
-        // ================= ТАБЛИЧКА KICK НА ГЛАВНОЙ + ВЕРХНЕЕ МИНИ-УВЕДОМЛЕНИЕ =================
+        // ================= ТАБЛИЧКА KICK НА ГЛАВНОЙ + ВЕРХНЕЕ МИНИ-УВЕДОМЛЕНИЕ + СТРИКИ СТРИМОВ =================
         let kickMiniPopupTimer = null;
+        let _kickStatusSaving = false;
+
+        function getLocalStreamSession() {
+            try {
+                const raw = localStorage.getItem('vetruch_stream_session');
+                if (raw) {
+                    const p = JSON.parse(raw);
+                    if (p && typeof p === 'object') {
+                        return {
+                            live: Boolean(p.live),
+                            streamId: String(p.streamId || ''),
+                            streamNumber: Number(p.streamNumber || 0) || 0,
+                            startedAt: Number(p.startedAt || 0) || 0
+                        };
+                    }
+                }
+            } catch (e) {}
+            const isLiveFallback = localStorage.getItem('vetruch_stream_live') === 'true';
+            return {
+                live: isLiveFallback,
+                streamId: isLiveFallback ? 'stream_legacy_1' : '',
+                streamNumber: isLiveFallback ? 1 : 0,
+                startedAt: 0
+            };
+        }
+
+        function saveLocalStreamSession(sess) {
+            try {
+                localStorage.setItem('vetruch_stream_session', JSON.stringify(sess));
+                localStorage.setItem('vetruch_stream_live', sess && sess.live ? 'true' : 'false');
+            } catch (e) {}
+        }
+
+        function getLocalStreamStreak() {
+            try {
+                const raw = localStorage.getItem('vetruch_stream_streak');
+                if (raw) {
+                    const p = JSON.parse(raw);
+                    if (p && typeof p === 'object') {
+                        return {
+                            count: Number(p.count || 0) || 0,
+                            best: Number(p.best || 0) || 0,
+                            totalVisits: Number(p.totalVisits || 0) || 0,
+                            lastStreamId: String(p.lastStreamId || ''),
+                            lastStreamNum: Number(p.lastStreamNum || 0) || 0
+                        };
+                    }
+                }
+            } catch (e) {}
+            return { count: 0, best: 0, totalVisits: 0, lastStreamId: '', lastStreamNum: 0 };
+        }
+
+        function saveLocalStreamStreak(st) {
+            try {
+                localStorage.setItem('vetruch_stream_streak', JSON.stringify(st));
+            } catch (e) {}
+        }
+
+        function getEffectiveStreamStreak(st, sess) {
+            const rawCount = Number(st && st.count || 0) || 0;
+            const lastNum = Number(st && st.lastStreamNum || 0) || 0;
+            const sNum = Number(sess && sess.streamNumber || 0) || 0;
+            if (sNum <= 0) return rawCount;
+            if (sess && sess.live) {
+                return (sNum - lastNum) > 1 ? 0 : rawCount;
+            }
+            return (sNum - lastNum) >= 1 ? 0 : rawCount;
+        }
+
+        function renderStreamStreakUI() {
+            const sess = getLocalStreamSession();
+            const st = getLocalStreamStreak();
+            const effectiveCount = getEffectiveStreamStreak(st, sess);
+            const countedThisStream = Boolean(sess.live && sess.streamId && st.lastStreamId === sess.streamId);
+
+            const valEl = document.getElementById('kickStreakVal');
+            const badgeEl = document.getElementById('kickStreakBadge');
+            if (valEl) valEl.textContent = String(effectiveCount);
+            if (badgeEl) {
+                if (countedThisStream) {
+                    badgeEl.textContent = '✓ Засчитан в этом эфире';
+                    badgeEl.classList.add('counted');
+                } else if (sess.live) {
+                    badgeEl.textContent = '⚡ Перейди для +1 к стрику';
+                    badgeEl.classList.remove('counted');
+                } else {
+                    badgeEl.textContent = `Рекорд: ${st.best || effectiveCount}`;
+                    badgeEl.classList.remove('counted');
+                }
+            }
+
+            const profVal = document.getElementById('profileStreamStreakVal');
+            const profSub = document.getElementById('profileStreamStreakSub');
+            if (profVal) profVal.textContent = String(effectiveCount);
+            if (profSub) profSub.textContent = `Рекорд: ${Math.max(st.best || 0, effectiveCount)} · Переходов: ${st.totalVisits || 0}`;
+        }
+
+        async function handleKickStreamButtonClick(source) {
+            const kickUrl = KICK_CHANNEL_URL;
+            if (window.tg && typeof tg.openLink === 'function') {
+                tg.openLink(kickUrl);
+            } else {
+                window.open(kickUrl, '_blank');
+            }
+
+            const sess = getLocalStreamSession();
+            if (!sess.live || !sess.streamId) {
+                return;
+            }
+
+            const st = getLocalStreamStreak();
+            // Стрик засчитывается ТОЛЬКО при первом нажатии в рамках текущего запуска стрима
+            if (st.lastStreamId === sess.streamId) {
+                return;
+            }
+
+            const prevNum = Number(st.lastStreamNum || 0) || 0;
+            const curNum = Number(sess.streamNumber || 1) || 1;
+            const nextCount = (prevNum > 0 && prevNum === curNum - 1)
+                ? (Number(st.count || 0) + 1)
+                : 1;
+
+            const updated = {
+                count: nextCount,
+                best: Math.max(Number(st.best || 0), nextCount),
+                totalVisits: (Number(st.totalVisits || 0) || 0) + 1,
+                lastStreamId: sess.streamId,
+                lastStreamNum: curNum,
+                updatedAt: Date.now()
+            };
+            saveLocalStreamStreak(updated);
+            renderStreamStreakUI();
+
+            const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : null;
+            if (myId && typeof cloudPut === 'function') {
+                cloudPut(`vetruch_app/users/${myId}/stream_streak`, updated).catch(() => {});
+            }
+        }
 
         function ensureKickCardOnHome() {
             const homePage = document.getElementById('home');
@@ -11255,9 +11501,16 @@ img {
                         <span id="kickStreamBadgeText">ОФФЛАЙН</span>
                     </div>
                 </div>
-                <button type="button" class="kick-go-btn" id="kickStreamGoBtn" onclick="tg.openLink('${KICK_CHANNEL_URL}')">
+                <button type="button" class="kick-go-btn" id="kickStreamGoBtn" onclick="handleKickStreamButtonClick('card')">
                     ПЕРЕЙТИ НА KICK ➔
                 </button>
+                <div class="kick-streak-bar" id="kickStreakBar">
+                    <div class="kick-streak-left">
+                        <span>🔥 Стрик стримов:</span>
+                        <span class="kick-streak-num" id="kickStreakVal">0</span>
+                    </div>
+                    <span class="kick-streak-pill" id="kickStreakBadge">Рекорд: 0</span>
+                </div>
             `;
             homePage.appendChild(card);
         }
@@ -11276,14 +11529,16 @@ img {
 
         function openKickFromMiniPopup() {
             hideKickTopMiniPopup();
-            tg.openLink(KICK_CHANNEL_URL);
+            handleKickStreamButtonClick('popup');
         }
 
         function triggerKickTopMiniPopupOnce() {
-            if (sessionStorage.getItem('vetruch_stream_popup_shown') === 'true') {
+            const sess = getLocalStreamSession();
+            const popupKey = sess.streamId || 'true';
+            if (sessionStorage.getItem('vetruch_stream_popup_shown') === popupKey) {
                 return;
             }
-            sessionStorage.setItem('vetruch_stream_popup_shown', 'true');
+            sessionStorage.setItem('vetruch_stream_popup_shown', popupKey);
 
             // Ждём завершения загрузочного экрана, чтобы плашка красиво выехала на готовом экране
             const delayMs = document.body.classList.contains('is-loading') ? 1900 : 350;
@@ -11325,18 +11580,22 @@ img {
             }
 
             if (adminBadge) {
+                const sess = getLocalStreamSession();
+                const numHint = sess.streamNumber > 0 ? ` · #${sess.streamNumber}` : '';
                 if (isLive) {
-                    adminBadge.textContent = '🟢 ОНЛАЙН';
+                    adminBadge.textContent = `🟢 ОНЛАЙН${numHint}`;
                     adminBadge.style.background = 'rgba(0, 230, 118, 0.2)';
                     adminBadge.style.borderColor = 'rgba(0, 230, 118, 0.5)';
                     adminBadge.style.color = '#00e676';
                 } else {
-                    adminBadge.textContent = '⚫ ОФФЛАЙН';
+                    adminBadge.textContent = `⚫ ОФФЛАЙН${numHint}`;
                     adminBadge.style.background = 'rgba(255, 255, 255, 0.08)';
                     adminBadge.style.borderColor = 'rgba(255, 255, 255, 0.18)';
                     adminBadge.style.color = '#9ca3af';
                 }
             }
+
+            renderStreamStreakUI();
 
             if (isLive) {
                 triggerKickTopMiniPopupOnce();
@@ -11346,13 +11605,51 @@ img {
         }
 
         async function setKickStreamStatus(isLive) {
-            localStorage.setItem('vetruch_stream_live', isLive ? 'true' : 'false');
-            if (isLive) {
-                // Сбрасываем флаг для админа при ручном включении, чтобы сразу увидеть мини-табличку
-                sessionStorage.removeItem('vetruch_stream_popup_shown');
+            if (_kickStatusSaving) return;
+            _kickStatusSaving = true;
+            try {
+                let prevSess = null;
+                if (typeof cloudGet === 'function') {
+                    try { prevSess = await cloudGet('vetruch_app/stream_session'); } catch (e) {}
+                }
+                if (!prevSess || typeof prevSess !== 'object') {
+                    prevSess = getLocalStreamSession();
+                }
+
+                let nextSess;
+                if (isLive) {
+                    // Повторное нажатие "Включить ОНЛАЙН" без выключения не создаёт дубликат эфира
+                    if (prevSess.live && prevSess.streamId) {
+                        nextSess = { ...prevSess, live: true };
+                    } else {
+                        const nextNum = (Number(prevSess.streamNumber || 0) || 0) + 1;
+                        nextSess = {
+                            live: true,
+                            streamId: 'stream_' + Date.now(),
+                            streamNumber: nextNum,
+                            startedAt: Date.now()
+                        };
+                    }
+                    sessionStorage.removeItem('vetruch_stream_popup_shown');
+                } else {
+                    nextSess = {
+                        live: false,
+                        streamId: String(prevSess.streamId || ''),
+                        streamNumber: Number(prevSess.streamNumber || 0) || 0,
+                        startedAt: Number(prevSess.startedAt || 0) || 0,
+                        endedAt: Date.now()
+                    };
+                }
+
+                saveLocalStreamSession(nextSess);
+                updateKickStreamUI(Boolean(isLive));
+                await Promise.all([
+                    cloudPut('vetruch_app/stream_live', Boolean(isLive)),
+                    cloudPut('vetruch_app/stream_session', nextSess)
+                ]);
+            } finally {
+                _kickStatusSaving = false;
             }
-            updateKickStreamUI(isLive);
-            await cloudPut('vetruch_app/stream_live', Boolean(isLive));
         }
 
         // ================= УПРАВЛЕНИЕ ПЛАШКОЙ ПРОГНОЗОВ =================
@@ -12472,6 +12769,8 @@ img {
 
         const TASK_REWARDS = {
             'Подписка на Telegram': 100,
+            '5 комментариев в Telegram': 200,
+            '15 реакций в Telegram': 150,
             'Подписка на YouTube': 150,
             'Подписаться на Kick': 200,
             'Привязка UP-X': 1000,
@@ -12785,7 +13084,17 @@ img {
                 }
             }
 
-            localStorage.setItem('vetruch_stream_live', isStreamLive ? 'true' : 'false');
+            if (cloudState && cloudState.stream_session && typeof cloudState.stream_session === 'object') {
+                saveLocalStreamSession(cloudState.stream_session);
+            } else {
+                const curLocalSess = getLocalStreamSession();
+                saveLocalStreamSession({
+                    live: Boolean(isStreamLive),
+                    streamId: isStreamLive ? (curLocalSess.streamId || 'stream_legacy_1') : curLocalSess.streamId,
+                    streamNumber: isStreamLive ? Math.max(1, curLocalSess.streamNumber || 1) : curLocalSess.streamNumber,
+                    startedAt: curLocalSess.startedAt || 0
+                });
+            }
             updateKickStreamUI(isStreamLive);
 
             const rawRefs = allReferrals ? allReferrals[myId] : null;
@@ -12960,6 +13269,31 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                     const mergedAch = { ...localAch, ...cloudAch };
                     localStorage.setItem('vetruch_achievements_claimed', JSON.stringify(mergedAch));
                 }
+
+                // Синхронизация стрика переходов на стримы Kick
+                const localSt = getLocalStreamStreak();
+                const cloudSt = (cloudUser.stream_streak && typeof cloudUser.stream_streak === 'object') ? cloudUser.stream_streak : null;
+                const cloudIsNewerSt = cloudSt && (
+                    Number(cloudSt.lastStreamNum || 0) > Number(localSt.lastStreamNum || 0) ||
+                    (Number(cloudSt.lastStreamNum || 0) === Number(localSt.lastStreamNum || 0) && Number(cloudSt.totalVisits || 0) > Number(localSt.totalVisits || 0))
+                );
+                const localIsNewerSt = Number(localSt.totalVisits || 0) > 0 && (
+                    !cloudSt ||
+                    Number(localSt.lastStreamNum || 0) > Number(cloudSt.lastStreamNum || 0) ||
+                    (Number(localSt.lastStreamNum || 0) === Number(cloudSt.lastStreamNum || 0) && Number(localSt.totalVisits || 0) > Number(cloudSt.totalVisits || 0))
+                );
+                if (cloudIsNewerSt) {
+                    saveLocalStreamStreak({
+                        count: Number(cloudSt.count || 0) || 0,
+                        best: Number(cloudSt.best || 0) || 0,
+                        totalVisits: Number(cloudSt.totalVisits || 0) || 0,
+                        lastStreamId: String(cloudSt.lastStreamId || ''),
+                        lastStreamNum: Number(cloudSt.lastStreamNum || 0) || 0
+                    });
+                } else if (localIsNewerSt) {
+                    await cloudPut(`vetruch_app/users/${myId}/stream_streak`, localSt);
+                }
+                renderStreamStreakUI();
             }
             localStorage.setItem('vetruch_tasks_done', String(myTasksDone));
             updateCloudStatusUI();
@@ -14451,12 +14785,7 @@ async function renderLeaderboardPage() {
         }
 
         function openKickStreamLink() {
-            const kickUrl = 'https://kick.com/vetruch';
-            if (window.tg && tg.openLink) {
-                tg.openLink(kickUrl);
-            } else {
-                window.open(kickUrl, '_blank');
-            }
+            handleKickStreamButtonClick('banner');
         }
 
         function initBannerCarousel() {
@@ -16647,6 +16976,7 @@ function initAdvancedSystems() {
     updateVipStatusUI();
     renderDailyBonusUI();
     checkDiamondGift();
+    if (typeof renderStreamStreakUI === 'function') renderStreamStreakUI();
     if (typeof applyCurrentAvatarUI === 'function') applyCurrentAvatarUI();
 }
 window.addEventListener('DOMContentLoaded', initAdvancedSystems);
@@ -17237,7 +17567,7 @@ setTimeout(initAdvancedSystems, 300);
 
     <!-- МГНОВЕННЫЙ КОНТЕЙНЕР ДЛЯ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) -->
     <div id="gameModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: #000000; width: 100%; height: 100%; overflow: hidden; -webkit-overflow-scrolling: touch;">
-        <iframe id="frame-towers" src="towers.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-towers" src="towers.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-mines" src="mines.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-cards" src="cards.html?v=5" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-balloon" src="balloon.html?v=6" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
@@ -17891,7 +18221,7 @@ function getAccurateTasksProgress() {
             }
         });
     } else {
-        total += 6;
+        total += 8;
     }
 
     // 2. ARKADA (привязка + 15 депозитов = 16 шт.)
@@ -18814,6 +19144,9 @@ async function openAdminPlayerInspector(targetId) {
         `).join('')
         : '<div style="color: #94a3b8;">Заказов в магазине ещё не было</div>';
 
+    const stStreak = u.stream_streak || {};
+    const stEffCount = getEffectiveStreamStreak(stStreak, cloudState.stream_session || getLocalStreamSession());
+
     bodyEl.innerHTML = `
         ${flags.map(f => `<div class="inspector-flag ${f.warn ? 'warn' : 'ok'}">${f.text}</div>`).join('')}
 
@@ -18839,6 +19172,7 @@ async function openAdminPlayerInspector(targetId) {
         <div class="inspector-section">
             <div style="font-weight: 800; color: #ffd700; margin-bottom: 6px;">📊 Источники прогресса</div>
             <div>• Заданий выполнено: <b>${Math.max(tasksDone, completedList.length)}</b> (ожидают проверки: ${userPendingTasks.length})</div>
+            <div>• Стрик стримов Kick: <b>🔥 ${stEffCount}</b> (рекорд: ${Number(stStreak.best || 0)}, переходов: ${Number(stStreak.totalVisits || 0)})</div>
             <div>• Рефералы: <b>${refsList.length}</b> ${refRewardGiven ? '(бонус +500 выдан ✅)' : ''} ${refsList.length > 0 ? `<span style="color:#94a3b8;">[${refsList.slice(0, 6).map(escapeHtmlSafe).join(', ')}${refsList.length > 6 ? '...' : ''}]</span>` : ''}</div>
             <div>• Промокоды (${usedPromos.length}, +${formatCoins(promoCoinsSum)} монет): ${usedPromos.length ? usedPromos.join(', ') : '<span style="color:#94a3b8;">нет</span>'}</div>
             <div>• Открыто кейсов: <b>${casesOpened}</b> · Достижений: <b>${achClaimed.length}/${ACHIEVEMENTS_CONFIG.length}</b> · Ставок в прогнозах: <b>${predBets}</b></div>
