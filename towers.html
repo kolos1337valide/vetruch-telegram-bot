@@ -16,7 +16,7 @@
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         :root {
-            --bg: #02050b;
+            --bg: #02060e;
             --text: #ffffff;
             --blue-main: #00d9ff;
             --blue-glow: rgba(0, 136, 255, 0.55);
@@ -24,8 +24,11 @@
 
         body {
             margin: 0;
+            /* Простой многослойный фон подземных пород в синих тонах */
             background:
-                radial-gradient(circle at 50% 12%, #0e2a52 0%, #050f20 55%, #02050b 100%);
+                radial-gradient(circle at 50% 10%, rgba(18, 62, 118, 0.55) 0%, transparent 48%),
+                repeating-linear-gradient(180deg, #061224 0px, #061224 54px, #040d1b 54px, #040d1b 62px),
+                linear-gradient(180deg, #07172e 0%, #030914 100%);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
@@ -37,9 +40,7 @@
             position: fixed;
             z-index: 1;
             inset: 0;
-            background:
-                repeating-linear-gradient(125deg, rgba(0, 170, 255, 0.025) 0px, rgba(0, 170, 255, 0.025) 2px, transparent 2px, transparent 22px),
-                linear-gradient(180deg, rgba(5, 13, 26, 0.14) 0%, rgba(2, 5, 11, 0.86) 100%);
+            background: linear-gradient(180deg, rgba(4, 12, 26, 0.16) 0%, rgba(2, 5, 11, 0.72) 100%);
             pointer-events: none;
         }
 
@@ -49,20 +50,20 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding: 14px 14px 30px 14px;
+            padding: 12px 12px 24px 12px;
         }
 
         /* Верхняя панель */
-        .top-section { display: flex; flex-direction: column; gap: 9px; width: 100%; z-index: 10; margin-bottom: 12px; }
+        .top-section { display: flex; flex-direction: column; gap: 8px; width: 100%; z-index: 10; margin-bottom: 10px; }
         .header { display: flex; justify-content: space-between; align-items: center; }
         .back-btn {
             background: rgba(11, 24, 46, 0.88);
             border: 1px solid rgba(0, 217, 255, 0.28);
             color: #fff;
-            height: 38px;
-            padding: 0 13px;
-            border-radius: 12px;
-            font-size: 14px;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 11px;
+            font-size: 13.5px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -74,16 +75,16 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: linear-gradient(135deg, rgba(0, 136, 255, 0.2), rgba(0, 217, 255, 0.1));
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.22), rgba(0, 217, 255, 0.1));
             color: #e0f7ff;
-            padding: 7px 14px;
+            padding: 6px 13px;
             border-radius: 20px;
             font-weight: 800;
-            font-size: 15px;
-            border: 1px solid rgba(0, 217, 255, 0.42);
-            box-shadow: 0 0 16px rgba(0, 136, 255, 0.22);
+            font-size: 14.5px;
+            border: 1px solid rgba(0, 217, 255, 0.44);
+            box-shadow: 0 0 14px rgba(0, 136, 255, 0.22);
         }
-        .coin-icon { width: 17px; height: 17px; flex-shrink: 0; vertical-align: middle; }
+        .coin-icon { width: 16px; height: 16px; flex-shrink: 0; vertical-align: middle; }
 
         .game-info-bar {
             display: flex;
@@ -91,86 +92,40 @@
             align-items: center;
             background: rgba(9, 20, 38, 0.88);
             border: 1px solid rgba(0, 217, 255, 0.24);
-            padding: 10px 14px;
-            border-radius: 14px;
+            padding: 9px 14px;
+            border-radius: 13px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
         }
-        .info-item { font-size: 12.5px; color: #94b8db; display: flex; align-items: center; gap: 7px; }
-        .info-val { font-size: 15px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 4px; }
+        .info-item { font-size: 12px; color: #94b8db; display: flex; align-items: center; gap: 6px; }
+        .info-val { font-size: 14.5px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 4px; }
 
-        /* Сцена ШАХТЫ */
+        /* ================= ПОДЗЕМНЫЙ ВЫРЕЗ ШАХТЫ В ЗЕМЛЕ ================= */
         .grid-wrapper {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             flex: 1;
         }
 
-        .tower-stage-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 13px;
-            border-radius: 999px;
-            background: rgba(8, 22, 46, 0.92);
-            border: 1px solid rgba(0, 217, 255, 0.36);
-            color: #93c5fd;
-            font-size: 10.5px;
-            font-weight: 800;
-            letter-spacing: 0.7px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 14px rgba(0, 170, 255, 0.16);
-        }
-        .tower-stage-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #00e5ff;
-            box-shadow: 0 0 8px #00e5ff;
-        }
-
-        .mine-shaft {
+        .mine-cutaway {
             width: 100%;
-            max-width: 392px;
+            max-width: 390px;
             position: relative;
-            border-radius: 20px;
-            padding: 10px 14px 12px 14px;
-            background:
-                radial-gradient(ellipse at 50% 8%, rgba(0, 175, 255, 0.16) 0%, transparent 55%),
-                repeating-linear-gradient(160deg, rgba(16, 46, 86, 0.22) 0px, rgba(16, 46, 86, 0.22) 12px, rgba(5, 13, 27, 0.4) 12px, rgba(5, 13, 27, 0.4) 26px),
-                linear-gradient(180deg, #091830 0%, #050d1d 55%, #030812 100%);
-            border: 1.5px solid rgba(0, 217, 255, 0.34);
-            box-shadow:
-                inset 0 0 36px rgba(0, 0, 0, 0.8),
-                inset 0 1px 0 rgba(125, 211, 252, 0.2),
-                0 16px 36px rgba(0, 0, 0, 0.7),
-                0 0 24px rgba(0, 136, 255, 0.15);
+            border-radius: 16px;
             overflow: hidden;
+            background: #040b18;
+            border: 2px solid rgba(0, 195, 255, 0.34);
+            box-shadow:
+                0 16px 38px rgba(0, 0, 0, 0.82),
+                0 0 26px rgba(0, 136, 255, 0.16),
+                inset 0 0 28px rgba(0, 0, 0, 0.85);
         }
 
-        /* Боковые опорные балки шахты */
-        .mine-shaft::before,
-        .mine-shaft::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 8px;
-            background: linear-gradient(90deg, #0e2444, #193b69, #09172c);
-            border-right: 1px solid rgba(0, 217, 255, 0.28);
-            border-left: 1px solid rgba(0, 217, 255, 0.2);
-            pointer-events: none;
-            z-index: 2;
-        }
-        .mine-shaft::before { left: 0; }
-        .mine-shaft::after { right: 0; }
-
-        .mine-shaft.shake {
-            animation: mineShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        .mine-cutaway.shake {
+            animation: mineShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97);
         }
         @keyframes mineShake {
             0%, 100% { transform: translateX(0); }
@@ -180,180 +135,266 @@
             80% { transform: translateX(3px); }
         }
 
-        .mine-summit-bar {
+        /* Верхний срез поверхности земли */
+        .mine-surface-cap {
+            position: relative;
+            z-index: 5;
+            padding: 7px 14px 8px 14px;
+            background:
+                linear-gradient(180deg, #0d2b52 0%, #091d3b 75%, #07152b 100%);
+            border-bottom: 3px solid #163d73;
+            box-shadow: inset 0 1px 0 rgba(125, 211, 252, 0.25), 0 4px 10px rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 6px 10px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            background: linear-gradient(90deg, rgba(0, 149, 255, 0.18), rgba(0, 229, 255, 0.08));
-            border: 1px solid rgba(0, 217, 255, 0.32);
-            font-size: 10px;
+            font-size: 10.5px;
             font-weight: 800;
             color: #bae6fd;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
-            position: relative;
-            z-index: 3;
         }
-        .mine-summit-bar b { color: #00e5ff; font-weight: 900; }
+        .mine-surface-cap b { color: #00e5ff; font-weight: 900; }
+
+        /* Неровные каменные стены разреза по краям */
+        .rock-wall-svg {
+            position: absolute;
+            top: 28px;
+            bottom: 10px;
+            width: 16px;
+            height: calc(100% - 38px);
+            z-index: 4;
+            pointer-events: none;
+        }
+        .rock-wall-svg.left { left: 0; }
+        .rock-wall-svg.right { right: 0; transform: scaleX(-1); }
 
         .towers-grid {
             display: flex;
             flex-direction: column-reverse;
-            gap: 5px;
             width: 100%;
             position: relative;
+            z-index: 2;
+        }
+
+        /* Каждый уровень — выкопанный туннель в земле + толстый земляной пол снизу */
+        .mine-tunnel {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            height: 48px;
+            padding: 0 14px;
+            /* Задний фон туннеля: глубокая пещера + боковые подпорки */
+            background:
+                radial-gradient(ellipse at 54% 50%, rgba(14, 52, 98, 0.42) 0%, rgba(5, 16, 36, 0.92) 72%, #030a18 100%);
+            border-bottom: 7px solid #091b36;
+            box-shadow:
+                inset 0 6px 12px rgba(0, 0, 0, 0.65),
+                inset 0 -3px 0 rgba(0, 175, 255, 0.16),
+                0 2px 0 rgba(0, 0, 0, 0.8);
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Текстура земляной перегородки между ярусами */
+        .mine-tunnel::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -7px;
+            height: 7px;
+            background:
+                radial-gradient(circle at 18% 45%, rgba(56, 189, 248, 0.28) 0 1.5px, transparent 2px),
+                radial-gradient(circle at 46% 65%, rgba(56, 189, 248, 0.22) 0 1.2px, transparent 2px),
+                radial-gradient(circle at 78% 40%, rgba(56, 189, 248, 0.26) 0 1.5px, transparent 2px),
+                linear-gradient(180deg, #163b6d 0%, #0b2142 55%, #061226 100%);
+            pointer-events: none;
             z-index: 3;
         }
 
-        /* Этаж с настилом и лесенками */
-        .tower-row {
-            display: flex;
-            align-items: stretch;
-            gap: 8px;
-            padding: 4px 6px 6px 6px;
-            border-radius: 11px;
-            background: rgba(7, 19, 38, 0.55);
-            border: 1px solid rgba(0, 175, 255, 0.1);
-            border-bottom: 3px solid #163661;
-            box-shadow: inset 0 -2px 0 rgba(0, 217, 255, 0.16);
-            opacity: 0.44;
-            transition: opacity 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+        /* Неоткрытый туннель (засыпан породой / в темноте — лесенки скрыты!) */
+        .mine-tunnel.tunnel-hidden {
+            background:
+                repeating-linear-gradient(145deg, rgba(13, 34, 66, 0.45) 0px, rgba(13, 34, 66, 0.45) 8px, rgba(6, 16, 34, 0.78) 8px, rgba(6, 16, 34, 0.78) 18px),
+                linear-gradient(180deg, #061226 0%, #040b18 100%);
             pointer-events: none;
+        }
+
+        /* Активный туннель (подсвечен синим фонарём, лесенки появились) */
+        .mine-tunnel.active {
+            background:
+                radial-gradient(ellipse at 56% 50%, rgba(0, 168, 255, 0.22) 0%, rgba(8, 29, 60, 0.94) 68%, #040d1e 100%);
+            border-bottom-color: #0284c7;
+            box-shadow:
+                inset 0 0 20px rgba(0, 217, 255, 0.18),
+                inset 0 -3px 0 rgba(56, 189, 248, 0.52);
+            pointer-events: auto;
+        }
+
+        .mine-tunnel.completed {
+            background:
+                radial-gradient(ellipse at 55% 50%, rgba(0, 217, 255, 0.14) 0%, rgba(6, 22, 46, 0.95) 75%, #030b19 100%);
+            pointer-events: none;
+        }
+
+        .mine-tunnel.failed {
+            background:
+                radial-gradient(ellipse at 55% 50%, rgba(244, 63, 94, 0.18) 0%, rgba(16, 12, 26, 0.95) 75%, #050a14 100%);
+            border-bottom-color: #be123c;
+            pointer-events: none;
+        }
+
+        /* Деревянно-стальная стойка и фонарь внутри каждого яруса */
+        .tunnel-post {
+            width: 58px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 6px 4px 2px;
+            border-right: 3px solid #163a68;
             position: relative;
         }
+        .mine-tunnel.active .tunnel-post { border-right-color: #0ea5e9; }
+        .mine-tunnel.completed .tunnel-post { border-right-color: #00e676; }
 
-        .tower-row.active {
-            opacity: 1;
-            pointer-events: auto;
-            background: linear-gradient(90deg, rgba(0, 136, 255, 0.2) 0%, rgba(10, 30, 62, 0.9) 55%, rgba(0, 136, 255, 0.14) 100%);
-            border-color: rgba(0, 217, 255, 0.52);
-            border-bottom: 3px solid #00a8ff;
-            box-shadow: 0 0 16px rgba(0, 170, 255, 0.24), inset 0 -2px 0 rgba(125, 211, 252, 0.4);
-        }
-
-        .tower-row.completed {
-            opacity: 0.94;
-            border-color: rgba(0, 230, 118, 0.26);
-            border-bottom-color: rgba(0, 230, 118, 0.5);
-        }
-
-        .tower-row.failed {
-            opacity: 0.95;
-            border-color: rgba(244, 63, 94, 0.35);
-            border-bottom-color: #e11d48;
-        }
-
-        .tower-mult-badge {
-            width: 56px;
-            min-height: 44px;
-            background: rgba(0, 136, 255, 0.12);
-            border: 1px solid rgba(0, 217, 255, 0.22);
-            border-radius: 9px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1px;
+        .tunnel-lantern {
+            width: 7px;
+            height: 11px;
+            border-radius: 3px;
+            background: #173052;
+            border: 1px solid rgba(56, 189, 248, 0.22);
             flex-shrink: 0;
             transition: all 0.25s ease;
         }
+        .mine-tunnel.active .tunnel-lantern {
+            background: #00e5ff;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px #00e5ff, 0 0 18px rgba(0, 217, 255, 0.85);
+        }
+        .mine-tunnel.completed .tunnel-lantern {
+            background: #00e676;
+            border-color: #bbf7d0;
+            box-shadow: 0 0 8px rgba(0, 230, 118, 0.7);
+        }
+
+        .tower-mult-badge {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.05;
+        }
         .floor-num {
-            font-size: 8.5px;
+            font-size: 8px;
             font-weight: 800;
-            color: #7da2c8;
-            letter-spacing: 0.4px;
+            color: #6b8cb3;
+            letter-spacing: 0.3px;
             text-transform: uppercase;
         }
         .floor-mult {
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 900;
-            color: #93c5fd;
+            color: #8cb4db;
         }
+        .mine-tunnel.active .floor-num { color: #bae6fd; }
+        .mine-tunnel.active .floor-mult { color: #ffffff; text-shadow: 0 0 8px rgba(0, 217, 255, 0.7); }
+        .mine-tunnel.completed .floor-num { color: #86efac; }
+        .mine-tunnel.completed .floor-mult { color: #00e676; }
+        .mine-tunnel.failed .floor-mult { color: #fda4af; }
 
-        .tower-row.active .tower-mult-badge {
-            background: linear-gradient(135deg, rgba(0, 162, 255, 0.32), rgba(0, 217, 255, 0.2));
-            border-color: #00e5ff;
-            box-shadow: 0 0 12px rgba(0, 217, 255, 0.42);
-            transform: scale(1.03);
-        }
-        .tower-row.active .floor-num { color: #bae6fd; }
-        .tower-row.active .floor-mult { color: #ffffff; }
-
-        .tower-row.completed .tower-mult-badge {
-            background: rgba(0, 230, 118, 0.14);
-            border-color: rgba(0, 230, 118, 0.48);
-        }
-        .tower-row.completed .floor-num { color: #86efac; }
-        .tower-row.completed .floor-mult { color: #00e676; }
-
+        /* Пространство туннеля под лесенки или тёмную породу */
         .ladders-bay {
+            flex: 1;
+            position: relative;
             display: flex;
-            justify-content: space-around;
             align-items: stretch;
-            gap: 7px;
+            justify-content: space-evenly;
+            padding: 0 4px;
+        }
+
+        /* Сообщение темноты на неоткрытых ярусах (никаких подсказок числа лестниц!) */
+        .tunnel-fog {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: rgba(125, 211, 252, 0.28);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            user-select: none;
+        }
+        .tunnel-fog-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(0, 217, 255, 0.26);
+        }
+
+        /* Слот под узкую вертикальную лестницу от пола до потолка */
+        .ladder-slot {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
             flex: 1;
         }
 
-        /* Реалистичная синяя лесенка */
         .ladder-btn {
-            flex: 1;
-            max-width: 68px;
-            height: 44px;
+            width: 34px;
+            height: 100%;
             position: relative;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3px 6px;
-            border-radius: 8px;
-            background: rgba(5, 16, 36, 0.55);
-            border: 1px solid rgba(56, 189, 248, 0.16);
-            transition: transform 0.14s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            padding: 2px 5px;
+            border-radius: 4px;
+            transition: transform 0.14s ease, filter 0.2s ease;
+            animation: ladderSpawn 0.28s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        @keyframes ladderSpawn {
+            0% { opacity: 0; transform: translateY(10px) scaleY(0.7); }
+            100% { opacity: 1; transform: translateY(0) scaleY(1); }
         }
 
-        .tower-row.active .ladder-btn:hover {
-            background: rgba(0, 149, 255, 0.18);
-            border-color: rgba(0, 229, 255, 0.65);
+        .mine-tunnel.active .ladder-btn:hover {
+            filter: brightness(1.22);
         }
-        .tower-row.active .ladder-btn:active {
-            transform: scale(0.93);
+        .mine-tunnel.active .ladder-btn:active {
+            transform: scale(0.92);
         }
 
-        /* Боковые тетивы лесенки */
+        /* Две вертикальные тетивы лестницы */
         .ladder-rail {
             position: absolute;
-            top: 2px;
-            bottom: 2px;
+            top: 0;
+            bottom: 0;
             width: 4px;
-            border-radius: 3px;
-            background: linear-gradient(180deg, #38bdf8 0%, #0284c7 60%, #0b3c70 100%);
-            box-shadow: 0 0 6px rgba(56, 189, 248, 0.35);
+            border-radius: 2px;
+            background: linear-gradient(180deg, #38bdf8 0%, #0284c7 60%, #093568 100%);
+            box-shadow: 0 0 8px rgba(0, 195, 255, 0.42);
             transition: all 0.25s ease;
         }
-        .ladder-rail.left { left: 10px; }
-        .ladder-rail.right { right: 10px; }
+        .ladder-rail.left { left: 4px; }
+        .ladder-rail.right { right: 4px; }
 
         .ladder-rungs {
             position: relative;
-            width: calc(100% - 16px);
+            width: calc(100% - 8px);
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
-            padding: 2px 0;
+            padding: 3px 0;
         }
 
         .ladder-rung {
             height: 3.5px;
             width: 100%;
-            border-radius: 3px;
-            background: linear-gradient(90deg, #0ea5e9, #7dd3fc, #0ea5e9);
-            box-shadow: 0 1px 4px rgba(0, 170, 255, 0.45);
-            transition: transform 0.28s ease, background 0.25s ease, opacity 0.25s ease;
-            position: relative;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #0ea5e9, #bae6fd, #0ea5e9);
+            box-shadow: 0 1px 4px rgba(0, 175, 255, 0.5);
+            transition: transform 0.26s ease, background 0.25s ease;
         }
 
         .ladder-badge {
@@ -361,108 +402,112 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 16px;
+            font-size: 14px;
             line-height: 1;
             z-index: 4;
             pointer-events: none;
-            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.85));
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.9));
         }
 
-        /* Подъём по лесенке */
+        /* Искры подъёма шахтёра */
         .ladder-btn.climbing .climber-spark {
             position: absolute;
             left: 50%;
             bottom: 2px;
-            width: 14px;
-            height: 14px;
-            margin-left: -7px;
+            width: 13px;
+            height: 13px;
+            margin-left: -6.5px;
             border-radius: 50%;
-            background: radial-gradient(circle, #ffffff 10%, #00e5ff 65%, transparent 100%);
+            background: radial-gradient(circle, #ffffff 12%, #00e5ff 68%, transparent 100%);
             box-shadow: 0 0 14px #00e5ff, 0 0 24px #38bdf8;
-            z-index: 5;
-            animation: climberAscend 0.32s ease-out forwards;
+            z-index: 6;
+            animation: climberAscend 0.3s ease-out forwards;
         }
         @keyframes climberAscend {
             0% { bottom: 2px; opacity: 0.95; transform: scale(0.85); }
-            65% { bottom: 24px; opacity: 1; transform: scale(1.15); }
-            100% { bottom: 34px; opacity: 0.25; transform: scale(0.7); }
+            65% { bottom: 28px; opacity: 1; transform: scale(1.15); }
+            100% { bottom: 42px; opacity: 0.2; transform: scale(0.7); }
         }
 
         /* Пройденная целая лесенка */
         .ladder-btn.safe {
-            background: linear-gradient(180deg, rgba(0, 229, 255, 0.26), rgba(0, 119, 255, 0.16));
-            border-color: #00e5ff;
-            box-shadow: 0 0 14px rgba(0, 217, 255, 0.42), inset 0 0 10px rgba(0, 229, 255, 0.25);
+            background: rgba(0, 217, 255, 0.16);
+            box-shadow: 0 0 14px rgba(0, 229, 255, 0.36);
         }
         .ladder-btn.safe .ladder-rail {
-            background: linear-gradient(180deg, #e0fbff 0%, #00e5ff 60%, #0284c7 100%);
+            background: linear-gradient(180deg, #e0fbff 0%, #00e5ff 55%, #0284c7 100%);
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.85);
         }
         .ladder-btn.safe .ladder-rung {
             background: linear-gradient(90deg, #00e5ff, #ffffff, #00e5ff);
         }
 
-        /* Сломанная лесенка (поломка + анимация) */
+        /* Сломанная лесенка (поломка под ногами) */
         .ladder-btn.broken {
-            background: linear-gradient(180deg, rgba(244, 63, 94, 0.3), rgba(159, 18, 57, 0.22));
-            border-color: #fb7185;
-            box-shadow: inset 0 0 14px rgba(244, 63, 94, 0.45), 0 0 14px rgba(244, 63, 94, 0.35);
+            background: rgba(244, 63, 94, 0.22);
+            box-shadow: 0 0 14px rgba(244, 63, 94, 0.42);
         }
         .ladder-btn.broken .ladder-rail.left {
             background: linear-gradient(180deg, #fb7185, #be123c);
-            transform: rotate(-8deg) translateY(2px);
+            transform: rotate(-10deg) translateY(2px);
         }
         .ladder-btn.broken .ladder-rail.right {
             background: linear-gradient(180deg, #fb7185, #be123c);
-            transform: rotate(8deg) translateY(2px);
+            transform: rotate(10deg) translateY(2px);
         }
         .ladder-btn.broken .ladder-rung:nth-child(1),
-        .ladder-btn.broken .ladder-rung:nth-child(4) {
+        .ladder-btn.broken .ladder-rung:nth-child(5) {
             background: #fda4af;
-            opacity: 0.7;
+            opacity: 0.65;
         }
         .ladder-btn.broken .ladder-rung:nth-child(2) {
             background: #fb7185;
-            width: 52%;
+            width: 55%;
             transform-origin: left center;
-            animation: snapLeft 0.36s ease forwards;
+            animation: snapLeft 0.34s ease forwards;
         }
         .ladder-btn.broken .ladder-rung:nth-child(3) {
             background: #f43f5e;
-            width: 52%;
+            width: 55%;
             margin-left: auto;
             transform-origin: right center;
-            animation: snapRight 0.36s ease forwards;
+            animation: snapRight 0.34s ease forwards;
+        }
+        .ladder-btn.broken .ladder-rung:nth-child(4) {
+            background: #fb7185;
+            width: 52%;
+            transform-origin: left center;
+            animation: snapLeft 0.34s ease forwards;
         }
 
         @keyframes snapLeft {
             0% { transform: rotate(0deg); }
-            100% { transform: rotate(28deg) translateY(4px); }
+            100% { transform: rotate(32deg) translateY(4px); }
         }
         @keyframes snapRight {
             0% { transform: rotate(0deg); }
-            100% { transform: rotate(-28deg) translateY(4px); }
+            100% { transform: rotate(-32deg) translateY(4px); }
         }
 
-        /* Подсветка сломанной лесенки после прохождения или конца игры */
+        /* Показ хрупкой лесенки только на пройденном/текущем этаже */
         .ladder-btn.revealed-broken {
-            background: rgba(244, 63, 94, 0.14);
-            border-color: rgba(244, 63, 94, 0.45);
-            opacity: 0.78;
+            opacity: 0.68;
         }
         .ladder-btn.revealed-broken .ladder-rail {
             background: linear-gradient(180deg, #fb7185, #881337);
+            box-shadow: 0 0 6px rgba(244, 63, 94, 0.4);
         }
-        .ladder-btn.revealed-broken .ladder-rung:nth-child(2) {
-            width: 50%;
-            transform: rotate(24deg) translateY(2px);
+        .ladder-btn.revealed-broken .ladder-rung:nth-child(2),
+        .ladder-btn.revealed-broken .ladder-rung:nth-child(4) {
+            width: 52%;
             background: #fb7185;
+            transform: rotate(26deg) translateY(2px);
         }
         .ladder-btn.revealed-broken .ladder-rung:nth-child(3) {
-            width: 50%;
+            width: 52%;
             margin-left: auto;
-            transform: rotate(-24deg) translateY(2px);
-            background: #fb7185;
+            background: #f43f5e;
+            transform: rotate(-26deg) translateY(2px);
         }
 
         /* Управление ставкой */
@@ -470,24 +515,24 @@
             background: rgba(9, 20, 38, 0.9);
             border: 1px solid rgba(0, 217, 255, 0.25);
             border-radius: 20px;
-            padding: 15px;
+            padding: 14px;
             margin-top: auto;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 26px rgba(0, 0, 0, 0.65);
         }
 
-        .bet-options { display: flex; gap: 8px; margin-bottom: 12px; }
+        .bet-options { display: flex; gap: 8px; margin-bottom: 11px; }
         .bet-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(0, 195, 255, 0.2);
             color: #fff;
-            padding: 11px 12px;
+            padding: 10px 12px;
             border-radius: 10px;
             font-weight: 800;
             cursor: pointer;
             transition: 0.2s;
             flex: 1;
-            font-size: 14.5px;
+            font-size: 14px;
         }
         .bet-btn.active {
             background: rgba(0, 170, 255, 0.22);
@@ -499,10 +544,10 @@
 
         .action-btn {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border-radius: 14px;
             border: none;
-            font-size: 15.5px;
+            font-size: 15px;
             font-weight: 900;
             color: #ffffff;
             background: linear-gradient(135deg, #0095ff 0%, #005fd2 100%);
@@ -544,20 +589,29 @@
             </div>
         </div>
 
-        <!-- Синяя Шахта с Этажами и Лесенками -->
+        <!-- Подземный разрез шахты -->
         <div class="grid-wrapper">
-            <div class="tower-stage-badge">
-                <span class="tower-stage-dot"></span>
-                <span>ЛЕДЯНАЯ ШАХТА · 8 ЯРУСОВ</span>
-            </div>
-
-            <div class="mine-shaft" id="mineShaft">
-                <div class="mine-summit-bar">
-                    <span>💎 ВЕРШИНА ШАХТЫ</span>
+            <div class="mine-cutaway" id="mineCutaway">
+                <div class="mine-surface-cap">
+                    <span>⛏️ РАЗРЕЗ ШАХТЫ · 8 УРОВНЕЙ</span>
                     <b>ДО x24.50</b>
                 </div>
+
+                <!-- Левая и правая скальные стены разреза в земле -->
+                <svg class="rock-wall-svg left" viewBox="0 0 20 400" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0,0 L16,0 L12,24 L17,52 L10,80 L16,112 L11,148 L17,184 L11,222 L16,258 L10,295 L16,332 L12,368 L16,400 L0,400 Z" fill="#081a34" stroke="#0e3a6d" stroke-width="1.2"/>
+                    <polygon points="8,48 16,52 10,60" fill="#00d9ff" opacity="0.5"/>
+                    <polygon points="7,178 16,184 9,192" fill="#38bdf8" opacity="0.45"/>
+                    <polygon points="8,326 16,332 9,339" fill="#00d9ff" opacity="0.5"/>
+                </svg>
+                <svg class="rock-wall-svg right" viewBox="0 0 20 400" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0,0 L16,0 L11,30 L17,64 L10,98 L16,132 L12,168 L17,204 L11,240 L16,276 L10,312 L16,350 L12,380 L16,400 L0,400 Z" fill="#081a34" stroke="#0e3a6d" stroke-width="1.2"/>
+                    <polygon points="8,92 16,98 10,105" fill="#38bdf8" opacity="0.45"/>
+                    <polygon points="8,234 16,240 10,247" fill="#00d9ff" opacity="0.5"/>
+                </svg>
+
                 <div class="towers-grid" id="grid">
-                    <!-- Ярусы и лесенки генерируются через JS -->
+                    <!-- Уровни генерируются через JS; лесенки скрыты до перехода на уровень -->
                 </div>
             </div>
         </div>
@@ -571,7 +625,7 @@
                 <button class="bet-btn" onclick="setBet(200, this)">200</button>
             </div>
 
-            <button class="action-btn" id="actionBtn" onclick="handleAction()">НАЧАТЬ ПОДЪЁМ</button>
+            <button class="action-btn" id="actionBtn" onclick="handleAction()">ВОЙТИ В ШАХТУ</button>
         </div>
     </div>
 
@@ -586,15 +640,15 @@
         let isClimbing = false;
         let currentRow = 0;
         let currentWin = 0;
-        let brokenPositions = []; // индекс сломанной лесенки на каждом ярусе
+        let brokenPositions = [];
 
-        // 8 ярусов: на 1-3 по 4 лесенки, на 4-6 по 3 лесенки, на 7-8 по 2 лесенки (1 на ярусе всегда ломается)
+        // 8 уровней: на 1-3 по 4 лестницы, на 4-6 по 3 лестницы, на 7-8 по 2 лестницы
         const ROW_COUNT = 8;
         const LADDERS_PER_ROW = [4, 4, 4, 3, 3, 3, 2, 2];
         const MULTIPLIERS = [1.28, 1.68, 2.20, 3.20, 4.65, 6.75, 12.80, 24.50];
 
         const gridEl = document.getElementById('grid');
-        const mineShaft = document.getElementById('mineShaft');
+        const mineCutaway = document.getElementById('mineCutaway');
         const actionBtn = document.getElementById('actionBtn');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const infoBalance = document.getElementById('infoBalance');
@@ -628,8 +682,15 @@
             btn.classList.add('active');
         }
 
-        function buildLadderHTML() {
-            return `
+        function buildLadderElement(r, c, delayMs) {
+            const slot = document.createElement('div');
+            slot.className = 'ladder-slot';
+
+            const ladder = document.createElement('div');
+            ladder.className = 'ladder-btn';
+            ladder.id = `cell-${r}-${c}`;
+            ladder.style.animationDelay = delayMs + 'ms';
+            ladder.innerHTML = `
                 <span class="ladder-rail left"></span>
                 <span class="ladder-rail right"></span>
                 <div class="ladder-rungs">
@@ -637,8 +698,22 @@
                     <span class="ladder-rung"></span>
                     <span class="ladder-rung"></span>
                     <span class="ladder-rung"></span>
+                    <span class="ladder-rung"></span>
                 </div>
                 <span class="ladder-badge"></span>
+            `;
+            ladder.onclick = () => clickLadder(r, c);
+            slot.appendChild(ladder);
+            return slot;
+        }
+
+        function renderFogBay(bayEl) {
+            bayEl.innerHTML = `
+                <div class="tunnel-fog">
+                    <span class="tunnel-fog-dot"></span>
+                    <span>ПОРОДА НЕ РАЗВЕДАНА · ?</span>
+                    <span class="tunnel-fog-dot"></span>
+                </div>
             `;
         }
 
@@ -646,29 +721,44 @@
             gridEl.innerHTML = '';
             for (let r = 0; r < ROW_COUNT; r++) {
                 const rowDiv = document.createElement('div');
-                rowDiv.className = 'tower-row';
+                rowDiv.className = 'mine-tunnel tunnel-hidden';
                 rowDiv.id = `row-${r}`;
 
-                const multBadge = document.createElement('div');
-                multBadge.className = 'tower-mult-badge';
-                multBadge.innerHTML = `<span class="floor-num">ЯРУС ${r + 1}</span><span class="floor-mult">x${MULTIPLIERS[r].toFixed(2)}</span>`;
-                rowDiv.appendChild(multBadge);
+                const postDiv = document.createElement('div');
+                postDiv.className = 'tunnel-post';
+                postDiv.innerHTML = `
+                    <span class="tunnel-lantern"></span>
+                    <div class="tower-mult-badge">
+                        <span class="floor-num">УР. ${r + 1}</span>
+                        <span class="floor-mult">x${MULTIPLIERS[r].toFixed(2)}</span>
+                    </div>
+                `;
+                rowDiv.appendChild(postDiv);
 
                 const bayDiv = document.createElement('div');
                 bayDiv.className = 'ladders-bay';
-
-                const count = LADDERS_PER_ROW[r];
-                for (let c = 0; c < count; c++) {
-                    const ladder = document.createElement('div');
-                    ladder.className = 'ladder-btn';
-                    ladder.id = `cell-${r}-${c}`;
-                    ladder.innerHTML = buildLadderHTML();
-                    ladder.onclick = () => clickLadder(r, c);
-                    bayDiv.appendChild(ladder);
-                }
-
+                bayDiv.id = `bay-${r}`;
+                // Верхние и неначатые уровни НЕ содержат лестниц — только породу!
+                renderFogBay(bayDiv);
                 rowDiv.appendChild(bayDiv);
+
                 gridEl.appendChild(rowDiv);
+            }
+        }
+
+        function unlockFloor(r) {
+            if (r < 0 || r >= ROW_COUNT) return;
+            const rowEl = document.getElementById(`row-${r}`);
+            const bayEl = document.getElementById(`bay-${r}`);
+            if (!rowEl || !bayEl) return;
+
+            rowEl.className = 'mine-tunnel active';
+            bayEl.innerHTML = '';
+
+            // Только при переходе на этот уровень появляются лестницы этого яруса!
+            const count = LADDERS_PER_ROW[r];
+            for (let c = 0; c < count; c++) {
+                bayEl.appendChild(buildLadderElement(r, c, c * 45));
             }
         }
 
@@ -708,33 +798,29 @@
             currentRow = 0;
             currentWin = 0;
             brokenPositions = [];
-            if (mineShaft) mineShaft.classList.remove('shake');
+            if (mineCutaway) mineCutaway.classList.remove('shake');
 
             betBtns.forEach(b => b.disabled = true);
             actionBtn.classList.remove('cashout', 'bust');
             actionBtn.style.background = '#1e2c44';
             actionBtn.style.color = '#7da2c8';
-            actionBtn.innerHTML = 'ВЫБЕРИТЕ ЛЕСЕНКУ';
+            actionBtn.innerHTML = 'ВЫБЕРИТЕ ЛЕСТНИЦУ';
             actionBtn.disabled = true;
 
-            // На каждом ярусе одна лесенка хрупкая (подломлена)
+            // На каждом уровне ровно 1 сломанная лестница
             for (let r = 0; r < ROW_COUNT; r++) {
                 brokenPositions.push(Math.floor(Math.random() * LADDERS_PER_ROW[r]));
             }
 
-            // Очищаем лесенки
+            // Прячем породой ВСЕ уровни и открываем ТОЛЬКО 1-й уровень
             for (let r = 0; r < ROW_COUNT; r++) {
                 const rowEl = document.getElementById(`row-${r}`);
-                rowEl.className = 'tower-row';
-                const count = LADDERS_PER_ROW[r];
-                for (let c = 0; c < count; c++) {
-                    const ladderEl = document.getElementById(`cell-${r}-${c}`);
-                    ladderEl.className = 'ladder-btn';
-                    ladderEl.innerHTML = buildLadderHTML();
-                }
+                const bayEl = document.getElementById(`bay-${r}`);
+                if (rowEl) rowEl.className = 'mine-tunnel tunnel-hidden';
+                if (bayEl) renderFogBay(bayEl);
             }
 
-            document.getElementById('row-0').classList.add('active');
+            unlockFloor(0);
         }
 
         function clickLadder(r, c) {
@@ -749,7 +835,7 @@
 
             let isBroken = (brokenPositions[r] === c);
 
-            // RTP 60% контроль: при безопасной лесенке с вероятностью house edge она подламывается под игроком
+            // RTP 60% контроль: если лестница была целой, с шансом house edge подламывается
             if (!isBroken && Math.random() > 0.60) {
                 isBroken = true;
                 brokenPositions[r] = c;
@@ -768,19 +854,20 @@
                 if (isBroken) {
                     clickedLadder.classList.add('broken');
                     if (badge) badge.textContent = '💥';
+                    document.getElementById(`row-${r}`).classList.remove('active');
                     document.getElementById(`row-${r}`).classList.add('failed');
-                    if (mineShaft) {
-                        mineShaft.classList.remove('shake');
-                        void mineShaft.offsetWidth;
-                        mineShaft.classList.add('shake');
+                    if (mineCutaway) {
+                        mineCutaway.classList.remove('shake');
+                        void mineCutaway.offsetWidth;
+                        mineCutaway.classList.add('shake');
                     }
                     isClimbing = false;
                     loseGame();
                 } else {
                     clickedLadder.classList.add('safe');
-                    if (badge) badge.textContent = '⛏️';
+                    if (badge) badge.textContent = '💎';
 
-                    // Показать, какая лесенка на этом ярусе была сломана
+                    // Отмечаем сломанную лестницу ТОЛЬКО на пройденном ярусе
                     const badIdx = brokenPositions[r];
                     if (badIdx !== c) {
                         const badEl = document.getElementById(`cell-${r}-${badIdx}`);
@@ -801,7 +888,9 @@
                     if (currentRow >= ROW_COUNT) {
                         cashout();
                     } else {
-                        document.getElementById(`row-${currentRow}`).classList.add('active');
+                        // Открываем и спавним лестницы ТОЛЬКО при переходе на следующий уровень!
+                        unlockFloor(currentRow);
+
                         actionBtn.disabled = false;
                         actionBtn.className = 'action-btn cashout';
                         actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
@@ -810,6 +899,20 @@
                     }
                 }
             }, 300);
+        }
+
+        function revealCurrentFloorBroken() {
+            // Раскрываем хрупкую лестницу только на уже открытом текущем уровне (не на верхних закрытых!)
+            const r = currentRow;
+            if (r >= 0 && r < ROW_COUNT) {
+                const badCol = brokenPositions[r];
+                const ladder = document.getElementById(`cell-${r}-${badCol}`);
+                if (ladder && !ladder.classList.contains('broken') && !ladder.classList.contains('safe')) {
+                    ladder.classList.add('revealed-broken');
+                    const badge = ladder.querySelector('.ladder-badge');
+                    if (badge) badge.textContent = '⚠️';
+                }
+            }
         }
 
         function cashout() {
@@ -822,7 +925,7 @@
             actionBtn.innerHTML = `ДОБЫЧА +${currentWin}! ИГРАТЬ СНОВА`;
             actionBtn.style.background = '';
 
-            revealBrokenLadders();
+            revealCurrentFloorBroken();
             state = 'finished';
             betBtns.forEach(b => b.disabled = false);
 
@@ -833,30 +936,16 @@
 
         function loseGame() {
             actionBtn.className = 'action-btn bust';
-            actionBtn.innerHTML = 'ЛЕСЕНКА СЛОМАЛАСЬ! СНОВА';
+            actionBtn.innerHTML = 'ЛЕСТНИЦА СЛОМАЛАСЬ! СНОВА';
             actionBtn.style.background = '';
             actionBtn.disabled = false;
 
             document.getElementById(`row-${currentRow}`).classList.remove('active');
-            revealBrokenLadders();
-
             state = 'finished';
             betBtns.forEach(b => b.disabled = false);
         }
 
-        function revealBrokenLadders() {
-            for (let r = currentRow; r < ROW_COUNT; r++) {
-                const badCol = brokenPositions[r];
-                const ladder = document.getElementById(`cell-${r}-${badCol}`);
-                if (ladder && !ladder.classList.contains('broken')) {
-                    ladder.classList.add('revealed-broken');
-                    const badge = ladder.querySelector('.ladder-badge');
-                    if (badge) badge.textContent = '⚠️';
-                }
-            }
-        }
-
-        // ================= Анимация звезд и кристальной пыли =================
+        // ================= Анимация частиц породы в шахте =================
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let w = 0; let h = 0;
@@ -868,13 +957,13 @@
         }
         function createStars() {
             stars = [];
-            for (let i = 0; i < 70; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, s: Math.random() * 0.1 + 0.02, o: Math.random() * 0.5 + 0.2 });
+            for (let i = 0; i < 65; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, s: Math.random() * 0.1 + 0.02, o: Math.random() * 0.45 + 0.15 });
         }
         function drawStars() {
             ctx.clearRect(0, 0, w, h);
             for (const star of stars) {
                 ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(100, 200, 255, ${star.o})`; ctx.fill();
+                ctx.fillStyle = `rgba(96, 195, 255, ${star.o})`; ctx.fill();
                 star.y += star.s;
                 if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
             }
