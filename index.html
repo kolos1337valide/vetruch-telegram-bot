@@ -7021,10 +7021,15 @@
 .xmas-light-a { animation: xmasLightTwinkle 1.1s infinite alternate; }
 .xmas-light-b { animation: xmasLightTwinkle 1.4s 0.35s infinite alternate; }
 .xmas-light-c { animation: xmasLightTwinkle 1.2s 0.7s infinite alternate; }
+.xmas-sparkle { animation: xmasSparklePop 1.8s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
 
 @keyframes xmasLightTwinkle {
-    0%   { opacity: 0.25; filter: brightness(0.7); }
-    100% { opacity: 1; filter: brightness(1.45) drop-shadow(0 0 6px rgba(255, 255, 255, 0.75)); }
+    0%   { opacity: 0.28; filter: brightness(0.75); }
+    100% { opacity: 1; filter: brightness(1.45) drop-shadow(0 0 6px rgba(255, 255, 255, 0.8)); }
+}
+@keyframes xmasSparklePop {
+    0%   { transform: scale(0.72) rotate(0deg); opacity: 0.55; }
+    100% { transform: scale(1.18) rotate(12deg); opacity: 1; filter: drop-shadow(0 0 5px #ffffff); }
 }
 
 /* Всплеск снега при встряхивании */
@@ -8026,75 +8031,151 @@ img {
                     <div class="xmas-snow-bg" id="xmasSnowBg"></div>
                     <div class="xmas-ground"></div>
 
-                    <!-- Детализированная анимированная ёлка -->
+                    <!-- Новая мультяшная пушистая ёлка с шарами и искрами -->
                     <div class="xmas-tree-actor" id="xmasTreeActor" onclick="shakeXmasTreeOnce()">
-                        <svg class="xmas-tree-svg-lg" viewBox="0 0 200 240" fill="none" aria-hidden="true">
+                        <svg class="xmas-tree-svg-lg" viewBox="0 0 220 250" fill="none" aria-hidden="true">
                             <defs>
-                                <linearGradient id="xTreeGradDark" x1="100" y1="30" x2="100" y2="210" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#10b981"/>
-                                    <stop offset="60%" stop-color="#059669"/>
-                                    <stop offset="100%" stop-color="#064e3b"/>
+                                <linearGradient id="xTrunkGrad" x1="94" y1="196" x2="126" y2="232" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#c26425"/>
+                                    <stop offset="50%" stop-color="#964716"/>
+                                    <stop offset="100%" stop-color="#5c2808"/>
                                 </linearGradient>
-                                <linearGradient id="xTreeGradLight" x1="100" y1="25" x2="100" y2="180" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#6ee7b7"/>
-                                    <stop offset="100%" stop-color="#059669"/>
+                                <linearGradient id="xBoughDeep" x1="110" y1="34" x2="110" y2="215" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#22c55e"/>
+                                    <stop offset="55%" stop-color="#15803d"/>
+                                    <stop offset="100%" stop-color="#0b5526"/>
                                 </linearGradient>
-                                <linearGradient id="xStarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <linearGradient id="xBoughMid" x1="110" y1="30" x2="110" y2="180" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#4ade80"/>
+                                    <stop offset="60%" stop-color="#16a34a"/>
+                                    <stop offset="100%" stop-color="#0d6930"/>
+                                </linearGradient>
+                                <linearGradient id="xStarGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fef08a"/>
+                                    <stop offset="48%" stop-color="#facc15"/>
+                                    <stop offset="100%" stop-color="#d97706"/>
+                                </linearGradient>
+                                <radialGradient id="xBallYellow" cx="35%" cy="30%" r="68%">
                                     <stop offset="0%" stop-color="#fef9c3"/>
-                                    <stop offset="50%" stop-color="#fde047"/>
-                                    <stop offset="100%" stop-color="#f59e0b"/>
-                                </linearGradient>
+                                    <stop offset="45%" stop-color="#facc15"/>
+                                    <stop offset="100%" stop-color="#b45309"/>
+                                </radialGradient>
+                                <radialGradient id="xBallRed" cx="35%" cy="30%" r="68%">
+                                    <stop offset="0%" stop-color="#fecdd3"/>
+                                    <stop offset="42%" stop-color="#f43f5e"/>
+                                    <stop offset="100%" stop-color="#9f1239"/>
+                                </radialGradient>
+                                <radialGradient id="xBallBlue" cx="35%" cy="30%" r="68%">
+                                    <stop offset="0%" stop-color="#e0f2fe"/>
+                                    <stop offset="45%" stop-color="#38bdf8"/>
+                                    <stop offset="100%" stop-color="#0369a1"/>
+                                </radialGradient>
+                                <radialGradient id="xBallGreen" cx="35%" cy="30%" r="68%">
+                                    <stop offset="0%" stop-color="#dcfce7"/>
+                                    <stop offset="45%" stop-color="#4ade80"/>
+                                    <stop offset="100%" stop-color="#15803d"/>
+                                </radialGradient>
                             </defs>
 
-                            <!-- Ствол и тень -->
-                            <ellipse cx="100" cy="224" rx="46" ry="7" fill="rgba(0,0,0,0.45)"/>
-                            <rect x="88" y="196" width="24" height="28" rx="5" fill="#5c3a21" stroke="#3f2715" stroke-width="1.5"/>
+                            <!-- Тень и деревянный ствол -->
+                            <ellipse cx="110" cy="233" rx="52" ry="8" fill="rgba(0,0,0,0.48)"/>
+                            <path d="M97 195 H123 L126 227 Q110 233 94 227 Z" fill="url(#xTrunkGrad)" stroke="#471d05" stroke-width="2.2" stroke-linejoin="round"/>
+                            <path d="M104 202 V224" stroke="#d97736" stroke-width="2.2" stroke-linecap="round" opacity="0.65"/>
 
-                            <!-- Ярус 4 (нижний пушистый) -->
-                            <path d="M100 112 L176 196 Q152 204 134 195 Q118 206 100 198 Q82 206 66 195 Q48 204 24 196 Z"
-                                  fill="url(#xTreeGradDark)" stroke="#10b981" stroke-width="1.8" stroke-linejoin="round"/>
-                            <path d="M36 184 Q48 192 64 185 M136 185 Q152 192 164 184" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+                            <!-- Нижний пушистый ярус 5 -->
+                            <path d="M110 132 L189 194 Q174 209 156 196 Q142 214 124 201 Q110 218 96 201 Q78 214 64 196 Q46 209 31 194 Z"
+                                  fill="url(#xBoughDeep)" stroke="#06401c" stroke-width="2.6" stroke-linejoin="round"/>
+                            <path d="M56 184 Q70 194 82 183 M138 183 Q150 194 164 184" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+
+                            <!-- Ярус 4 -->
+                            <path d="M110 104 L176 164 Q162 178 145 166 Q131 182 117 170 Q110 180 103 170 Q89 182 75 166 Q58 178 44 164 Z"
+                                  fill="url(#xBoughDeep)" stroke="#06401c" stroke-width="2.5" stroke-linejoin="round"/>
+                            <path d="M68 153 Q82 162 94 152 M126 152 Q138 162 152 153" stroke="#4ade80" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
 
                             <!-- Ярус 3 -->
-                            <path d="M100 80 L158 152 Q138 160 122 152 Q110 162 100 155 Q90 162 78 152 Q62 160 42 152 Z"
-                                  fill="url(#xTreeGradDark)" stroke="#34d399" stroke-width="1.8" stroke-linejoin="round"/>
-                            <path d="M52 142 Q64 149 77 143 M123 143 Q136 149 148 142" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+                            <path d="M110 78 L163 134 Q149 147 134 136 Q121 150 110 140 Q99 150 86 136 Q71 147 57 134 Z"
+                                  fill="url(#xBoughMid)" stroke="#074a22" stroke-width="2.4" stroke-linejoin="round"/>
+                            <path d="M77 124 Q90 132 100 123 M120 123 Q130 132 143 124" stroke="#86efac" stroke-width="2.2" stroke-linecap="round" opacity="0.6"/>
 
                             <!-- Ярус 2 -->
-                            <path d="M100 52 L142 112 Q125 119 112 112 Q100 120 88 112 Q75 119 58 112 Z"
-                                  fill="url(#xTreeGradLight)" stroke="#6ee7b7" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M110 53 L149 102 Q136 113 123 104 Q110 116 97 104 Q84 113 71 102 Z"
+                                  fill="url(#xBoughMid)" stroke="#085327" stroke-width="2.3" stroke-linejoin="round"/>
 
-                            <!-- Ярус 1 (верхушка) -->
-                            <path d="M100 28 L126 74 Q112 80 100 75 Q88 80 74 74 Z"
-                                  fill="url(#xTreeGradLight)" stroke="#a7f3d0" stroke-width="1.8" stroke-linejoin="round"/>
+                            <!-- Ярус 1 (макушка) -->
+                            <path d="M110 34 L134 73 Q121 82 110 76 Q99 82 86 73 Z"
+                                  fill="#22c55e" stroke="#085327" stroke-width="2.2" stroke-linejoin="round"/>
 
-                            <!-- Неоновые гирлянды -->
-                            <path d="M78 70 Q100 84 122 70" stroke="#00d9ff" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
-                            <path d="M62 108 Q100 126 138 108" stroke="#38bdf8" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/>
-                            <path d="M48 148 Q100 168 152 148" stroke="#00d9ff" stroke-width="2.6" stroke-linecap="round" opacity="0.9"/>
-                            <path d="M32 188 Q100 212 168 188" stroke="#38bdf8" stroke-width="2.6" stroke-linecap="round" opacity="0.85"/>
-
-                            <!-- Сияющая звезда -->
+                            <!-- Большая глянцевая звезда на макушке -->
                             <g class="xmas-star-glow">
-                                <circle cx="100" cy="20" r="15" fill="rgba(253, 224, 71, 0.22)"/>
-                                <path d="M100 4 L104.8 14.2 L116 15.6 L107.6 23.2 L109.8 34.2 L100 28.8 L90.2 34.2 L92.4 23.2 L84 15.6 L95.2 14.2 Z"
-                                      fill="url(#xStarGrad)" stroke="#fef9c3" stroke-width="1.2" stroke-linejoin="round"/>
+                                <circle cx="110" cy="23" r="18" fill="rgba(250, 204, 21, 0.25)"/>
+                                <path d="M110 4 L116 16.5 L129.5 18.2 L119.5 27.5 L122 40.5 L110 34 L98 40.5 L100.5 27.5 L90.5 18.2 L104 16.5 Z"
+                                      fill="url(#xStarGold)" stroke="#fef9c3" stroke-width="1.6" stroke-linejoin="round"/>
+                                <path d="M110 9 L113.5 18 L123 19.5 L115 26" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.75"/>
                             </g>
 
-                            <!-- Мигающие огоньки и шары -->
-                            <circle class="xmas-light-a" cx="90" cy="60" r="4.5" fill="#00d9ff"/>
-                            <circle class="xmas-light-b" cx="112" cy="66" r="4" fill="#ffd700"/>
-                            <circle class="xmas-light-c" cx="76" cy="96" r="5" fill="#ff3366"/>
-                            <circle class="xmas-light-a" cx="100" cy="94" r="5.5" fill="#ffd700"/>
-                            <circle class="xmas-light-b" cx="124" cy="100" r="4.5" fill="#00d9ff"/>
-                            <circle class="xmas-light-c" cx="62" cy="136" r="5.5" fill="#00d9ff"/>
-                            <circle class="xmas-light-a" cx="88" cy="132" r="5" fill="#ff3366"/>
-                            <circle class="xmas-light-b" cx="116" cy="138" r="5.5" fill="#ffd700"/>
-                            <circle class="xmas-light-c" cx="138" cy="134" r="4.5" fill="#34d399"/>
-                            <circle class="xmas-light-a" cx="48" cy="176" r="6" fill="#ffd700"/>
-                            <circle class="xmas-light-b" cx="82" cy="178" r="5.5" fill="#00d9ff"/>
-                            <circle class="xmas-light-c" cx="118" cy="174" r="6" fill="#ff3366"/>
-                            <circle class="xmas-light-a" cx="150" cy="180" r="5.5" fill="#ffd700"/>
+                            <!-- Большие глянцевые ёлочные шары -->
+                            <!-- Жёлтый верхний -->
+                            <g>
+                                <rect x="82" y="81" width="6" height="4" rx="1" fill="#facc15"/>
+                                <circle cx="85" cy="92" r="9.5" fill="url(#xBallYellow)" stroke="#92400e" stroke-width="1.4"/>
+                                <path d="M80 88 Q82 85 86 85" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                            </g>
+                            <!-- Красный правый верхний -->
+                            <g>
+                                <rect x="131" y="93" width="6" height="4" rx="1" fill="#facc15"/>
+                                <circle cx="134" cy="105" r="9" fill="url(#xBallRed)" stroke="#881337" stroke-width="1.4"/>
+                                <path d="M129 101 Q131 98 135 98" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                            </g>
+                            <!-- Жёлтый левый нижний -->
+                            <g>
+                                <rect x="57" y="149" width="6" height="4" rx="1" fill="#facc15"/>
+                                <circle cx="60" cy="162" r="10.5" fill="url(#xBallYellow)" stroke="#92400e" stroke-width="1.5"/>
+                                <path d="M55 157 Q57 154 61 154" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+                            </g>
+                            <!-- Зелёный центр -->
+                            <g>
+                                <rect x="108" y="136" width="6" height="4" rx="1" fill="#facc15"/>
+                                <circle cx="111" cy="148" r="9.5" fill="url(#xBallGreen)" stroke="#14532d" stroke-width="1.4"/>
+                                <path d="M106 144 Q108 141 112 141" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                            </g>
+                            <!-- Жёлтый правый средний -->
+                            <g>
+                                <rect x="148" y="143" width="6" height="4" rx="1" fill="#facc15"/>
+                                <circle cx="151" cy="156" r="10" fill="url(#xBallYellow)" stroke="#92400e" stroke-width="1.5"/>
+                                <path d="M146 151 Q148 148 152 148" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                            </g>
+                            <!-- Голубой нижний левый -->
+                            <g>
+                                <rect x="76" y="177" width="6" height="4" rx="1" fill="#facc15"/>
+                                <circle cx="79" cy="190" r="10.5" fill="url(#xBallBlue)" stroke="#0c4a6e" stroke-width="1.5"/>
+                                <path d="M74 185 Q76 182 80 182" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+                            </g>
+                            <!-- Красный нижний правый -->
+                            <g>
+                                <rect x="137" y="172" width="6" height="4" rx="1" fill="#facc15"/>
+                                <circle cx="140" cy="185" r="10" fill="url(#xBallRed)" stroke="#881337" stroke-width="1.5"/>
+                                <path d="M135 180 Q137 177 141 177" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                            </g>
+
+                            <!-- Разноцветные светящиеся огоньки гирлянды -->
+                            <circle class="xmas-light-a" cx="101" cy="59" r="3.8" fill="#00e5ff"/>
+                            <circle class="xmas-light-b" cx="117" cy="68" r="3.6" fill="#e879f9"/>
+                            <circle class="xmas-light-c" cx="106" cy="83" r="3.8" fill="#fde047"/>
+                            <circle class="xmas-light-a" cx="72" cy="119" r="4" fill="#4ade80"/>
+                            <circle class="xmas-light-b" cx="103" cy="118" r="4.2" fill="#00e5ff"/>
+                            <circle class="xmas-light-c" cx="136" cy="127" r="4" fill="#e879f9"/>
+                            <circle class="xmas-light-a" cx="89" cy="155" r="3.8" fill="#fde047"/>
+                            <circle class="xmas-light-b" cx="128" cy="158" r="4" fill="#4ade80"/>
+                            <circle class="xmas-light-c" cx="46" cy="187" r="4.2" fill="#4ade80"/>
+                            <circle class="xmas-light-a" cx="108" cy="189" r="4.2" fill="#fde047"/>
+                            <circle class="xmas-light-b" cx="163" cy="191" r="4" fill="#00e5ff"/>
+                            <circle class="xmas-light-c" cx="174" cy="178" r="3.8" fill="#e879f9"/>
+
+                            <!-- Белые 4-лучевые искры-блики как на референсе -->
+                            <path class="xmas-sparkle" d="M90 83 L92 88 L97 90 L92 92 L90 97 L88 92 L83 90 L88 88 Z" fill="#ffffff"/>
+                            <path class="xmas-sparkle" style="animation-delay:0.45s" d="M126 112 L128 117 L133 119 L128 121 L126 126 L124 121 L119 119 L124 117 Z" fill="#ffffff"/>
+                            <path class="xmas-sparkle" style="animation-delay:0.9s" d="M150 175 L153 182 L160 185 L153 188 L150 195 L147 188 L140 185 L147 182 Z" fill="#ffffff"/>
+                            <path class="xmas-sparkle" style="animation-delay:1.25s" d="M68 188 L70 192 L74 194 L70 196 L68 200 L66 196 L62 194 L66 192 Z" fill="#ffffff"/>
                         </svg>
                     </div>
 
@@ -8572,9 +8653,13 @@ img {
             </div>
             <div class="advent-right">
                 <div class="xmas-tree-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2L16.5 8.5H13.8L18 14.5H14.5L19 20H5L9.5 14.5H6L10.2 8.5H7.5L12 2Z" fill="#34d399" fill-opacity="0.35" stroke="#6ee7b7" stroke-width="1.6" stroke-linejoin="round"/>
-                        <path d="M12 20V22.5" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+                    <svg viewBox="0 0 28 28" fill="none">
+                        <rect x="12" y="21.5" width="4" height="4.5" rx="1" fill="#9a4e1c"/>
+                        <path d="M14 5L22.5 14H18.5L23.5 22H4.5L9.5 14H5.5L14 5Z" fill="#16a34a" stroke="#4ade80" stroke-width="1.3" stroke-linejoin="round"/>
+                        <polygon points="14,1.2 15.3,3.8 18.2,4.2 16,6 16.6,8.8 14,7.4 11.4,8.8 12,6 9.8,4.2 12.7,3.8" fill="#facc15"/>
+                        <circle cx="11.5" cy="13" r="1.5" fill="#facc15"/>
+                        <circle cx="16.5" cy="17" r="1.6" fill="#f43f5e"/>
+                        <circle cx="11" cy="19" r="1.5" fill="#38bdf8"/>
                     </svg>
                 </div>
                 <div class="xmas-banner-arrow">❯</div>
@@ -8935,11 +9020,50 @@ img {
         <div class="tasks-progress-wrap anim-item" style="clear: both; margin-bottom: 14px; animation-delay: 0.06s;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-size: 13.5px; font-weight: 700; color: #94a3b8;">Выполнено заданий:</span>
-                <span id="tasksProgressText" style="font-size: 14px; font-weight: 800; color: #38bdf8;">0 из 54</span>
+                <span id="tasksProgressText" style="font-size: 14px; font-weight: 800; color: #38bdf8;">0 из 56</span>
             </div>
             <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; border: 1px solid rgba(0, 180, 255, 0.2);">
                 <div id="tasksProgressFill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0088ff 0%, #00d9ff 100%); border-radius: 999px; transition: width 0.4s ease; box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);"></div>
             </div>
+        </div>
+
+        <!-- ВИДЖЕТ СТРИКА ИЗ ЭФИРОВ (1–7 С ЦЕПЯМИ BARBAROSSA) -->
+        <div class="stream-streak-quest-card" id="tasksStreamStreakCard">
+            <div class="ssq-header">
+                <div class="ssq-head-left">
+                    <div class="ssq-flame-orb" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12.5 2.5C12.5 2.5 17 6.8 17 11.4C17 12.1 16.85 12.75 16.6 13.35C17.4 12.6 17.9 11.55 18 10.4C19.25 11.8 20 13.55 20 15.5C20 19.65 16.4 22.5 12 22.5C7.6 22.5 4.5 19.55 4.5 15.35C4.5 11.9 6.65 9.05 9.25 7.05C10.9 5.75 12.1 4.2 12.5 2.5Z" fill="currentColor" opacity="0.24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M12 12.5C13.5 14 14.3 15.3 14.3 16.8C14.3 18.2 13.25 19.3 12 19.3C10.75 19.3 9.7 18.2 9.7 16.8C9.7 15.2 10.75 13.85 12 12.5Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="ssq-title">Стрик из эфиров</div>
+                        <div class="ssq-sub">Смотри стримы — забирай награды</div>
+                    </div>
+                </div>
+                <div class="ssq-counter-box">
+                    <div class="ssq-counter-top">🔥 <span id="ssqCountVal">0</span></div>
+                    <div class="ssq-counter-sub">из 7</div>
+                </div>
+            </div>
+
+            <div class="ssq-track" id="ssqTrack"></div>
+
+            <div class="ssq-reward-box" id="ssqRewardBox">
+                <div class="ssq-reward-left">
+                    <div class="ssq-gift-ico" aria-hidden="true">🎁</div>
+                    <div>
+                        <div class="ssq-step-lbl" id="ssqStepLabel">ШАГ 1 ИЗ 7</div>
+                        <div class="ssq-step-title" id="ssqStepTitle">За следующий эфир</div>
+                    </div>
+                </div>
+                <div id="ssqRewardAction">
+                    <span class="ssq-reward-pill"><img src="coins.png" class="coin-icon-sm" alt=""> 110</span>
+                </div>
+            </div>
+
+            <div class="ssq-footnote">Переходи на эфир Kick при запуске стрима и собирай награды подряд.</div>
         </div>
 
         <!-- Плашки категорий заданий -->
@@ -10477,6 +10601,319 @@ img {
             color: #00e676;
         }
 
+        /* ================= СТРИК ИЗ ЭФИРОВ (БАРБАРОССА-ЦЕПИ В ЗАДАНИЯХ) ================= */
+        .stream-streak-quest-card {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+            padding: 16px 14px 14px 14px;
+            border-radius: 22px;
+            background:
+                radial-gradient(120% 100% at 15% 0%, rgba(0, 162, 255, 0.16) 0%, rgba(10, 20, 38, 0.94) 55%, rgba(5, 11, 22, 0.98) 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.34);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(186, 230, 253, 0.18);
+            animation: taskCardReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .ssq-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .ssq-head-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+        .ssq-flame-orb {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, rgba(0, 229, 255, 0.32), rgba(0, 112, 243, 0.16));
+            border: 1.5px solid rgba(0, 217, 255, 0.58);
+            color: #00e5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 18px rgba(0, 217, 255, 0.34);
+        }
+        .ssq-flame-orb svg {
+            width: 20px;
+            height: 20px;
+        }
+        .ssq-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        .ssq-sub {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #8cb4db;
+            margin-top: 2px;
+        }
+        .ssq-counter-box {
+            min-width: 54px;
+            padding: 6px 10px;
+            border-radius: 13px;
+            background: rgba(6, 16, 33, 0.9);
+            border: 1px solid rgba(0, 217, 255, 0.35);
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .ssq-counter-top {
+            font-size: 14px;
+            font-weight: 900;
+            color: #00e5ff;
+            line-height: 1.1;
+        }
+        .ssq-counter-sub {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: #7da2c8;
+            margin-top: 2px;
+        }
+
+        /* 7 уровней, соединённых коваными цепями из слота Barbarossa */
+        .ssq-track {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 16px;
+            padding: 0 2px;
+        }
+        .ssq-node-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        .ssq-node {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12.5px;
+            border: 1.5px solid rgba(148, 163, 184, 0.25);
+            background: rgba(12, 22, 40, 0.92);
+            color: #64748b;
+            transition: all 0.28s ease;
+        }
+        .ssq-node.is-done {
+            background: radial-gradient(circle, rgba(0, 230, 118, 0.28), rgba(4, 38, 28, 0.95));
+            border-color: #00e676;
+            color: #00e676;
+            box-shadow: 0 0 14px rgba(0, 230, 118, 0.42);
+        }
+        .ssq-node.is-next {
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.26), rgba(8, 27, 56, 0.96));
+            border-color: #00e5ff;
+            color: #00e5ff;
+            box-shadow: 0 0 16px rgba(0, 217, 255, 0.5);
+        }
+        .ssq-node-num {
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748b;
+        }
+        .ssq-node-num.is-done { color: #00e676; }
+        .ssq-node-num.is-next { color: #e0fbff; }
+
+        .ssq-chain-link-wrap {
+            flex: 1;
+            min-width: 10px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 -1px;
+        }
+        .ssq-chain-svg {
+            width: 100%;
+            height: 15px;
+            display: block;
+            overflow: visible;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.75));
+        }
+        .ssq-chain-svg.is-linked {
+            filter: drop-shadow(0 0 6px rgba(0, 217, 255, 0.65));
+        }
+
+        .ssq-reward-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 15px;
+            background: rgba(5, 13, 27, 0.9);
+            border: 1px solid rgba(0, 217, 255, 0.24);
+            margin-bottom: 10px;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .ssq-reward-box.is-claimable {
+            border-color: rgba(0, 230, 118, 0.65);
+            background: linear-gradient(90deg, rgba(0, 230, 118, 0.14), rgba(0, 170, 255, 0.12));
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+        }
+        .ssq-reward-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+        .ssq-gift-ico {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(0, 162, 255, 0.14);
+            border: 1px solid rgba(0, 217, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .ssq-step-lbl {
+            font-size: 9.5px;
+            font-weight: 800;
+            color: #7dd3fc;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+        }
+        .ssq-step-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 1px;
+        }
+        .ssq-reward-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 15px;
+            font-weight: 900;
+            color: #e0fbff;
+            white-space: nowrap;
+        }
+        .ssq-claim-btn {
+            padding: 8px 12px;
+            border-radius: 11px;
+            border: none;
+            background: linear-gradient(135deg, #00e676 0%, #00c853 100%);
+            color: #032211;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 230, 118, 0.4);
+            white-space: nowrap;
+        }
+        .ssq-claim-btn:active { transform: scale(0.95); }
+        .ssq-footnote {
+            font-size: 11px;
+            font-weight: 600;
+            color: #7da2c8;
+            line-height: 1.35;
+        }
+
+        /* ================= ЖИВЫЕ АНИМАЦИИ МАГАЗИНА И ЗАДАНИЙ ================= */
+        @keyframes shopCardReveal {
+            0%   { opacity: 0; transform: translateY(20px) scale(0.94); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes shopItemFloat {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50%      { transform: scale(1.035) translateY(-3px); }
+        }
+        @keyframes cardSheenSweep {
+            0%        { transform: translateX(-140%) skewX(-22deg); }
+            42%, 100% { transform: translateX(260%) skewX(-22deg); }
+        }
+        @keyframes taskCardReveal {
+            0%   { opacity: 0; transform: translateY(18px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes questIconBreath {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 150, 255, 0.35); transform: scale(1); }
+            50%      { box-shadow: 0 0 18px rgba(0, 217, 255, 0.65); transform: scale(1.04); }
+        }
+
+        #shop.page.active .shop-card,
+        #shop.page.active .case-card {
+            animation: shopCardReveal 0.44s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .shop-card::after,
+        .featured-task::after,
+        .arkada-partner-card::after,
+        .p2-partner-card::after,
+        .p3-partner-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 42%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(125, 211, 252, 0.1) 50%, transparent 100%);
+            transform: translateX(-140%) skewX(-22deg);
+            pointer-events: none;
+            z-index: 3;
+            animation: cardSheenSweep 5.5s ease-in-out infinite;
+        }
+        .shop-card:nth-child(2n)::after,
+        .featured-task:nth-child(2n)::after { animation-delay: 1.6s; }
+        .shop-card:nth-child(3n)::after,
+        .featured-task:nth-child(3n)::after { animation-delay: 3.1s; }
+
+        .shop-card-img-wrap img,
+        .case-art-wrap img {
+            animation: shopItemFloat 4.2s ease-in-out infinite;
+            will-change: transform;
+        }
+        .shop-card:nth-child(2n) .shop-card-img-wrap img,
+        .case-card:nth-child(2n) .case-art-wrap img { animation-delay: -1.4s; }
+        .shop-card:nth-child(3n) .shop-card-img-wrap img,
+        .case-card:nth-child(3n) .case-art-wrap img { animation-delay: -2.8s; }
+
+        .shop-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .shop-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 38%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.26), transparent);
+            transform: translateX(-140%) skewX(-22deg);
+            pointer-events: none;
+            animation: cardSheenSweep 4.6s ease-in-out infinite;
+        }
+
+        .featured-task {
+            position: relative;
+            overflow: hidden;
+        }
+        #tasks.page.active .featured-task,
+        #tasks.page.active .arkada-partner-card,
+        #tasks.page.active .p2-partner-card,
+        #tasks.page.active .p3-partner-card {
+            animation: taskCardReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .featured-task-icon {
+            animation: questIconBreath 3.2s ease-in-out infinite;
+        }
+
         /* ================= ВЕРХНЯЯ МИНИ-ТАБЛИЧКА ПРИ ЗАХОДЕ В БОТА ================= */
         .kick-top-mini-popup {
             position: fixed;
@@ -11387,18 +11824,37 @@ img {
                             best: Number(p.best || 0) || 0,
                             totalVisits: Number(p.totalVisits || 0) || 0,
                             lastStreamId: String(p.lastStreamId || ''),
-                            lastStreamNum: Number(p.lastStreamNum || 0) || 0
+                            lastStreamNum: Number(p.lastStreamNum || 0) || 0,
+                            claimedSteps: (p.claimedSteps && typeof p.claimedSteps === 'object') ? { ...p.claimedSteps } : {}
                         };
                     }
                 }
             } catch (e) {}
-            return { count: 0, best: 0, totalVisits: 0, lastStreamId: '', lastStreamNum: 0 };
+            return { count: 0, best: 0, totalVisits: 0, lastStreamId: '', lastStreamNum: 0, claimedSteps: {} };
         }
 
         function saveLocalStreamStreak(st) {
             try {
                 localStorage.setItem('vetruch_stream_streak', JSON.stringify(st));
             } catch (e) {}
+        }
+
+        const STREAM_STREAK_REWARDS = [110, 150, 200, 260, 350, 450, 700];
+
+        function buildBarbarossaChainSvg(isLinked) {
+            const c1 = isLinked ? '#e0fbff' : '#94a3b8';
+            const c2 = isLinked ? '#00e5ff' : '#475569';
+            const c3 = isLinked ? '#0284c7' : '#1e293b';
+            return `
+                <svg class="ssq-chain-svg ${isLinked ? 'is-linked' : ''}" viewBox="0 0 36 16" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                    <rect x="0.5" y="4.5" width="12" height="7" rx="3.5" fill="none" stroke="${c3}" stroke-width="3.2"/>
+                    <rect x="0.5" y="4.5" width="12" height="7" rx="3.5" fill="none" stroke="${c1}" stroke-width="1.4"/>
+                    <rect x="11.5" y="3" width="13" height="10" rx="5" fill="#061224" stroke="${c2}" stroke-width="2.6"/>
+                    <line x1="15.5" y1="8" x2="20.5" y2="8" stroke="${c1}" stroke-width="2" stroke-linecap="round"/>
+                    <rect x="23.5" y="4.5" width="12" height="7" rx="3.5" fill="none" stroke="${c3}" stroke-width="3.2"/>
+                    <rect x="23.5" y="4.5" width="12" height="7" rx="3.5" fill="none" stroke="${c1}" stroke-width="1.4"/>
+                </svg>
+            `;
         }
 
         function getEffectiveStreamStreak(st, sess) {
@@ -11410,6 +11866,121 @@ img {
                 return (sNum - lastNum) > 1 ? 0 : rawCount;
             }
             return (sNum - lastNum) >= 1 ? 0 : rawCount;
+        }
+
+        function renderTasksStreamStreakWidget() {
+            const trackEl = document.getElementById('ssqTrack');
+            if (!trackEl) return;
+
+            const sess = getLocalStreamSession();
+            const st = getLocalStreamStreak();
+            const effRaw = getEffectiveStreamStreak(st, sess);
+            const effCount = Math.max(0, Math.min(7, effRaw));
+            const claimed = (effCount > 0 && st.claimedSteps && typeof st.claimedSteps === 'object') ? st.claimedSteps : {};
+
+            const countEl = document.getElementById('ssqCountVal');
+            if (countEl) countEl.textContent = String(effCount);
+
+            // Находим ближайшую доступную награду (из уже пройденных 1..effCount) или следующий шаг
+            let claimableStep = null;
+            for (let s = 1; s <= effCount; s++) {
+                if (!claimed[s]) {
+                    claimableStep = s;
+                    break;
+                }
+            }
+
+            let html = '';
+            for (let i = 1; i <= 7; i++) {
+                const isDone = i <= effCount;
+                const isNext = (effCount < 7 && i === effCount + 1);
+                const nodeCls = isDone ? 'is-done' : (isNext ? 'is-next' : '');
+                const numCls = isDone ? 'is-done' : (isNext ? 'is-next' : '');
+                const iconHtml = isDone
+                    ? (claimed[i] ? '✓' : '🔥')
+                    : (isNext ? '🔥' : '🔒');
+
+                html += `
+                    <div class="ssq-node-col">
+                        <div class="ssq-node ${nodeCls}">${iconHtml}</div>
+                        <span class="ssq-node-num ${numCls}">${i}</span>
+                    </div>
+                `;
+                if (i < 7) {
+                    const chainLinked = i < effCount || (effCount > 0 && i === effCount);
+                    html += `<div class="ssq-chain-link-wrap">${buildBarbarossaChainSvg(i < effCount)}</div>`;
+                }
+            }
+            trackEl.innerHTML = html;
+
+            const boxEl = document.getElementById('ssqRewardBox');
+            const lblEl = document.getElementById('ssqStepLabel');
+            const titleEl = document.getElementById('ssqStepTitle');
+            const actEl = document.getElementById('ssqRewardAction');
+
+            if (claimableStep) {
+                const reward = STREAM_STREAK_REWARDS[claimableStep - 1] || 110;
+                if (boxEl) boxEl.classList.add('is-claimable');
+                if (lblEl) lblEl.textContent = `ШАГ ${claimableStep} ИЗ 7 · ГОТОВО`;
+                if (titleEl) titleEl.textContent = `Награда за эфир #${claimableStep}`;
+                if (actEl) {
+                    actEl.innerHTML = `<button type="button" class="ssq-claim-btn" onclick="claimStreamStreakReward(${claimableStep})">ЗАБРАТЬ +${reward}</button>`;
+                }
+            } else {
+                const nextStep = effCount >= 7 ? 7 : effCount + 1;
+                const nextReward = STREAM_STREAK_REWARDS[nextStep - 1] || 110;
+                if (boxEl) boxEl.classList.remove('is-claimable');
+                if (lblEl) lblEl.textContent = effCount >= 7 ? 'СЕРИЯ 7 ИЗ 7 ПРОЙДЕНА!' : `ШАГ ${nextStep} ИЗ 7`;
+                if (titleEl) titleEl.textContent = effCount >= 7 ? 'Все награды цикла получены' : 'За следующий эфир';
+                if (actEl) {
+                    actEl.innerHTML = `<span class="ssq-reward-pill"><img src="coins.png" class="coin-icon-sm" alt=""> ${nextReward}</span>`;
+                }
+            }
+        }
+
+        let _claimingStreamStep = false;
+        async function claimStreamStreakReward(step) {
+            if (_claimingStreamStep) return;
+            _claimingStreamStep = true;
+            try {
+                const sess = getLocalStreamSession();
+                const st = getLocalStreamStreak();
+                const effCount = Math.min(7, getEffectiveStreamStreak(st, sess));
+                if (step < 1 || step > 7 || effCount < step) return;
+
+                const claimed = (st.claimedSteps && typeof st.claimedSteps === 'object') ? { ...st.claimedSteps } : {};
+                if (claimed[step]) return;
+
+                const reward = STREAM_STREAK_REWARDS[step - 1] || 110;
+                claimed[step] = true;
+
+                const updated = { ...st, claimedSteps: claimed, updatedAt: Date.now() };
+                saveLocalStreamStreak(updated);
+
+                const myId = getCurrentTgId();
+                let bal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+                bal += reward;
+                localStorage.setItem('vetruch_balance', bal);
+                localStorage.setItem('vetruch_cloud_synced_bal', bal);
+                let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+                balancesMap[myId] = bal;
+                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+                initBalance();
+                renderStreamStreakUI();
+
+                await Promise.all([
+                    cloudPut(`vetruch_app/balances/${myId}`, bal),
+                    cloudPut(`vetruch_app/users/${myId}/stream_streak`, updated)
+                ]).catch(() => {});
+
+                if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+                    try { Telegram.WebApp.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+                }
+                showAppAlert(`🔥 Стрик из эфиров — шаг ${step}/7 выполнен!\nВам начислено +${reward} монет!`, { title: 'Награда за стрим', icon: '🎁' });
+            } finally {
+                _claimingStreamStep = false;
+            }
         }
 
         function renderStreamStreakUI() {
@@ -11438,6 +12009,8 @@ img {
             const profSub = document.getElementById('profileStreamStreakSub');
             if (profVal) profVal.textContent = String(effectiveCount);
             if (profSub) profSub.textContent = `Рекорд: ${Math.max(st.best || 0, effectiveCount)} · Переходов: ${st.totalVisits || 0}`;
+
+            renderTasksStreamStreakWidget();
         }
 
         async function handleKickStreamButtonClick(source) {
@@ -11461,9 +12034,10 @@ img {
 
             const prevNum = Number(st.lastStreamNum || 0) || 0;
             const curNum = Number(sess.streamNumber || 1) || 1;
-            const nextCount = (prevNum > 0 && prevNum === curNum - 1)
-                ? (Number(st.count || 0) + 1)
-                : 1;
+            const prevCount = Number(st.count || 0) || 0;
+            const isConsecutive = (prevNum > 0 && prevNum === curNum - 1);
+            const nextCount = isConsecutive ? ((prevCount % 7) + 1) : 1;
+            const nextClaimed = (nextCount === 1) ? {} : ((st.claimedSteps && typeof st.claimedSteps === 'object') ? { ...st.claimedSteps } : {});
 
             const updated = {
                 count: nextCount,
@@ -11471,6 +12045,7 @@ img {
                 totalVisits: (Number(st.totalVisits || 0) || 0) + 1,
                 lastStreamId: sess.streamId,
                 lastStreamNum: curNum,
+                claimedSteps: nextClaimed,
                 updatedAt: Date.now()
             };
             saveLocalStreamStreak(updated);
@@ -13292,10 +13867,16 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                         best: Number(cloudSt.best || 0) || 0,
                         totalVisits: Number(cloudSt.totalVisits || 0) || 0,
                         lastStreamId: String(cloudSt.lastStreamId || ''),
-                        lastStreamNum: Number(cloudSt.lastStreamNum || 0) || 0
+                        lastStreamNum: Number(cloudSt.lastStreamNum || 0) || 0,
+                        claimedSteps: (cloudSt.claimedSteps && typeof cloudSt.claimedSteps === 'object') ? { ...cloudSt.claimedSteps } : {}
                     });
                 } else if (localIsNewerSt) {
                     await cloudPut(`vetruch_app/users/${myId}/stream_streak`, localSt);
+                } else if (cloudSt && cloudSt.claimedSteps && typeof cloudSt.claimedSteps === 'object') {
+                    saveLocalStreamStreak({
+                        ...localSt,
+                        claimedSteps: { ...(cloudSt.claimedSteps || {}), ...(localSt.claimedSteps || {}) }
+                    });
                 }
                 renderStreamStreakUI();
             }
@@ -13913,17 +14494,37 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
             window.scrollTo(0, 0);
 
             if (pageId === 'shop') {
-                const shopGrid = document.querySelector('.shop-grid');
-                if (shopGrid) {
-                    shopGrid.querySelectorAll('.shop-card').forEach(c => {
+                const shopPage = document.getElementById('shop');
+                const shopCards = shopPage ? Array.from(shopPage.querySelectorAll('.shop-card, .case-card')) : [];
+                shopCards.forEach(c => { c.style.animation = 'none'; });
+                if (shopPage) void shopPage.offsetWidth;
+                let sIdx = 0;
+                shopCards.forEach(c => {
+                    if (c.style.display !== 'none') {
+                        const delay = (Math.min(sIdx, 12) * 0.035).toFixed(3);
+                        c.style.animation = `shopCardReveal 0.44s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                        sIdx++;
+                    } else {
                         c.style.animation = '';
-                    });
-                }
+                    }
+                });
             }
 
             if (pageId === 'tasks') {
-                document.querySelectorAll('#tasks [data-task-cat]').forEach(el => {
-                    el.style.animation = '';
+                if (typeof renderTasksStreamStreakWidget === 'function') renderTasksStreamStreakWidget();
+                const tasksPage = document.getElementById('tasks');
+                const taskEls = tasksPage ? Array.from(tasksPage.querySelectorAll('#tasksStreamStreakCard, [data-task-cat]')) : [];
+                taskEls.forEach(el => { el.style.animation = 'none'; });
+                if (tasksPage) void tasksPage.offsetWidth;
+                let tIdx = 0;
+                taskEls.forEach(el => {
+                    if (el.style.display !== 'none') {
+                        const delay = (Math.min(tIdx, 12) * 0.04).toFixed(2);
+                        el.style.animation = `taskCardReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+                        tIdx++;
+                    } else {
+                        el.style.animation = '';
+                    }
                 });
             }
             
@@ -14431,17 +15032,22 @@ if (document.readyState === 'loading') {
 
 // ================= СИСТЕМА ПРОФИЛЕЙ И ЛИДЕРБОРД =================
 
-// При входе сохраняем профиль юзера в облако (не затирая опыт, серию бонусов и подарки)
+// При входе сохраняем профиль юзера в облако (отображаемый ник в ТГ для рейтинга + сохраняем username отдельно)
 async function syncUserProfile() {
     const user = tg.initDataUnsafe?.user;
     if (!user) return;
     
     const myId = String(user.id);
     const existing = (await cloudGet(`vetruch_app/users/${myId}`)) || {};
+    const tgDisplayName = [user.first_name, user.last_name].filter(Boolean).join(' ').trim()
+        || (user.username ? user.username : 'Аноним');
     
     await cloudPut(`vetruch_app/users/${myId}`, {
         ...existing,
-        name: user.username ? '@' + user.username : (user.first_name || 'Аноним'),
+        tg_name: tgDisplayName,
+        first_name: user.first_name || existing.first_name || '',
+        username: user.username ? '@' + user.username : (existing.username || ''),
+        name: tgDisplayName,
         avatar: (typeof getEffectiveAvatarUrl === 'function') ? getEffectiveAvatarUrl() : (user.photo_url || null),
         updated: Date.now()
     });
@@ -14452,6 +15058,14 @@ async function syncUserProfile() {
         const localBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
         await cloudPut(`vetruch_app/balances/${myId}`, isNaN(localBal) ? 500 : localBal);
     }
+}
+
+function getPlayerLeaderboardDisplayName(u, id) {
+    let rawName = ((u && (u.tg_name || u.first_name || u.name)) || '').trim();
+    if (rawName.startsWith('@') && rawName.length > 1) {
+        rawName = rawName.slice(1);
+    }
+    return rawName || `Игрок ${String(id || '').slice(-4)}`;
 }
 
 // Получаем топ-10
@@ -14466,13 +15080,19 @@ async function getLeaderboard() {
     const myId = getCurrentTgId();
     
     return Object.entries(balances)
-        .map(([id, bal]) => ({
-            id,
-            balance: Number(bal) || 0,
-            name: users?.[id]?.name || `Игрок ${id.slice(-4)}`,
-            avatar: users?.[id]?.avatar || null,
-            isMe: id === myId
-        }))
+        .map(([id, bal]) => {
+            const uObj = users ? users[id] : null;
+            const displayName = getPlayerLeaderboardDisplayName(uObj, id);
+            const firstChar = Array.from(displayName)[0] ? Array.from(displayName)[0].toUpperCase() : '?';
+            return {
+                id,
+                balance: Number(bal) || 0,
+                name: displayName,
+                initial: firstChar,
+                avatar: uObj?.avatar || null,
+                isMe: id === myId
+            };
+        })
         .sort((a, b) => b.balance - a.balance)
         .slice(0, 10);
 }
@@ -14516,9 +15136,14 @@ async function renderHomePodium() {
         
         if (avatarEl) {
             if (user.avatar) {
-                avatarEl.innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.parentElement.textContent='${user.name[0].toUpperCase()}'">`;
+                const img = document.createElement('img');
+                img.src = user.avatar;
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:8px;';
+                img.onerror = () => { avatarEl.textContent = user.initial || '?'; };
+                avatarEl.innerHTML = '';
+                avatarEl.appendChild(img);
             } else {
-                avatarEl.textContent = user.name[0].toUpperCase();
+                avatarEl.textContent = user.initial || '?';
             }
         }
         if (nameEl) nameEl.textContent = user.name;
@@ -14572,6 +15197,13 @@ async function renderLeaderboardPage() {
         return;
     }
 
+    const renderLbAvatarHtml = (u) => {
+        const initTxt = escapeHtmlSafe(u.initial || '?');
+        return u.avatar
+            ? `<img src="${escapeHtmlSafe(u.avatar)}" onerror="this.replaceWith(document.createTextNode('${initTxt}'))"/>`
+            : initTxt;
+    };
+
     // Топ-3 для подиума (1 место по центру, 2 слева, 3 справа)
     const top3 = [
         data[0] ? { ...data[0], place: 1 } : null,
@@ -14585,11 +15217,9 @@ async function renderLeaderboardPage() {
                 ${u.place === 1 ? '🏆 1' : u.place}
             </div>
             <div class="lb-avatar-wrap">
-                ${u.avatar 
-                    ? `<img src="${u.avatar}" onerror="this.parentElement.textContent='${u.name[0]}'"/>` 
-                    : u.name[0].toUpperCase()}
+                ${renderLbAvatarHtml(u)}
             </div>
-            <div class="lb-card-name">${u.name}${u.isMe ? ' (Вы)' : ''}</div>
+            <div class="lb-card-name">${escapeHtmlSafe(u.name)}${u.isMe ? ' (Вы)' : ''}</div>
             <div class="lb-card-coins">
                 <img src="coins.png" class="coin-icon-sm"> ${formatCoins(u.balance)}
             </div>
@@ -14603,11 +15233,9 @@ async function renderLeaderboardPage() {
         <div class="lb-row ${u.isMe ? 'is-me' : ''}">
             <div class="lb-rank">${i + 4}</div>
             <div class="lb-row-avatar">
-                ${u.avatar 
-                    ? `<img src="${u.avatar}" onerror="this.parentElement.textContent='${u.name[0]}'"/>` 
-                    : u.name[0].toUpperCase()}
+                ${renderLbAvatarHtml(u)}
             </div>
-            <div class="lb-row-name">${u.name}${u.isMe ? ' (Вы)' : ''}</div>
+            <div class="lb-row-name">${escapeHtmlSafe(u.name)}${u.isMe ? ' (Вы)' : ''}</div>
             <div class="lb-row-coins">
                 <img src="coins.png" class="coin-icon-sm"> ${formatCoins(u.balance)}
             </div>
