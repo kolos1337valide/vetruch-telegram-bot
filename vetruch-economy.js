@@ -10,7 +10,7 @@
 
   var GAME_KEYS = ['towers', 'mines', 'cards', 'balloon', 'dice', 'blackjack', 'slots', 'flappy'];
   var GAME_NAMES = {
-    towers: 'Башни',
+    towers: 'Шахта',
     mines: 'Мины',
     cards: 'Карты',
     balloon: 'Шарик',
