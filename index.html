@@ -9027,45 +9027,6 @@ img {
             </div>
         </div>
 
-        <!-- ВИДЖЕТ СТРИКА ИЗ ЭФИРОВ (1–7 С ЦЕПЯМИ BARBAROSSA) -->
-        <div class="stream-streak-quest-card" id="tasksStreamStreakCard">
-            <div class="ssq-header">
-                <div class="ssq-head-left">
-                    <div class="ssq-flame-orb" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12.5 2.5C12.5 2.5 17 6.8 17 11.4C17 12.1 16.85 12.75 16.6 13.35C17.4 12.6 17.9 11.55 18 10.4C19.25 11.8 20 13.55 20 15.5C20 19.65 16.4 22.5 12 22.5C7.6 22.5 4.5 19.55 4.5 15.35C4.5 11.9 6.65 9.05 9.25 7.05C10.9 5.75 12.1 4.2 12.5 2.5Z" fill="currentColor" opacity="0.24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                            <path d="M12 12.5C13.5 14 14.3 15.3 14.3 16.8C14.3 18.2 13.25 19.3 12 19.3C10.75 19.3 9.7 18.2 9.7 16.8C9.7 15.2 10.75 13.85 12 12.5Z" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="ssq-title">Стрик из эфиров</div>
-                        <div class="ssq-sub">Смотри стримы — забирай награды</div>
-                    </div>
-                </div>
-                <div class="ssq-counter-box">
-                    <div class="ssq-counter-top">🔥 <span id="ssqCountVal">0</span></div>
-                    <div class="ssq-counter-sub">из 7</div>
-                </div>
-            </div>
-
-            <div class="ssq-track" id="ssqTrack"></div>
-
-            <div class="ssq-reward-box" id="ssqRewardBox">
-                <div class="ssq-reward-left">
-                    <div class="ssq-gift-ico" aria-hidden="true">🎁</div>
-                    <div>
-                        <div class="ssq-step-lbl" id="ssqStepLabel">ШАГ 1 ИЗ 7</div>
-                        <div class="ssq-step-title" id="ssqStepTitle">За следующий эфир</div>
-                    </div>
-                </div>
-                <div id="ssqRewardAction">
-                    <span class="ssq-reward-pill"><img src="coins.png" class="coin-icon-sm" alt=""> 110</span>
-                </div>
-            </div>
-
-            <div class="ssq-footnote">Переходи на эфир Kick при запуске стрима и собирай награды подряд.</div>
-        </div>
-
         <!-- Плашки категорий заданий -->
         <div class="shop-tabs anim-item" id="tasksFilterTabs" style="animation-delay: 0.07s; margin-bottom: 14px;">
             <button type="button" class="shop-tab active" onclick="filterTasks('all', this)">Все</button>
@@ -9143,6 +9104,45 @@ img {
             <div class="arkada-card-cta">Смотреть задания ❯</div>
 
             <img id="p3CardImg" class="p3-card-img" src="partner3-duck.png" alt="">
+        </div>
+
+        <!-- ВИДЖЕТ СТРИКА ИЗ ЭФИРОВ (1–7 С ЦЕПЯМИ BARBAROSSA) -->
+        <div class="stream-streak-quest-card" id="tasksStreamStreakCard" data-task-cat="other" style="clear: both;">
+            <div class="ssq-header">
+                <div class="ssq-head-left">
+                    <div class="ssq-flame-orb" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12.5 2.5C12.5 2.5 17 6.8 17 11.4C17 12.1 16.85 12.75 16.6 13.35C17.4 12.6 17.9 11.55 18 10.4C19.25 11.8 20 13.55 20 15.5C20 19.65 16.4 22.5 12 22.5C7.6 22.5 4.5 19.55 4.5 15.35C4.5 11.9 6.65 9.05 9.25 7.05C10.9 5.75 12.1 4.2 12.5 2.5Z" fill="currentColor" opacity="0.24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M12 12.5C13.5 14 14.3 15.3 14.3 16.8C14.3 18.2 13.25 19.3 12 19.3C10.75 19.3 9.7 18.2 9.7 16.8C9.7 15.2 10.75 13.85 12 12.5Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="ssq-title">Стрик из эфиров</div>
+                        <div class="ssq-sub">Смотри стримы — забирай награды</div>
+                    </div>
+                </div>
+                <div class="ssq-counter-box">
+                    <div class="ssq-counter-top">🔥 <span id="ssqCountVal">0</span></div>
+                    <div class="ssq-counter-sub">из 7</div>
+                </div>
+            </div>
+
+            <div class="ssq-track" id="ssqTrack"></div>
+
+            <div class="ssq-reward-box" id="ssqRewardBox">
+                <div class="ssq-reward-left">
+                    <div class="ssq-gift-ico" aria-hidden="true">🎁</div>
+                    <div>
+                        <div class="ssq-step-lbl" id="ssqStepLabel">ШАГ 1 ИЗ 7</div>
+                        <div class="ssq-step-title" id="ssqStepTitle">За следующий эфир</div>
+                    </div>
+                </div>
+                <div id="ssqRewardAction">
+                    <span class="ssq-reward-pill"><img src="coins.png" class="coin-icon-sm" alt=""> 110</span>
+                </div>
+            </div>
+
+            <div class="ssq-footnote">Переходи на эфир Kick при запуске стрима и собирай награды подряд.</div>
         </div>
         
         <!-- 1. Задание: Подписка ТГ -->
