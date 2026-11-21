@@ -1263,45 +1263,45 @@
             filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
         }
 
-        .ui-ico {
-            width: 1.18em;
-            height: 1.18em;
-            display: inline-block;
+        img.ui-ico {
+            width: 1.18em !important;
+            height: 1.18em !important;
+            display: inline-block !important;
             vertical-align: -0.22em;
-            object-fit: contain;
+            object-fit: contain !important;
             flex-shrink: 0;
             margin-right: 0.16em;
             filter: drop-shadow(0 1px 4px rgba(0, 180, 255, 0.28));
             pointer-events: none;
         }
-        .ui-ico-solo {
+        img.ui-ico-solo {
             margin-right: 0;
         }
-        .ui-ico-end {
+        img.ui-ico-end {
             margin-right: 0;
             margin-left: 0.2em;
         }
-        .ui-ico-node {
-            width: 16px;
-            height: 16px;
+        img.ui-ico-node {
+            width: 16px !important;
+            height: 16px !important;
             vertical-align: middle;
             margin-right: 0;
         }
-        .ui-ico-md {
-            width: 22px;
-            height: 22px;
+        img.ui-ico-md {
+            width: 22px !important;
+            height: 22px !important;
             vertical-align: middle;
             margin-right: 0;
         }
-        .ui-ico-lg {
-            width: 30px;
-            height: 30px;
+        img.ui-ico-lg {
+            width: 30px !important;
+            height: 30px !important;
             vertical-align: middle;
             margin-right: 0;
         }
-        .ui-ico-xl {
-            width: 38px;
-            height: 38px;
+        img.ui-ico-xl {
+            width: 38px !important;
+            height: 38px !important;
             vertical-align: middle;
             margin-right: 0;
         }
@@ -5270,7 +5270,7 @@
             position: relative;
             background: #000;
         }
-        .gw-modal-banner img {
+        .gw-modal-banner > img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -5280,6 +5280,9 @@
             position: absolute;
             bottom: 8px;
             left: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             background: rgba(0, 0, 0, 0.75);
             border: 1px solid rgba(0, 217, 255, 0.4);
             color: #00d9ff;
